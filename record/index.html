@@ -7,6 +7,9 @@
 <meta name="description" content="Turn what you already see at home into dated evidence against the goals in your child's IEP, and print it for the meeting. Everything stays on your device.">
 <meta name="theme-color" content="#1f2a3a">
 <meta name="robots" content="noindex, nofollow">
+<link rel="manifest" href="/record/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
 :root{
   --bg:#f5f2ec; --card:#fffdf9; --ink:#1f2a3a; --ink-2:#3f4d63; --muted:#6f7d92;
@@ -124,6 +127,26 @@ function load () {
 function save (s) { localStorage.setItem(KEY, JSON.stringify(s)); state = s }
 let state = load()
 
+/* ASK THE BROWSER NOT TO THROW THIS AWAY.
+   Everything lives in localStorage, which browsers are free to evict — iOS
+   Safari in particular can clear script-written storage for a site nobody has
+   opened in about a week. A parent who logs sporadically is exactly that site.
+   Persistence is granted more readily once the app has been added to the home
+   screen, which is also what makes it feel like an app rather than a tab. */
+if (navigator.storage && navigator.storage.persist) {
+  navigator.storage.persisted().then(p => { if (!p) navigator.storage.persist().catch(() => {}) }).catch(() => {})
+}
+/* And make "works offline" true rather than a hope.
+   Absolute paths, deliberately: visited as "/record" without the trailing slash,
+   a relative "./sw.js" resolves to "/sw.js", which does not exist — so the
+   registration failed silently and offline quietly stopped being true, depending
+   on how the parent happened to type the address. */
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/record/sw.js', { scope: '/record/' }).catch(() => {})
+  })
+}
+
 const kid = () => state.children.find(c => c.id === state.activeId) || null
 const goalsOf = (c) => (c ? c.goals : [])
 /* Newest first. The tie-break matters: a parent can easily log two checks on one
@@ -208,19 +231,34 @@ function viewSetup () {
 
 function viewHome (c) {
   const gs = goalsOf(c)
+  // The switcher has to render here too. Without it, adding a second child left
+  // you on their empty screen with no way back to the first one.
+  const switcher = state.children.length > 1
+    ? `<div class="row" style="gap:6px;margin-top:12px">${state.children.map(x =>
+        `<button class="btn btn-sm ${x.id === c.id ? 'btn-primary' : ''}"
+          onclick="switchChild('${x.id}')" aria-pressed="${x.id === c.id}">${esc(x.name)}</button>`).join('')}</div>`
+    : ''
   if (!gs.length) return `
     <div class="card">
       <h1>Now add a goal from ${esc(c.name)}'s IEP.</h1>
       <p class="muted">Copy it word for word. The wording matters — it's what the meeting will be about.</p>
       <div><button class="btn btn-primary" onclick="go('goals')">Add the first goal</button></div>
+      ${switcher}
     </div>`
 
   const dueNow = gs.filter(g => due(g).state !== 'ok')
+  // count only THIS child's entries — with a second child in the app, a global
+  // count told each of them how much the other one had done
+  const mine = state.entries.filter(e => gs.some(g => g.id === e.goalId)).length
   return `
   <div class="card">
     <div class="row">
       <div class="grow"><h1 style="margin:0">${esc(c.name)}</h1>
-        <p class="muted small" style="margin:2px 0 0">${gs.length} goal${gs.length > 1 ? 's' : ''} · ${state.entries.length} thing${state.entries.length === 1 ? '' : 's'} written down</p></div>
+        <p class="muted small" style="margin:2px 0 0">${gs.length} goal${gs.length > 1 ? 's' : ''} · ${mine} thing${mine === 1 ? '' : 's'} written down</p></div>
+      ${state.children.length > 1 ? `<div class="row" style="gap:6px">${
+        state.children.map(x => `<button class="btn btn-sm ${x.id === c.id ? 'btn-primary' : ''}"
+          onclick="switchChild('${x.id}')" aria-pressed="${x.id === c.id}">${esc(x.name)}</button>`).join('')
+      }</div>` : ''}
     </div>
     ${dueNow.length
       ? `<p class="small" style="margin:12px 0 0"><strong>${dueNow.length} ${dueNow.length === 1 ? 'goal is' : 'goals are'} due a check.</strong>
@@ -253,6 +291,7 @@ function viewHome (c) {
         <button class="btn btn-sm" onclick="go('record')">See the record</button>
       </div>
       <div id="log-${g.id}" class="hide" style="margin-top:14px"></div>
+      ${pastChecks(g)}
     </div>`
   }).join('')}
 
@@ -271,17 +310,49 @@ function viewHome (c) {
 
 const shortGoal = (t) => (t.length > 130 ? t.slice(0, 127).trimEnd() + '…' : t)
 
+/* FIXING A MISTAKE.
+   You can mistype a score at ten at night, and a wrong number counted toward the
+   criterion is worse than no number at all — this whole app is only worth
+   anything if the record is true. So every check can be corrected or taken out. */
+function pastChecks (g) {
+  const all = entriesFor(g.id)
+  if (!all.length) return ''
+  return `
+  <details style="margin-top:12px">
+    <summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">
+      See or fix past checks (${all.length})</summary>
+    <div style="margin-top:6px">
+      ${all.map(e => `
+        <div class="entry">
+          <span class="when">${esc(e.date)}</span>
+          <span>${e.got} of ${e.outOf}
+            <span class="muted small">${e.kind === 'probe' ? '· on her own' : '· we worked on it'}</span></span>
+          <span class="row" style="gap:6px">
+            <button class="btn btn-sm" onclick="openLog('${g.id}','${e.id}')">Fix</button>
+            <button class="btn btn-sm" onclick="removeEntry('${e.id}')">Remove</button>
+          </span>
+        </div>`).join('')}
+    </div>
+  </details>`
+}
+function removeEntry (id) {
+  if (!confirm('Take this check out of the record? It will stop counting toward the goal.')) return
+  const s = load(); s.entries = s.entries.filter(e => e.id !== id); save(s); render()
+}
+
 /* ------------------------------ logging ---------------------------------- */
 let draft = null
-function openLog (goalId) {
-  draft = { goalId, kind: 'probe' }
+function openLog (goalId, entryId) {
+  const ex = entryId ? state.entries.find(e => e.id === entryId) : null
+  draft = { goalId, entryId: entryId || null, kind: ex ? ex.kind : 'probe' }
   const box = document.getElementById('log-' + goalId)
   box.classList.remove('hide')
   box.innerHTML = `
+    ${ex ? '<p class="small" style="margin:0 0 10px"><strong>Fixing the check from ' + esc(ex.date) + '.</strong></p>' : ''}
     <div class="seg" role="group" aria-label="What kind of check was this?">
-      <button type="button" aria-pressed="true" id="k-probe" onclick="setKind('probe')">
+      <button type="button" aria-pressed="${!ex || ex.kind === 'probe'}" id="k-probe" onclick="setKind('probe')">
         On her own<span class="sub">No help. This is the number.</span></button>
-      <button type="button" aria-pressed="false" id="k-practice" onclick="setKind('practice')">
+      <button type="button" aria-pressed="${!!ex && ex.kind === 'practice'}" id="k-practice" onclick="setKind('practice')">
         We worked on it<span class="sub">Helped. Worth keeping, never scored.</span></button>
     </div>
     <div id="leak" class="note" style="margin-top:10px">
@@ -290,23 +361,24 @@ function openLog (goalId) {
     </div>
     <div class="row" style="margin-top:12px;align-items:flex-end">
       <div style="flex:1;min-width:110px"><label class="field" for="got">How many right</label>
-        <input id="got" type="number" inputmode="numeric" min="0" placeholder="8"></div>
+        <input id="got" type="number" inputmode="numeric" min="0" placeholder="8" value="${ex ? ex.got : ''}"></div>
       <div style="flex:1;min-width:110px"><label class="field" for="outof">Out of</label>
-        <input id="outof" type="number" inputmode="numeric" min="1" value="10"></div>
+        <input id="outof" type="number" inputmode="numeric" min="1" value="${ex ? ex.outOf : 10}"></div>
     </div>
     <label class="field" for="pr">How many times did you help or remind her? (optional)</label>
-    <input id="pr" type="number" inputmode="numeric" min="0" placeholder="0">
+    <input id="pr" type="number" inputmode="numeric" min="0" placeholder="0" value="${ex && ex.prompts != null ? ex.prompts : ''}">
     <p class="muted small" style="margin:6px 0 0">This is the softest number in here, because the person
     counting is the person who wants her to do well. Write each one down as it happens, not afterwards.</p>
     <label class="field" for="dt">When</label>
-    <input id="dt" type="date" value="${today()}">
+    <input id="dt" type="date" value="${ex ? esc(ex.date) : today()}">
     <label class="field" for="nt">Anything worth remembering (optional)</label>
-    <textarea id="nt" placeholder="e.g. got stuck on the two-syllable ones, then got them on the second try"></textarea>
+    <textarea id="nt" placeholder="e.g. got stuck on the two-syllable ones, then got them on the second try">${ex ? esc(ex.note || '') : ''}</textarea>
     <div class="row" style="margin-top:14px">
-      <button class="btn btn-primary grow" onclick="saveEntry('${goalId}')">Save it</button>
+      <button class="btn btn-primary grow" onclick="saveEntry('${goalId}')">${ex ? 'Save the fix' : 'Save it'}</button>
       <button class="btn btn-sm" onclick="closeLog('${goalId}')">Cancel</button>
     </div>`
   document.getElementById('got').focus()
+  if (draft.kind === 'practice') document.getElementById('leak').classList.add('hide')
 }
 function setKind (k) {
   draft.kind = k
@@ -323,17 +395,39 @@ function saveEntry (goalId) {
     alert('Check those two numbers — "how many right" has to be between 0 and the "out of" number.'); return
   }
   const praw = parseInt(document.getElementById('pr').value, 10)
-  const s = load()
-  s.entries.push({ id: uid(), childId: state.activeId, goalId, kind: draft.kind,
-    got, outOf, prompts: Number.isFinite(praw) && praw >= 0 ? praw : null,
+  const fields = {
+    kind: draft.kind, got, outOf,
+    prompts: Number.isFinite(praw) && praw >= 0 ? praw : null,
     date: document.getElementById('dt').value || today(),
-    note: document.getElementById('nt').value.trim() })
+    note: document.getElementById('nt').value.trim(),
+  }
+  const s = load()
+  if (draft.entryId) {
+    const e = s.entries.find(x => x.id === draft.entryId)
+    if (e) Object.assign(e, fields)
+  } else {
+    s.entries.push({ id: uid(), childId: state.activeId, goalId, ...fields })
+  }
   save(s); draft = null; render()
 }
 
 /* ------------------------------- goals ----------------------------------- */
 function viewGoals (c) {
   return `
+  <div class="card">
+    <h2 style="margin-top:0">Who this is for</h2>
+    ${state.children.length > 1 ? `<p class="muted small" style="margin-top:0">More than one child has an IEP in plenty of families. Each one keeps its own goals and its own record.</p>` : ''}
+    <div class="row">
+      ${state.children.map(x => `<button class="btn btn-sm ${x.id === c.id ? 'btn-primary' : ''}"
+        onclick="switchChild('${x.id}')" aria-pressed="${x.id === c.id}">${esc(x.name)}</button>`).join('')}
+    </div>
+    <label class="field" for="nc">Add another child</label>
+    <div class="row" style="align-items:flex-end">
+      <div class="grow" style="min-width:150px"><input id="nc" placeholder="First name" autocomplete="off"></div>
+      <button class="btn btn-sm" onclick="addAnotherChild()">Add</button>
+    </div>
+  </div>
+
   <div class="card">
     <h1>${esc(c.name)}'s goals</h1>
     <p class="muted">Copy each one out of the IEP <strong>word for word</strong>. Reporting back in the goal's
@@ -345,11 +439,14 @@ function viewGoals (c) {
   ${goalsOf(c).map(g => `
     <div class="card goalcard">
       <div class="row"><span class="pill grey">${esc(g.area || 'Goal')}</span><span class="grow"></span>
+        <button class="btn btn-sm" onclick="editGoal('${g.id}')">Edit</button>
         <button class="btn btn-sm" onclick="removeGoal('${g.id}')">Remove</button></div>
       <div class="verbatim" style="margin-top:10px">${esc(g.text)}</div>
       <p class="muted small" style="margin:10px 0 0">Counts as met at ${esc(criterionText(g))} · checked every ${g.everyDays || 7} days.</p>
       ${g.baseline ? `<p class="muted small" style="margin:4px 0 0">Starting point, ${esc(g.baseline.date)}: ${esc(g.baseline.note)}</p>`
-        : `<p class="small" style="margin:6px 0 0"><em>No starting point written down yet — without one, later numbers have nothing to be compared to.</em></p>`}
+        : `<p class="small" style="margin:6px 0 0"><em>No starting point written down yet — without one, later numbers have nothing to be compared to.
+           <button class="btn btn-sm" style="margin-left:6px" onclick="editGoal('${g.id}')">Add it now</button></em></p>`}
+      <div id="ed-${g.id}" class="hide" style="margin-top:12px"></div>
     </div>`).join('')}
 
   <div class="card">
@@ -410,6 +507,71 @@ function removeGoal (id) {
   if (!confirm('Remove this goal? Anything written down against it stays, but stops being shown.')) return
   const s = load(); const c = s.children.find(x => x.id === s.activeId)
   c.goals = c.goals.filter(g => g.id !== id); save(s); render()
+}
+
+function switchChild (id) { const s = load(); s.activeId = id; save(s); go('home') }
+function addAnotherChild () {
+  const n = document.getElementById('nc').value.trim()
+  if (!n) { alert('A first name is all it needs.'); return }
+  const s = load(); const c = { id: uid(), name: n, goals: [] }
+  s.children.push(c); s.activeId = c.id; save(s); go('goals')
+}
+
+/* EDITING A GOAL AFTER THE FACT.
+   Two reasons this has to exist. A goal is copied by hand out of a long document,
+   so a typo in the wording is likely — and the wording is the thing that makes the
+   record hard to wave away. And almost nobody has present levels to hand at the
+   moment they first type a goal in, which meant the starting point could never be
+   added, on the same screen where the app says the numbers are worth less without one. */
+function editGoal (id) {
+  const g = goalsOf(kid()).find(x => x.id === id)
+  const box = document.getElementById('ed-' + id)
+  box.classList.remove('hide')
+  box.innerHTML = `
+    <label class="field" for="e-a">Area</label>
+    <input id="e-a" value="${esc(g.area || '')}">
+    <label class="field" for="e-t">The goal, exactly as the IEP words it</label>
+    <textarea id="e-t">${esc(g.text)}</textarea>
+    <label class="field">What counts as meeting it</label>
+    <div class="row" style="align-items:flex-end">
+      <div style="flex:1;min-width:100px"><span class="muted small">Accuracy %</span>
+        <input id="e-acc" type="number" min="1" max="100" value="${Math.round(g.accuracy * 100)}"></div>
+      <div style="flex:1;min-width:90px"><span class="muted small">In how many</span>
+        <input id="e-of" type="number" min="1" value="${g.of}"></div>
+      <div style="flex:1;min-width:90px"><span class="muted small">Out of</span>
+        <input id="e-out" type="number" min="1" value="${g.outOf}"></div>
+    </div>
+    <label class="field" for="e-ev">Check it how often?</label>
+    <select id="e-ev">
+      ${[[7, 'Every week'], [14, 'Every two weeks'], [30, 'Once a month']].map(([v, t]) =>
+        `<option value="${v}" ${(g.everyDays || 7) === v ? 'selected' : ''}>${t}</option>`).join('')}
+    </select>
+    <label class="field" for="e-b">Where she was at the start</label>
+    <textarea id="e-b" placeholder="e.g. reads 3 of 10 unfamiliar two-syllable words. Present level in the IEP, dated March.">${esc(g.baseline ? g.baseline.note : '')}</textarea>
+    <label class="field" for="e-bd">Dated</label>
+    <input id="e-bd" type="date" value="${esc(g.baseline ? g.baseline.date : today())}">
+    <div class="row" style="margin-top:14px">
+      <button class="btn btn-primary grow" onclick="saveGoal('${id}')">Save changes</button>
+      <button class="btn btn-sm" onclick="document.getElementById('ed-${id}').classList.add('hide')">Cancel</button>
+    </div>`
+}
+function saveGoal (id) {
+  const text = document.getElementById('e-t').value.trim()
+  const acc = parseInt(document.getElementById('e-acc').value, 10)
+  const of = parseInt(document.getElementById('e-of').value, 10)
+  const outOf = parseInt(document.getElementById('e-out').value, 10)
+  if (!text) { alert('The goal cannot be empty.'); return }
+  if (!(acc > 0 && acc <= 100) || !(of > 0) || !(outOf > 0) || of > outOf) {
+    alert('Check the criterion: accuracy is a percentage, and "in how many" cannot be larger than "out of".'); return
+  }
+  const bnote = document.getElementById('e-b').value.trim()
+  const s = load(); const c = s.children.find(x => x.id === s.activeId)
+  const g = c.goals.find(x => x.id === id)
+  Object.assign(g, { area: document.getElementById('e-a').value.trim(), text,
+    accuracy: acc / 100, of, outOf,
+    everyDays: parseInt(document.getElementById('e-ev').value, 10) || 7,
+    baseline: bnote ? { date: document.getElementById('e-bd').value || today(), note: bnote } : null })
+  save(s); go('home')
 }
 
 /* ------------------------------ backup ------------------------------------ */

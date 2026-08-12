@@ -1,0 +1,14 @@
+{
+  "name": "The Record — Kirton Learning",
+  "short_name": "The Record",
+  "description": "Dated evidence against your child's IEP goals. Everything stays on your device.",
+  "start_url": "/record/",
+  "scope": "/record/",
+  "display": "standalone",
+  "background_color": "#f5f2ec",
+  "theme_color": "#1f2a3a",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

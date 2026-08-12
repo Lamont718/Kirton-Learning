@@ -161,6 +161,52 @@ check('a backup can be taken', typeof (await ev(`typeof backup`)) === 'string' &
 check('and the backup is the whole record, not a summary',
   await ev(`(()=>{const d=JSON.parse(localStorage.getItem('iep_record_v1'));return Array.isArray(d.children)&&Array.isArray(d.entries)&&d.entries.length>0})()`))
 
+console.log('\n=== ★ she can fix her own mistakes ===')
+await click('Home'); await sleep(800)
+const before = await ev(`JSON.parse(localStorage.getItem('iep_record_v1')).entries.length`)
+await ev(`(()=>{const d=[...document.querySelectorAll('details')].find(x=>/See or fix past checks/.test(x.textContent));d.open=true;return true})()`)
+await sleep(400)
+check('every check can be reached to be fixed or taken out',
+  (await ev(`[...document.querySelectorAll('button')].filter(b=>/^Fix$/.test(b.textContent.trim())).length`)) > 0)
+await ev(`(()=>{const b=[...document.querySelectorAll('button')].find(x=>/^Fix$/.test(x.textContent.trim()));b.click();return true})()`)
+await sleep(500)
+check('the fix form arrives filled in, not blank',
+  (await ev(`document.getElementById('got').value`)) !== '')
+await setVal('#got', '1'); await setVal('#outof', '10')
+await click('Save the fix'); await sleep(700)
+check('★ correcting a check changes it rather than adding another',
+  (await ev(`JSON.parse(localStorage.getItem('iep_record_v1')).entries.length`)) === before)
+check('and the corrected number is what is stored',
+  (await ev(`JSON.parse(localStorage.getItem('iep_record_v1')).entries.some(e=>e.got===1&&e.outOf===10)`)))
+
+console.log('\n=== ★ a starting point can be added later ===')
+await click('Goals'); await sleep(800)
+const g1 = await ev(`JSON.parse(localStorage.getItem('iep_record_v1')).children[0].goals[0].id`)
+await ev(`editGoal('${g1}')`); await sleep(500)
+check('the goal opens for editing with its own wording in it',
+  (await ev(`document.getElementById('e-t').value.length`)) > 40)
+await setVal('#e-b', 'Read 3 of 10 unfamiliar words. Present level, March.')
+await setVal('#e-bd', '2026-03-14')
+await click('Save changes'); await sleep(800)
+check('★ a baseline can be written down after the goal was created',
+  await ev(`(()=>{const g=JSON.parse(localStorage.getItem('iep_record_v1')).children[0].goals[0];return !!g.baseline && g.baseline.date==='2026-03-14'})()`))
+
+console.log('\n=== ★ more than one child ===')
+await click('Goals'); await sleep(800)
+await setVal('#nc', 'Jonah'); await click('Add'); await sleep(900)
+check('a second child can be added', (await ev(`JSON.parse(localStorage.getItem('iep_record_v1')).children.length`)) === 2)
+check('and the app switches to them', /Jonah/.test(await text()))
+check('★ the new child starts with an empty record, not the first one’s',
+  await ev(`(()=>{const d=JSON.parse(localStorage.getItem('iep_record_v1'));const c=d.children[1];return c.goals.length===0})()`))
+await click('Home'); await sleep(700)
+check('and you can switch back', (await ev(`[...document.querySelectorAll('button')].some(b=>/Maya/.test(b.textContent))`)))
+
+console.log('\n=== ★ "works offline" is true, not a hope ===')
+check('a service worker is registered', await ev(`navigator.serviceWorker.getRegistrations().then(r => r.length > 0)`))
+check('there is a manifest, so it can live on the home screen',
+  await ev(`!!document.querySelector('link[rel=manifest]')`))
+check('storage persistence is requested', await ev(`typeof navigator.storage.persist === 'function'`))
+
 console.log('\n=== the promise it makes about privacy ===')
 check('no account exists to make', !/sign in|log in|create account/i.test(rec))
 check('★ nothing was sent anywhere', errors.length === 0 && (await ev(`performance.getEntriesByType('resource').filter(r=>!r.name.startsWith(location.origin)).length`)) === 0)

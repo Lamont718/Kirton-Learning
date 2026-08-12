@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Send your child's IEP — Kirton Learning for Families</title>
+<meta name="theme-color" content="#141D2E">
+<!-- Never index a page reached by a private one-time link. -->
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/bricolage-grotesque-800-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-serif-4-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --ink:#141D2E;--ink-2:#25324A;--ink-3:#3F4C66;
+  --paper:#F4F2EC;--paper-2:#FBFAF7;
+  --spark:#E8A33D;--spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);--line-dark:rgba(244,242,236,.16);
+  --ok:#1E6F43;--bad:#9B2226;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:660px;margin:0 auto;padding:0 22px}
+h1,h2{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(1.8rem,5vw,2.6rem)}
+h2{font-size:1.25rem;margin:0 0 .6em}
+p{margin:0 0 1.05em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spark);margin:0 0 1.3rem}
+
+.head{background:var(--ink);color:var(--paper);padding:clamp(28px,5vw,44px) 0 clamp(40px,6vw,60px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1.02rem;margin-bottom:clamp(34px,6vw,54px);text-decoration:none}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--spark);flex:none}
+.head p{color:rgba(244,242,236,.85);margin:1.2rem 0 0}
+
+main{padding:clamp(38px,6vw,60px) 0 clamp(56px,8vw,84px)}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:28px 26px}
+
+.drop{
+  display:block;                 /* a <label> is inline by default; block children break it */
+  border:2px dashed rgba(20,29,46,.28);border-radius:8px;background:#fff;
+  padding:34px 22px;text-align:center;cursor:pointer;transition:.16s;
+}
+.drop:hover,.drop.hot{border-color:var(--spark-deep);background:#FFFDF8}
+.drop .big{font-family:var(--display);font-weight:700;font-size:1.08rem;display:block;margin-bottom:6px}
+.drop .small{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;color:var(--ink-3)}
+input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+.picked{display:flex;align-items:baseline;gap:10px;margin:18px 0 0;font-size:.97rem}
+.picked .nm{font-weight:600;word-break:break-all}
+.picked .sz{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);white-space:nowrap}
+
+.btn{
+  display:inline-block;width:100%;font-family:var(--display);font-weight:700;font-size:1.02rem;
+  padding:15px 30px;border-radius:4px;border:2px solid transparent;text-align:center;
+  background:var(--ink);color:var(--paper);cursor:pointer;margin-top:22px;transition:.16s;
+}
+.btn:hover:not(:disabled){background:var(--ink-2)}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+
+.bar{height:6px;background:rgba(20,29,46,.12);border-radius:99px;overflow:hidden;margin-top:20px}
+.bar i{display:block;height:100%;width:0;background:var(--spark-deep);transition:width .2s}
+.status{font-family:var(--mono);font-size:.78rem;letter-spacing:.03em;color:var(--ink-3);margin-top:10px}
+
+.note{border-left:3px solid var(--spark);padding-left:16px;margin:22px 0 0;font-size:.95rem;color:var(--ink-2)}
+.msg{border-radius:6px;padding:16px 18px;margin:0 0 22px;font-size:.97rem}
+.msg--bad{background:#FDF1F1;border:1px solid rgba(155,34,38,.35);color:#6E1013}
+.msg--ok{background:#F1F8F3;border:1px solid rgba(30,111,67,.35);color:#14512F}
+
+.steps{list-style:none;margin:18px 0 0;padding:0}
+.steps li{padding-left:26px;position:relative;margin-bottom:.7em;color:var(--ink-2)}
+.steps li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:2px;background:var(--spark-deep)}
+
+.foot{background:var(--ink);color:var(--paper);padding:40px 0 34px}
+.legal{font-family:var(--mono);font-size:.72rem;line-height:1.75;color:rgba(244,242,236,.72)}
+.legal a{color:var(--paper)}
+.hide{display:none!important}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brandbar" href="/">
+      <span class="dot" aria-hidden="true"></span><span>Kirton Learning</span>
+    </a>
+    <p class="eyebrow">Private upload</p>
+    <h1>Send me your child's IEP.</h1>
+    <p>This page is yours alone — it opened from a one-time link in your email. The document goes straight into an encrypted folder only I can open. It is never posted, never sold, and never shared with your school.</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- no token in the URL -->
+    <section id="v-notoken" class="hide">
+      <div class="msg msg--bad">This page needs the private link I emailed you after checkout. Open it from that email, or <a href="mailto:lamont@sparkbuilders.org">email me</a> and I'll send a fresh one.</div>
+    </section>
+
+    <!-- ready to upload -->
+    <section id="v-form" class="hide">
+      <div id="err" class="msg msg--bad hide" role="alert"></div>
+
+      <div class="card">
+        <h2>Choose the file</h2>
+        <p style="color:var(--ink-3);font-size:.97rem">A PDF, a Word document, or a clear photo of each page. Up to 25MB.</p>
+
+        <label class="drop" id="drop" for="file">
+          <span class="big">Tap to choose a file</span>
+          <span class="small">PDF · DOCX · JPG · PNG — max 25MB</span>
+        </label>
+        <input type="file" id="file" accept=".pdf,.docx,.jpg,.jpeg,.png,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png">
+
+        <div id="picked" class="picked hide">
+          <span class="nm" id="pname"></span><span class="sz" id="psize"></span>
+        </div>
+
+        <button class="btn" id="send" disabled>Send it securely</button>
+
+        <div id="prog" class="hide">
+          <div class="bar"><i id="bar"></i></div>
+          <p class="status" id="status">Starting…</p>
+        </div>
+      </div>
+
+      <p class="note">If your IEP is several photos, send the clearest one now and email me the rest — I'll match them up.</p>
+    </section>
+
+    <!-- done -->
+    <section id="v-done" class="hide">
+      <div class="msg msg--ok"><strong>Got it.</strong> Your child's IEP is in and the link you used is now closed.</div>
+      <div class="card">
+        <h2>What happens next</h2>
+        <ul class="steps">
+          <li>I read the whole IEP and translate every goal into plain English.</li>
+          <li>I map those goals across 36 weeks and design the first build around something your child actually cares about.</li>
+          <li><strong>Within 5 business days</strong> your Blueprint lands in your inbox, along with a link to book our 30-minute walkthrough call.</li>
+          <li>If I need to ask you something before then, I'll email you directly.</li>
+        </ul>
+        <p style="margin:20px 0 0;font-size:.97rem;color:var(--ink-3)">Nothing else is needed from you right now. You can close this page.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="legal">
+      Kirton Learning is a program of Our Rose LLC, Brooklyn, NY. Your document is stored encrypted, used only to build your child's plan, never sold, and deleted on request.
+      <br><br>
+      <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms of service</a> · <a href="mailto:lamont@sparkbuilders.org">lamont@sparkbuilders.org</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var MAX = 25 * 1024 * 1024;
+  var OK_TYPES = [
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'image/jpeg', 'image/png'
+  ];
+
+  var token = new URLSearchParams(location.search).get('t') || '';
+  var $ = function (id) { return document.getElementById(id); };
+  var show = function (id) { $(id).classList.remove('hide'); };
+  var hide = function (id) { $(id).classList.add('hide'); };
+
+  if (!/^[0-9a-f-]{36}$/i.test(token)) { show('v-notoken'); return; }
+  show('v-form');
+
+  var file = null;
+
+  function fail(msg) { $('err').textContent = msg; show('err'); }
+  function clearFail() { hide('err'); }
+
+  function human(n) {
+    return n < 1048576 ? (n / 1024).toFixed(0) + ' KB' : (n / 1048576).toFixed(1) + ' MB';
+  }
+
+  // Client-side checks are courtesy only — the server and the storage bucket
+  // both enforce these again, so a bypass here gains nothing.
+  function pick(f) {
+    clearFail();
+    if (!f) return;
+    if (OK_TYPES.indexOf(f.type) === -1) {
+      fail('That looks like a ' + (f.type || 'file type') + ' I can’t take. Send a PDF, a Word document, or a photo.');
+      return;
+    }
+    if (f.size > MAX) {
+      fail('That file is ' + human(f.size) + ' — a bit over the 25MB limit. Send a smaller copy, or email me and we’ll sort it.');
+      return;
+    }
+    file = f;
+    $('pname').textContent = f.name;
+    $('psize').textContent = human(f.size);
+    show('picked');
+    $('send').disabled = false;
+  }
+
+  $('file').addEventListener('change', function (e) { pick(e.target.files[0]); });
+
+  var drop = $('drop');
+  ['dragenter', 'dragover'].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('hot'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('hot'); });
+  });
+  drop.addEventListener('drop', function (e) {
+    if (e.dataTransfer && e.dataTransfer.files) pick(e.dataTransfer.files[0]);
+  });
+
+  $('send').addEventListener('click', function () {
+    if (!file) return;
+    clearFail();
+    $('send').disabled = true;
+    show('prog');
+    $('status').textContent = 'Opening a secure slot…';
+
+    fetch('/api/upload-url', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: token, filename: file.name, size: file.size, type: file.type })
+    })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.j.ok) throw new Error(res.j.message || 'Could not start the upload.');
+        return put(res.j.uploadUrl, res.j.objectPath, res.j.contentType);
+      })
+      .catch(function (e) {
+        hide('prog');
+        $('send').disabled = false;
+        fail(e.message);
+      });
+  });
+
+  // XHR rather than fetch, purely so the parent sees a real progress bar
+  // on a slow phone connection instead of a frozen button.
+  function put(url, objectPath, contentType) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('PUT', url, true);
+      xhr.setRequestHeader('Content-Type', contentType);
+      xhr.upload.onprogress = function (e) {
+        if (!e.lengthComputable) return;
+        var pct = Math.round((e.loaded / e.total) * 100);
+        $('bar').style.width = pct + '%';
+        $('status').textContent = 'Sending… ' + pct + '%';
+      };
+      xhr.onload = function () {
+        if (xhr.status < 200 || xhr.status >= 300) {
+          return reject(new Error('The upload didn’t go through. Try once more.'));
+        }
+        $('bar').style.width = '100%';
+        $('status').textContent = 'Confirming…';
+        fetch('/api/upload-done', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: token, objectPath: objectPath })
+        })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (res) {
+            if (!res.ok || !res.j.ok) throw new Error(res.j.message || 'Could not confirm the upload.');
+            hide('v-form');
+            show('v-done');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            resolve();
+          })
+          .catch(reject);
+      };
+      xhr.onerror = function () { reject(new Error('The connection dropped. Try once more.')); };
+      xhr.send(file);
+    });
+  }
+})();
+</script>
+</body>
+</html>

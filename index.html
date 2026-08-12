@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kirton Learning for Families — turn your child's IEP into work they own</title>
+<meta name="description" content="A personalized K–12 learning plan built from your child's IEP goals. Real build expeditions, weekly lessons, and a written log you can bring to the next meeting.">
+<meta name="theme-color" content="#141D2E">
+<link rel="canonical" href="https://spark-coach-families.vercel.app/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kirton Learning for Families">
+<meta property="og:url" content="https://spark-coach-families.vercel.app/">
+<meta property="og:title" content="The IEP is a document written about your child. We turn it into work your child owns.">
+<meta property="og:description" content="Send me the IEP. I build a year of real projects around those exact goals — and a written record of everything your child actually did.">
+<meta property="og:image" content="https://spark-coach-families.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Kirton Learning for Families — the IEP is a document written about your child. We turn it into work your child owns.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/fonts/bricolage-grotesque-800-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-serif-4-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --ink:#141D2E;
+  --ink-2:#25324A;
+  --ink-3:#4A5872;
+  --paper:#F4F2EC;
+  --paper-2:#FBFAF7;
+  --spark:#E8A33D;
+  --spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);
+  --line-dark:rgba(244,242,236,.16);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+
+.wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 22px}
+.narrow{max-width:760px}
+
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.06;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(2.1rem,6.2vw,4rem)}
+h2{font-size:clamp(1.7rem,4.2vw,2.7rem)}
+h3{font-size:1.18rem;font-weight:700;letter-spacing:-.01em}
+p{margin:0 0 1.05em}
+
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spark);margin:0 0 1.4rem;
+}
+.eyebrow--dark{color:var(--spark-deep)}
+
+/* ---------- sections ---------- */
+.band{padding:clamp(64px,9vw,110px) 0}
+.band--dark{background:var(--ink);color:var(--paper)}
+.band--paper2{background:var(--paper-2)}
+.band--dark h2,.band--dark h3{color:var(--paper)}
+
+/* ---------- hero ---------- */
+.hero{
+  background:var(--ink);color:var(--paper);
+  padding:clamp(34px,5vw,54px) 0 clamp(58px,8vw,86px);
+  border-bottom:1px solid var(--line-dark);
+}
+.brandbar{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--display);font-weight:700;letter-spacing:-.01em;
+  font-size:1.02rem;margin-bottom:clamp(46px,7vw,74px);
+}
+.brandbar .dot{
+  width:11px;height:11px;border-radius:50%;background:var(--spark);
+  flex:none;
+}
+.brandbar .thin{font-family:var(--mono);font-weight:400;font-size:.72rem;
+  letter-spacing:.14em;text-transform:uppercase;color:rgba(244,242,236,.55);
+  margin-left:auto}
+
+.hero h1{max-width:16ch}
+.hero h1 em{font-style:normal;color:var(--spark)}
+.hero .sub{
+  max-width:52ch;margin-top:1.5rem;font-size:clamp(1.05rem,1.9vw,1.24rem);
+  color:rgba(244,242,236,.82);
+}
+
+/* ---------- the flip (signature) ---------- */
+.flip{margin-top:clamp(40px,6vw,62px)}
+.flip-head{
+  display:flex;flex-wrap:wrap;align-items:center;gap:14px;
+  padding-bottom:14px;border-bottom:1px solid var(--line-dark);margin-bottom:22px;
+}
+.flip-label{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(244,242,236,.5);
+}
+.switch{display:flex;gap:6px;margin-left:auto;background:rgba(244,242,236,.07);
+  padding:4px;border-radius:999px}
+.switch button{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;
+  border:0;background:none;color:rgba(244,242,236,.62);
+  padding:8px 14px;border-radius:999px;cursor:pointer;transition:.18s;
+}
+.switch button[aria-pressed="true"]{background:var(--spark);color:var(--ink);font-weight:500}
+
+.panes{position:relative}
+.pane{display:none}
+.pane[data-on="true"]{display:block;animation:rise .34s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+.card-stack{display:grid;gap:14px}
+.qcard{
+  border:1px solid var(--line-dark);border-radius:6px;
+  padding:20px 22px;background:rgba(244,242,236,.04);
+}
+.qcard .tag{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(244,242,236,.58);display:block;margin-bottom:10px;
+}
+.qcard p{margin:0}
+/* institutional voice */
+.pane--iep .qcard{background:rgba(244,242,236,.03)}
+.pane--iep .qcard p{
+  font-family:var(--mono);font-size:.9rem;line-height:1.62;
+  color:rgba(244,242,236,.7);
+}
+/* the child's voice */
+.pane--kid .qcard{background:rgba(232,163,61,.09);border-color:rgba(232,163,61,.4)}
+.pane--kid .qcard .tag{color:var(--spark)}
+.pane--kid .qcard p{
+  font-family:var(--display);font-weight:500;font-size:1.14rem;line-height:1.36;
+  letter-spacing:-.01em;color:var(--paper);
+}
+
+.flip-foot{
+  margin-top:20px;font-family:var(--mono);font-size:.76rem;
+  color:rgba(244,242,236,.5);letter-spacing:.02em;
+}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-block;font-family:var(--display);font-weight:700;
+  font-size:1.02rem;letter-spacing:-.005em;text-decoration:none;
+  padding:15px 30px;border-radius:4px;border:2px solid transparent;
+  transition:.16s;cursor:pointer;
+}
+.btn--go{background:var(--spark);color:var(--ink)}
+.btn--go:hover{background:#F0B257;transform:translateY(-1px)}
+.btn--ghost{border-color:rgba(244,242,236,.35);color:var(--paper)}
+.btn--ghost:hover{border-color:var(--spark);color:var(--spark)}
+.btn--dark{background:var(--ink);color:var(--paper)}
+.btn--dark:hover{background:var(--ink-2)}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:32px}
+.cta-note{font-family:var(--mono);font-size:.74rem;color:rgba(244,242,236,.55);letter-spacing:.03em}
+.cta-note--dark{color:var(--ink-3)}
+
+/* ---------- deliverables ---------- */
+.threes{display:grid;gap:30px;margin-top:46px}
+@media(min-width:820px){.threes{grid-template-columns:repeat(3,1fr);gap:38px}}
+.deliv{border-top:2px solid var(--ink);padding-top:18px}
+.deliv .n{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--spark-deep);display:block;margin-bottom:12px;
+}
+.deliv h3{margin-bottom:9px}
+.deliv p{font-size:.99rem;color:var(--ink-2);margin:0}
+.band--dark .deliv{border-top-color:var(--spark)}
+.band--dark .deliv .n{color:var(--spark)}
+.band--dark .deliv p{color:rgba(244,242,236,.82)}
+.band--dark .lede{color:rgba(244,242,236,.84)}
+.band--dark .fineprint{color:rgba(244,242,236,.62)}
+.lede{max-width:62ch;margin-top:1.3rem;font-size:1.1rem;color:var(--ink-2)}
+.fineprint{font-family:var(--mono);font-size:.78rem;line-height:1.65;
+  color:var(--ink-3);max-width:64ch;margin-top:30px}
+
+/* ---------- steps ---------- */
+.steps{margin-top:46px;border-top:1px solid var(--line)}
+.step{
+  display:grid;grid-template-columns:auto 1fr;gap:20px;
+  padding:26px 0;border-bottom:1px solid var(--line);align-items:start;
+}
+@media(min-width:820px){.step{grid-template-columns:76px 1fr 300px;gap:32px}}
+.step .num{
+  font-family:var(--display);font-weight:800;font-size:1.6rem;
+  color:var(--spark-deep);line-height:1;padding-top:2px;
+}
+.step h3{margin-bottom:6px}
+.step .detail{font-size:.95rem;color:var(--ink-3);margin:0;grid-column:1/-1}
+@media(min-width:820px){.step .detail{grid-column:3;padding-top:4px}}
+.step .body{margin:0;font-size:1rem;color:var(--ink-2)}
+.step .body b{font-weight:600}
+
+/* ---------- pricing ---------- */
+.tiers{display:grid;gap:20px;margin-top:46px}
+@media(min-width:820px){.tiers{grid-template-columns:1fr 1fr}}
+.tier{
+  background:var(--paper-2);border:1px solid var(--line);
+  border-radius:8px;padding:30px 28px 32px;display:flex;flex-direction:column;
+}
+.tier--lead{border:2px solid var(--ink);background:#fff}
+.tier .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--spark-deep);margin-bottom:14px;
+}
+.tier .price{
+  font-family:var(--display);font-weight:800;font-size:2.5rem;
+  letter-spacing:-.03em;line-height:1;margin:14px 0 4px;
+}
+.tier .price small{font-family:var(--mono);font-size:.8rem;font-weight:400;
+  letter-spacing:.05em;color:var(--ink-3);margin-left:6px}
+.tier .blurb{font-size:.95rem;color:var(--ink-3);margin:10px 0 22px}
+.tier ul{list-style:none;margin:0 0 26px;padding:0;font-size:.97rem}
+.tier li{padding-left:24px;position:relative;margin-bottom:11px;color:var(--ink-2)}
+.tier li::before{
+  content:"";position:absolute;left:0;top:.62em;width:11px;height:2px;background:var(--spark-deep);
+}
+.tier .btn{margin-top:auto;text-align:center}
+.sliding{
+  margin-top:26px;font-size:.95rem;color:var(--ink-3);
+  border-left:3px solid var(--spark);padding-left:16px;
+}
+
+/* ---------- founder ---------- */
+.founder{display:grid;gap:30px}
+@media(min-width:820px){.founder{grid-template-columns:1fr 1.35fr;gap:56px}}
+.creds{list-style:none;margin:0;padding:0}
+.creds li{
+  font-family:var(--mono);font-size:.82rem;line-height:1.5;
+  color:rgba(244,242,236,.72);padding:11px 0;border-bottom:1px solid var(--line-dark);
+}
+.creds li:first-child{border-top:1px solid var(--line-dark)}
+
+/* ---------- faq ---------- */
+.faq{margin-top:40px;border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line)}
+summary{
+  font-family:var(--display);font-weight:700;font-size:1.05rem;letter-spacing:-.01em;
+  padding:20px 34px 20px 0;cursor:pointer;list-style:none;position:relative;
+}
+summary::-webkit-details-marker{display:none}
+summary::after{
+  content:"+";position:absolute;right:4px;top:17px;
+  font-family:var(--mono);font-size:1.3rem;color:var(--spark-deep);font-weight:400;
+}
+details[open] summary::after{content:"–"}
+details .ans{padding:0 0 22px;font-size:.99rem;color:var(--ink-2);max-width:66ch}
+details .ans p:last-child{margin-bottom:0}
+
+/* ---------- footer ---------- */
+.foot{background:var(--ink);color:var(--paper);padding:clamp(58px,8vw,90px) 0 42px}
+.foot h2{max-width:18ch}
+.legal{
+  margin-top:52px;padding-top:24px;border-top:1px solid var(--line-dark);
+  font-family:var(--mono);font-size:.72rem;line-height:1.75;
+  color:rgba(244,242,236,.72);max-width:78ch;
+}
+.legal a{color:var(--paper)}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="brandbar">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Kirton Learning</span>
+      <span class="thin">for families</span>
+    </div>
+
+    <p class="eyebrow">K–12 · built from your child's IEP</p>
+    <h1>The IEP is a document written <em>about</em> your child. We turn it into work your child <em>owns</em>.</h1>
+    <p class="sub">Send me the IEP. I build a year of real projects around those exact goals — and a written record of everything your child actually did.</p>
+
+    <!-- SIGNATURE: the flip -->
+    <section class="flip" aria-label="How an IEP goal becomes a build">
+      <div class="flip-head">
+        <span class="flip-label">Same goal, two languages</span>
+        <div class="switch" role="group" aria-label="Switch view">
+          <button type="button" data-pane="iep" aria-pressed="true">The IEP says</button>
+          <button type="button" data-pane="kid" aria-pressed="false">Your child does</button>
+        </div>
+      </div>
+
+      <div class="panes">
+        <div class="pane pane--iep" data-pane="iep" data-on="true">
+          <div class="card-stack">
+            <div class="qcard"><span class="tag">Reading — goal 1</span>
+              <p>Student will identify the main idea and two supporting details in a grade-level text with 80% accuracy across 4 of 5 trials.</p></div>
+            <div class="qcard"><span class="tag">Writing — goal 2</span>
+              <p>Student will produce a paragraph containing a topic sentence and at least two supporting reasons.</p></div>
+            <div class="qcard"><span class="tag">Math — goal 3</span>
+              <p>Student will solve two-step word problems involving addition and subtraction within 100.</p></div>
+          </div>
+        </div>
+
+        <div class="pane pane--kid" data-pane="kid" data-on="false">
+          <div class="card-stack">
+            <div class="qcard"><span class="tag">Reading — goal 1</span>
+              <p>Read the thing. Figure out what it's really saying. Prove it with two pieces of evidence — in a review of a game you actually play.</p></div>
+            <div class="qcard"><span class="tag">Writing — goal 2</span>
+              <p>Write the argument for why your block needs a better court. Give two reasons. Ask the reader to agree.</p></div>
+            <div class="qcard"><span class="tag">Math — goal 3</span>
+              <p>Price out what it costs to build it. Two steps. Show the math so somebody else can check your work.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="flip-foot">Same skills. Same standards. The kid is the author, not the audience.</p>
+    </section>
+
+    <div class="cta-row">
+      <a class="btn btn--go" href="#start">Start with the Blueprint</a>
+      <a class="btn btn--ghost" href="/demo.html">See how it works</a>
+    </div>
+    <p class="cta-note" style="margin-top:18px">You never upload anything here. Payment first, then I send you a private, encrypted link for the IEP.</p>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ WHAT YOU GET ============ -->
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">What you get</p>
+    <h2 class="narrow">Three things you can hold in your hand.</h2>
+
+    <div class="threes">
+      <article class="deliv">
+        <span class="n">01 — The Blueprint</span>
+        <h3>Every goal, in plain English</h3>
+        <p>I read the whole IEP and write back what each goal actually asks your child to do — no jargon — then map those goals across 36 weeks of work.</p>
+      </article>
+      <article class="deliv">
+        <span class="n">02 — The Expedition</span>
+        <h3>A real build, not a worksheet packet</h3>
+        <p>Your child picks a problem they care about and builds toward solving it. The reading, writing, and math goals get wired into the build, so practicing the skill has a point.</p>
+      </article>
+      <article class="deliv">
+        <span class="n">03 — The Log</span>
+        <h3>Written proof of what they did</h3>
+        <p>Dated entries of the work completed, week by week, in your child's own words and mine. Bring it to the next meeting so you're not the only one in the room without paper.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="band band--paper2" id="how">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">How it works</p>
+    <h2 class="narrow">Four steps. About a week from payment to first lesson.</h2>
+
+    <div class="steps">
+      <div class="step">
+        <span class="num">1</span>
+        <p class="body"><b>Pay and tell me about your child.</b> A short form — age, grade, what's going well, what's hard, what they're into.</p>
+        <p class="detail">About 10 minutes.</p>
+      </div>
+      <div class="step">
+        <span class="num">2</span>
+        <p class="body"><b>Upload the IEP through a private link.</b> I email you a secure upload page after checkout. The document goes straight into an encrypted folder only I can open.</p>
+        <p class="detail">Never posted on this site or sent over regular email.</p>
+      </div>
+      <div class="step">
+        <span class="num">3</span>
+        <p class="body"><b>I build the plan.</b> Goals translated, 36 weeks mapped, first expedition designed around something your child actually cares about.</p>
+        <p class="detail">5 business days. Then a 30-minute call to walk you through it.</p>
+      </div>
+      <div class="step">
+        <span class="num">4</span>
+        <p class="body"><b>You start.</b> Weekly lessons land in your inbox. We check in once a month and adjust anything that isn't landing.</p>
+        <p class="detail">Cancel anytime, no notice period.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW YOU'LL KNOW ============ -->
+<section class="band band--dark" id="measure">
+  <div class="wrap">
+    <p class="eyebrow">How you'll know</p>
+    <h2 class="narrow">You shouldn't have to take my word for whether it's working.</h2>
+    <p class="lede">Before I teach anything, I measure where your child is right now — using the same measure the goal itself is written in. Everything after that gets compared to that starting point.</p>
+
+    <div class="threes">
+      <article class="deliv">
+        <span class="n">01 — The baseline</span>
+        <h3>Week 0, before any teaching</h3>
+        <p>What your child can do today, written down and dated. Without it, every number later is just a number.</p>
+      </article>
+      <article class="deliv">
+        <span class="n">02 — The checks</span>
+        <h3>Cold, and on a fixed schedule</h3>
+        <p>Decoding every week; comprehension and math on even weeks; writing on odd. Always using work they have never seen — never the material they practiced that week.</p>
+      </article>
+      <article class="deliv">
+        <span class="n">03 — The rule</span>
+        <h3>Four flat checks and the teaching changes</h3>
+        <p>Not the goal. The criterion in the IEP doesn't soften because the work got hard — and you hear it from me on the monthly call before you read it in the Log.</p>
+      </article>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn btn--ghost" href="/demo.html#measure">See the whole measurement design</a>
+    </div>
+
+    <p class="fineprint">The practice your child does during the week is coached, so it never counts as a score — only the cold checks do. This is collected at your kitchen table by you and me, not by an evaluator, and it does not replace the progress reporting your school does.</p>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="band" id="start">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Pricing</p>
+    <h2 class="narrow">Start with the Blueprint. Keep going only if it's working.</h2>
+
+    <div class="tiers">
+      <article class="tier tier--lead">
+        <p class="kicker">Start here</p>
+        <h3>The Blueprint</h3>
+        <div class="price">$349<small>one time</small></div>
+        <p class="blurb">The full read of the IEP and your child's year, mapped.</p>
+        <ul>
+          <li>Every IEP goal translated into plain English</li>
+          <li>36-week skill map across reading, writing, and math</li>
+          <li>First build expedition, designed for your child</li>
+          <li>30-minute walkthrough call with me</li>
+          <li>Yours to keep, whether or not you continue</li>
+        </ul>
+        <!-- REPLACE with your Stripe Payment Link -->
+        <a class="btn btn--dark" href="https://buy.stripe.com/REPLACE_BLUEPRINT_LINK">Start the Blueprint</a>
+      </article>
+
+      <article class="tier">
+        <p class="kicker">Then, if you want it</p>
+        <h3>Kirton Learning Family</h3>
+        <div class="price">$149<small>per month</small></div>
+        <p class="blurb">The Blueprint, plus me running it with you all year.</p>
+        <ul>
+          <li>Weekly lessons built on the current expedition</li>
+          <li>The Log — dated record of completed work</li>
+          <li>Monthly 30-minute call to adjust the plan</li>
+          <li>New expedition each term</li>
+          <li>Cancel anytime</li>
+        </ul>
+        <!-- REPLACE with your Stripe Payment Link -->
+        <a class="btn btn--dark" href="https://buy.stripe.com/REPLACE_FAMILY_LINK">Join Kirton Learning Family</a>
+      </article>
+    </div>
+
+    <p class="sliding">Cost is the reason a lot of families never get help like this. If the price is the only thing stopping you, email me — there's a sliding scale for Brooklyn families and I'd rather have your child in the work.</p>
+  </div>
+</section>
+
+<!-- ============ FOUNDER ============ -->
+<section class="band band--dark">
+  <div class="wrap">
+    <div class="founder">
+      <div>
+        <p class="eyebrow">Who builds it</p>
+        <h2>Lamont Kirton</h2>
+      </div>
+      <div>
+        <p style="color:rgba(244,242,236,.85)">I've run youth programs in Brooklyn since 2009 — adaptive basketball, chess, mentorship, media. Spark Builders started because I kept watching kids get handed worksheets about problems they'd never chosen. So we flipped it: the kid finds a problem, the kid builds the fix, and the skills come along for the ride.</p>
+        <p style="color:rgba(244,242,236,.85)">Kirton Learning is that same method, built one child at a time. I started it for my niece, who is autistic. It worked. Now I'm opening it to a small number of families.</p>
+        <ul class="creds">
+          <li>Founder, Working Wonders Starting Home Inc. — 501(c)(3), Brooklyn, since 2009</li>
+          <li>$500,000+ in youth program funding secured to date</li>
+          <li>Chess and computer science programs at P.S. 272 and P.S. 109</li>
+          <li>DYCD Inclusive Adaptive Basketball Program, in partnership with Wheeling Forward</li>
+          <li>NYC DOE PETS-cleared · 12+ years coaching at Kings Bay YM-YWHA</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="band band--paper2">
+  <div class="wrap narrow">
+    <p class="eyebrow eyebrow--dark">Straight answers</p>
+    <h2>The questions parents actually ask me.</h2>
+
+    <div class="faq">
+      <details>
+        <summary>Who sees my child's IEP?</summary>
+        <div class="ans"><p>Only me. It goes into an encrypted folder, it is never sold, never used for advertising, and never shared with your school or anyone else. Ask me to delete it and I delete it and confirm in writing. I'll never ask you to send it over regular email or upload it to this page.</p></div>
+      </details>
+      <details>
+        <summary>Is this special education advocacy or legal help?</summary>
+        <div class="ans"><p>No. I'm not an attorney or a certified advocate, I don't represent you at IEP meetings, and nothing I write is legal advice. What I give you is a clear read of the goals and a written record of your child's work — which tends to make you a much better advocate for yourself.</p></div>
+      </details>
+      <details>
+        <summary>Does this replace what the school has to provide?</summary>
+        <div class="ans"><p>No, and don't let anyone tell you it does. Your child's school is legally required to deliver the services on that IEP. Kirton Learning is supplemental — it's what happens at your kitchen table, not instead of what happens at school.</p></div>
+      </details>
+      <details>
+        <summary>Do you diagnose anything, or decide what services my child qualifies for?</summary>
+        <div class="ans"><p>Never. Diagnosis and eligibility are decisions for licensed professionals and your child's IEP team. I work from the goals that are already written.</p></div>
+      </details>
+      <details>
+        <summary>My child isn't autistic — does this still work?</summary>
+        <div class="ans"><p>Yes. I build from whatever the IEP says, whether that's ADHD, dyslexia, a speech or language impairment, or anything else. The method doesn't care about the label; it cares about the goals and what your child is into.</p></div>
+      </details>
+      <details>
+        <summary>What ages?</summary>
+        <div class="ans"><p>K–12. It runs strongest with 2nd through 8th grade, where a kid is old enough to run a build and young enough that the habit sticks.</p></div>
+      </details>
+      <details>
+        <summary>How much time does my child need to put in?</summary>
+        <div class="ans"><p>Three to four sessions a week, 20 to 40 minutes each, depending on age. It's designed around the reality that you're tired and the evening is short.</p></div>
+      </details>
+      <details>
+        <summary>How will I know if it's actually working?</summary>
+        <div class="ans"><p>Before I teach anything I measure where your child is, written the same way the goal is written, and everything after that gets compared to that starting point. The checks run on a fixed schedule using material your child has never seen — the coached practice they do during the week never counts as a score. If four checks in a row come back flat, I change how I'm teaching it, not the goal, and you hear that from me on the monthly call before you read it in the Log. You can see the entire design in the <a href="/demo.html#measure">worked example</a>. What I won't do is promise you a result.</p></div>
+      </details>
+      <details>
+        <summary>What if it isn't a fit?</summary>
+        <div class="ans"><p>Tell me within 14 days of getting your Blueprint and I refund it in full. Keep the Blueprint either way.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER CTA ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <p class="eyebrow">Taking a small number of families this term</p>
+    <h2>Your child has been the subject of that paperwork long enough.</h2>
+    <div class="cta-row">
+      <a class="btn btn--go" href="#start">Start with the Blueprint</a>
+      <a class="btn btn--ghost" href="mailto:lamont@sparkbuilders.org">Ask me a question first</a>
+    </div>
+
+    <p class="legal">
+      Kirton Learning is a program of Our Rose LLC, Brooklyn, NY. Kirton Learning provides supplemental educational coaching. It is not special education advocacy, legal advice, medical advice, diagnosis, or therapy, and it does not replace the services your school district is required to provide under your child's IEP. Documents you share are stored encrypted, used only to build your child's plan, never sold, and deleted on request.
+      <br><br>
+      <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms of service</a> · <a href="mailto:lamont@sparkbuilders.org">lamont@sparkbuilders.org</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var btns = document.querySelectorAll('.switch button');
+  var panes = document.querySelectorAll('.pane');
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){
+      var target = b.dataset.pane;
+      btns.forEach(function(x){ x.setAttribute('aria-pressed', String(x.dataset.pane === target)); });
+      panes.forEach(function(p){ p.setAttribute('data-on', String(p.dataset.pane === target)); });
+    });
+  });
+})();
+</script>
+</body>
+</html>

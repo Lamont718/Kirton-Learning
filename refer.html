@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kirton Learning — for people who work with these families</title>
+<meta name="description" content="What Kirton Learning is, what it is not, and who it's right for — written for professionals who work with children who have IEPs.">
+<meta name="theme-color" content="#141D2E">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/bricolage-grotesque-800-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-serif-4-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
+  --paper:#F4F2EC; --paper-2:#FBFAF7;
+  --spark:#E8A33D; --spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:760px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(1.9rem,5vw,2.9rem)}
+h2{font-size:clamp(1.25rem,3vw,1.6rem);margin:0 0 12px}
+h3{font-size:1.02rem;font-weight:700;margin:0 0 6px}
+p{margin:0 0 1rem}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spark);margin:0 0 1.2rem}
+
+.head{background:var(--ink);color:var(--paper);padding:clamp(28px,5vw,42px) 0 clamp(40px,6vw,60px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1rem;margin-bottom:clamp(34px,6vw,52px)}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--spark);flex:none}
+.brandbar a{text-decoration:none}
+.head h1{max-width:20ch}
+.head .sub{max-width:54ch;margin-top:1.3rem;font-size:1.08rem;color:rgba(244,242,236,.84)}
+
+section{padding:clamp(38px,6vw,58px) 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.lede{max-width:60ch;color:var(--ink-2)}
+
+.two{display:grid;gap:18px;margin-top:22px}
+@media(min-width:680px){.two{grid-template-columns:1fr 1fr;gap:22px}}
+.card{background:#fff;border:1px solid var(--line);border-radius:5px;padding:22px 24px}
+.card--is{border-left:3px solid var(--spark)}
+.card--isnot{border-left:3px solid var(--ink-3)}
+.card ul{list-style:none;margin:0;padding:0}
+.card li{padding-left:22px;position:relative;margin-bottom:11px;font-size:.96rem;color:var(--ink-2)}
+.card li:last-child{margin-bottom:0}
+.card li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:2px;background:var(--spark-deep)}
+.card--isnot li::before{background:var(--ink-3)}
+
+.cta{display:block;background:rgba(232,163,61,.12);border:1px solid rgba(232,163,61,.5);
+  border-radius:6px;padding:24px 26px;margin-top:8px;text-decoration:none}
+.cta:hover{background:rgba(232,163,61,.2)}
+.cta .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--spark-deep);display:block;margin-bottom:9px}
+.cta h3{font-size:1.25rem;margin-bottom:6px}
+.cta p{margin:0;color:var(--ink-2);font-size:.96rem}
+.cta .url{font-family:var(--mono);font-size:.82rem;color:var(--spark-deep);
+  display:block;margin-top:12px;word-break:break-all}
+
+.fit{margin-top:20px}
+.fitrow{display:grid;gap:4px 18px;padding:15px 0;border-top:1px dashed var(--line)}
+.fitrow:first-child{border-top:0}
+.fitk{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--spark-deep)}
+.fitrow p{margin:0;font-size:.97rem;color:var(--ink-2)}
+@media(min-width:680px){.fitrow{grid-template-columns:150px 1fr;align-items:baseline}}
+
+.price{background:#fff;border:1px solid var(--line);border-radius:5px;
+  padding:22px 24px;margin-top:20px}
+.pricerow{display:flex;gap:16px;align-items:baseline;padding:12px 0;border-top:1px dashed var(--line)}
+.pricerow:first-child{border-top:0}
+.pricerow b{font-family:var(--display);font-size:1.05rem;flex:none;min-width:112px}
+.pricerow span{font-size:.95rem;color:var(--ink-2)}
+
+.note{background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--spark-deep);border-radius:4px;padding:20px 22px;margin-top:20px}
+.note p:last-child{margin-bottom:0}
+.note strong{font-weight:700}
+
+.stand{background:var(--ink);color:var(--paper);border-radius:6px;padding:26px 28px;margin-top:20px}
+.stand h2{color:var(--paper)}
+.stand p{color:rgba(244,242,236,.86)}
+.stand p:last-child{margin-bottom:0}
+.stand em{color:var(--spark);font-style:normal;font-weight:600}
+
+.ask{list-style:none;margin:20px 0 0;padding:0;counter-reset:a}
+.ask li{counter-increment:a;position:relative;padding-left:42px;margin-bottom:18px}
+.ask li::before{content:counter(a,decimal-leading-zero);position:absolute;left:0;top:.05em;
+  font-family:var(--mono);font-size:.8rem;color:var(--spark-deep)}
+.ask b{font-family:var(--display);display:block;margin-bottom:3px}
+.ask p{margin:0;font-size:.96rem;color:var(--ink-2)}
+
+.foot{background:var(--ink);color:var(--paper);padding:36px 0 44px;margin-top:0}
+.foot p{color:rgba(244,242,236,.8);font-size:.95rem}
+.foot a{color:var(--spark)}
+.foot .fine{font-size:.82rem;color:rgba(244,242,236,.62);margin-top:18px;margin-bottom:0}
+
+@media print{
+  body{background:#fff;font-size:10.5pt}
+  .head,.stand,.foot{background:#fff!important;color:#000!important}
+  .head h1,.stand h2,.foot p{color:#000!important}
+  .head .sub,.stand p{color:#222!important}
+  .stand em{color:#000!important}
+  .cta{background:#fff!important}
+  section{padding:16pt 0;break-inside:avoid}
+  .card,.price,.note,.stand{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <div class="brandbar">
+      <span class="dot" aria-hidden="true"></span>
+      <a href="/">Kirton Learning</a>
+    </div>
+    <p class="eyebrow">For people who work with these families</p>
+    <h1>You already know the parent this is for.</h1>
+    <p class="sub">She has sat in an annual review as the only person at the table without documentation. This is a supplemental service that gives her a year of her child's work, written down against the goals already in the file. Here is exactly what it is, what it isn't, and who I'd want you to send — and who I wouldn't.</p>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2>What it is</h2>
+    <p class="lede">A parent sends me their child's IEP. I read the annual goals and build a 36-week plan that carries those same goals inside work the child actually chose — a shoe they want to design, a thing wrong on their block, something they want to sell. The criteria don't move. A goal that says 8 of 10 words across 3 consecutive sessions still says that. What changes is that the child has a reason to hit it.</p>
+    <p class="lede">Every week gets logged, dated, and written back in the goal's own language, so the parent walks into the next meeting with a record instead of an impression.</p>
+
+    <div class="two">
+      <div class="card card--is">
+        <h3>What it is</h3>
+        <ul>
+          <li>Supplemental instruction a parent hires privately</li>
+          <li>Built from the goals already written in the IEP</li>
+          <li>A dated log of work completed, in the goal's language</li>
+          <li>Designed around one child's actual interests</li>
+          <li>Delivered weekly, with a monthly call</li>
+        </ul>
+      </div>
+      <div class="card card--isnot">
+        <h3>What it is not</h3>
+        <ul>
+          <li>Not advocacy, and not legal advice</li>
+          <li>Not an evaluation, a diagnosis, or an eligibility determination</li>
+          <li>Not a related service and not a mandated service — it counts toward no minutes on the IEP</li>
+          <li>Not a replacement for anything the district provides</li>
+          <li>Not a claim to meet, satisfy, or fulfill any IEP requirement</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <p><strong>On the school.</strong> This service takes no position on a district, a placement, or a team. If a parent wants to bring the Log to a meeting, it's hers and she should. But I'm not there to build a case against anybody — she has to keep living in that building, and so does her child.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Don't take my word for it</h2>
+    <p class="lede">There's a complete worked example online — an invented student, her four annual goals, the plan built from them, all thirty-six weeks, one week in full detail, and the log entries. It's the fastest way to judge whether this is serious. It takes about six minutes to read.</p>
+    <a class="cta" href="/demo.html">
+      <span class="k">The whole thing, start to finish</span>
+      <h3>See a complete year</h3>
+      <p>Everything a family receives, using a fictional student. No real child's records appear anywhere on it.</p>
+      <span class="url">spark-coach-families.vercel.app/demo.html</span>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Who I'd want you to send</h2>
+    <div class="fit">
+      <div class="fitrow">
+        <span class="fitk">Right fit</span>
+        <p>A parent who wants her child doing something, not doing more worksheets. A child with a strong interest — the narrower and more intense, the better. Roughly grades 2 through 8. A family that can commit to three or four short sessions a week at home.</p>
+      </div>
+      <div class="fitrow">
+        <span class="fitk">Also right</span>
+        <p>A parent heading toward an annual review with nothing written down, who wants a record of the year in her own hands.</p>
+      </div>
+      <div class="fitrow">
+        <span class="fitk">Wrong fit</span>
+        <p>A family in an active dispute who needs an advocate or an attorney — that isn't me and I'd be doing them harm by taking the money. A child whose needs are primarily medical, behavioral crisis, or safety-related. A parent looking for a diagnosis or an evaluation. Anyone who needs this to substitute for services the district is supposed to provide.</p>
+      </div>
+      <div class="fitrow">
+        <span class="fitk">Be honest with me</span>
+        <p>If you think a family is a bad fit, say so and I won't take them. I'd rather have five families this works for than twenty it doesn't.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What a family pays</h2>
+    <div class="price">
+      <div class="pricerow"><b>$349 once</b><span>The Blueprint — every goal in plain English, the year mapped across 36 weeks, the first expedition built for that specific child, and a 30-minute walkthrough call.</span></div>
+      <div class="pricerow"><b>$149 a month</b><span>The weekly work, the Log, and a monthly check-in call. Cancel any time.</span></div>
+      <div class="pricerow"><b>Sliding scale</b><span>Available. If money is the only reason a family says no, tell them to write to me.</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="stand">
+      <h2>Where this honestly stands</h2>
+      <p>You work in this field and you'll find this out anyway, so I'd rather say it first.</p>
+      <p><em>This is new.</em> It started with my own niece, who is autistic, and it worked for her. That is one child, and one child is a reason to try something — not evidence. I have no outcome data and I won't pretend to. I'm looking for the first ten families.</p>
+      <p><em>Checkout isn't switched on yet.</em> If you have a family in mind now, send them straight to me and I'll take them through by hand.</p>
+      <p><em>What I'd want from you most is the part I'm weakest on.</em> I'm not a certified special educator. I've run youth programs in Brooklyn since 2009 — adaptive basketball with DYCD, chess and computer science at P.S. 109 and P.S. 272 — and I build this work with real kids. But you know the measurement side better than I do, and if you ever want to tell me a baseline is missing or a goal isn't being tracked honestly, that's a favor, not a criticism.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What I'm asking</h2>
+    <ol class="ask">
+      <li>
+        <b>Read the example.</b>
+        <p>Six minutes. If it doesn't hold up to you, tell me why and we're done — that's still useful to me.</p>
+      </li>
+      <li>
+        <b>If it does hold up, keep one family in mind.</b>
+        <p>Not a list. One parent you think it would genuinely help. Send her the example page, or send me her name with her permission and I'll reach out.</p>
+      </li>
+      <li>
+        <b>Tell me what you'd change.</b>
+        <p>You've read more IEPs than I have. If something in the plan or the log would embarrass me at a CSE table, I want to hear it now rather than later.</p>
+      </li>
+    </ol>
+
+    <div class="note">
+      <p><strong>On paying you for referrals.</strong> If you work for a school, a district, or an agency — or if any part of your work is billed to Medicaid — I'm not offering you a referral fee, and you shouldn't accept one. It's a conflict of interest that lands on your license and your job, not on mine. What I'd offer instead: a free spot for a family of yours who can't pay, the Blueprint process documented for you to use with your own caseload, and your name on this work if you ever want it there.</p>
+      <p>If you're fully independent and none of that applies, we can talk about a straightforward arrangement — and either way, every family gets told plainly that you're the one who sent them.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong>Lamont Kirton</strong><br>
+    Kirton Learning, a program of Our Rose LLC — Brooklyn, New York<br>
+    <a href="mailto:lamont@sparkbuilders.org">lamont@sparkbuilders.org</a></p>
+    <p class="fine">Kirton Learning is a private supplemental service. It is not special education advocacy, not legal advice, and not a diagnostic or evaluative service, and it does not replace services mandated by a school district. Plans are aligned to a child's IEP goals; they do not meet, satisfy, or fulfill IEP requirements.</p>
+  </div>
+</footer>
+
+</body>
+</html>

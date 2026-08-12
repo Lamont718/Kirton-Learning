@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Record — Kirton Learning</title>
+<meta name="description" content="Turn what you already see at home into dated evidence against the goals in your child's IEP, and print it for the meeting. Everything stays on your device.">
+<meta name="theme-color" content="#1f2a3a">
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  --bg:#f5f2ec; --card:#fffdf9; --ink:#1f2a3a; --ink-2:#3f4d63; --muted:#6f7d92;
+  --line:#e3dcd0; --accent:#2f6f6a; --accent-soft:#e2efed; --warm:#a85f28;
+  --warm-soft:#fbeade; --good:#2f6b48; --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font:17px/1.55 ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid var(--accent);outline-offset:3px}
+.wrap{width:min(720px,92vw);margin:0 auto;padding-bottom:60px}
+h1{font-size:clamp(1.5rem,4.5vw,2rem);margin:0 0 6px;letter-spacing:-.01em}
+h2{font-size:1.2rem;margin:0 0 8px}
+h3{font-size:1.02rem;margin:0 0 4px}
+p{margin:0 0 .9rem}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.grow{flex:1}
+.bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);
+  backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:11px 0}
+.brand{font-weight:800;text-decoration:none;color:var(--ink)}
+.navlink{background:none;border:0;font:inherit;font-weight:700;color:var(--muted);
+  cursor:pointer;padding:8px 6px;min-height:44px}
+.navlink[aria-current="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:clamp(16px,3vw,24px);margin-top:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);border-radius:999px;padding:13px 20px;font:inherit;
+  font-weight:700;cursor:pointer;min-height:50px}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-block{width:100%}
+.btn-sm{min-height:42px;padding:9px 15px;font-size:.92rem}
+.btn:disabled{opacity:.45;cursor:default}
+input,select,textarea{font:inherit;font-weight:600;padding:13px 15px;border-radius:12px;
+  border:2px solid var(--line);background:var(--card);color:var(--ink);width:100%;min-height:52px}
+textarea{min-height:88px;font-weight:500}
+label.field{display:block;font-weight:700;margin:14px 0 6px}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--ink);
+  border-radius:999px;padding:4px 11px;font-size:.8rem;font-weight:800}
+.pill.warm{background:var(--warm-soft)}
+.pill.grey{background:#efeae2;color:var(--muted)}
+.pill.due{background:var(--warm-soft);color:#7a4522}
+.goalcard{border-left:3px solid var(--accent)}
+.verbatim{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;line-height:1.6;
+  color:var(--ink-2);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button{flex:1;min-width:130px;border:2px solid var(--line);background:var(--card);color:var(--ink);
+  border-radius:12px;padding:12px;font:inherit;font-weight:700;cursor:pointer;min-height:56px;text-align:left}
+.seg button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.seg .sub{display:block;font-weight:500;font-size:.84rem;color:var(--muted);margin-top:2px}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.d{width:13px;height:13px;border-radius:99px;border:2px solid var(--muted);background:transparent}
+.d.pass{background:var(--good);border-color:var(--good)}
+.d.miss{background:transparent;border-color:var(--warm)}
+.entry{display:grid;gap:2px 12px;padding:11px 0;border-top:1px dashed var(--line)}
+.entry:first-of-type{border-top:0}
+@media(min-width:600px){.entry{grid-template-columns:120px 1fr auto;align-items:baseline}}
+.entry .when{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;color:var(--muted)}
+.note{background:var(--warm-soft);border:1px solid #eccdb6;border-radius:12px;padding:12px 14px;
+  font-size:.92rem;color:#7a4522}
+.flag{border:2px solid var(--warm);background:var(--warm-soft);border-radius:12px;
+  padding:14px 16px;margin-top:12px;color:#6d3e1d}
+.flag strong{display:block;margin-bottom:3px}
+.chart{width:100%;height:96px;display:block;margin-top:10px}
+.empty{text-align:center;padding:26px 10px;color:var(--muted)}
+.hide{display:none!important}
+.footnote{font-size:.82rem;color:var(--muted);margin-top:26px;line-height:1.6}
+@media print{
+  .noprint{display:none!important}
+  html,body{background:#fff;color:#000;font-size:11pt}
+  .wrap{width:100%}
+  .card{border:1px solid #999;break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
+  .verbatim{background:#fff}
+  .pill{border:1px solid #666;background:#fff!important;color:#000!important}
+  .flag{border:1.5px solid #000;background:#fff!important;color:#000!important}
+}
+</style>
+</head>
+<body>
+
+<div class="bar noprint">
+  <div class="wrap row">
+    <a class="brand" href="/">✦ Kirton Learning</a>
+    <span class="grow"></span>
+    <button class="navlink" data-nav="home" onclick="go('home')">Home</button>
+    <button class="navlink" data-nav="goals" onclick="go('goals')">Goals</button>
+    <button class="navlink" data-nav="record" onclick="go('record')">The record</button>
+  </div>
+</div>
+
+<main class="wrap" id="view"></main>
+
+<script>
+/* ---------------------------------------------------------------------------
+   Everything lives in this browser. There is no server, no account, and no
+   request leaves this page — you can check that in the network tab, which is
+   the point of shipping it as one readable file.
+   --------------------------------------------------------------------------- */
+const KEY = 'iep_record_v1'
+const EMPTY = { children: [], activeId: null, entries: [] }
+const DAY = 86400000
+
+const uid = () => Math.random().toString(36).slice(2, 10)
+const today = () => new Date().toISOString().slice(0, 10)
+const days = (a, b) => Math.round((Date.parse(a) - Date.parse(b)) / DAY)
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+
+function load () {
+  try { const r = localStorage.getItem(KEY); return r ? { ...EMPTY, ...JSON.parse(r) } : { ...EMPTY } }
+  catch { return { ...EMPTY } }
+}
+function save (s) { localStorage.setItem(KEY, JSON.stringify(s)); state = s }
+let state = load()
+
+const kid = () => state.children.find(c => c.id === state.activeId) || null
+const goalsOf = (c) => (c ? c.goals : [])
+/* Newest first. The tie-break matters: a parent can easily log two checks on one
+   day, and with only the date to sort by, "the most recent five" was whichever
+   order the array happened to be in — so the criterion could be judged on the
+   wrong five. Falls back to the order they were written down. */
+const entriesFor = (goalId) => state.entries
+  .map((e, i) => ({ e, i }))
+  .filter(x => x.e.goalId === goalId)
+  .sort((a, b) => (a.e.date < b.e.date ? 1 : a.e.date > b.e.date ? -1 : b.i - a.i))
+  .map(x => x.e)
+const probesFor = (goalId) => entriesFor(goalId).filter(e => e.kind === 'probe')
+
+/* A trial passes when the child hit the accuracy the goal itself asks for.
+   Only PROBES count. Coached practice is real work and worth logging, but it
+   is not a measurement of what she can do on her own. */
+const passed = (e, g) => (e.outOf > 0) && (e.got / e.outOf) >= g.accuracy
+
+function standing (g) {
+  const probes = probesFor(g.id)
+  const window_ = probes.slice(0, g.outOf)          // the most recent M
+  const passing = window_.filter(e => passed(e, g)).length
+  return { probes, window: window_, passing, met: window_.length >= g.outOf && passing >= g.of }
+}
+
+/* WHEN IS THE NEXT CHECK DUE.
+   A goal checked once in March and once in June is not being monitored, it is
+   being remembered. The cadence is per goal because a two-minute word list and a
+   twenty-minute writing sample do not belong on the same schedule. */
+function due (g) {
+  const every = g.everyDays || 7
+  const last = probesFor(g.id)[0]
+  if (!last) return { state: 'due', label: 'First check not done yet' }
+  const since = days(today(), last.date)
+  const left = every - since
+  if (left <= 0) return { state: since >= every * 2 ? 'over' : 'due',
+    label: left === 0 ? 'Due today' : `Due — ${-left} day${-left === 1 ? '' : 's'} late` }
+  return { state: 'ok', label: `Next check in ${left} day${left === 1 ? '' : 's'}` }
+}
+
+/* THE DECISION RULE.
+   Four checks in a row below the criterion is not a child who needs to try
+   harder, it is a method that is not landing. The goal does not move — the
+   teaching does. Saying this out loud is the difference between a record and a
+   pile of numbers nobody acts on. */
+const FLAT = 4
+function stalled (g) {
+  const p = probesFor(g.id)
+  return p.length >= FLAT && p.slice(0, FLAT).every(e => !passed(e, g))
+}
+
+const criterionText = (g) =>
+  `${Math.round(g.accuracy * 100)}% accuracy in ${g.of} of ${g.outOf} trials`
+
+/* --------------------------------- views --------------------------------- */
+let view = 'home'
+function go (v) { view = v; render(); window.scrollTo(0, 0) }
+
+function render () {
+  document.querySelectorAll('[data-nav]').forEach(b =>
+    b.setAttribute('aria-current', String(b.dataset.nav === view)))
+  const c = kid()
+  document.getElementById('view').innerHTML =
+    !c ? viewSetup() :
+    view === 'goals' ? viewGoals(c) :
+    view === 'record' ? viewRecord(c) :
+    viewHome(c)
+}
+
+function viewSetup () {
+  return `
+  <div class="card">
+    <h1>Start with your child's first name.</h1>
+    <p class="muted">First name only — nothing else is asked for, and nothing leaves this device.</p>
+    <label class="field" for="nm">Her or his first name</label>
+    <input id="nm" placeholder="e.g. Maya" autocomplete="off">
+    <div style="margin-top:14px"><button class="btn btn-primary btn-block" onclick="addChild()">Next</button></div>
+  </div>
+  <p class="footnote">No account. No upload. If you clear this browser's data the record goes with it —
+  so save a backup, and print it after each meeting.</p>`
+}
+
+function viewHome (c) {
+  const gs = goalsOf(c)
+  if (!gs.length) return `
+    <div class="card">
+      <h1>Now add a goal from ${esc(c.name)}'s IEP.</h1>
+      <p class="muted">Copy it word for word. The wording matters — it's what the meeting will be about.</p>
+      <div><button class="btn btn-primary" onclick="go('goals')">Add the first goal</button></div>
+    </div>`
+
+  const dueNow = gs.filter(g => due(g).state !== 'ok')
+  return `
+  <div class="card">
+    <div class="row">
+      <div class="grow"><h1 style="margin:0">${esc(c.name)}</h1>
+        <p class="muted small" style="margin:2px 0 0">${gs.length} goal${gs.length > 1 ? 's' : ''} · ${state.entries.length} thing${state.entries.length === 1 ? '' : 's'} written down</p></div>
+    </div>
+    ${dueNow.length
+      ? `<p class="small" style="margin:12px 0 0"><strong>${dueNow.length} ${dueNow.length === 1 ? 'goal is' : 'goals are'} due a check.</strong>
+         <span class="muted">A check is short. It is the only thing here that becomes evidence.</span></p>`
+      : `<p class="small muted" style="margin:12px 0 0">Nothing due today. Everything is on schedule.</p>`}
+  </div>
+  ${gs.map(g => {
+    const st = standing(g), d = due(g), flat = stalled(g)
+    return `
+    <div class="card goalcard">
+      <div class="row">
+        <span class="pill grey">${esc(g.area || 'Goal')}</span>
+        <span class="grow"></span>
+        ${st.met ? `<span class="pill">✓ At criterion</span>`
+          : st.probes.length ? `<span class="pill warm">${st.passing} of ${st.window.length} at ${Math.round(g.accuracy * 100)}%</span>`
+          : `<span class="pill grey">No checks yet</span>`}
+      </div>
+      <h3 style="margin-top:10px">${esc(shortGoal(g.text))}</h3>
+      <p class="muted small" style="margin:2px 0 0">Needs ${esc(criterionText(g))}</p>
+      <div class="dots">${st.window.map(e => `<span class="d ${passed(e, g) ? 'pass' : 'miss'}"></span>`).join('')
+        }${Array.from({ length: Math.max(0, g.outOf - st.window.length) }, () => '<span class="d"></span>').join('')}</div>
+      <p class="small" style="margin:10px 0 0">
+        <span class="pill ${d.state === 'ok' ? 'grey' : 'due'}">${esc(d.label)}</span>
+        <span class="muted"> · checked every ${g.everyDays || 7} days</span></p>
+      ${flat ? `<div class="flag"><strong>Four checks in a row below the mark.</strong>
+        That is a signal to change how it is being taught — not to change the goal, and not something
+        she needs to try harder at. Worth raising with whoever teaches this.</div>` : ''}
+      <div class="row" style="margin-top:14px">
+        <button class="btn btn-primary btn-sm" onclick="openLog('${g.id}')">Write something down</button>
+        <button class="btn btn-sm" onclick="go('record')">See the record</button>
+      </div>
+      <div id="log-${g.id}" class="hide" style="margin-top:14px"></div>
+    </div>`
+  }).join('')}
+
+  <div class="card noprint">
+    <h2>Keep a copy</h2>
+    <p class="muted small">This lives only in this browser. That is what keeps it private, and it is also
+    what makes it fragile: clearing your browsing data, or losing the phone, takes the record with it.</p>
+    <div class="row">
+      <button class="btn btn-sm" onclick="backup()">Save a backup file</button>
+      <button class="btn btn-sm" onclick="document.getElementById('rf').click()">Restore from a backup</button>
+      <input id="rf" type="file" accept="application/json" class="hide" onchange="restore(this)">
+    </div>
+  </div>
+  <p class="footnote">Everything here is stored on this device only. Nothing is uploaded, and there is no account.</p>`
+}
+
+const shortGoal = (t) => (t.length > 130 ? t.slice(0, 127).trimEnd() + '…' : t)
+
+/* ------------------------------ logging ---------------------------------- */
+let draft = null
+function openLog (goalId) {
+  draft = { goalId, kind: 'probe' }
+  const box = document.getElementById('log-' + goalId)
+  box.classList.remove('hide')
+  box.innerHTML = `
+    <div class="seg" role="group" aria-label="What kind of check was this?">
+      <button type="button" aria-pressed="true" id="k-probe" onclick="setKind('probe')">
+        On her own<span class="sub">No help. This is the number.</span></button>
+      <button type="button" aria-pressed="false" id="k-practice" onclick="setKind('practice')">
+        We worked on it<span class="sub">Helped. Worth keeping, never scored.</span></button>
+    </div>
+    <div id="leak" class="note" style="margin-top:10px">
+      Use something she has <strong>not just practised</strong>. If you check her on this week's own
+      words, the number measures the practice, not what she can do cold.
+    </div>
+    <div class="row" style="margin-top:12px;align-items:flex-end">
+      <div style="flex:1;min-width:110px"><label class="field" for="got">How many right</label>
+        <input id="got" type="number" inputmode="numeric" min="0" placeholder="8"></div>
+      <div style="flex:1;min-width:110px"><label class="field" for="outof">Out of</label>
+        <input id="outof" type="number" inputmode="numeric" min="1" value="10"></div>
+    </div>
+    <label class="field" for="pr">How many times did you help or remind her? (optional)</label>
+    <input id="pr" type="number" inputmode="numeric" min="0" placeholder="0">
+    <p class="muted small" style="margin:6px 0 0">This is the softest number in here, because the person
+    counting is the person who wants her to do well. Write each one down as it happens, not afterwards.</p>
+    <label class="field" for="dt">When</label>
+    <input id="dt" type="date" value="${today()}">
+    <label class="field" for="nt">Anything worth remembering (optional)</label>
+    <textarea id="nt" placeholder="e.g. got stuck on the two-syllable ones, then got them on the second try"></textarea>
+    <div class="row" style="margin-top:14px">
+      <button class="btn btn-primary grow" onclick="saveEntry('${goalId}')">Save it</button>
+      <button class="btn btn-sm" onclick="closeLog('${goalId}')">Cancel</button>
+    </div>`
+  document.getElementById('got').focus()
+}
+function setKind (k) {
+  draft.kind = k
+  document.getElementById('k-probe').setAttribute('aria-pressed', String(k === 'probe'))
+  document.getElementById('k-practice').setAttribute('aria-pressed', String(k === 'practice'))
+  // the leakage warning is only true of a cold check; on helped work it is noise
+  document.getElementById('leak').classList.toggle('hide', k !== 'probe')
+}
+function closeLog (goalId) { const b = document.getElementById('log-' + goalId); b.classList.add('hide'); b.innerHTML = '' }
+function saveEntry (goalId) {
+  const got = parseInt(document.getElementById('got').value, 10)
+  const outOf = parseInt(document.getElementById('outof').value, 10)
+  if (!Number.isFinite(got) || !Number.isFinite(outOf) || outOf < 1 || got < 0 || got > outOf) {
+    alert('Check those two numbers — "how many right" has to be between 0 and the "out of" number.'); return
+  }
+  const praw = parseInt(document.getElementById('pr').value, 10)
+  const s = load()
+  s.entries.push({ id: uid(), childId: state.activeId, goalId, kind: draft.kind,
+    got, outOf, prompts: Number.isFinite(praw) && praw >= 0 ? praw : null,
+    date: document.getElementById('dt').value || today(),
+    note: document.getElementById('nt').value.trim() })
+  save(s); draft = null; render()
+}
+
+/* ------------------------------- goals ----------------------------------- */
+function viewGoals (c) {
+  return `
+  <div class="card">
+    <h1>${esc(c.name)}'s goals</h1>
+    <p class="muted">Copy each one out of the IEP <strong>word for word</strong>. Reporting back in the goal's
+    own language is what makes the record hard to wave away.</p>
+    <div class="note">This app never writes or suggests a goal. Her IEP team writes the goals; this only
+    keeps track of how she's doing against the ones they wrote.</div>
+  </div>
+
+  ${goalsOf(c).map(g => `
+    <div class="card goalcard">
+      <div class="row"><span class="pill grey">${esc(g.area || 'Goal')}</span><span class="grow"></span>
+        <button class="btn btn-sm" onclick="removeGoal('${g.id}')">Remove</button></div>
+      <div class="verbatim" style="margin-top:10px">${esc(g.text)}</div>
+      <p class="muted small" style="margin:10px 0 0">Counts as met at ${esc(criterionText(g))} · checked every ${g.everyDays || 7} days.</p>
+      ${g.baseline ? `<p class="muted small" style="margin:4px 0 0">Starting point, ${esc(g.baseline.date)}: ${esc(g.baseline.note)}</p>`
+        : `<p class="small" style="margin:6px 0 0"><em>No starting point written down yet — without one, later numbers have nothing to be compared to.</em></p>`}
+    </div>`).join('')}
+
+  <div class="card">
+    <h2>Add a goal</h2>
+    <label class="field" for="ga">What area is it? (reading, writing, maths, speech…)</label>
+    <input id="ga" placeholder="Reading" autocomplete="off">
+    <label class="field" for="gt">The goal, exactly as the IEP words it</label>
+    <textarea id="gt" placeholder="Given a list of unfamiliar two-syllable words, she will decode 8 of 10 accurately across 3 consecutive sessions."></textarea>
+    <label class="field">What counts as meeting it</label>
+    <div class="row" style="align-items:flex-end">
+      <div style="flex:1;min-width:100px"><span class="muted small">Accuracy %</span>
+        <input id="gacc" type="number" inputmode="numeric" min="1" max="100" value="80"></div>
+      <div style="flex:1;min-width:90px"><span class="muted small">In how many</span>
+        <input id="gof" type="number" inputmode="numeric" min="1" value="4"></div>
+      <div style="flex:1;min-width:90px"><span class="muted small">Out of</span>
+        <input id="gout" type="number" inputmode="numeric" min="1" value="5"></div>
+    </div>
+    <p class="muted small" style="margin-top:8px">Almost every IEP goal is written this way — "80% accuracy in
+    4 of 5 trials". Copy whatever hers actually says; it is not always 80/4/5.</p>
+    <label class="field" for="gev">Check it how often?</label>
+    <select id="gev">
+      <option value="7" selected>Every week</option>
+      <option value="14">Every two weeks</option>
+      <option value="30">Once a month</option>
+    </select>
+    <p class="muted small" style="margin:6px 0 0">Short checks belong on a short cycle; a twenty-minute
+    writing sample does not. Whatever you pick, the app will tell you when it is due.</p>
+    <label class="field" for="gb">Where she is today, before anything changes (optional but worth it)</label>
+    <textarea id="gb" placeholder="e.g. reads 3 of 10 unfamiliar two-syllable words. Present level in the IEP, dated March."></textarea>
+    <div style="margin-top:14px"><button class="btn btn-primary btn-block" onclick="addGoal()">Add this goal</button></div>
+  </div>`
+}
+
+function addChild () {
+  const n = document.getElementById('nm').value.trim()
+  if (!n) { alert('A first name is all it needs.'); return }
+  const s = load(); const c = { id: uid(), name: n, goals: [] }
+  s.children.push(c); s.activeId = c.id; save(s); go('goals')
+}
+function addGoal () {
+  const text = document.getElementById('gt').value.trim()
+  if (!text) { alert('Paste the goal in as the IEP words it.'); return }
+  const acc = parseInt(document.getElementById('gacc').value, 10)
+  const of = parseInt(document.getElementById('gof').value, 10)
+  const outOf = parseInt(document.getElementById('gout').value, 10)
+  if (!(acc > 0 && acc <= 100) || !(of > 0) || !(outOf > 0) || of > outOf) {
+    alert('Check the criterion: accuracy is a percentage, and "in how many" cannot be larger than "out of".'); return
+  }
+  const bnote = document.getElementById('gb').value.trim()
+  const s = load(); const c = s.children.find(x => x.id === s.activeId)
+  c.goals.push({ id: uid(), area: document.getElementById('ga').value.trim(), text,
+    accuracy: acc / 100, of, outOf,
+    everyDays: parseInt(document.getElementById('gev').value, 10) || 7,
+    baseline: bnote ? { date: today(), note: bnote } : null })
+  save(s); go('home')
+}
+function removeGoal (id) {
+  if (!confirm('Remove this goal? Anything written down against it stays, but stops being shown.')) return
+  const s = load(); const c = s.children.find(x => x.id === s.activeId)
+  c.goals = c.goals.filter(g => g.id !== id); save(s); render()
+}
+
+/* ------------------------------ backup ------------------------------------ */
+function backup () {
+  const blob = new Blob([JSON.stringify(load(), null, 2)], { type: 'application/json' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = `record-backup-${today()}.json`
+  a.click(); URL.revokeObjectURL(a.href)
+}
+function restore (input) {
+  const f = input.files && input.files[0]; if (!f) return
+  const r = new FileReader()
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result)
+      if (!Array.isArray(d.children)) throw new Error('not a backup')
+      if (!confirm('Replace what is in this browser with the backup file?')) return
+      save({ ...EMPTY, ...d }); go('home')
+    } catch { alert('That file could not be read as a backup.') }
+  }
+  r.readAsText(f)
+}
+
+/* ------------------------------ the record -------------------------------- */
+/* Met/not-met is FILLED vs HOLLOW, never colour alone, and the criterion is a
+   dashed line drawn across the chart rather than a legend entry — so it still
+   reads after somebody photocopies it in black and white. */
+function chart (g) {
+  const p = probesFor(g.id).slice().reverse()   // oldest first
+  if (p.length < 2) return ''
+  const W = 640, H = 96, L = 34, R = 8, T = 10, B = 20
+  const x = (i) => L + (p.length === 1 ? 0 : i * (W - L - R) / (p.length - 1))
+  const y = (v) => T + (1 - v) * (H - T - B)
+  const pts = p.map((e, i) => ({ cx: x(i), cy: y(e.got / e.outOf), ok: passed(e, g) }))
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img"
+    aria-label="Each check over time against the criterion line.">
+    <line x1="${L}" y1="${y(0)}" x2="${W - R}" y2="${y(0)}" stroke="#999" stroke-width="1"/>
+    <line x1="${L}" y1="${y(g.accuracy)}" x2="${W - R}" y2="${y(g.accuracy)}"
+      stroke="#444" stroke-width="1.5" stroke-dasharray="6 5"/>
+    <text x="0" y="${y(g.accuracy) + 4}" font-size="11" fill="#444">${Math.round(g.accuracy * 100)}%</text>
+    <polyline fill="none" stroke="#777" stroke-width="1.5"
+      points="${pts.map(q => `${q.cx},${q.cy}`).join(' ')}"/>
+    ${pts.map(q => `<circle cx="${q.cx}" cy="${q.cy}" r="5" fill="${q.ok ? '#2f6b48' : '#fff'}"
+      stroke="${q.ok ? '#2f6b48' : '#a85f28'}" stroke-width="2"/>`).join('')}
+  </svg>
+  <p class="muted small" style="margin:2px 0 0">Filled = at or above the criterion. Hollow = below.
+  The dashed line is what the goal asks for.</p>`
+}
+
+function viewRecord (c) {
+  const gs = goalsOf(c)
+  return `
+  <div class="card noprint">
+    <h1>The record</h1>
+    <p class="muted">This is the page to print and take with you. It reports each goal in the goal's own words.</p>
+    <button class="btn btn-primary" onclick="window.print()">Print it</button>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0">${esc(c.name)} — progress against IEP goals</h2>
+    <p class="muted small" style="margin:4px 0 0">Recorded at home by a parent. Printed ${esc(today())}.</p>
+  </div>
+
+  ${gs.length === 0 ? '<div class="card empty">No goals added yet.</div>' : gs.map(g => {
+    const st = standing(g)
+    const probes = st.probes, practice = entriesFor(g.id).filter(e => e.kind === 'practice')
+    return `
+    <div class="card">
+      <div class="row"><span class="pill grey">${esc(g.area || 'Goal')}</span><span class="grow"></span>
+        ${st.met ? '<span class="pill">✓ At criterion</span>'
+          : probes.length ? `<span class="pill warm">${st.passing} of ${st.window.length} at ${Math.round(g.accuracy * 100)}%</span>`
+          : '<span class="pill grey">No checks yet</span>'}</div>
+      <div class="verbatim" style="margin-top:10px">${esc(g.text)}</div>
+      <p class="small" style="margin:10px 0 0"><strong>Counts as met at:</strong> ${esc(criterionText(g))}</p>
+      <p class="small" style="margin:4px 0 0"><strong>Checked:</strong> every ${g.everyDays || 7} days, using material she has not just practised.</p>
+      ${g.baseline ? `<p class="small" style="margin:4px 0 0"><strong>Starting point (${esc(g.baseline.date)}):</strong> ${esc(g.baseline.note)}</p>` : ''}
+      ${chart(g)}
+      ${stalled(g) ? `<div class="flag"><strong>Four checks in a row below the criterion.</strong>
+        Recorded here as a signal that the approach needs changing, not the goal.</div>` : ''}
+
+      <h3 style="margin:16px 0 2px">Checks done on her own</h3>
+      ${probes.length ? probes.map(e => `
+        <div class="entry">
+          <span class="when">${esc(e.date)}</span>
+          <span>${e.got} of ${e.outOf} — ${Math.round(e.got / e.outOf * 100)}%${
+            e.prompts != null ? ` · ${e.prompts} prompt${e.prompts === 1 ? '' : 's'}` : ''
+          }${e.note ? `<br><span class="muted small">${esc(e.note)}</span>` : ''}</span>
+          <span class="small" style="font-weight:700;color:${passed(e, g) ? 'var(--good)' : 'var(--warm)'}">${passed(e, g) ? 'at criterion' : 'below'}</span>
+        </div>`).join('') : '<p class="muted small">Nothing yet.</p>'}
+
+      ${practice.length ? `<h3 style="margin:16px 0 2px">Worked on together <span class="muted small" style="font-weight:500">— not counted as a score</span></h3>
+        ${practice.map(e => `<div class="entry"><span class="when">${esc(e.date)}</span>
+          <span>${e.got} of ${e.outOf}${e.note ? `<br><span class="muted small">${esc(e.note)}</span>` : ''}</span>
+          <span class="small muted">helped</span></div>`).join('')}` : ''}
+    </div>`
+  }).join('')}
+
+  <div class="card small muted">
+    <p style="margin:0"><strong>How to read this.</strong> Only checks the child did on her own are counted
+    toward the criterion. Work an adult helped with is listed separately and never scored, because a coached
+    answer does not show what she can do alone. Checks use material she has not just practised.</p>
+    <p style="margin:.7rem 0 0">Where a prompt count is shown, treat it as the softest number on the page:
+    the adult counting the prompts is the adult who wants the child to do well.</p>
+    <p style="margin:.7rem 0 0">This was recorded at home by a parent, not by an evaluator and not under the
+    conditions a school uses. It is not a substitute for the school's own progress reporting. Where these
+    numbers and the school's differ, that is usually a different room on a different day.</p>
+  </div>
+  <p class="footnote">Nothing on this page has been uploaded anywhere.</p>`
+}
+
+render()
+</script>
+</body>
+</html>

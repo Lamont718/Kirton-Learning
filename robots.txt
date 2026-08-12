@@ -1,0 +1,12 @@
+# Kirton Learning
+#
+# Everything public is crawlable. The pages that should stay out of search
+# (upload.html, refer.html, partner.html) carry a noindex meta tag instead of
+# being listed here on purpose — a Disallow line would advertise their paths to
+# anyone who reads this file, and would also stop crawlers reaching the page to
+# see the noindex at all.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://spark-coach-families.vercel.app/sitemap.xml

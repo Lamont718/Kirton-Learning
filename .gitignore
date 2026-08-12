@@ -1,0 +1,29 @@
+# ---------------------------------------------------------------------------
+# This repository is PUBLIC. These files stay on Lamont's disk and out of it.
+#
+# They are the same files .vercelignore keeps off the live site, for the same
+# reason — they are internal working documents, not product:
+#
+#   CONTEXT.md   business validation notes, the open questions, and the fact
+#                that this started with Lamont's autistic niece. Family detail
+#                that is nobody else's business.
+#   VOICE.md     how we talk about the reader. Reads badly if the reader finds it.
+#   CLAUDE.md    pricing rationale, launch strategy, unbuilt security plans.
+#   supabase-setup.sql  maps the schema and bucket rules. Nothing secret in it,
+#                but no reason to hand it to anyone who guesses the filename.
+#
+# If this repo is ever made private, revisit — they are useful to have versioned.
+# ---------------------------------------------------------------------------
+CLAUDE.md
+CONTEXT.md
+VOICE.md
+supabase-setup.sql
+
+# Never commit secrets or build/deploy scratch.
+.env
+.env.*
+.vercel
+node_modules/
+.DS_Store
+Thumbs.db
+.env.check

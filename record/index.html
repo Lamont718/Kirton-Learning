@@ -450,7 +450,22 @@ function viewGoals (c) {
     </div>`).join('')}
 
   <div class="card">
-    <h2>Add a goal</h2>
+    <h2>Read them off the IEP instead</h2>
+    <p class="muted small" style="margin-top:0">A twelve-goal IEP is a lot of typing on a phone. Open
+    the PDF here and it will pull out the goals it can find, with the numbers that go with them.</p>
+    <div class="note"><strong>The file does not go anywhere.</strong> It is opened by this page, on
+    this device, the same way a photo is. Nothing is uploaded, and nothing is saved until you have
+    read what it found and said yes.</div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn btn-primary btn-sm" onclick="document.getElementById('pdf').click()">Open the IEP PDF</button>
+      <input id="pdf" type="file" accept="application/pdf" class="hide" onchange="readPdf(this)">
+      <span id="pdfstat" class="muted small"></span>
+    </div>
+    <div id="drafts" style="margin-top:12px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Or add one by hand</h2>
     <label class="field" for="ga">What area is it? (reading, writing, maths, speech…)</label>
     <input id="ga" placeholder="Reading" autocomplete="off">
     <label class="field" for="gt">The goal, exactly as the IEP words it</label>
@@ -572,6 +587,159 @@ function saveGoal (id) {
     everyDays: parseInt(document.getElementById('e-ev').value, 10) || 7,
     baseline: bnote ? { date: document.getElementById('e-bd').value || today(), note: bnote } : null })
   save(s); go('home')
+}
+
+/* ---------------------- reading the IEP on this device ---------------------
+   pdf.js is served from THIS origin, never a CDN. A CDN would be a third party
+   watching a child's IEP get opened, which would quietly undo the only promise
+   this app makes. It is also loaded on demand — 1.7MB of parser has no business
+   downloading for a parent who never opens a PDF.
+
+   Nothing found here is saved. It is shown, she reads it, she ticks what is
+   right. An IEP is the document a meeting runs on; a parser guessing at it is a
+   draft, not an authority. */
+async function pdfToLines (file) {
+  const pdfjs = await import('/record/vendor/pdf.min.mjs')
+  pdfjs.GlobalWorkerOptions.workerSrc = '/record/vendor/pdf.worker.min.mjs'
+  const doc = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise
+  const lines = []
+  for (let p = 1; p <= doc.numPages; p++) {
+    const tc = await (await doc.getPage(p)).getTextContent()
+    const rows = new Map()
+    for (const it of tc.items) {
+      if (!it.str) continue
+      const y = Math.round(it.transform[5])
+      if (!rows.has(y)) rows.set(y, [])
+      rows.get(y).push({ x: it.transform[4], w: it.width || 0, s: it.str })
+    }
+    // top of the page down; PDF y grows upwards
+    ;[...rows.entries()].sort((a, b) => b[0] - a[0]).forEach(([, items]) => {
+      items.sort((a, b) => a.x - b.x)
+      let line = '', prevEnd = null
+      for (const it of items) {
+        // A PDF has no spaces. Runs get concatenated into "read decodabletexts"
+        // unless you put them back from where each run actually ends.
+        if (prevEnd !== null && it.x - prevEnd > 1.2) line += ' '
+        line += it.str
+        prevEnd = it.x + it.w
+      }
+      lines.push(line.trim())
+    })
+    lines.push('')
+  }
+  return lines
+}
+
+/* Naming the area is a convenience, never a claim — she can change it, and a
+   blank is fine. The wording that actually appears in goals is not the word
+   "reading": it is "main idea", "supporting details", "word problems". */
+const AREAS = [
+  [/read|decod|phonic|comprehen|fluenc|main idea|supporting detail|passage|informational text|sight word/i, 'Reading'],
+  [/writ|paragraph|topic sentence|spell|compose|punctuat/i, 'Writing'],
+  [/math|numer|number|addition|subtract|multiplic|division|comput|word problem|equation|place value|count/i, 'Maths'],
+  [/speech|articul|expressive|receptive|vocabulary|wh-question|intelligib/i, 'Speech'],
+  [/behav|self-regul|attention|transition|frustrat|redirect/i, 'Behaviour'],
+  [/motor|handwriting|occupational|grasp|keyboard/i, 'Motor'],
+]
+
+function findGoalsInText (text) {
+  const chunks = text.split(/\n\s*\n|(?<=[.;])\s+(?=[A-Z])/)
+  const out = [], seen = new Set()
+  for (const raw of chunks) {
+    const s = raw.replace(/\s+/g, ' ').trim()
+    if (s.length < 40 || s.length > 700) continue
+    // The form's own ALL-CAPS instructions sit in the same table as the goals.
+    // No lowercase letter means it is the form talking, not the child's plan.
+    if (!/[a-z]/.test(s)) continue
+    // An IEP goal is a sentence about what the student will do.
+    if (!/\b(will|is able to)\b/i.test(s)) continue
+    const pct = s.match(/(\d{1,3})\s*(?:%|percent)/i)
+    const trials = s.match(/(\d{1,2})\s*(?:out\s+of|of|\/)\s*(\d{1,2})\s*(?:trials|opportunities|sessions|attempts|consecutive|times)/i)
+    const inOf = s.match(/\bin\s+(\d{1,2})\s+(?:out\s+of|of)\s+(\d{1,2})/i)
+    if (!pct && !trials && !inOf) continue
+    const key = s.slice(0, 60).toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    const r = trials || inOf
+    out.push({
+      text: s,
+      area: (AREAS.find(([re]) => re.test(s)) || [null, ''])[1],
+      accuracy: pct ? Math.min(100, parseInt(pct[1], 10)) : 80,
+      of: r ? parseInt(r[1], 10) : 4,
+      outOf: r ? parseInt(r[2], 10) : 5,
+    })
+  }
+  return out.filter(g => g.of <= g.outOf)
+}
+
+let drafts = []
+async function readPdf (input) {
+  const f = input.files && input.files[0]
+  if (!f) return
+  const stat = document.getElementById('pdfstat')
+  stat.textContent = 'Reading it on this device…'
+  try {
+    const lines = await pdfToLines(f)
+    drafts = findGoalsInText(lines.join('\n'))
+    stat.textContent = drafts.length
+      ? `Found ${drafts.length} that look like goals. Nothing is saved yet.`
+      : 'Nothing in there looked like a goal. You can still add them by hand below.'
+    renderDrafts()
+  } catch (err) {
+    stat.textContent = 'That file could not be read here. You can still add goals by hand below.'
+  }
+  input.value = ''
+}
+
+function renderDrafts () {
+  const box = document.getElementById('drafts')
+  if (!drafts.length) { box.innerHTML = ''; return }
+  box.innerHTML = `
+    <p class="small" style="margin:14px 0 6px"><strong>Read these before you keep them.</strong>
+    It is reading a document it has never seen; check the wording against the IEP, and fix anything
+    it got wrong. Untick anything that isn't a goal.</p>
+    ${drafts.map((d, i) => `
+      <div class="card" style="border-left:3px solid var(--accent)">
+        <label class="row" style="gap:10px;align-items:flex-start;font-weight:700">
+          <input type="checkbox" id="d-on-${i}" checked style="width:26px;min-height:26px;flex:none">
+          <span class="grow">Keep this one</span>
+        </label>
+        <label class="field" for="d-a-${i}">Area</label>
+        <input id="d-a-${i}" value="${esc(d.area)}" placeholder="Reading">
+        <label class="field" for="d-t-${i}">The goal, as the IEP words it</label>
+        <textarea id="d-t-${i}">${esc(d.text)}</textarea>
+        <div class="row" style="align-items:flex-end">
+          <div style="flex:1;min-width:100px"><span class="muted small">Accuracy %</span>
+            <input id="d-acc-${i}" type="number" min="1" max="100" value="${d.accuracy}"></div>
+          <div style="flex:1;min-width:90px"><span class="muted small">In how many</span>
+            <input id="d-of-${i}" type="number" min="1" value="${d.of}"></div>
+          <div style="flex:1;min-width:90px"><span class="muted small">Out of</span>
+            <input id="d-out-${i}" type="number" min="1" value="${d.outOf}"></div>
+        </div>
+      </div>`).join('')}
+    <div class="row" style="margin-top:12px">
+      <button class="btn btn-primary" onclick="keepDrafts()">Keep the ones I ticked</button>
+      <button class="btn btn-sm" onclick="drafts=[];renderDrafts();document.getElementById('pdfstat').textContent=''">Discard all</button>
+    </div>`
+}
+
+function keepDrafts () {
+  const s = load(); const c = s.children.find(x => x.id === s.activeId)
+  let n = 0
+  drafts.forEach((d, i) => {
+    if (!document.getElementById('d-on-' + i).checked) return
+    const text = document.getElementById('d-t-' + i).value.trim()
+    if (!text) return
+    const acc = parseInt(document.getElementById('d-acc-' + i).value, 10)
+    const of = parseInt(document.getElementById('d-of-' + i).value, 10)
+    const outOf = parseInt(document.getElementById('d-out-' + i).value, 10)
+    if (!(acc > 0 && acc <= 100) || !(of > 0) || !(outOf > 0) || of > outOf) return
+    c.goals.push({ id: uid(), area: document.getElementById('d-a-' + i).value.trim(), text,
+      accuracy: acc / 100, of, outOf, everyDays: 7, baseline: null })
+    n++
+  })
+  if (!n) { alert('Nothing was ticked, so nothing was kept.'); return }
+  save(s); drafts = []; go('home')
 }
 
 /* ------------------------------ backup ------------------------------------ */

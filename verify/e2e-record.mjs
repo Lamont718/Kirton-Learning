@@ -207,6 +207,36 @@ check('there is a manifest, so it can live on the home screen',
   await ev(`!!document.querySelector('link[rel=manifest]')`))
 check('storage persistence is requested', await ev(`typeof navigator.storage.persist === 'function'`))
 
+console.log('\n=== ★ reading the goals off the IEP ===')
+await click('Goals'); await sleep(800)
+check('pdf.js is served from this origin, never a CDN',
+  await ev(`!/cdnjs|unpkg|jsdelivr|cloudflare/i.test(document.documentElement.outerHTML)`))
+check('the parser is not downloaded until a PDF is opened',
+  await ev(`performance.getEntriesByType('resource').every(r => !/pdf\\.min\\.mjs/.test(r.name))`))
+const SAMPLE = [
+  'INDIVIDUALIZED EDUCATION PROGRAM',
+  'WHAT THE STUDENT WILL BE EXPECTED TO ACHIEVE BY THE END OF THE YEAR',
+  '',
+  'Given a grade-level informational text, Maya will identify the main idea and two supporting details with 80% accuracy in 4 of 5 trials.',
+  '',
+  'Maya will solve two-step word problems within 1,000, showing her work, with 75% accuracy across 4 of 5 trials.',
+  '',
+  'Speech services will be provided twice weekly.',
+].join('\n')
+const parsed = await ev(`JSON.stringify(findGoalsInText(${JSON.stringify(SAMPLE)}))`)
+const G = JSON.parse(parsed)
+check('★ it finds the goals', G.length === 2, parsed)
+check('★ it reads the criterion off the document, not a default',
+  G[0].accuracy === 80 && G[0].of === 4 && G[0].outOf === 5 && G[1].accuracy === 75)
+check('★ ALL-CAPS form instructions are not mistaken for a goal',
+  !G.some(g => /EXPECTED TO ACHIEVE/.test(g.text)))
+check('a service line is not mistaken for a goal', !G.some(g => /twice weekly/i.test(g.text)))
+check('it labels the area it can tell', G[0].area === 'Reading' && G[1].area === 'Maths')
+// NB: match on wording unique to the SAMPLE — an earlier part of this run adds a
+// reading goal by hand, and a looser pattern matched that instead.
+check('★ nothing is saved by parsing — she has to say yes',
+  (await ev(`JSON.parse(localStorage.getItem('iep_record_v1')).children.some(c=>c.goals.some(g=>/two-step word problems within 1,000/.test(g.text)))`)) === false)
+
 console.log('\n=== the promise it makes about privacy ===')
 check('no account exists to make', !/sign in|log in|create account/i.test(rec))
 check('★ nothing was sent anywhere', errors.length === 0 && (await ev(`performance.getEntriesByType('resource').filter(r=>!r.name.startsWith(location.origin)).length`)) === 0)

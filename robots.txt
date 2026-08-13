@@ -9,4 +9,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://spark-coach-families.vercel.app/sitemap.xml
+Sitemap: https://kirtonlearning.com/sitemap.xml

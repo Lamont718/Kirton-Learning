@@ -76,6 +76,11 @@ label.field{display:block;font-weight:700;margin:14px 0 6px}
 .flag{border:2px solid var(--warm);background:var(--warm-soft);border-radius:12px;
   padding:14px 16px;margin-top:12px;color:#6d3e1d}
 .flag strong{display:block;margin-bottom:3px}
+/* The offer sits UNDER the free advice and quieter than it, on purpose. She has
+   just been told the teaching has to change; that is the worst possible moment to
+   sell at her. The thing she can do for nothing comes first and always. */
+.offer{display:block;margin-top:11px;padding-top:11px;border-top:1px solid #eccdb6;
+  font-size:.9rem;color:#7a4522}
 .chart{width:100%;height:96px;display:block;margin-top:10px}
 .empty{text-align:center;padding:26px 10px;color:var(--muted)}
 .hide{display:none!important}
@@ -285,7 +290,12 @@ function viewHome (c) {
         <span class="muted"> · checked every ${g.everyDays || 7} days</span></p>
       ${flat ? `<div class="flag"><strong>Four checks in a row below the mark.</strong>
         That is a signal to change how it is being taught — not to change the goal, and not something
-        she needs to try harder at. Worth raising with whoever teaches this.</div>` : ''}
+        she needs to try harder at. <strong style="display:inline">Take this record to whoever teaches
+        this goal.</strong> Dated checks, and the goal in its own words, are exactly what that
+        conversation needs — and you can have it without me.
+        <span class="offer noprint">If working out what to teach next is the part you'd rather not do alone,
+        that's the part I do: a year of work built from these goals.
+        <a href="/#start">See what that is</a> — the record stays yours either way.</span></div>` : ''}
       <div class="row" style="margin-top:14px">
         <button class="btn btn-primary btn-sm" onclick="openLog('${g.id}')">Write something down</button>
         <button class="btn btn-sm" onclick="go('record')">See the record</button>
@@ -304,6 +314,16 @@ function viewHome (c) {
       <button class="btn btn-sm" onclick="document.getElementById('rf').click()">Restore from a backup</button>
       <input id="rf" type="file" accept="application/json" class="hide" onchange="restore(this)">
     </div>
+  </div>
+  <div class="card noprint">
+    <h2>What this doesn't do</h2>
+    <p class="muted small">It tells you whether something is working. It has nothing for your child to
+    actually do — no lessons, no activities, no teaching. That's a real limit, not a locked feature,
+    and no amount of using this will turn it into the other thing.</p>
+    <p class="muted small">Turning these goals into a year of work built around what your kid can't stop
+    talking about is the part I do by hand, and the part that costs money.
+    <a href="/#start">See what that is</a>. If you never do, keep using this — it was built to be
+    useful on its own, and it's yours.</p>
   </div>
   <p class="footnote">Everything here is stored on this device only. Nothing is uploaded, and there is no account.</p>`
 }

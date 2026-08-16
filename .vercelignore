@@ -5,9 +5,12 @@
 #             that this started with Lamont's autistic niece — family detail
 #             that is nobody else's business
 # VOICE.md    how we talk about the reader; reads badly if the reader finds it
+# SCOPE.md    the licensing boundary and the reasoning behind it — internal legal
+#             thinking, not a customer document
 CLAUDE.md
 CONTEXT.md
 VOICE.md
+SCOPE.md
 
 # Database setup script. Nothing secret in it, but it maps the schema and
 # bucket rules — no reason to hand that to anyone who guesses the filename.

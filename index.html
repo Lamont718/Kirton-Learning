@@ -201,6 +201,25 @@ p{margin:0 0 1.05em}
 .step .body{margin:0;font-size:1rem;color:var(--ink-2)}
 .step .body b{font-weight:600}
 
+/* ---------- scope ---------- */
+.scope{display:grid;gap:18px;margin-top:40px}
+@media(min-width:760px){.scope{grid-template-columns:1fr 1fr;gap:24px}}
+.scope-col{border:1px solid var(--line);border-radius:6px;padding:24px 26px;background:var(--paper-2)}
+.scope-col--yes{border-left:3px solid var(--spark-deep)}
+.scope-col--no{border-left:3px solid var(--ink-3);opacity:.9}
+.scope-tag{font-family:var(--mono);font-size:.69rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--spark-deep);display:block;margin-bottom:16px}
+.scope-col--no .scope-tag{color:var(--ink-3)}
+.scope-col ul{list-style:none;margin:0;padding:0;font-size:.99rem}
+.scope-col li{padding-left:22px;position:relative;margin-bottom:10px;color:var(--ink-2)}
+.scope-col li:last-child{margin-bottom:0}
+.scope-col--yes li::before{content:"";position:absolute;left:0;top:.62em;
+  width:11px;height:2px;background:var(--spark-deep)}
+.scope-col--no li::before{content:"";position:absolute;left:2px;top:.5em;
+  width:9px;height:9px;border:1.5px solid var(--ink-3);border-radius:50%;opacity:.55}
+.scope-note{max-width:64ch;margin-top:24px;color:var(--ink-2);font-size:1rem}
+.scope-note em{font-style:italic}
+
 /* ---------- pricing ---------- */
 .tiers{display:grid;gap:20px;margin-top:46px}
 @media(min-width:820px){.tiers{grid-template-columns:1fr 1fr}}
@@ -343,7 +362,7 @@ details .ans p:last-child{margin-bottom:0}
     <div class="threes">
       <article class="deliv">
         <span class="n">01 — The Blueprint</span>
-        <h3>Every goal, in plain English</h3>
+        <h3>Every academic goal, in plain English</h3>
         <p>I read the whole IEP and write back what each goal actually asks your child to do — no jargon — then map those goals across 36 weeks of work.</p>
       </article>
       <article class="deliv">
@@ -459,6 +478,38 @@ details .ans p:last-child{margin-bottom:0}
     <p class="fineprint">This is the part you can do on your own, and I'd rather you had it either way.
     What the Blueprint below adds is me: I read the whole IEP, build the year of work around what your
     child is actually into, and keep the record with you.</p>
+  </div>
+</section>
+
+<!-- ============ SCOPE ============ -->
+<section class="band" id="scope">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Before you pay</p>
+    <h2 class="narrow">I work the academic goals. That's it — and I want you to know that before you spend anything.</h2>
+
+    <div class="scope">
+      <div class="scope-col scope-col--yes">
+        <span class="scope-tag">What I do</span>
+        <ul>
+          <li>Reading — decoding, fluency, comprehension</li>
+          <li>Writing — sentences, paragraphs, argument</li>
+          <li>Math — the goals as written in the IEP</li>
+        </ul>
+      </div>
+      <div class="scope-col scope-col--no">
+        <span class="scope-tag">What I don't</span>
+        <ul>
+          <li>Speech and language therapy</li>
+          <li>Occupational or physical therapy</li>
+          <li>Counseling, therapy, behavior support</li>
+          <li>Evaluations, diagnosis, or advocacy</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="scope-note">Those are licensed professions. I'm not licensed in any of them, and in New York it isn't legal for someone without those credentials to provide them — no matter how it's worded. So I don't.</p>
+    <p class="scope-note">Here's the part that matters for you: most IEPs contain both kinds of goals. If your daughter has a speech goal <em>and</em> reading and math goals, the speech goal belongs to a licensed SLP — and the reading and math are exactly what I do. She's not a bad fit. She just has more than one person on her team.</p>
+    <p class="scope-note">And if you need names for the rest, ask me. I keep a list of licensed providers around the city and I don't take a dime from anyone on it.</p>
   </div>
 </section>
 

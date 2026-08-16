@@ -9,6 +9,8 @@
 #                that is nobody else's business.
 #   VOICE.md     how we talk about the reader. Reads badly if the reader finds it.
 #   CLAUDE.md    pricing rationale, launch strategy, unbuilt security plans.
+#   SCOPE.md     the licensing boundary and the reasoning behind it. Nothing to
+#                hide, but it is internal legal thinking, not a customer document.
 #   supabase-setup.sql  maps the schema and bucket rules. Nothing secret in it,
 #                but no reason to hand it to anyone who guesses the filename.
 #
@@ -17,6 +19,7 @@
 CLAUDE.md
 CONTEXT.md
 VOICE.md
+SCOPE.md
 supabase-setup.sql
 
 # Never commit secrets or build/deploy scratch.

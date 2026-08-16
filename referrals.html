@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Licensed providers — Kirton Learning for Families</title>
+<meta name="description" content="A free list of licensed speech, OT, PT, counseling and evaluation providers in New York City, for the things Kirton Learning does not do. No payment moves in either direction.">
+<meta name="theme-color" content="#141D2E">
+<!--
+  noindex while the list is empty. An empty page is a bad first impression and a
+  bad search result. Flip this to index,follow and add the URL to sitemap.xml the
+  day the first verified provider goes into referrals.json.
+-->
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://kirtonlearning.com/referrals.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Kirton Learning for Families">
+<meta property="og:url" content="https://kirtonlearning.com/referrals.html">
+<meta property="og:title" content="Licensed providers — Kirton Learning for Families">
+<meta property="og:description" content="A free list of licensed providers in New York City, for the things Kirton Learning does not do.">
+<meta property="og:image" content="https://kirtonlearning.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/fonts/bricolage-grotesque-800-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-serif-4-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --ink:#141D2E;
+  --ink-2:#25324A;
+  --ink-3:#3F4C66;
+  --paper:#F4F2EC;
+  --paper-2:#FBFAF7;
+  --spark:#E8A33D;
+  --spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);
+  --line-dark:rgba(244,242,236,.16);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+
+.wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 22px}
+.narrow{max-width:760px}
+
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(2rem,5.4vw,3.2rem)}
+h2{font-size:clamp(1.35rem,3vw,1.85rem);margin:2.6em 0 .7em}
+h3{font-size:1.08rem;font-weight:700;letter-spacing:-.01em;margin:1.9em 0 .5em}
+p{margin:0 0 1.05em}
+
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spark);margin:0 0 1.4rem;
+}
+
+/* ---------- header ---------- */
+.head{
+  background:var(--ink);color:var(--paper);
+  padding:clamp(30px,5vw,48px) 0 clamp(46px,7vw,68px);
+}
+.brandbar{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--display);font-weight:700;letter-spacing:-.01em;
+  font-size:1.02rem;margin-bottom:clamp(38px,6vw,60px);
+  text-decoration:none;
+}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--spark);flex:none}
+.brandbar .thin{
+  font-family:var(--mono);font-weight:400;font-size:.72rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(244,242,236,.72);margin-left:auto;
+}
+.head h1{max-width:20ch}
+.head .stamp{
+  margin:1.4rem 0 0;font-family:var(--mono);font-size:.76rem;letter-spacing:.05em;
+  color:rgba(244,242,236,.72);
+}
+
+/* ---------- body ---------- */
+.doc{padding:clamp(46px,7vw,78px) 0 clamp(60px,8vw,96px)}
+.doc h2:first-of-type{margin-top:0}
+.doc ul{margin:0 0 1.2em;padding:0;list-style:none}
+.doc li{padding-left:24px;position:relative;margin-bottom:.65em;color:var(--ink-2)}
+.doc li::before{
+  content:"";position:absolute;left:0;top:.66em;width:11px;height:2px;background:var(--spark-deep);
+}
+.doc strong{font-weight:600}
+
+.tldr{
+  background:var(--paper-2);border:1px solid var(--line);border-left:3px solid var(--spark);
+  border-radius:6px;padding:26px 26px 8px;margin:0 0 1.6em;
+}
+.tldr .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--spark-deep);margin:0 0 14px;
+}
+.tldr li{margin-bottom:.7em}
+
+.callout{
+  border-left:3px solid var(--spark);padding-left:18px;margin:1.6em 0;
+  color:var(--ink-2);
+}
+
+/* ---------- the list ---------- */
+.empty{
+  border:1px dashed var(--line);border-radius:6px;background:var(--paper-2);
+  padding:30px 28px;margin:0 0 1.4em;color:var(--ink-2);
+}
+.empty .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 14px;
+}
+.empty p:last-child{margin-bottom:0}
+
+.group{margin:0 0 2.4em}
+.group > h3{
+  font-family:var(--mono);font-size:.72rem;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--spark-deep);
+  margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--ink);
+}
+.cards{display:grid;gap:16px}
+@media(min-width:760px){.cards{grid-template-columns:1fr 1fr;gap:18px}}
+.card{
+  border:1px solid var(--line);border-radius:6px;background:var(--paper-2);
+  padding:22px 24px;
+}
+.card h4{
+  font-family:var(--display);font-weight:800;font-size:1.06rem;letter-spacing:-.01em;
+  margin:0 0 4px;line-height:1.2;
+}
+.card .lic{
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--ink-3);
+  margin:0 0 14px;
+}
+.card dl{margin:0;font-size:.94rem}
+.card dt{
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);margin:10px 0 2px;
+}
+.card dd{margin:0;color:var(--ink-2)}
+.card .contact{margin:16px 0 0;font-size:.94rem}
+.card .contact a{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+
+.fields{
+  border:1px solid var(--line);border-radius:6px;padding:22px 24px;background:var(--paper-2);
+  margin:0 0 1.4em;
+}
+.fields .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--spark-deep);margin:0 0 14px;
+}
+.fields ul{margin:0}
+.fields li:last-child{margin-bottom:0}
+
+.disclaimer{
+  background:var(--ink);color:var(--paper);border-radius:6px;
+  padding:28px 28px;margin:2.4em 0 0;
+}
+.disclaimer .kicker{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--spark);margin:0 0 14px;
+}
+.disclaimer p{margin:0;color:rgba(244,242,236,.88);font-size:1rem}
+.disclaimer a{color:var(--paper)}
+
+/* ---------- footer ---------- */
+.foot{background:var(--ink);color:var(--paper);padding:clamp(46px,7vw,70px) 0 40px}
+.foot .back{
+  font-family:var(--display);font-weight:700;font-size:1.02rem;
+  text-decoration:none;border-bottom:2px solid var(--spark);padding-bottom:2px;
+}
+.legal{
+  margin-top:44px;padding-top:24px;border-top:1px solid var(--line-dark);
+  font-family:var(--mono);font-size:.74rem;line-height:1.8;
+  color:rgba(244,242,236,.72);max-width:78ch;
+}
+.legal a{color:var(--paper)}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brandbar" href="/">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Kirton Learning</span>
+      <span class="thin">for families</span>
+    </a>
+    <p class="eyebrow">Referrals</p>
+    <h1>Licensed people, for the things I don't do.</h1>
+    <p class="stamp">Free · No payment moves in either direction · Our Rose LLC, Brooklyn, NY</p>
+  </div>
+</header>
+
+<main class="doc">
+  <div class="wrap narrow">
+
+    <div class="tldr">
+      <p class="kicker">The short version</p>
+      <ul>
+        <li>I work the academic goals in an IEP — reading, writing, math. That's the whole of what I do.</li>
+        <li>Speech, OT, PT, counseling, behavior work and evaluations are licensed professions. I hold none of those licenses, so I don't do any of it.</li>
+        <li>This page is where I put the names instead. It costs you nothing and it costs them nothing.</li>
+        <li><strong>Nobody pays to be on this list and I receive nothing if you call them.</strong> No fees, no referral arrangements, no sponsored placement. That is not a courtesy — it's the law in New York, and it's the only reason a list like this is worth reading.</li>
+        <li>I list a license number and the date I checked it, so you can check it too.</li>
+      </ul>
+    </div>
+
+    <p>Most IEPs contain two kinds of goals: academic ones, and related-service ones. If your daughter has a speech goal <em>and</em> reading and math goals, the speech goal belongs to a licensed speech-language pathologist — and the reading and math are exactly what I do. She isn't a bad fit for me. She just has more than one person on her team, and this page is for finding the others.</p>
+
+    <h2>The list</h2>
+
+    <div id="list" aria-live="polite">
+      <div class="empty">
+        <p class="kicker">Nothing here yet</p>
+        <p>I'm building this list one provider at a time, and I'm not putting a name on it until I've looked up their license myself. Padding it out with names off a search results page would make it longer and worthless.</p>
+        <p>If you need someone right now, email me and tell me what you're looking for and what insurance you have. If I know somebody, I'll say so. If I don't, I'll say that too.<br>
+        <strong><a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a></strong></p>
+      </div>
+    </div>
+
+    <div class="fields">
+      <p class="kicker">What each listing will show</p>
+      <ul>
+        <li>Provider or practice name, and discipline</li>
+        <li>License number, and the date I last checked it</li>
+        <li>Neighborhoods served, and languages spoken</li>
+        <li><strong>Insurance accepted</strong></li>
+        <li><strong>Whether they take DOE Related Services Authorizations (RSA) or P-3 / P-4 vouchers</strong></li>
+        <li>Phone and website</li>
+      </ul>
+      <p style="margin:0;color:var(--ink-2);font-size:.96rem">The last two are in bold on purpose. What actually stops families is cost and paperwork, not a shortage of names.</p>
+    </div>
+
+    <h2>What I'm covering</h2>
+    <p>The categories this list is being built out across:</p>
+    <ul>
+      <li>Speech-language pathology</li>
+      <li>Occupational therapy and physical therapy</li>
+      <li>Child psychology and psychiatry</li>
+      <li>Mental health counseling and family therapy</li>
+      <li>Applied behavior analysis</li>
+      <li>Neuropsychological evaluation</li>
+      <li>Special education advocates and attorneys</li>
+      <li>Bilingual providers — Spanish, Haitian Creole, Yiddish, Mandarin</li>
+      <li>Parent training and support groups</li>
+    </ul>
+
+    <h2>Something you may already be owed</h2>
+    <p>A lot of families pay out of pocket for a service their child's IEP already mandates. It's worth knowing how that's supposed to work.</p>
+    <p>When a district can't staff a related service that's written into an IEP — speech, OT, PT, counseling — it can issue a <strong>Related Services Authorization</strong>, an RSA. An RSA lets you find an independent provider yourself and have the district pay for it. <strong>P-3</strong> and <strong>P-4</strong> vouchers work similarly for other mandated services.</p>
+    <p>That's the mechanism, stated plainly. It is not advice about your child's situation. I can't tell you whether your district has done anything wrong, whether you qualify, or how a case would come out — that's advocacy and legal work, and I don't do either. Ask your child's IEP team or the Committee on Special Education, start at <a href="https://www.schools.nyc.gov" rel="noopener">schools.nyc.gov</a>, and know that there are advocacy organizations in this city that help families with exactly this for free.</p>
+
+    <h2>Being on this list, or coming off it</h2>
+    <p>If you're a provider and you'd like to be considered, email me. I'll verify your license through the NYSED Office of the Professions before anything goes up, and I'll re-check it every six months. I don't accept payment for a listing and I won't enter a reciprocal arrangement, so please don't offer.</p>
+    <p><strong>If you're listed and you want off, say so and you're off within a week.</strong> No questions and no reason needed.</p>
+
+    <div class="disclaimer">
+      <p class="kicker">Please read this part</p>
+      <p>These are licensed providers in the New York City area, offered as a starting point for families. We are not affiliated with them, we receive no payment for listing them, and we receive nothing if you contact them. We have not evaluated the quality of their care. Confirm any provider's current license with the <a href="https://www.op.nysed.gov" rel="noopener">NYSED Office of the Professions</a> and confirm their insurance and availability yourself.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap narrow">
+    <a class="back" href="/">← Back to Kirton Learning</a>
+    <p class="legal">
+      Kirton Learning is a program of Our Rose LLC, Brooklyn, NY. Kirton Learning provides supplemental educational coaching — reading, writing and mathematics — built from the academic goals in a child's IEP. It is not special education advocacy, legal advice, medical advice, diagnosis, or therapy, and it does not replace the services your school district is required to provide under your child's IEP. No payment is accepted or offered for any referral listed on this page.
+      <br><br>
+      <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms of service</a> · <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+/* Renders referrals.json into #list. No tracking of any kind: no analytics, no
+   click handlers on outbound links, nothing sent anywhere. The whole point of
+   this page is that we gain nothing from it. */
+(function () {
+  var mount = document.getElementById('list');
+  var fallback = mount.innerHTML;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function row(label, value) {
+    if (!value) return '';                       // hide blanks rather than print a guess
+    return '<dt>' + esc(label) + '</dt><dd>' + esc(value) + '</dd>';
+  }
+
+  function card(p) {
+    var lic = p.license
+      ? 'License ' + esc(p.license) + (p.licenseCheckedOn ? ' · checked ' + esc(p.licenseCheckedOn) : '')
+      : '';
+    var contact = [];
+    if (p.phone) contact.push('<a href="tel:' + esc(String(p.phone).replace(/[^0-9+]/g, '')) + '">' + esc(p.phone) + '</a>');
+    if (p.website) contact.push('<a href="' + esc(p.website) + '" rel="noopener">Website</a>');
+
+    return '<article class="card">' +
+      '<h4>' + esc(p.name) + '</h4>' +
+      (lic ? '<p class="lic">' + lic + '</p>' : '') +
+      '<dl>' +
+        row('Neighborhoods', p.neighborhoods) +
+        row('Languages', p.languages) +
+        row('Insurance', p.insurance) +
+        row('RSA / P-3 / P-4', p.rsa) +
+      '</dl>' +
+      (contact.length ? '<p class="contact">' + contact.join(' · ') + '</p>' : '') +
+    '</article>';
+  }
+
+  fetch('/referrals.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      var list = (data && Array.isArray(data.providers) ? data.providers : [])
+        .filter(function (p) { return p && p.name; });
+      if (!list.length) return;                  // keep the written empty state
+
+      var groups = {};
+      list.forEach(function (p) {
+        var k = p.discipline || 'Other';
+        (groups[k] = groups[k] || []).push(p);
+      });
+
+      mount.innerHTML = Object.keys(groups).sort().map(function (k) {
+        return '<section class="group"><h3>' + esc(k) + '</h3><div class="cards">' +
+          groups[k].map(card).join('') +
+        '</div></section>';
+      }).join('');
+    })
+    .catch(function () { mount.innerHTML = fallback; });
+})();
+</script>
+
+</body>
+</html>

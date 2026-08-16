@@ -1,0 +1,38 @@
+{
+  "_howToEdit": [
+    "This file is the referral list. Edit it here — no developer needed, no rebuild.",
+    "Add one object per provider inside the \"providers\" array below, copying \"_template\".",
+    "The page groups providers automatically by whatever you type in \"discipline\".",
+    "",
+    "BEFORE YOU ADD ANYONE:",
+    "1. Look them up in the NYSED Office of the Professions license verification tool.",
+    "2. Put the license number in \"license\" and today's date in \"licenseCheckedOn\".",
+    "3. Re-check every listed provider every 6 months and update \"licenseCheckedOn\".",
+    "   A listed provider whose license has lapsed becomes our problem, not theirs.",
+    "",
+    "NEVER: take or offer money, a fee, or a reciprocal arrangement for any listing.",
+    "NEVER: write \"recommended\", \"vetted\", \"approved\", or \"trusted\" anywhere in here.",
+    "ALWAYS: remove anyone who asks, within a week, no questions.",
+    "",
+    "\"insurance\" and \"rsa\" matter most to a parent. Cost and paperwork are what actually",
+    "stop families — not a shortage of names. Fill those two in even when they are ugly.",
+    "",
+    "Leave a field as an empty string if you don't know it yet. The page hides blanks",
+    "rather than printing a guess."
+  ],
+
+  "_template": {
+    "name": "",
+    "discipline": "Speech-language pathology",
+    "license": "",
+    "licenseCheckedOn": "",
+    "neighborhoods": "",
+    "languages": "",
+    "insurance": "",
+    "rsa": "",
+    "phone": "",
+    "website": ""
+  },
+
+  "providers": []
+}

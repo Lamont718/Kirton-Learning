@@ -8,7 +8,12 @@ import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-const ORIGIN = process.env.ORIGIN || 'https://iep-record.vercel.app'
+// The tool moved from its own project (iep-record.vercel.app, now dead) to /record/
+// on the main site. Pointing this at the site ROOT is the trap: the first check fails
+// and the second throws "Cannot set properties of null", which reads like a broken app
+// and is really a wrong path. The trailing slash matters too — at /record the service
+// worker resolves against /, 404s, and offline quietly stops being true.
+const ORIGIN = process.env.ORIGIN || 'https://kirtonlearning.com/record/'
 const PORT = 9501
 const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))

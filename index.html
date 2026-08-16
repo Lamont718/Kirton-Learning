@@ -113,6 +113,12 @@ p{margin:0 0 1.05em}
   padding:8px 14px;border-radius:999px;cursor:pointer;transition:.18s;
 }
 .switch button[aria-pressed="true"]{background:var(--spark);color:var(--ink);font-weight:500}
+/* On a phone these came out 30px tall. This toggle is the argument the whole page
+   rests on, and most parents arrive here from a text message — a thumb has to be
+   able to hit it. Mobile only, so the approved desktop header is unchanged. */
+@media(max-width:759px){
+  .switch button{display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+}
 
 .panes{position:relative}
 .pane{display:none}

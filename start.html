@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kirton Learning — you're in, here's what happens now</title>
+<meta name="description" content="What happens in the first week, where the work happens, and how to send the record back.">
+<meta name="theme-color" content="#141D2E">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/bricolage-grotesque-800-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-serif-4-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
+  --paper:#F4F2EC; --paper-2:#FBFAF7;
+  --spark:#E8A33D; --spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:760px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(1.9rem,5vw,2.9rem)}
+h2{font-size:clamp(1.25rem,3vw,1.6rem);margin:0 0 12px}
+h3{font-size:1.02rem;font-weight:700;margin:0 0 6px}
+p{margin:0 0 1rem}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spark);margin:0 0 1.2rem}
+
+.head{background:var(--ink);color:var(--paper);padding:clamp(28px,5vw,42px) 0 clamp(40px,6vw,60px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1rem;margin-bottom:clamp(34px,6vw,52px)}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--spark);flex:none}
+.brandbar a{text-decoration:none}
+.head h1{max-width:20ch}
+.head .sub{max-width:54ch;margin-top:1.3rem;font-size:1.08rem;color:rgba(244,242,236,.84)}
+
+section{padding:clamp(38px,6vw,58px) 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:0}
+.lede{max-width:60ch;color:var(--ink-2)}
+
+.two{display:grid;gap:18px;margin-top:22px}
+@media(min-width:680px){.two{grid-template-columns:1fr 1fr;gap:22px}}
+.card{background:#fff;border:1px solid var(--line);border-radius:5px;padding:22px 24px}
+.card--is{border-left:3px solid var(--spark)}
+.card--isnot{border-left:3px solid var(--ink-3)}
+.card ul{list-style:none;margin:0;padding:0}
+.card li{padding-left:22px;position:relative;margin-bottom:11px;font-size:.96rem;color:var(--ink-2)}
+.card li:last-child{margin-bottom:0}
+.card li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:2px;background:var(--spark-deep)}
+.card--isnot li::before{background:var(--ink-3)}
+
+.cta{display:block;background:rgba(232,163,61,.12);border:1px solid rgba(232,163,61,.5);
+  border-radius:6px;padding:24px 26px;margin-top:8px;text-decoration:none}
+.cta:hover{background:rgba(232,163,61,.2)}
+.cta .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--spark-deep);display:block;margin-bottom:9px}
+.cta h3{font-size:1.25rem;margin-bottom:6px}
+.cta p{margin:0;color:var(--ink-2);font-size:.96rem}
+.cta .url{font-family:var(--mono);font-size:.82rem;color:var(--spark-deep);
+  display:block;margin-top:12px;word-break:break-all}
+
+.fit{margin-top:20px}
+.fitrow{display:grid;gap:4px 18px;padding:15px 0;border-top:1px dashed var(--line)}
+.fitrow:first-child{border-top:0}
+.fitk{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--spark-deep)}
+.fitrow p{margin:0;font-size:.97rem;color:var(--ink-2)}
+@media(min-width:680px){.fitrow{grid-template-columns:150px 1fr;align-items:baseline}}
+
+.price{background:#fff;border:1px solid var(--line);border-radius:5px;
+  padding:22px 24px;margin-top:20px}
+.pricerow{display:flex;gap:16px;align-items:baseline;padding:12px 0;border-top:1px dashed var(--line)}
+.pricerow:first-child{border-top:0}
+.pricerow b{font-family:var(--display);font-size:1.05rem;flex:none;min-width:112px}
+.pricerow span{font-size:.95rem;color:var(--ink-2)}
+
+.note{background:var(--paper-2);border:1px solid var(--line);
+  border-left:3px solid var(--spark-deep);border-radius:4px;padding:20px 22px;margin-top:20px}
+.note p:last-child{margin-bottom:0}
+.note strong{font-weight:700}
+
+.stand{background:var(--ink);color:var(--paper);border-radius:6px;padding:26px 28px;margin-top:20px}
+.stand h2{color:var(--paper)}
+.stand p{color:rgba(244,242,236,.86)}
+.stand p:last-child{margin-bottom:0}
+.stand em{color:var(--spark);font-style:normal;font-weight:600}
+
+.ask{list-style:none;margin:20px 0 0;padding:0;counter-reset:a}
+.ask li{counter-increment:a;position:relative;padding-left:42px;margin-bottom:18px}
+.ask li::before{content:counter(a,decimal-leading-zero);position:absolute;left:0;top:.05em;
+  font-family:var(--mono);font-size:.8rem;color:var(--spark-deep)}
+.ask b{font-family:var(--display);display:block;margin-bottom:3px}
+.ask p{margin:0;font-size:.96rem;color:var(--ink-2)}
+
+.foot{background:var(--ink);color:var(--paper);padding:36px 0 44px;margin-top:0}
+.foot p{color:rgba(244,242,236,.8);font-size:.95rem}
+.foot a{color:var(--spark)}
+.foot .fine{font-size:.82rem;color:rgba(244,242,236,.62);margin-top:18px;margin-bottom:0}
+
+@media print{
+  body{background:#fff;font-size:10.5pt}
+  .head,.stand,.foot{background:#fff!important;color:#000!important}
+  .head h1,.stand h2,.foot p{color:#000!important}
+  .head .sub,.stand p{color:#222!important}
+  .stand em{color:#000!important}
+  .cta{background:#fff!important}
+  section{padding:16pt 0;break-inside:avoid}
+  .card,.price,.note,.stand{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <div class="brandbar"><span class="dot"></span><a href="/">Kirton Learning</a></div>
+    <p class="eyebrow">You're in</p>
+    <h1>What happens now.</h1>
+    <p class="sub">One page. Read it once, then you can forget most of it — I'll email you at
+      each step anyway. Keep this link; it does not expire.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>The first five business days</h2>
+    <p class="lede">Nothing is needed from you except the IEP, and I'll send you a private way to
+      send it.</p>
+    <ol class="ask">
+      <li><b>A private upload link, by email</b>
+        <p>It arrives from me after checkout. The IEP goes straight into an encrypted folder only
+          I can open. Never send it over regular email, and never to this website — if anything
+          asks you to, it isn't me.</p></li>
+      <li><b>I read the whole document</b>
+        <p>Every academic goal, the present levels, and the accommodations on page eight. Five
+          business days.</p></li>
+      <li><b>The Blueprint, then a call</b>
+        <p>Thirty minutes, on the phone, where I walk you through what I found and what the year
+          looks like. Bring questions. Bring the parts of the IEP nobody has ever explained.</p></li>
+    </ol>
+    <div class="note">
+      <p><strong>If you change your mind, tell me within fourteen days of getting your Blueprint
+        and I refund it in full.</strong> You keep the Blueprint either way.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Where the work actually happens</h2>
+    <p class="lede">Your child's work runs in a separate app. It is built around the goals in her
+      IEP, at the level the goal is written at, with the accommodations the document already calls
+      for.</p>
+
+    <a class="cta" href="https://kirton-learn.vercel.app/">
+      <span class="k">The work</span>
+      <h3>Open the app</h3>
+      <p>Put her goals in word for word — or open the IEP and let it read them out for you — pick
+        which engine works each one, and she can start. Nothing is uploaded and there is no
+        account.</p>
+      <span class="url">kirton-learn.vercel.app</span>
+    </a>
+
+    <div class="two">
+      <div class="card card--is">
+        <h3>Two things worth knowing on day one</h3>
+        <ul>
+          <li><b>Use one device.</b> Everything lives in the browser you use, so work done on a
+            phone is not on the tablet. If you have already used two, save a copy from each and
+            use Restore — it offers to add them together rather than replace.</li>
+          <li><b>Save a copy now and then.</b> The record is on your device and nowhere else,
+            which is the point — and it means a cleared browser takes it with it. The record page
+            has a button for it.</li>
+        </ul>
+      </div>
+      <div class="card card--isnot">
+        <h3>If something looks wrong</h3>
+        <ul>
+          <li><b>"Nothing is being saved on this device."</b> Your browser is refusing to store
+            anything — usually a private window, or site data blocked for that address. Save a
+            copy to a file before you close the tab, then open the app in a normal window.</li>
+          <li><b>"Something is wrong with the saved record."</b> Nothing has been deleted. Save
+            the damaged file first, then restore from a copy you kept. Send me both and I'll
+            look.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Sending me the record</h2>
+    <p class="lede">The record never leaves your device on its own. When I need to see how the
+      year is going, I ask for it — and you decide whether to send it.</p>
+    <div class="fit">
+      <div class="fitrow"><span class="fitk">When</span>
+        <p>Before each of our calls, and before an IEP meeting if you'd like me to read it first.</p></div>
+      <div class="fitrow"><span class="fitk">What to send</span>
+        <p>Open <b>The record</b> in the app, set the date range to the period we're talking about,
+          and use <b>Print</b> — then save it as a PDF instead of printing it.</p></div>
+      <div class="fitrow"><span class="fitk">How</span>
+        <p>Through a private link I send you, the same kind you used for the IEP.
+          <b>Never over regular email.</b> It has her name and her goals in it, word for word, and
+          it deserves the same care the IEP gets.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="stand">
+      <h2>What I don't do</h2>
+      <p>I work the <em>academic</em> goals — reading, writing and maths. Speech, occupational
+        therapy, physical therapy, counselling and behaviour support are licensed professions and
+        I am not licensed in any of them, so I cannot work those goals at any price.</p>
+      <p>Most IEPs hold both kinds. That does not make your child a bad fit — it means she has
+        more than one person on her team. When you open her IEP in the app, it will tell you which
+        goals are which.</p>
+      <p><a href="/#scope">The longer version is on the front page.</a></p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Anything at all</h2>
+    <p class="lede">If you are stuck, if something in the app is confusing, if the work is too
+      hard or too easy, or if a week went badly — tell me. Especially if a week went badly. That
+      is the part I need to hear about, and it is the part people go quiet about.</p>
+    <p><a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a></p>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <p><strong>Lamont Kirton</strong><br>
+    Kirton Learning, a program of Our Rose LLC — Brooklyn, New York<br>
+    <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a></p>
+    <p class="fine">Kirton Learning is a private supplemental service. It is not special education advocacy, not legal advice, and not a diagnostic or evaluative service, and it does not replace services mandated by a school district. Plans are aligned to a child's IEP goals; they do not meet, satisfy, or fulfill IEP requirements.</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -10,6 +10,10 @@ const SITE = process.env.SITE || 'https://kirtonlearning.com'
 const PAGES = [
   '/', '/demo.html', '/privacy.html', '/terms.html',
   '/partner.html', '/refer.html', '/referrals.html', '/upload.html', '/record/',
+  // Where a family lands after paying. noindex and unlinked from the public
+  // pages on purpose — it is for people who have already bought, and it is the
+  // only place the delivery app is named.
+  '/start.html',
 ]
 
 let pass = 0, fail = 0, warn = 0

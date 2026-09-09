@@ -501,6 +501,19 @@ details .ans b{font-weight:600;color:var(--ink)}
 @media print{.draft,.nav,.rtabs{display:none}.rpane{display:block!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.001ms!important}}
+
+/* Touch targets. These are controls, not words inside a sentence, and at 16-22px
+   tall they sit under the 24px minimum — hard to hit for someone reading this
+   one-handed on a phone. The hit area is grown with a pseudo-element, so it gets
+   bigger without anything on the page moving. */
+.nav a,.qa .more,.more,.brandbar .back,.back,.route p a{position:relative}
+.nav a::after,.qa .more::after,.more::after,.brandbar .back::after,
+.back::after,.route p a::after{content:"";position:absolute;left:0;right:0;
+  top:50%;height:32px;transform:translateY(-50%)}
+
+/* The "More in ..." links sit as close as 30px apart in the question list,
+   so theirs is 28px — still over the 24px minimum, and it clears the one below. */
+.qa .more::after,.more::after{height:28px}
 </style>
 </head>
 <body>
@@ -731,7 +744,7 @@ details .ans b{font-weight:600;color:var(--ink)}
         </div></details>
     </div>
 
-    <p style="margin:1.5rem 0 0"><a class="more" href="/start/">Every question, on its own page →</a></p>
+    <p style="margin:2.75rem 0 0"><a class="more" href="/start/">Every question, on its own page →</a></p>
 
     <div class="faq__lost">
       <span class="k">If you read nothing else</span>

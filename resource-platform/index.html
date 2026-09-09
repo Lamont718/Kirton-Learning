@@ -86,7 +86,7 @@ p{margin:0 0 1.05em}
   border:2px solid var(--line);background:var(--paper-2);color:var(--ink-3);
   padding:12px 18px;border-radius:5px;cursor:pointer;transition:.15s;text-align:left;line-height:1.25}
 .rtabs button small{display:block;font-family:var(--mono);font-weight:400;font-size:.64rem;
-  letter-spacing:.09em;text-transform:uppercase;margin-top:4px;opacity:.75}
+  letter-spacing:.09em;text-transform:uppercase;margin-top:4px;opacity:.9}
 .rtabs button:hover{border-color:var(--accent-deep);color:var(--ink)}
 .rtabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 .rpane{display:none}
@@ -244,6 +244,9 @@ p{margin:0 0 1.05em}
   background:rgba(166,64,47,.12);color:var(--warn);font-size:.68rem;letter-spacing:.04em}
 .src .chk--ok{background:rgba(46,125,91,.14);color:var(--free)}
 .band--dark .src{border-top-color:var(--line-dark);color:rgba(244,242,236,.55)}
+/* The same chip on the dark band: the ink-on-paper reds measure 2.53 and 3.14 there. */
+.band--dark .src .chk{color:#EFA08D}
+.band--dark .src .chk--ok{color:#7FCFA6}
 .band--dark .src b{color:rgba(244,242,236,.8)}
 .band--dark .src a{color:var(--accent)}
 .srcbox{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;
@@ -311,7 +314,7 @@ p{margin:0 0 1.05em}
   border:2px solid var(--line);background:var(--paper-2);color:var(--ink-3);
   padding:10px 14px;border-radius:5px;cursor:pointer;transition:.15s;line-height:1.25}
 .tk__langs button small{display:block;font-family:var(--mono);font-weight:400;
-  font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;opacity:.7}
+  font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;opacity:.9}
 .tk__langs button:hover{border-color:var(--accent-deep);color:var(--ink)}
 .tk__langs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
 .tk__form{display:grid;gap:14px}
@@ -399,7 +402,7 @@ p{margin:0 0 1.05em}
 .freebox{background:rgba(46,125,91,.09);border:1px solid rgba(46,125,91,.4);
   border-radius:6px;padding:24px 26px;margin-top:32px}
 .freebox .tag{font-family:var(--mono);font-size:.67rem;letter-spacing:.13em;
-  text-transform:uppercase;color:var(--free);display:block;margin-bottom:11px}
+  text-transform:uppercase;color:#256848;display:block;margin-bottom:11px}
 .freebox h3{margin-bottom:11px;font-size:1.24rem}
 .freelist{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:11px}
 @media(min-width:700px){.freelist{grid-template-columns:1fr 1fr}}
@@ -494,7 +497,7 @@ details .ans b{font-weight:600;color:var(--ink)}
 .stamp{margin-top:28px;font-family:var(--mono);font-size:.75rem;color:rgba(244,242,236,.5)}
 .legal{margin-top:30px;padding-top:20px;border-top:1px solid var(--line-dark);
   font-family:var(--mono);font-size:.72rem;line-height:1.75;
-  color:rgba(244,242,236,.45);max-width:78ch}
+  color:rgba(244,242,236,.58);max-width:78ch}
 @media print{.draft,.nav,.rtabs{display:none}.rpane{display:block!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
   *,*::before,*::after{transition-duration:.001ms!important}}
@@ -510,7 +513,7 @@ details .ans b{font-weight:600;color:var(--ink)}
   <div class="wrap">
     <div class="brandbar">
       <span class="dot" aria-hidden="true"></span>
-      <a href="/">Kirton Learning</a>
+      <a href="https://kirtonlearning.com/">Kirton Learning</a>
       <span class="lang">EN · ES · HT</span>
     </div>
 
@@ -1261,8 +1264,8 @@ details .ans b{font-weight:600;color:var(--ink)}
     <h2 class="narrow">Once there's an IEP, there's the other question: what does she actually do all year?</h2>
     <p class="lede" style="color:rgba(244,242,236,.82)">That's the part we work on — taking the reading, writing, and math goals already in the IEP and building a year of real projects around them, plus a dated record for the next meeting. Everything on this page stays free either way.</p>
     <div class="cta-row">
-      <a class="btn btn--go" href="/">See how that works</a>
-      <a class="btn btn--ghost" href="/record/">The free record tool</a>
+      <a class="btn btn--go" href="https://kirtonlearning.com/">See how that works</a>
+      <a class="btn btn--ghost" href="https://kirtonlearning.com/record/">The free record tool</a>
     </div>
     <p class="stamp">Last reviewed: <b data-fact-reviewed>not yet reviewed</b> · <a href="#help" style="color:var(--accent)">See where every fact comes from</a></p>
     <p class="legal">

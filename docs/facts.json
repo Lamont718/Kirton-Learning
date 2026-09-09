@@ -9,13 +9,17 @@
       "Re-verify school-year timelines each August; everything else every six months.",
       "If a source URL 404s or the page has changed materially, set status back to 'unverified' immediately."
     ],
-    "status_values": ["unverified", "verified", "stale"],
+    "status_values": [
+      "unverified",
+      "verified",
+      "stale"
+    ],
     "last_full_review": null,
     "next_review_due": "2026-08-01",
     "compiled_on": "2026-09-09",
-    "compiled_by": "drafted from public sources; NOT yet reviewed by a practitioner"
+    "compiled_by": "drafted from public sources; NOT yet reviewed by a practitioner",
+    "machine_fields": "Some entries carry a numeric twin of their prose value so the deadline calculator can do arithmetic with them (days, hours, month, day). The twin is the SAME claim from the SAME source, not a new one — when you verify the prose, check the number in the same pass, and if one changes change both."
   },
-
   "committees": {
     "early_intervention": {
       "label": "Early Intervention (EI)",
@@ -26,7 +30,9 @@
       "transition_note": "Children in EI should be referred to CPSE for evaluation about four months before becoming eligible for preschool services.",
       "source": "https://includenyc.org/help-center/resources/preschool-special-education/",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "transition_referral_months_before_third_birthday": 4,
+      "machine_twin_of": "transition_note"
     },
     "cpse": {
       "label": "Committee on Preschool Special Education (CPSE)",
@@ -61,7 +67,6 @@
       "status": "unverified"
     }
   },
-
   "timelines": {
     "evaluation_completion": {
       "value": "60 calendar days",
@@ -71,14 +76,18 @@
       "source": "https://specialedstartguide.com/blog/new-york-what-is-an-iep",
       "verify_against": "Primary source is NYSED Part 200. Confirm before publishing.",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "days": 60,
+      "machine_twin_of": "value"
     },
     "turning_5_notice_window": {
       "value": "December through August",
       "what": "The blue Notice of Referral is sent after a referral is received.",
       "source": "https://www.p771k.org/turning5.html",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "opens_month": 12,
+      "machine_twin_of": "value"
     },
     "turning_5_no_letter_deadline": {
       "value": "February 1",
@@ -86,7 +95,10 @@
       "why_it_matters": "Highest-value single date on the site. A late start compounds into a missed IEP deadline.",
       "source": "https://includenyc.org/help-center/resources/turning-5-preschoolers-transitioning-to-kindergarten/",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "month": 2,
+      "day": 1,
+      "machine_twin_of": "value"
     },
     "turning_5_contact_window": {
       "value": "January through March",
@@ -113,7 +125,9 @@
       "value": "at least 72 hours before the meeting, in writing",
       "source": "https://www.schools.nyc.gov/learning/special-education/the-iep-process/iep-meeting",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "hours": 72,
+      "machine_twin_of": "value"
     },
     "d75_initial_referral": {
       "value": "within 60 days of the date consent to evaluate was given",
@@ -122,7 +136,6 @@
       "status": "unverified"
     }
   },
-
   "eligibility_warnings": {
     "preschool_to_school_age": {
       "warning": "Preschool and school-age eligibility use different criteria. A child who qualified under CPSE does not automatically qualify under CSE, and preschool services do not automatically carry over.",
@@ -132,7 +145,6 @@
       "status": "unverified"
     }
   },
-
   "placement": {
     "lre_principle": {
       "label": "Least Restrictive Environment",
@@ -143,17 +155,37 @@
       "status": "unverified"
     },
     "continuum": [
-      {"order": 1, "name": "General education with related services and supports"},
-      {"order": 2, "name": "ICT — Integrated Co-Teaching", "detail": "One general education teacher and one special education teacher in the same room, serving students with and without IEPs."},
-      {"order": 3, "name": "Special class in a community school", "detail": "Smaller self-contained class inside a regular school building."},
-      {"order": 4, "name": "District 75", "detail": "Citywide district for students with the most significant disabilities."}
+      {
+        "order": 1,
+        "name": "General education with related services and supports"
+      },
+      {
+        "order": 2,
+        "name": "ICT — Integrated Co-Teaching",
+        "detail": "One general education teacher and one special education teacher in the same room, serving students with and without IEPs."
+      },
+      {
+        "order": 3,
+        "name": "Special class in a community school",
+        "detail": "Smaller self-contained class inside a regular school building."
+      },
+      {
+        "order": 4,
+        "name": "District 75",
+        "detail": "Citywide district for students with the most significant disabilities."
+      }
     ],
     "district_75": {
       "what": "A citywide service district, not a geographic one, providing highly specialized instructional support.",
       "serves": "Students ages 3 to 21 with significant challenges including autism spectrum disorders, significant cognitive delays, emotional disabilities, sensory impairments, and multiple disabilities.",
       "student_count": "more than 23,000",
       "sites": "roughly 69 schools and programs across more than 300 sites",
-      "class_ratios": ["12:1:1", "8:1:1", "6:1:1", "12:1:4"],
+      "class_ratios": [
+        "12:1:1",
+        "8:1:1",
+        "6:1:1",
+        "12:1:4"
+      ],
       "placement_process": "If a D75 program is recommended, the school team or the CSE refers the student. Placement is generally within the student's borough, as close to home as possible.",
       "transportation": "Students in D75 programs are entitled to travel by school bus.",
       "critical_correction": "An autism classification does not by itself mean District 75. Most children with disabilities attend ordinary NYC public schools and receive services there. Some D75 students attend classes with general education peers.",
@@ -166,21 +198,48 @@
     "specialized_autism_programs": {
       "editorial_note": "Describe what each program is. NEVER suggest which one a child should be in — that is an IEP team decision. Ask the team about them by name.",
       "programs": [
-        {"name": "ASD Nest", "detail": "Integrated, reduced-size class in a community school for autistic students at or above grade level who require minimal support."},
-        {"name": "ASD Horizon", "detail": "Special class in a community school for autistic students at or near grade level who may require more support."},
-        {"name": "AIMS", "detail": "Special education program in select District 75 schools. Each classroom has a special education teacher, a speech teacher, and a paraprofessional."}
+        {
+          "name": "ASD Nest",
+          "detail": "Integrated, reduced-size class in a community school for autistic students at or above grade level who require minimal support."
+        },
+        {
+          "name": "ASD Horizon",
+          "detail": "Special class in a community school for autistic students at or near grade level who may require more support."
+        },
+        {
+          "name": "AIMS",
+          "detail": "Special education program in select District 75 schools. Each classroom has a special education teacher, a speech teacher, and a paraprofessional."
+        }
       ],
       "source": "https://includenyc.org/help-center/resources/specialized-programs/",
       "verified_on": null,
       "status": "unverified"
     }
   },
-
   "language_access": {
     "right_summary": "All parents whose primary language is not English have a right to free translation and interpretation services. A student does not need to be identified as an English Language Learner for a parent to have this right.",
-    "covered_languages": ["Arabic", "Bengali", "Chinese", "French", "Haitian Creole", "Korean", "Russian", "Spanish", "Urdu"],
+    "covered_languages": [
+      "Arabic",
+      "Bengali",
+      "Chinese",
+      "French",
+      "Haitian Creole",
+      "Korean",
+      "Russian",
+      "Spanish",
+      "Urdu"
+    ],
     "covered_languages_note": "These nine plus English account for over 95% of NYC DOE student households. Parents speaking other languages may still request services.",
-    "translatable_documents": ["IEPs", "Section 504 plans", "evaluation reports", "meeting notices", "consent notices", "prior written notices", "Related Services Authorizations", "Nickerson Letters"],
+    "translatable_documents": [
+      "IEPs",
+      "Section 504 plans",
+      "evaluation reports",
+      "meeting notices",
+      "consent notices",
+      "prior written notices",
+      "Related Services Authorizations",
+      "Nickerson Letters"
+    ],
     "interpretation_at_meetings": "Schools and the CSE are obligated to provide an interpreter at IEP meetings, in both covered and non-covered languages, upon parental request.",
     "phone_interpretation": "Available in more than 200 languages",
     "request_notice": "Request an interpreter in writing at least 72 hours before the meeting.",
@@ -203,7 +262,6 @@
     "verified_on": null,
     "status": "unverified"
   },
-
   "services_not_delivered": {
     "rsa": {
       "label": "Related Services Authorization (RSA)",
@@ -216,7 +274,6 @@
       "status": "unverified"
     }
   },
-
   "funding": {
     "insurance_mandate_ny": {
       "label": "New York autism insurance mandate",
@@ -258,7 +315,14 @@
         "content": "Eligibility generally requires a psychological evaluation that includes adaptive behavior testing. If the evaluation does not include it, ask the evaluator to add it.",
         "why_it_matters": "Missing this reportedly costs families months of back-and-forth."
       },
-      "waiver_services_include": ["respite", "community habilitation", "assistive technology", "environmental modifications", "family education and training", "supported employment"],
+      "waiver_services_include": [
+        "respite",
+        "community habilitation",
+        "assistive technology",
+        "environmental modifications",
+        "family education and training",
+        "supported employment"
+      ],
       "important_caveat": "Approval for OPWDD eligibility is not the same as enrollment in the HCBS Waiver. Families may be approved for one and not the other.",
       "sources": [
         "https://opwdd.ny.gov/get-started",
@@ -270,12 +334,23 @@
       "status": "unverified"
     }
   },
-
   "professional_roles": {
     "_editorial_rule": "Describe what each role does. NEVER state or imply which one a given child needs. That is for the pediatrician and the evaluation team.",
-    "slp": {"label": "Speech-language pathologist", "does": "Communication — speech sounds, understanding and using language, and for some children communication devices and systems.", "nys_licensed": true},
-    "ot": {"label": "Occupational therapist", "does": "The work of daily life at the child's age: fine motor skills, handwriting, dressing, feeding, sensory processing, self-care.", "nys_licensed": true},
-    "pt": {"label": "Physical therapist", "does": "Gross motor — walking, balance, coordination, strength, moving safely through a building.", "nys_licensed": true},
+    "slp": {
+      "label": "Speech-language pathologist",
+      "does": "Communication — speech sounds, understanding and using language, and for some children communication devices and systems.",
+      "nys_licensed": true
+    },
+    "ot": {
+      "label": "Occupational therapist",
+      "does": "The work of daily life at the child's age: fine motor skills, handwriting, dressing, feeding, sensory processing, self-care.",
+      "nys_licensed": true
+    },
+    "pt": {
+      "label": "Physical therapist",
+      "does": "Gross motor — walking, balance, coordination, strength, moving safely through a building.",
+      "nys_licensed": true
+    },
     "lba": {
       "label": "Licensed Behavior Analyst (LBA)",
       "does": "Applies behavior analysis to assess and address behavior.",
@@ -283,10 +358,22 @@
       "credential_note": "New York requires its own LBA credential through NYSED; BCBA certification alone is not sufficient to practice as an LBA in New York. LBA licensure requires 1,500 hours of supervised experience; CBAA requires 1,000. CBAAs practice only under LBA supervision.",
       "source": "https://www.op.nysed.gov/professions/licensed-behavior-analysts/licensecertification-requirements"
     },
-    "neuropsychologist": {"label": "Neuropsychologist", "does": "In-depth testing of thinking, learning, attention, and memory. Often produces a diagnosis or explains a puzzling learning profile."},
-    "developmental_pediatrician": {"label": "Developmental pediatrician", "does": "A physician specializing in development. Frequently the doctor who makes or confirms an autism diagnosis."},
-    "seit": {"label": "Special Education Itinerant Teacher (SEIT)", "does": "A preschool special education teacher who comes to the child's classroom or home."},
-    "advocate": {"label": "Special education advocate", "does": "Helps a parent prepare for and navigate IEP meetings and disputes. Several NYC organizations provide this free."},
+    "neuropsychologist": {
+      "label": "Neuropsychologist",
+      "does": "In-depth testing of thinking, learning, attention, and memory. Often produces a diagnosis or explains a puzzling learning profile."
+    },
+    "developmental_pediatrician": {
+      "label": "Developmental pediatrician",
+      "does": "A physician specializing in development. Frequently the doctor who makes or confirms an autism diagnosis."
+    },
+    "seit": {
+      "label": "Special Education Itinerant Teacher (SEIT)",
+      "does": "A preschool special education teacher who comes to the child's classroom or home."
+    },
+    "advocate": {
+      "label": "Special education advocate",
+      "does": "Helps a parent prepare for and navigate IEP meetings and disputes. Several NYC organizations provide this free."
+    },
     "license_verification": {
       "how": "Check any New York licensed professional against the NYSED Office of the Professions verification tool.",
       "url": "https://www.op.nysed.gov/verification-search",
@@ -295,7 +382,6 @@
     "verified_on": null,
     "status": "unverified"
   },
-
   "glossary": {
     "FAPE": "Free Appropriate Public Education — the entitlement to an education suited to a child's needs, at no cost to the family.",
     "LRE": "Least Restrictive Environment — education alongside non-disabled peers to the greatest extent appropriate.",
@@ -311,7 +397,6 @@
     "verified_on": null,
     "status": "unverified"
   },
-
   "referral_organizations": {
     "_rule": "No compensation in either direction, ever. No endorsement language — 'organizations other families have used', never 'recommended' or 'vetted'.",
     "organizations": [
@@ -343,24 +428,76 @@
     "verified_on": null,
     "status": "unverified"
   },
-
   "translation_review": {
     "_rule": "A language may not be published until reviewed_by names a native speaker and reviewed_on has a date. Until then the page shows a visible draft flag. AI drafting is permitted; unreviewed publishing is not.",
     "_priority_note": "Spanish and Haitian Creole first — largest language communities in the Brooklyn service area. The rest can wait.",
     "languages": {
-      "es": {"label": "Español", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
-      "ht": {"label": "Kreyòl Ayisyen", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
-      "zh": {"label": "中文", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
-      "bn": {"label": "বাংলা", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
-      "ar": {"label": "العربية", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
-      "ur": {"label": "اردو", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
-      "fr": {"label": "Français", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
-      "ru": {"label": "Русский", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
-      "ko": {"label": "한국어", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"}
+      "es": {
+        "label": "Español",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      },
+      "ht": {
+        "label": "Kreyòl Ayisyen",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      },
+      "zh": {
+        "label": "中文",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      },
+      "bn": {
+        "label": "বাংলা",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      },
+      "ar": {
+        "label": "العربية",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      },
+      "ur": {
+        "label": "اردو",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      },
+      "fr": {
+        "label": "Français",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      },
+      "ru": {
+        "label": "Русский",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      },
+      "ko": {
+        "label": "한국어",
+        "drafted": true,
+        "reviewed_by": null,
+        "reviewed_on": null,
+        "status": "draft"
+      }
     },
     "authoritative_version": "English. Say so on every translated page. The NYC DOE applies the same rule — the English IEP remains the legal document."
   },
-
   "site_disclaimers": {
     "every_page": "This page explains how the system works in general. It is not legal advice, medical advice, advice about any individual child, diagnosis, or advocacy. Rules and deadlines change — confirm anything that matters with your CSE or CPSE office, or with one of the free organizations listed here.",
     "scope": "Kirton Learning provides supplemental academic instruction only — reading, writing, and mathematics. We do not provide speech-language pathology, occupational or physical therapy, psychological or counseling services, behavioral intervention, evaluation, diagnosis, special education advocacy, or legal advice.",

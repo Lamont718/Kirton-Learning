@@ -91,6 +91,15 @@
       if (!r.ok) throw new Error(SRC + ' returned ' + r.status);
       return r.json();
     })
-    .then(applyFacts)
-    .catch(function (e) { failed(e.message); });
+    .then(function (facts) {
+      applyFacts(facts);
+      // The deadline calculator does arithmetic with these, so hand them on
+      // rather than making it fetch the same file twice.
+      window.FACTS = facts;
+      document.dispatchEvent(new CustomEvent('facts', { detail: facts }));
+    })
+    .catch(function (e) {
+      failed(e.message);
+      document.dispatchEvent(new CustomEvent('facts', { detail: null }));
+    });
 })();

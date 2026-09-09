@@ -251,6 +251,18 @@ p{margin:0 0 1.05em}
 <script>
 (function(){
   var MS = 86400000;
+
+  // Every number this calculator uses comes from docs/facts.json, loaded by
+  // facts.js. The literal after each || is the value as it stood when this was
+  // written: a fallback so the page still works if the file cannot be fetched,
+  // never the source of truth. If the two ever disagree, facts.json is right.
+  function F(path, dflt){
+    var o = window.FACTS;
+    if(!o) return dflt;
+    var v = path.split('.').reduce(function(a,k){ return a && a[k]; }, o);
+    return (v === undefined || v === null) ? dflt : v;
+  }
+  function addMonths(d,n){ var x=new Date(d.getTime()); x.setMonth(x.getMonth()+n); return x; }
   function parse(v){ if(!v) return null; var p=v.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
   function fmt(d){ return d.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'long',day:'numeric'}); }
   function addDays(d,n){ var x=new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
@@ -311,15 +323,15 @@ p{margin:0 0 1.05em}
     var items = [];
 
     if(consent){
-      items.push({d: addDays(consent, 60), fn: function(d){ return card(d,
+      items.push({d: addDays(consent, F('timelines.evaluation_completion.days', 60)), fn: function(d){ return card(d,
         'The evaluation must be complete',
-        'Once you signed consent for an initial evaluation, the district has 60 calendar days to finish it. This is that date.',
+        'Once you signed consent for an initial evaluation, the district has ' + F('timelines.evaluation_completion.value','60 calendar days') + ' to finish it. This is that date.',
         '<b>If this date passes with no evaluation:</b> call your CSE or CPSE office, then Advocates for Children. Bring the date you signed.'); }});
     }
 
     if(age < 3){
       var third = birthday(dob,3);
-      items.push({d: addDays(third,-120), fn: function(d){ return card(d,
+      items.push({d: addMonths(third, -F('committees.early_intervention.transition_referral_months_before_third_birthday', 4)), fn: function(d){ return card(d,
         'Start the handoff to preschool',
         'Children in Early Intervention should be referred for a preschool evaluation about four months before they become eligible for preschool services.',
         '<b>Nobody may raise this with you.</b> Ask your service coordinator about the transition to CPSE.'); }});
@@ -331,14 +343,14 @@ p{margin:0 0 1.05em}
 
     if(age < 5){
       var fifth = birthday(dob,5);
-      var feb1 = new Date(fifth.getFullYear(), 1, 1);
-      items.push({d: new Date(fifth.getFullYear()-1, 11, 1), fn: function(d){ return card(d,
+      var feb1 = new Date(fifth.getFullYear(), F('timelines.turning_5_no_letter_deadline.month', 2) - 1, F('timelines.turning_5_no_letter_deadline.day', 1));
+      items.push({d: new Date(fifth.getFullYear()-1, F('timelines.turning_5_notice_window.opens_month', 12) - 1, 1), fn: function(d){ return card(d,
         'Turning 5 season opens',
         'The Notice of Referral goes out between December and August, and families are typically contacted by the school-age IEP team between January and March.',
         '<b>Watch the mail.</b> If your child already receives preschool services, CPSE refers to CSE automatically. If not, you make the referral yourself.'); }});
       items.push({d: feb1, fn: function(d){ return card(d,
-        'Your February 1 checkpoint',
-        'If no notice has arrived by February 1, contact the CSE for your home district. Do not wait politely.',
+        'Your ' + F('timelines.turning_5_no_letter_deadline.value','February 1') + ' checkpoint',
+        'If no notice has arrived by ' + F('timelines.turning_5_no_letter_deadline.value','February 1') + ', contact the CSE for your home district. Do not wait politely.',
         '<b>Highest-value date on this page.</b> Everything downstream depends on this starting on time.'); }});
       items.push({d: fifth, fn: function(d){ return card(d,
         'Your child turns 5 — the IEP deadline',
@@ -347,7 +359,7 @@ p{margin:0 0 1.05em}
     }
 
     if(meeting){
-      items.push({d: addDays(meeting,-3), fn: function(d){ return card(d,
+      items.push({d: addDays(meeting, -Math.ceil(F('timelines.interpreter_request_notice.hours', 72) / 24)), fn: function(d){ return card(d,
         'Interpreter request cutoff',
         'If English is not your preferred language, request an interpreter in writing at least 72 hours before the meeting.',
         '<b>You should never be asked to bring your own interpreter,</b> and your child should never be used as one. Print a request letter from the interpreter tool.'); }});
@@ -376,6 +388,12 @@ p{margin:0 0 1.05em}
     document.getElementById('results').innerHTML = out;
     document.getElementById('note').style.display = 'block';
   }
+
+  // facts.js fetches asynchronously. If a parent is fast enough to hit calculate
+  // before it lands, redraw once it does rather than leaving fallback numbers up.
+  document.addEventListener('facts', function(){
+    if(document.getElementById('results').innerHTML.trim()) render();
+  });
 
   document.getElementById('calc').addEventListener('click', render);
   document.getElementById('print').addEventListener('click', function(){ window.print(); });

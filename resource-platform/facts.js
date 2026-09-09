@@ -23,10 +23,19 @@
     '.factline--error{color:#A6402F;opacity:1}';
   document.head.appendChild(css);
 
-  function get(obj, path) {
-    return path.split('.').reduce(function (o, k) {
-      return o && Object.prototype.hasOwnProperty.call(o, k) ? o[k] : undefined;
-    }, obj);
+  // A data-fact path can land on an entry object (which carries its own status)
+  // or straight on a string inside one, like placement.district_75.phone_main.
+  // In the second case the value is the string itself and the status belongs to
+  // the nearest object above it that has one.
+  function resolve(facts, path) {
+    var parts = path.split('.'), node = facts, owner = null;
+    for (var i = 0; i < parts.length; i++) {
+      if (node && typeof node === 'object' && 'status' in node) owner = node;
+      node = (node && Object.prototype.hasOwnProperty.call(node, parts[i])) ? node[parts[i]] : undefined;
+      if (node === undefined) break;
+    }
+    if (node && typeof node === 'object' && 'status' in node) owner = node;
+    return { node: node, owner: owner };
   }
 
   function longDate(iso) {
@@ -43,12 +52,22 @@
 
     document.querySelectorAll('[data-fact]').forEach(function (el) {
       var path = el.getAttribute('data-fact');
-      var entry = get(facts, path);
-      if (!entry) { missing.push(path); return; }
+      var r = resolve(facts, path);
+      if (r.node === undefined || r.node === null) { missing.push(path); return; }
+      var entry = r.owner || {};
 
       var field = el.getAttribute('data-field') || 'value';
-      var val = entry[field];
-      if (typeof val === 'string') el.textContent = val;
+      var val = typeof r.node === 'string' ? r.node : r.node[field];
+      if (typeof val === 'string') {
+        el.textContent = val;
+        // If the fact is itself a phone link, move the href with the text —
+        // otherwise the page could show one number and dial another.
+        var href = el.getAttribute && el.getAttribute('href');
+        if (href && href.indexOf('tel:') === 0) {
+          var digits = val.replace(/\D/g, '');
+          if (digits) el.setAttribute('href', 'tel:' + (digits.length === 10 ? '+1' : '') + digits);
+        }
+      }
 
       if (entry.status !== 'verified') {
         el.classList.add('fact--unverified');

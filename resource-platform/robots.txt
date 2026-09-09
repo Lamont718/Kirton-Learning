@@ -1,0 +1,8 @@
+# The NYC special education handbook — DRAFT.
+# Every fact is unverified and every translation is unreviewed. Nothing here is
+# meant to be found by a parent yet, so this file blocks the whole host and every
+# page also carries a noindex,nofollow meta tag. Both come off together, the day
+# the facts are signed off in docs/facts.json.
+
+User-agent: *
+Disallow: /

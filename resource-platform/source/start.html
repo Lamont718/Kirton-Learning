@@ -7,9 +7,7 @@
 <title>Start Here — how special education actually works in New York City</title>
 <meta name="description" content="Plain-language answers about evaluations, CPSE, CSE, Turning 5, District 75, and what the law says your child is entitled to. Free. Nothing to sign up for.">
 <meta name="theme-color" content="#141D2E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
 <style>
 :root{
   --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
@@ -229,7 +227,7 @@ details .ans b{font-weight:600;color:var(--ink)}
           <p>CPSE covers preschool-age children. Your CPSE is assigned by <b>where your child lives</b>. There are eleven CSE/CPSE offices across the city, and each one covers three or four districts.</p>
           <ol class="rsteps">
             <li><b>Refer in writing.</b> Send a letter to the CPSE that serves your district saying who your child is and why you're referring. Keep a copy of everything you send, always.</li>
-            <li><b>Consent to the evaluation.</b> Once you sign consent for an initial evaluation, the district has <b>60 calendar days</b> to complete it. That clock is in the regulations. Write down the date you signed.</li>
+            <li><b>Consent to the evaluation.</b> Once you sign consent for an initial evaluation, the district has <b><span data-fact="timelines.evaluation_completion">60 calendar days</span></b> to complete it. That clock is in the regulations. Write down the date you signed.</li>
             <li><b>Go to the meeting.</b> You are a member of the committee, not a guest at it. Bring every report you have.</li>
             <li><b>If eligible, an IEP is written</b> and services begin. They can be delivered in a preschool program, a Head Start, a child care setting you chose, or at home.</li>
           </ol>
@@ -244,7 +242,7 @@ details .ans b{font-weight:600;color:var(--ink)}
           <p>This is the handoff from preschool special education to school-age special education, and it is the single most common place we see families lose services. New committee, new criteria, new paperwork, on a deadline nobody explains.</p>
           <ol class="rsteps">
             <li><b>Winter of the year before kindergarten, it starts.</b> If your child already gets preschool services, CPSE refers your child to CSE automatically. If your child does <i>not</i> get services and you're worried, you make the referral yourself.</li>
-            <li><b>Watch for the blue letter.</b> The Notice of Referral goes out between December and August, and families are typically contacted by the IEP team between January and March. <b>If nothing has arrived by February 1, call the CSE for your home district.</b> Don't wait politely.</li>
+            <li><b>Watch for the blue letter.</b> The Notice of Referral goes out between December and August, and families are typically contacted by the IEP team between January and March. <b>If nothing has arrived by <span data-fact="timelines.turning_5_no_letter_deadline">February 1</span>, call the CSE for your home district.</b> Don't wait politely.</li>
             <li><b>Consent to reevaluation.</b> Preschool eligibility and school-age eligibility use different criteria — a child who qualified at 3 does not automatically qualify at 5, and services that existed in preschool don't automatically carry over.</li>
             <li><b>The transition meeting happens before your child's fifth birthday</b>, usually somewhere between January and June.</li>
             <li><b>Bring paper.</b> Every evaluation, every progress report, every therapy note. The new committee doesn't know your child.</li>
@@ -384,7 +382,7 @@ details .ans b{font-weight:600;color:var(--ink)}
       </details>
       <details>
         <summary>The 60-day clock</summary>
-        <div class="ans"><p>After you sign consent for an initial evaluation, the district has <b>60 calendar days</b> to complete it. Write the consent date on your own calendar. It is the single most useful date you will hold.</p></div>
+        <div class="ans"><p>After you sign consent for an initial evaluation, the district has <b><span data-fact="timelines.evaluation_completion">60 calendar days</span></b> to complete it. Write the consent date on your own calendar. It is the single most useful date you will hold.</p></div>
       </details>
     </div>
   </div>
@@ -446,6 +444,7 @@ details .ans b{font-weight:600;color:var(--ink)}
       <br><br>
       Kirton Learning is operated by Our Rose LLC, Brooklyn, NY. We provide supplemental academic instruction only — reading, writing, and mathematics. We do not provide speech-language pathology, occupational or physical therapy, psychological or counseling services, behavioral intervention, evaluation, diagnosis, special education advocacy, or legal advice. We receive no payment from any organization or provider named on this page.
     </p>
+    <p class="stamp factline">Last reviewed: <b data-fact-reviewed>not yet reviewed</b></p>
   </div>
 </footer>
 
@@ -461,5 +460,6 @@ details .ans b{font-weight:600;color:var(--ink)}
   });
 })();
 </script>
+<script src="/facts.js" defer></script>
 </body>
 </html>

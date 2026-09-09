@@ -1,0 +1,82 @@
+/* One question, one page. Same tokens and type as the handbook — this is the
+   existing design applied to a narrower page, not a new one.
+   --accent-deep is #94590D, not #C97F1B: the lighter amber measures 2.87:1 on
+   --paper and AA needs 4.5. */
+
+:root{
+  --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
+  --paper:#F4F2EC; --paper-2:#FBFAF7;
+  --accent:#E8A33D; --accent-deep:#94590D;
+  --warn:#A6402F;
+  --line:rgba(20,29,46,.14);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.7}
+
+.wrap{width:min(100% - 2.5rem,42rem);margin-inline:auto}
+
+.draft{background:var(--warn);color:#fff;font-family:var(--mono);font-size:.74rem;
+  padding:10px 0;text-align:center;line-height:1.5}
+.draft b{font-weight:500}
+
+.head{border-bottom:1px solid var(--line);padding:1rem 0}
+.back{font-family:var(--mono);font-size:.78rem;color:var(--accent-deep);text-decoration:none}
+.back:hover,.back:focus{text-decoration:underline}
+
+.page{padding:2.5rem 0 3.5rem}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent-deep);margin:0 0 .5rem}
+
+h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.5vw,2.4rem);
+  line-height:1.15;margin:0 0 1.25rem;letter-spacing:-.01em}
+h2{font-family:var(--display);font-weight:700;font-size:1.15rem;margin:0 0 .6rem}
+
+.a{font-weight:600;font-size:1.2rem;line-height:1.5;margin:0 0 1.5rem;
+  padding-left:1rem;border-left:3px solid var(--accent)}
+.why p{margin:0 0 1.1rem;color:var(--ink-2)}
+.why p:last-child{margin-bottom:0}
+
+a{color:var(--accent-deep)}
+a:focus-visible,.back:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+.route{margin-top:2.5rem;padding:1.25rem 1.4rem;background:var(--paper-2);
+  border:1px solid var(--line);border-radius:4px}
+.route p{margin:0 0 .4rem;font-size:.98rem}
+.route p:last-child{margin-bottom:0}
+
+.grp{margin-top:2.25rem}
+.grp ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.grp li{border-bottom:1px solid var(--line);padding:.9rem 0}
+.grp li a{font-family:var(--display);font-weight:600;font-size:1.05rem;
+  text-decoration:none;display:block}
+.grp li a:hover,.grp li a:focus{text-decoration:underline}
+.grp li span{display:block;color:var(--ink-3);font-size:.94rem;margin-top:.2rem}
+
+.foot{margin-top:3rem;border-top:1px solid var(--line);padding:1.5rem 0 3rem}
+.legal{font-size:.8rem;color:var(--ink-3);margin:0 0 .9rem}
+.stamp{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);margin:0}
+.factline--error{color:var(--warn)}
+.printurl{display:none}
+
+/* Meeting mode: a parent prints this and takes it into the room. */
+@media print{
+  .draft,.head{display:none}
+  body{background:#fff;font-size:11pt}
+  .wrap{width:auto}
+  .page{padding:0}
+  a{color:#000;text-decoration:none}
+  .a{border-left:2px solid #000}
+  .foot{border-top:1px solid #000}
+  .route{background:none;border:1px solid #000}
+  .printurl{display:block;margin-top:.5rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}

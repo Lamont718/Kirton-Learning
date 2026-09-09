@@ -80,6 +80,12 @@
     });
   }
 
+  // RESOURCE.md, meeting mode: a printed page carries its own URL, so a parent
+  // who was handed a photocopy can find it again.
+  document.querySelectorAll('[data-page-url]').forEach(function (el) {
+    el.textContent = location.origin + location.pathname;
+  });
+
   fetch(SRC, { cache: 'no-cache' })
     .then(function (r) {
       if (!r.ok) throw new Error(SRC + ' returned ' + r.status);

@@ -8,9 +8,6 @@
 <meta name="description" content="Free bilingual letter requesting an interpreter for your child's IEP meeting and a translated copy of the IEP. Fill it in, print it, hand it to the school. Nine languages.">
 <meta name="theme-color" content="#141D2E">
 <link rel="stylesheet" href="/fonts/fonts.css">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+SC:wght@400;600&family=Noto+Sans+KR:wght@400;600&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+SC:wght@400;600&family=Noto+Sans+KR:wght@400;600&display=swap"></noscript>
 <style>
 :root{
   --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
@@ -456,9 +453,28 @@ p{margin:0 0 1.05em}
         .map(function(p){return "<p>"+p+"</p>";}).join('');
   }
 
+
+  // The letter is offered in nine languages, but a parent reads one. Loading all
+  // nine script fonts up front cost about half a megabyte on every visit, on a
+  // site whose whole point is working on a bad connection. Each font is now
+  // fetched the moment its language is chosen, and only that one.
+  var FONT_FOR = { zh:'Noto+Sans+SC', ko:'Noto+Sans+KR', bn:'Noto+Sans+Bengali',
+                   ar:'Noto+Sans+Arabic', ur:'Noto+Sans+Arabic', ru:'Noto+Sans' };
+  var fontsAsked = {};
+  function ensureScriptFont(lang){
+    var fam = FONT_FOR[lang];               // es, ht, fr need no extra font
+    if(!fam || fontsAsked[fam]) return;
+    fontsAsked[fam] = true;
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=' + fam + ':wght@400;600&display=swap';
+    document.head.appendChild(l);
+  }
+
   document.querySelectorAll('.langs button').forEach(function(b){
     b.addEventListener('click',function(){
       cur=b.dataset.l;
+      ensureScriptFont(cur);
       document.querySelectorAll('.langs button').forEach(function(x){
         x.setAttribute('aria-pressed', String(x.dataset.l===cur));
       });

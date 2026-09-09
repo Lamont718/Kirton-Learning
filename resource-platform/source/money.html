@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paying for it — who covers what, and what costs nothing</title>
+<meta name="description" content="What the school district must pay for, what insurance covers, what OPWDD funds, and the income rule most families get wrong. Plain language, New York City.">
+<meta name="theme-color" content="#141D2E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
+  --paper:#F4F2EC; --paper-2:#FBFAF7;
+  --accent:#E8A33D; --accent-deep:#C97F1B;
+  --free:#2E7D5B; --warn:#A6402F;
+  --line:rgba(20,29,46,.14); --line-dark:rgba(244,242,236,.16);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:1020px;margin:0 auto;padding:0 22px}
+.narrow{max-width:730px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;line-height:1.07;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(2rem,5.4vw,3.3rem)}
+h2{font-size:clamp(1.55rem,3.6vw,2.3rem)}
+h3{font-size:1.16rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0 0 1.05em}
+.eyebrow{font-family:var(--mono);font-size:.71rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 1.3rem}
+.eyebrow--dark{color:var(--accent-deep)}
+.lede{max-width:62ch;color:var(--ink-2);margin-top:1rem}
+.band--dark .lede{color:rgba(244,242,236,.82)}
+
+.draft{background:var(--warn);color:#fff;font-family:var(--mono);font-size:.74rem;
+  padding:10px 0;text-align:center;line-height:1.5}
+.draft b{font-weight:500}
+
+.head{background:var(--ink);color:var(--paper);padding:clamp(28px,5vw,44px) 0 clamp(46px,7vw,70px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1rem;margin-bottom:clamp(36px,6vw,58px)}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);flex:none}
+.brandbar a{text-decoration:none}
+.brandbar .back{margin-left:auto;font-family:var(--mono);font-weight:400;font-size:.73rem;
+  color:rgba(244,242,236,.6);text-decoration:none}
+.brandbar .back:hover{color:var(--accent)}
+.head h1{max-width:18ch}
+.head h1 em{font-style:normal;color:var(--accent)}
+.head .sub{max-width:56ch;margin-top:1.4rem;font-size:1.09rem;color:rgba(244,242,236,.82)}
+.freetag{display:inline-block;margin-top:26px;font-family:var(--mono);font-size:.74rem;
+  color:rgba(244,242,236,.6);border:1px solid var(--line-dark);padding:9px 15px;border-radius:4px}
+
+.band{padding:clamp(54px,8vw,88px) 0;border-bottom:1px solid var(--line)}
+.band--alt{background:var(--paper-2)}
+.band--dark{background:var(--ink);color:var(--paper);border-bottom:0}
+.band--dark h2,.band--dark h3,.band--dark h4{color:var(--paper)}
+
+/* three doors */
+.doors{display:grid;gap:16px;margin-top:38px}
+@media(min-width:860px){.doors{grid-template-columns:repeat(3,1fr)}}
+.door{background:#fff;border:1px solid var(--line);border-top:4px solid var(--accent-deep);
+  border-radius:6px;padding:24px 26px;display:flex;flex-direction:column}
+.door:nth-child(2){border-top-color:#8E93A0}
+.door:nth-child(3){border-top-color:var(--ink-3)}
+.door .who{font-family:var(--mono);font-size:.67rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:10px}
+.door h3{margin-bottom:10px;font-size:1.22rem}
+.door p{font-size:.95rem;color:var(--ink-2);margin:0 0 14px}
+.door ul{list-style:none;margin:0 0 16px;padding:0;font-size:.92rem}
+.door li{padding-left:20px;position:relative;margin-bottom:8px;color:var(--ink-2)}
+.door li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:2px;background:var(--accent-deep)}
+.door .go{margin-top:auto;font-family:var(--mono);font-size:.76rem;color:var(--accent-deep);
+  text-decoration:none;border-top:1px solid var(--line);padding-top:14px}
+
+/* free banner */
+.freebox{background:rgba(46,125,91,.09);border:1px solid rgba(46,125,91,.4);
+  border-radius:6px;padding:26px 28px;margin-top:36px}
+.freebox .tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--free);display:block;margin-bottom:12px}
+.freebox h3{margin-bottom:12px;font-size:1.3rem}
+.freelist{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:12px}
+@media(min-width:700px){.freelist{grid-template-columns:1fr 1fr}}
+.freelist li{padding-left:24px;position:relative;font-size:.96rem;color:var(--ink-2)}
+.freelist li::before{content:"✓";position:absolute;left:0;top:0;color:var(--free);font-weight:700}
+.freelist b{color:var(--ink)}
+
+/* Q blocks */
+.q{margin-top:36px;padding-top:32px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.q h3{font-size:1.4rem;margin-bottom:16px;max-width:26ch}
+.short{background:rgba(232,163,61,.13);border-left:3px solid var(--accent);
+  padding:18px 20px;border-radius:4px;margin-bottom:18px}
+.short .lbl{font-family:var(--mono);font-size:.65rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;margin-bottom:8px}
+.short p{margin:0;font-size:1.04rem;font-weight:600;color:var(--ink)}
+.q .body{font-size:.99rem;color:var(--ink-2);max-width:66ch}
+
+.catch{background:#fff;border:1px solid var(--warn);border-left:4px solid var(--warn);
+  border-radius:5px;padding:20px 22px;margin:20px 0}
+.catch .lbl{font-family:var(--mono);font-size:.65rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--warn);display:block;margin-bottom:9px}
+.catch p{margin:0 0 .8em;font-size:.97rem;color:var(--ink-2)}
+.catch p:last-child{margin-bottom:0}
+.catch b{color:var(--ink)}
+.ask{font-family:var(--mono);font-size:.93rem;color:var(--ink);
+  background:var(--paper);padding:12px 14px;border-radius:4px;margin-top:12px;display:block}
+
+/* pathway */
+.path{list-style:none;margin:22px 0 0;padding:0;counter-reset:p}
+.path li{counter-increment:p;padding:14px 0 14px 42px;position:relative;
+  border-bottom:1px dashed var(--line-dark);font-size:.98rem;color:rgba(244,242,236,.85)}
+.path li:last-child{border-bottom:0}
+.path li::before{content:counter(p);position:absolute;left:0;top:14px;
+  font-family:var(--mono);font-size:.74rem;color:var(--accent);
+  border:1.5px solid var(--accent);width:25px;height:25px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center}
+.path b{color:var(--paper);font-weight:600}
+
+.bigfact{background:rgba(232,163,61,.12);border:1px solid rgba(232,163,61,.45);
+  border-radius:6px;padding:26px 28px;margin-top:28px}
+.bigfact .tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:12px}
+.bigfact h4{font-size:1.24rem;margin-bottom:12px;line-height:1.25}
+.bigfact p{margin:0 0 .9em;color:rgba(244,242,236,.86);font-size:.99rem}
+.bigfact p:last-child{margin-bottom:0}
+.bigfact .small{font-family:var(--mono);font-size:.8rem;color:rgba(244,242,236,.6);line-height:1.7}
+
+/* mistakes */
+.miss{display:grid;gap:14px;margin-top:32px}
+@media(min-width:760px){.miss{grid-template-columns:1fr 1fr}}
+.mi{background:#fff;border:1px solid var(--line);border-radius:5px;padding:20px 22px}
+.mi h4{margin-bottom:8px;color:var(--warn)}
+.mi p{margin:0;font-size:.94rem;color:var(--ink-2)}
+
+/* help */
+.helps{display:grid;gap:16px;margin-top:32px}
+@media(min-width:700px){.helps{grid-template-columns:1fr 1fr}}
+.help{background:var(--paper-2);border:1px solid var(--line);border-radius:5px;padding:22px 24px}
+.help h4{margin-bottom:6px}
+.help .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;margin-bottom:10px}
+.help p{margin:0 0 12px;font-size:.93rem;color:var(--ink-3)}
+.help a{font-family:var(--mono);font-size:.8rem;color:var(--ink);word-break:break-word}
+
+.donow{border:1px solid var(--line);border-radius:5px;padding:20px 22px;margin-top:26px;background:#fff}
+.donow .lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:12px}
+.donow ol{margin:0;padding-left:20px;font-size:.96rem;color:var(--ink-2)}
+.donow li{margin-bottom:9px}
+.donow li:last-child{margin-bottom:0}
+
+.scopestrip{background:rgba(232,163,61,.13);border:1px solid rgba(232,163,61,.4);
+  border-radius:6px;padding:24px 26px;margin-top:34px}
+.scopestrip h3{margin-bottom:10px}
+.scopestrip p{margin:0 0 .9em;color:var(--ink-2);font-size:1rem}
+.scopestrip p:last-child{margin-bottom:0}
+
+.foot{background:var(--ink);color:var(--paper);padding:clamp(52px,8vw,82px) 0 38px}
+.btn{display:inline-block;font-family:var(--display);font-weight:700;font-size:1.01rem;
+  padding:15px 29px;border-radius:4px;text-decoration:none;border:2px solid transparent;transition:.16s}
+.btn--go{background:var(--accent);color:var(--ink)}
+.btn--go:hover{background:#F0B257}
+.btn--ghost{border-color:rgba(244,242,236,.35);color:var(--paper)}
+.btn--ghost:hover{border-color:var(--accent);color:var(--accent)}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+.stamp{margin-top:30px;font-family:var(--mono);font-size:.75rem;color:rgba(244,242,236,.5)}
+.legal{margin-top:34px;padding-top:22px;border-top:1px solid var(--line-dark);
+  font-family:var(--mono);font-size:.72rem;line-height:1.75;
+  color:rgba(244,242,236,.45);max-width:78ch}
+@media print{.draft,.brandbar,.foot .cta-row{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<div class="draft">
+  <b>DRAFT — NOT YET PUBLISHED.</b> Every fact on this page is pending verification. Do not put this in front of a family until each item is confirmed and signed off in facts.json.
+</div>
+
+<header class="head">
+  <div class="wrap">
+    <div class="brandbar">
+      <span class="dot" aria-hidden="true"></span>
+      <a href="/">Kirton Learning</a>
+      <a class="back" href="/start.html">← Start Here</a>
+    </div>
+    <p class="eyebrow">Track 03 · Paying for it</p>
+    <h1>Most of what your child needs, <em>somebody else pays for.</em></h1>
+    <p class="sub">Families spend thousands on services their school district already owes them, and rule themselves out of state funding they'd qualify for. Here's who pays for what, in plain terms.</p>
+    <span class="freetag">Free. No account. Nothing to upload.</span>
+  </div>
+</header>
+
+<!-- THREE DOORS -->
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Start by sorting it</p>
+    <h2 class="narrow">There are three different money systems, and they don't talk to each other.</h2>
+    <p class="lede">Almost every funding mistake comes from asking the wrong system. Before you call anyone, work out which of these three you're actually dealing with — the answer decides who you call and what they owe you.</p>
+
+    <div class="doors">
+      <div class="door">
+        <span class="who">System one</span>
+        <h3>The school district</h3>
+        <p>Anything about your child's education. This is an obligation, not a benefit — the district must provide it, at no cost to you.</p>
+        <ul>
+          <li>Evaluations</li>
+          <li>Everything written on the IEP</li>
+          <li>Speech, OT, PT delivered at school</li>
+          <li>Special class or program placement</li>
+          <li>Transportation when the IEP requires it</li>
+        </ul>
+        <a class="go" href="#school">What the district owes you →</a>
+      </div>
+
+      <div class="door">
+        <span class="who">System two</span>
+        <h3>Health insurance</h3>
+        <p>Medical and therapeutic treatment outside of school. Private plan, Medicaid, or both. New York law requires many plans to cover autism treatment.</p>
+        <ul>
+          <li>Diagnosis and evaluation</li>
+          <li>ABA, speech, OT, PT in a clinic or at home</li>
+          <li>Doctor visits</li>
+          <li>Some equipment and devices</li>
+        </ul>
+        <a class="go" href="#insurance">The catch nobody explains →</a>
+      </div>
+
+      <div class="door">
+        <span class="who">System three</span>
+        <h3>OPWDD and the waiver</h3>
+        <p>Long-term supports for developmental disability, funded through the state. This is the one families most often don't know exists.</p>
+        <ul>
+          <li>Respite</li>
+          <li>Community habilitation</li>
+          <li>Assistive technology</li>
+          <li>Home modifications</li>
+          <li>Support into adulthood</li>
+        </ul>
+        <a class="go" href="#opwdd">How to get in the door →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE -->
+<section class="band band--alt" id="school">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Before you spend anything</p>
+    <h2 class="narrow">Start with what already costs you nothing.</h2>
+    <p class="lede">Families pay out of pocket for services their child is already entitled to, usually because nobody told them otherwise. Work through this list before you open your wallet.</p>
+
+    <div class="freebox">
+      <span class="tag">Free to you</span>
+      <h3>The district's obligation, not a favor it's doing you</h3>
+      <ul class="freelist">
+        <li><b>The evaluation.</b> Ask in writing. Once you sign consent, the district has 60 calendar days to complete it. Write down the date you signed.</li>
+        <li><b>Early Intervention</b> for children under 3, run by the Health Department. Free. You can refer your own child — no diagnosis or doctor's note needed first.</li>
+        <li><b>Everything written on the IEP.</b> If speech twice a week is on there, it is owed. Not offered — owed.</li>
+        <li><b>An interpreter and a translated IEP,</b> in your language, on request.</li>
+        <li><b>An RSA</b> when the district can't staff a mandated service — a voucher to find your own provider at DOE expense.</li>
+        <li><b>Free advocacy.</b> Advocates for Children and Disability Rights New York cost nothing and do this every day.</li>
+      </ul>
+    </div>
+
+    <div class="q">
+      <h3>What's the difference between "the school does it" and "I pay for it"?</h3>
+      <div class="short">
+        <span class="lbl">Short answer</span>
+        <p>If it's on the IEP, the district pays. If you want more of it, or want it somewhere else, that's the other two systems.</p>
+      </div>
+      <p class="body">A child can have speech at school on the IEP and additional private speech paid by insurance. Those are two different services from two different systems, and neither cancels the other. Schools sometimes imply that private therapy means the district can reduce its own — that's not how the obligation works.</p>
+      <p class="body">The reverse trips people up too: insurance won't usually cover something purely educational, because that's the district's job. Knowing which bucket a service sits in is most of the battle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE -->
+<section class="band" id="insurance">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">System two</p>
+    <h2 class="narrow">Insurance, and the one question that decides everything.</h2>
+
+    <div class="q">
+      <h3>Does my insurance have to cover autism treatment?</h3>
+      <div class="short">
+        <span class="lbl">Short answer</span>
+        <p>Many New York plans must — but whether yours does depends on one thing most parents have never been asked.</p>
+      </div>
+      <p class="body">New York's autism insurance law requires state-regulated health plans to cover the screening, diagnosis, and treatment of autism spectrum disorder. Treatment explicitly includes applied behavior analysis, along with therapeutic care from licensed providers such as speech, occupational, and physical therapists, and assistive communication devices.</p>
+
+      <div class="catch">
+        <span class="lbl">Here's the catch</span>
+        <p>The mandate applies to <b>fully insured, New York State–regulated plans.</b> It generally does <b>not</b> apply to self-funded employer plans governed by federal ERISA law — where your employer pays the claims itself and an insurance company only administers them.</p>
+        <p>The card in your wallet looks identical either way. Large employers are the most likely to be self-funded, which means a parent with a good job at a big company can have <b>weaker</b> autism coverage than a neighbor on a marketplace plan.</p>
+        <span class="ask">Call HR or your plan and ask: "Is our health plan fully insured or self-funded?"</span>
+        <p style="margin-top:12px">That one question tells you whether New York's mandate protects you. If the answer is self-funded, you're not without options — federal mental health parity rules may still apply — but you need to know which ground you're standing on.</p>
+      </div>
+
+      <div class="donow">
+        <span class="lbl">Do this week</span>
+        <ol>
+          <li>Ask HR whether your plan is fully insured or self-funded. Write the answer down.</li>
+          <li>Ask your plan directly: is prior authorization required for ABA, speech, OT, or PT?</li>
+          <li>Ask whether the provider you want is in network. Out-of-network is where the surprise bills come from.</li>
+          <li>If a claim is denied, don't stop there — New York has an external appeal process, and free help exists to use it.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPWDD -->
+<section class="band band--dark" id="opwdd">
+  <div class="wrap">
+    <p class="eyebrow">System three</p>
+    <h2 class="narrow">OPWDD — the door most families never find.</h2>
+    <p class="lede">The Office for People With Developmental Disabilities funds long-term supports across a lifetime: respite, community habilitation, assistive technology, home modifications, and help into adulthood. Autism can qualify. Getting in has a specific order, and doing it out of order costs months.</p>
+
+    <ol class="path">
+      <li><b>Gather your documents.</b> A psychological evaluation is central — see the note below about what it must contain.</li>
+      <li><b>Contact the Front Door</b> at your regional office. This is the mandatory entry point for all OPWDD services.</li>
+      <li><b>Attend a Front Door information session.</b></li>
+      <li><b>Eligibility determination.</b> You'll receive a letter.</li>
+      <li><b>Assessment</b> to identify your child's strengths, needs, and interests.</li>
+      <li><b>Choose a Care Coordination Organization.</b> They become your ongoing point of contact.</li>
+      <li><b>A Life Plan is written and services begin.</b></li>
+    </ol>
+
+    <div class="bigfact">
+      <span class="tag">The thing families get wrong</span>
+      <h4>"We make too much money to qualify." Usually, that's not how this works.</h4>
+      <p>For a child living at home seeking enrollment in the HCBS Waiver, <b>parental income and resources are not counted.</b> The waiver looks at the child, not the household.</p>
+      <p>Families rule themselves out of years of support based on an assumption nobody ever corrected. If you've never applied because you assumed your salary disqualified your child, that assumption is worth checking.</p>
+      <p class="small">Careful with this one: the rule is specific to children living at home seeking HCBS Waiver enrollment. Other OPWDD services have different cost-of-care rules. Confirm your own situation with the Front Door — don't take a website's word for it, including this one.</p>
+    </div>
+
+    <div class="bigfact" style="margin-top:18px">
+      <span class="tag">Ask for this before the evaluation, not after</span>
+      <h4>Make sure the psychological evaluation includes adaptive behavior testing.</h4>
+      <p>Eligibility generally rests on documentation of substantial functional limitations, and an evaluation without adaptive behavior testing often can't establish that. If it's missing, the process stalls while you go back and get it.</p>
+      <p class="small">Tell the evaluator up front that the report may be used for an OPWDD eligibility determination. It costs nothing to ask and can save months.</p>
+    </div>
+
+    <div class="bigfact" style="margin-top:18px">
+      <span class="tag">Two different decisions</span>
+      <h4>Being found eligible for OPWDD is not the same as being enrolled in the waiver.</h4>
+      <p>Families are sometimes approved for eligibility and then not enrolled in the waiver right away, particularly for younger children, with an expectation that other supports get tried first. If that happens to you, it isn't the end of the process — but you'll want someone who knows the system helping you with what comes next.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MISTAKES -->
+<section class="band">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">What costs families the most</p>
+    <h2 class="narrow">Five mistakes, all of them expensive, all of them avoidable.</h2>
+
+    <div class="miss">
+      <div class="mi"><h4>Paying privately for what's on the IEP</h4>
+        <p>If a service is written into the IEP and isn't being delivered, ask about an RSA before you start paying for it yourself.</p></div>
+      <div class="mi"><h4>Assuming income disqualifies your child</h4>
+        <p>For a child at home seeking HCBS Waiver enrollment, parental income isn't counted. This assumption costs families years.</p></div>
+      <div class="mi"><h4>Not knowing your plan type</h4>
+        <p>Fully insured or self-funded changes whether New York's autism mandate applies to you at all. Most parents have never been told to ask.</p></div>
+      <div class="mi"><h4>An evaluation that's missing adaptive testing</h4>
+        <p>The report gets used for more than one purpose. Ask before it's written, not after it's filed.</p></div>
+      <div class="mi"><h4>Accepting a denial as final</h4>
+        <p>Insurance denials can be appealed, including externally. Free legal help exists specifically for this.</p></div>
+      <div class="mi"><h4>Requesting things verbally</h4>
+        <p>Evaluations, interpreters, records — put every request in writing and keep a dated copy. Verbal requests leave you with nothing to point at.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HELP -->
+<section class="band band--alt">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Free help with the money side</p>
+    <h2 class="narrow">These are the calls to make about <em>your</em> family's situation.</h2>
+    <p class="lede">We can tell you how the systems work. What you qualify for is a question for the people below — all free, all doing this for decades.</p>
+
+    <div class="helps">
+      <div class="help"><span class="k">OPWDD eligibility</span>
+        <h4>OPWDD Front Door</h4>
+        <p>The mandatory entry point for all OPWDD services. They determine eligibility and guide you through the process.</p>
+        <a href="https://opwdd.ny.gov/get-started">opwdd.ny.gov/get-started</a></div>
+      <div class="help"><span class="k">Rights and denials</span>
+        <h4>Advocates for Children of New York</h4>
+        <p>Free advice and advocacy for NYC families. Strongest on rights, disputes, and services the district isn't delivering.</p>
+        <a href="https://www.advocatesforchildren.org">advocatesforchildren.org</a></div>
+      <div class="help"><span class="k">Legal help</span>
+        <h4>Disability Rights New York</h4>
+        <p>Free legal and advocacy services for people with disabilities across the state.</p>
+        <a href="https://www.drny.org">drny.org</a></div>
+      <div class="help"><span class="k">Navigating the system</span>
+        <h4>INCLUDEnyc</h4>
+        <p>Help center and trainings for NYC families of young people with disabilities, birth to 26.</p>
+        <a href="https://includenyc.org">includenyc.org</a></div>
+    </div>
+
+    <div class="scopestrip">
+      <h3>What we do and don't do here</h3>
+      <p>This page explains <b>how the funding systems work</b> — who is obligated to pay for what, what the rules are, and what to ask. That's public information, and it should have been handed to you already.</p>
+      <p>We don't tell you what your child qualifies for, which services to pursue, or how to handle your particular denial. We're not benefits counselors, attorneys, or clinicians. For that, call the organizations above — they're free, and it's exactly what they're for.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="eyebrow">The rest of the map</p>
+    <h2 class="narrow">Once the money question is sorted, there's the school question.</h2>
+    <p class="lede" style="color:rgba(244,242,236,.82)">How evaluations, committees, placement, and Turning 5 actually work in New York City — in the order you'll meet them.</p>
+    <div class="cta-row">
+      <a class="btn btn--go" href="/start.html">Start Here</a>
+      <a class="btn btn--ghost" href="/interpreter-letter.html">Ask for an interpreter</a>
+    </div>
+    <p class="stamp">Last reviewed: <b>not yet reviewed</b> · Sources: NYC Public Schools, NYSED, OPWDD, NYS Department of Financial Services</p>
+    <p class="legal">
+      This page is general information about how funding systems work in New York State and New York City. It is not legal advice, insurance advice, benefits counseling, medical advice, or advice about any individual child or family, and reading it creates no professional relationship. Insurance rules, eligibility criteria, and program details change and vary by plan — confirm anything that matters with your plan, the OPWDD Front Door, your CSE office, or one of the free organizations listed above.
+      <br><br>
+      Kirton Learning is operated by Our Rose LLC, Brooklyn, NY. We provide supplemental academic instruction only — reading, writing, and mathematics. We do not provide speech-language pathology, occupational or physical therapy, psychological or counseling services, behavioral intervention, evaluation, diagnosis, benefits counseling, special education advocacy, or legal advice. We receive no payment from any organization named on this page.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

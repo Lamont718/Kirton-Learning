@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your dates — the special education deadlines that apply to your child</title>
+<meta name="description" content="Enter your child's date of birth and the date you signed consent. Get your own deadlines: the 60-day evaluation clock, the Turning 5 checkpoint, the IEP deadline. Free, printable, nothing stored.">
+<meta name="theme-color" content="#141D2E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
+  --paper:#F4F2EC; --paper-2:#FBFAF7;
+  --accent:#E8A33D; --accent-deep:#C97F1B;
+  --urgent:#A6402F; --ok:#2E7D5B;
+  --line:rgba(20,29,46,.14); --line-dark:rgba(244,242,236,.16);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:900px;margin:0 auto;padding:0 22px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(1.9rem,5vw,3rem)}
+h2{font-size:clamp(1.45rem,3.3vw,2.1rem)}
+h3{font-size:1.12rem;font-weight:700}
+p{margin:0 0 1.05em}
+.eyebrow{font-family:var(--mono);font-size:.71rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 1.2rem}
+.eyebrow--dark{color:var(--accent-deep)}
+
+.draft{background:var(--urgent);color:#fff;font-family:var(--mono);font-size:.74rem;
+  padding:10px 0;text-align:center;line-height:1.5}
+.draft b{font-weight:500}
+
+.head{background:var(--ink);color:var(--paper);padding:clamp(26px,4.5vw,40px) 0 clamp(38px,6vw,58px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1rem;margin-bottom:clamp(28px,5vw,46px)}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);flex:none}
+.brandbar a{text-decoration:none}
+.brandbar .back{margin-left:auto;font-family:var(--mono);font-weight:400;
+  font-size:.73rem;color:rgba(244,242,236,.6);text-decoration:none}
+.head h1{max-width:18ch}
+.head h1 em{font-style:normal;color:var(--accent)}
+.head .sub{max-width:54ch;margin-top:1.2rem;font-size:1.06rem;color:rgba(244,242,236,.82)}
+
+.band{padding:clamp(42px,6vw,68px) 0;border-bottom:1px solid var(--line)}
+.band--alt{background:var(--paper-2)}
+
+.form{display:grid;gap:16px;margin-top:26px}
+@media(min-width:700px){.form{grid-template-columns:repeat(3,1fr)}}
+.f{display:flex;flex-direction:column}
+.f label{font-family:var(--mono);font-size:.7rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+.f input{font-family:var(--body);font-size:1.02rem;padding:12px 14px;
+  border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+.f .hint{font-family:var(--mono);font-size:.71rem;color:var(--ink-3);margin-top:6px;line-height:1.5}
+.f .req{color:var(--accent-deep)}
+.err{font-family:var(--mono);font-size:.78rem;color:var(--urgent);margin-top:8px;display:none}
+.err[data-on="true"]{display:block}
+
+.privacy{margin-top:22px;font-family:var(--mono);font-size:.78rem;color:var(--ink-3);
+  line-height:1.7;border-left:3px solid var(--accent-deep);padding-left:16px;max-width:62ch}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn{font-family:var(--display);font-weight:700;font-size:1rem;padding:14px 26px;
+  border-radius:4px;border:2px solid transparent;cursor:pointer;transition:.15s;
+  text-decoration:none;display:inline-block}
+.btn--go{background:var(--accent);color:var(--ink)}
+.btn--go:hover{background:#F0B257}
+.btn--ghost{border-color:var(--line);color:var(--ink-2);background:none}
+.btn--ghost:hover{border-color:var(--accent-deep);color:var(--ink)}
+
+/* results */
+.results{margin-top:34px}
+.stage{background:var(--ink);color:var(--paper);border-radius:8px;
+  padding:24px 26px;margin-bottom:22px}
+.stage .k{font-family:var(--mono);font-size:.67rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:10px}
+.stage h3{color:var(--paper);font-size:1.3rem;margin-bottom:9px}
+.stage p{margin:0;color:rgba(244,242,236,.85);font-size:.98rem}
+
+.dates{display:grid;gap:14px}
+.d{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent-deep);
+  border-radius:5px;padding:20px 22px}
+.d--urgent{border-left-color:var(--urgent)}
+.d--past{border-left-color:var(--ink-3);opacity:.72}
+.dtop{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;margin-bottom:10px}
+.dwhen{font-family:var(--display);font-weight:800;font-size:1.28rem;letter-spacing:-.01em}
+.dcount{font-family:var(--mono);font-size:.75rem;letter-spacing:.05em;
+  padding:4px 10px;border-radius:3px;background:rgba(232,163,61,.2);color:var(--accent-deep)}
+.dcount--urgent{background:rgba(166,64,47,.14);color:var(--urgent)}
+.dcount--past{background:rgba(20,29,46,.08);color:var(--ink-3)}
+.d h4{font-family:var(--display);font-weight:700;font-size:1.02rem;margin:0 0 7px}
+.d p{margin:0;font-size:.95rem;color:var(--ink-2)}
+.d .act{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:.79rem;color:var(--ink-3);line-height:1.7}
+.d .act b{color:var(--ink);font-weight:500}
+
+.empty{background:var(--paper-2);border:1px dashed var(--line);border-radius:6px;
+  padding:30px 26px;text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:.86rem}
+
+.note{margin-top:26px;border-left:3px solid var(--accent);padding-left:18px;
+  max-width:64ch;color:var(--ink-2);font-size:.98rem}
+
+.helps{display:grid;gap:14px;margin-top:26px}
+@media(min-width:700px){.helps{grid-template-columns:1fr 1fr}}
+.help{background:#fff;border:1px solid var(--line);border-radius:5px;padding:18px 20px}
+.help h4{font-size:.98rem;margin-bottom:6px}
+.help p{margin:0 0 10px;font-size:.91rem;color:var(--ink-3)}
+.help a{font-family:var(--mono);font-size:.79rem;color:var(--ink)}
+
+.scopestrip{background:rgba(232,163,61,.13);border:1px solid rgba(232,163,61,.4);
+  border-radius:6px;padding:22px 24px;margin-top:30px}
+.scopestrip h3{margin-bottom:9px}
+.scopestrip p{margin:0 0 .85em;color:var(--ink-2);font-size:.98rem}
+.scopestrip p:last-child{margin-bottom:0}
+
+.foot{background:var(--ink);color:var(--paper);padding:clamp(42px,6vw,66px) 0 32px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.btn--ghostd{border-color:rgba(244,242,236,.35);color:var(--paper);background:none}
+.btn--ghostd:hover{border-color:var(--accent);color:var(--accent)}
+.legal{margin-top:32px;padding-top:20px;border-top:1px solid var(--line-dark);
+  font-family:var(--mono);font-size:.72rem;line-height:1.75;
+  color:rgba(244,242,236,.45);max-width:76ch}
+
+@media print{
+  body{background:#fff;font-size:11pt}
+  .draft,.head,.foot,.noprint,.band--alt{display:none!important}
+  .band{padding:0;border:0}
+  .d,.stage{page-break-inside:avoid;border:1px solid #ccc;box-shadow:none}
+  .stage{background:#fff;color:#000}
+  .stage h3,.stage p{color:#000}
+  .wrap{max-width:100%;padding:0}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<div class="draft">
+  <b>DRAFT — NOT YET PUBLISHED.</b> Deadline rules on this page are pending verification against NYSED Part 200 and NYC DOE primary sources.
+</div>
+
+<header class="head noprint">
+  <div class="wrap">
+    <div class="brandbar">
+      <span class="dot" aria-hidden="true"></span>
+      <a href="/">Kirton Learning</a>
+      <a class="back" href="/start.html">← Start Here</a>
+    </div>
+    <p class="eyebrow">Free tool · New York City</p>
+    <h1>Your child's dates. <em>Not everyone else's.</em></h1>
+    <p class="sub">Every deadline in this system runs off two dates: when your child was born, and when you signed consent. Enter them and get your own timeline — printable, and nothing is saved anywhere.</p>
+  </div>
+</header>
+
+<section class="band noprint">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Two dates, one optional</p>
+    <h2>Fill these in.</h2>
+
+    <div class="form">
+      <div class="f">
+        <label for="dob">Child's date of birth <span class="req">· required</span></label>
+        <input id="dob" type="date">
+        <span class="hint">Decides which committee handles your child and when the Turning 5 clock starts.</span>
+      </div>
+      <div class="f">
+        <label for="consent">Date you signed consent to evaluate</label>
+        <input id="consent" type="date">
+        <span class="hint">The single most useful date you own. Leave blank if you haven't signed yet.</span>
+      </div>
+      <div class="f">
+        <label for="meeting">Next meeting date</label>
+        <input id="meeting" type="date">
+        <span class="hint">If you know it. Used for the interpreter request cutoff.</span>
+      </div>
+    </div>
+
+    <p class="err" id="err">Enter your child's date of birth to see your dates.</p>
+
+    <p class="privacy">Nothing you type here is sent anywhere. It never leaves your phone, we cannot see it, and nothing is saved. Close this page and it's gone.</p>
+
+    <div class="actions">
+      <button class="btn btn--go" id="calc">Show my dates</button>
+      <button class="btn btn--ghost" id="print">Print them</button>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="results" id="results">
+      <div class="empty">Enter a date of birth above and your timeline appears here.</div>
+    </div>
+
+    <p class="note noprint" id="note" style="display:none">These dates come from the rules as they are written. Systems slip — a deadline passing doesn't mean you've lost anything, it means it's time to make a phone call. The people below do that call for free.</p>
+  </div>
+</section>
+
+<section class="band band--alt noprint">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">If a date passes and nothing has happened</p>
+    <h2>These are the calls to make.</h2>
+    <div class="helps">
+      <div class="help"><h4>Your CSE or CPSE office</h4>
+        <p>First call. Find the office serving your district and ask directly where things stand.</p>
+        <a href="https://www.schools.nyc.gov/learning/special-education">schools.nyc.gov · special education</a></div>
+      <div class="help"><h4>Advocates for Children of New York</h4>
+        <p>Free. If the district has missed a deadline, this is exactly what they handle.</p>
+        <a href="https://www.advocatesforchildren.org">advocatesforchildren.org</a></div>
+      <div class="help"><h4>INCLUDEnyc</h4>
+        <p>Free help center and trainings for NYC families, birth to 26.</p>
+        <a href="https://includenyc.org">includenyc.org</a></div>
+      <div class="help"><h4>Need an interpreter?</h4>
+        <p>Print a bilingual request letter in nine languages.</p>
+        <a href="/interpreter-letter.html">The interpreter letter tool</a></div>
+    </div>
+
+    <div class="scopestrip">
+      <h3>What this tool does and doesn't do</h3>
+      <p>It does date arithmetic against published rules, and tells you which committee handles a child of that age. That's all it is — a calendar, not an assessment.</p>
+      <p>It doesn't know anything about your child, doesn't tell you what services to seek, and can't tell you whether a delay in your case is a problem. For that, call the offices above.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="foot noprint">
+  <div class="wrap">
+    <p class="eyebrow">The rest of the map</p>
+    <h2 style="max-width:20ch">Now you have the dates. Here's the system they belong to.</h2>
+    <div class="cta-row">
+      <a class="btn btn--go" href="/start.html">Start Here</a>
+      <a class="btn btn--ghostd" href="/money.html">Paying for it</a>
+    </div>
+    <p class="legal">
+      This tool performs date arithmetic based on published New York State and New York City rules. It is general information, not legal advice, and not advice about any individual child. Deadlines have exceptions and rules change — confirm anything that matters with your CSE or CPSE office or one of the free organizations listed above. Nothing you enter is transmitted or stored.
+      <br><br>
+      Kirton Learning is operated by Our Rose LLC, Brooklyn, NY. We provide supplemental academic instruction only — reading, writing, and mathematics. We do not provide evaluation, diagnosis, therapy, benefits counseling, special education advocacy, or legal advice.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var MS = 86400000;
+  function parse(v){ if(!v) return null; var p=v.split('-'); return new Date(+p[0], +p[1]-1, +p[2]); }
+  function fmt(d){ return d.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'long',day:'numeric'}); }
+  function addDays(d,n){ var x=new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
+  function today(){ var t=new Date(); return new Date(t.getFullYear(),t.getMonth(),t.getDate()); }
+  function daysBetween(a,b){ return Math.round((b-a)/MS); }
+  function ageOn(dob,d){
+    var a = d.getFullYear()-dob.getFullYear();
+    var m = d.getMonth()-dob.getMonth();
+    if(m<0 || (m===0 && d.getDate()<dob.getDate())) a--;
+    return a;
+  }
+  function birthday(dob,age){ return new Date(dob.getFullYear()+age, dob.getMonth(), dob.getDate()); }
+
+  function countdown(d){
+    var n = daysBetween(today(), d);
+    if(n < 0) return {txt:Math.abs(n)+' days ago', cls:'past'};
+    if(n === 0) return {txt:'today', cls:'urgent'};
+    if(n <= 30) return {txt:'in '+n+' days', cls:'urgent'};
+    if(n <= 365) return {txt:'in '+n+' days', cls:''};
+    return {txt:'in '+Math.round(n/30)+' months', cls:''};
+  }
+
+  function card(d, title, body, action){
+    var c = countdown(d);
+    var cls = c.cls==='past' ? ' d--past' : (c.cls==='urgent' ? ' d--urgent' : '');
+    var bcls = c.cls==='past' ? ' dcount--past' : (c.cls==='urgent' ? ' dcount--urgent' : '');
+    return '<div class="d'+cls+'">'
+      + '<div class="dtop"><span class="dwhen">'+fmt(d)+'</span>'
+      + '<span class="dcount'+bcls+'">'+c.txt+'</span></div>'
+      + '<h4>'+title+'</h4><p>'+body+'</p>'
+      + (action ? '<p class="act">'+action+'</p>' : '')
+      + '</div>';
+  }
+
+  function stageFor(age){
+    if(age < 3) return {k:'Right now', h:'Early Intervention — birth to 3',
+      p:'Run by the Health Department, not the schools. Free. You can refer your own child, and you do not need a diagnosis or a doctor\u2019s note first.'};
+    if(age < 5) return {k:'Right now', h:'CPSE — preschool special education, ages 3 to 5',
+      p:'Your CPSE is assigned by where your child lives. Referrals go in writing to the office serving your district.'};
+    return {k:'Right now', h:'CSE — school-age special education, ages 5 to 21',
+      p:'For most school-age students you are assigned to the CSE where your child attends school. Homeschooled, out-of-city, or not attending? Then it is where you live.'};
+  }
+
+  function render(){
+    var dob = parse(document.getElementById('dob').value);
+    var err = document.getElementById('err');
+    if(!dob){ err.setAttribute('data-on','true'); return; }
+    err.setAttribute('data-on','false');
+
+    var consent = parse(document.getElementById('consent').value);
+    var meeting = parse(document.getElementById('meeting').value);
+    var now = today();
+    var age = ageOn(dob, now);
+    var st = stageFor(age);
+
+    var out = '<div class="stage"><span class="k">'+st.k+'</span><h3>'+st.h+'</h3><p>'+st.p+'</p></div>';
+    out += '<div class="dates">';
+    var items = [];
+
+    if(consent){
+      items.push({d: addDays(consent, 60), fn: function(d){ return card(d,
+        'The evaluation must be complete',
+        'Once you signed consent for an initial evaluation, the district has 60 calendar days to finish it. This is that date.',
+        '<b>If this date passes with no evaluation:</b> call your CSE or CPSE office, then Advocates for Children. Bring the date you signed.'); }});
+    }
+
+    if(age < 3){
+      var third = birthday(dob,3);
+      items.push({d: addDays(third,-120), fn: function(d){ return card(d,
+        'Start the handoff to preschool',
+        'Children in Early Intervention should be referred for a preschool evaluation about four months before they become eligible for preschool services.',
+        '<b>Nobody may raise this with you.</b> Ask your service coordinator about the transition to CPSE.'); }});
+      items.push({d: third, fn: function(d){ return card(d,
+        'Your child turns 3 — Early Intervention ends',
+        'EI stops at 3 and preschool special education is a different system with a different committee. The switch is not automatic if nobody starts it.',
+        '<b>Service start dates run on a calendar:</b> turning 3 between January 1 and June 30 means services can begin January 2; between July 1 and December 31 means July 1.'); }});
+    }
+
+    if(age < 5){
+      var fifth = birthday(dob,5);
+      var feb1 = new Date(fifth.getFullYear(), 1, 1);
+      items.push({d: new Date(fifth.getFullYear()-1, 11, 1), fn: function(d){ return card(d,
+        'Turning 5 season opens',
+        'The Notice of Referral goes out between December and August, and families are typically contacted by the school-age IEP team between January and March.',
+        '<b>Watch the mail.</b> If your child already receives preschool services, CPSE refers to CSE automatically. If not, you make the referral yourself.'); }});
+      items.push({d: feb1, fn: function(d){ return card(d,
+        'Your February 1 checkpoint',
+        'If no notice has arrived by February 1, contact the CSE for your home district. Do not wait politely.',
+        '<b>Highest-value date on this page.</b> Everything downstream depends on this starting on time.'); }});
+      items.push({d: fifth, fn: function(d){ return card(d,
+        'Your child turns 5 — the IEP deadline',
+        'The first school-age IEP must be finalized by the fifth birthday. Preschool and school-age eligibility use different criteria, so a child who qualified at 3 does not automatically qualify at 5.',
+        '<b>Bring paper.</b> Every evaluation, progress report, and therapy note. The new committee does not know your child.'); }});
+    }
+
+    if(meeting){
+      items.push({d: addDays(meeting,-3), fn: function(d){ return card(d,
+        'Interpreter request cutoff',
+        'If English is not your preferred language, request an interpreter in writing at least 72 hours before the meeting.',
+        '<b>You should never be asked to bring your own interpreter,</b> and your child should never be used as one. Print a request letter from the interpreter tool.'); }});
+      items.push({d: meeting, fn: function(d){ return card(d,
+        'Your meeting',
+        'You are a member of this committee, not a guest at it.',
+        '<b>Write down what is agreed, in the room.</b> Ask for anything promised to be written into the IEP itself.'); }});
+    }
+
+    if(age >= 5){
+      var nextBd = birthday(dob, age+1);
+      items.push({d: nextBd, fn: function(d){ return card(d,
+        'Annual review, roughly',
+        'The IEP is reviewed at least once a year. Yours may sit on a different month — check the date on your current IEP and use that instead.',
+        '<b>Reevaluation happens at least every three years</b> unless you and the district agree otherwise.'); }});
+    }
+
+    items.sort(function(a,b){ return a.d - b.d; });
+    items.forEach(function(i){ out += i.fn(i.d); });
+    out += '</div>';
+
+    if(items.length === 0){
+      out += '<div class="empty">Add the date you signed consent, or a meeting date, to see deadlines.</div>';
+    }
+
+    document.getElementById('results').innerHTML = out;
+    document.getElementById('note').style.display = 'block';
+  }
+
+  document.getElementById('calc').addEventListener('click', render);
+  document.getElementById('print').addEventListener('click', function(){ window.print(); });
+  ['dob','consent','meeting'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', function(){
+      if(document.getElementById('dob').value) render();
+    });
+  });
+})();
+</script>
+</body>
+</html>

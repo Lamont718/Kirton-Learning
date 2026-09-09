@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The NYC Special Education Handbook — free, for parents</title>
+<meta name="description" content="A free plain-language guide for NYC parents of children with disabilities. How evaluations, committees, placement, funding, and language rights work — plus free tools for interpreter requests and deadlines. No sign-up.">
+<meta name="theme-color" content="#141D2E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans:wght@400;600&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+SC:wght@400;600&family=Noto+Sans+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
+  --paper:#F4F2EC; --paper-2:#FBFAF7;
+  --accent:#E8A33D; --accent-deep:#C97F1B;
+  --free:#2E7D5B; --warn:#A6402F;
+  --line:rgba(20,29,46,.14); --line-dark:rgba(244,242,236,.16);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --intl:"Noto Sans","Noto Sans Arabic","Noto Sans Bengali","Noto Sans SC","Noto Sans KR",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:1020px;margin:0 auto;padding:0 22px}
+.narrow{max-width:730px}
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;line-height:1.07;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(2rem,5.4vw,3.3rem)}
+h2{font-size:clamp(1.55rem,3.6vw,2.3rem)}
+h3{font-size:1.16rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0 0 1.05em}
+.eyebrow{font-family:var(--mono);font-size:.71rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 1.3rem}
+.eyebrow--dark{color:var(--accent-deep)}
+.lede{max-width:62ch;color:var(--ink-2);margin-top:1rem}
+.band--dark .lede{color:rgba(244,242,236,.82)}
+
+.draft{background:var(--warn);color:#fff;font-family:var(--mono);font-size:.74rem;
+  padding:10px 0;text-align:center;line-height:1.5}
+.draft b{font-weight:500}
+
+.head{background:var(--ink);color:var(--paper);padding:clamp(28px,5vw,44px) 0 clamp(44px,7vw,66px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1rem;margin-bottom:clamp(34px,6vw,54px)}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);flex:none}
+.brandbar a{text-decoration:none}
+.brandbar .lang{margin-left:auto;font-family:var(--mono);font-weight:400;font-size:.72rem;
+  border:1px solid var(--line-dark);border-radius:3px;padding:6px 11px;color:rgba(244,242,236,.6)}
+.head h1{max-width:18ch}
+.head h1 em{font-style:normal;color:var(--accent)}
+.head .sub{max-width:56ch;margin-top:1.4rem;font-size:1.09rem;color:rgba(244,242,236,.82)}
+.freetag{display:inline-block;margin-top:26px;font-family:var(--mono);font-size:.74rem;
+  color:rgba(244,242,236,.6);border:1px solid var(--line-dark);padding:9px 15px;border-radius:4px}
+
+/* sticky nav */
+.nav{position:sticky;top:0;z-index:30;background:var(--paper);
+  border-bottom:1px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav ul{display:flex;list-style:none;margin:0;padding:0;min-width:max-content}
+.nav a{display:block;padding:15px 20px;text-decoration:none;font-family:var(--mono);
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  border-bottom:2px solid transparent;white-space:nowrap}
+.nav a:hover{color:var(--ink);border-bottom-color:var(--accent)}
+.nav .st{color:var(--accent-deep);margin-right:8px}
+
+.band{padding:clamp(50px,7.5vw,84px) 0;border-bottom:1px solid var(--line)}
+.band--alt{background:var(--paper-2)}
+.band--dark{background:var(--ink);color:var(--paper);border-bottom:0}
+.band--dark h2,.band--dark h3,.band--dark h4{color:var(--paper)}
+.secmark{display:flex;align-items:baseline;gap:16px;margin-bottom:6px}
+.secnum{font-family:var(--display);font-weight:800;font-size:clamp(2rem,4.6vw,3rem);
+  color:var(--accent-deep);line-height:.9;flex:none}
+.band--dark .secnum{color:var(--accent)}
+
+/* age router */
+.router{margin-top:34px}
+.rtabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.rtabs button{font-family:var(--display);font-weight:700;font-size:.95rem;
+  border:2px solid var(--line);background:var(--paper-2);color:var(--ink-3);
+  padding:12px 18px;border-radius:5px;cursor:pointer;transition:.15s;text-align:left;line-height:1.25}
+.rtabs button small{display:block;font-family:var(--mono);font-weight:400;font-size:.64rem;
+  letter-spacing:.09em;text-transform:uppercase;margin-top:4px;opacity:.75}
+.rtabs button:hover{border-color:var(--accent-deep);color:var(--ink)}
+.rtabs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.rpane{display:none}
+.rpane[data-on="true"]{display:block}
+.rcard{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:5px;padding:clamp(20px,3vw,28px)}
+.rcard .who{font-family:var(--mono);font-size:.67rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;margin-bottom:11px}
+.rcard h3{margin-bottom:11px;font-size:1.28rem}
+.rsteps{list-style:none;margin:18px 0 0;padding:0;counter-reset:s}
+.rsteps li{counter-increment:s;padding-left:36px;position:relative;margin-bottom:14px;
+  font-size:.97rem;color:var(--ink-2)}
+.rsteps li:last-child{margin-bottom:0}
+.rsteps li::before{content:counter(s);position:absolute;left:0;top:0;
+  font-family:var(--mono);font-size:.71rem;color:var(--accent-deep);
+  border:1.5px solid var(--accent-deep);width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center}
+.rsteps b{font-weight:600;color:var(--ink)}
+.rdate{margin-top:20px;padding-top:16px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:.78rem;color:var(--ink-3);line-height:1.7}
+
+/* continuum */
+.cont{display:grid;gap:12px;margin-top:30px}
+@media(min-width:820px){.cont{grid-template-columns:repeat(4,1fr)}}
+.step2{border-top:3px solid var(--accent-deep);padding-top:15px}
+.step2:nth-child(2){border-top-color:#D69A4B}
+.step2:nth-child(3){border-top-color:#8E93A0}
+.step2:nth-child(4){border-top-color:var(--ink-3)}
+.step2 .lvl{font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:8px}
+.step2 h4{margin-bottom:6px}
+.step2 p{font-size:.9rem;color:var(--ink-3);margin:0}
+.callout{margin-top:24px;border-left:3px solid var(--accent);padding-left:18px;
+  max-width:64ch;color:var(--ink-2)}
+.callout strong{color:var(--ink)}
+.myth{background:#fff;border:1px solid var(--line);border-radius:6px;padding:22px 24px;margin-top:16px}
+.myth .m{font-family:var(--mono);font-size:.79rem;color:var(--ink-3);
+  padding-bottom:13px;margin-bottom:13px;border-bottom:1px solid var(--line)}
+.myth .m b{color:var(--ink);font-weight:500}
+.myth .t{margin:0;font-size:1rem;color:var(--ink-2)}
+
+/* who's who */
+.roles{display:grid;gap:15px;margin-top:32px}
+@media(min-width:700px){.roles{grid-template-columns:1fr 1fr}}
+.role{border:1px solid var(--line-dark);border-radius:5px;padding:19px 21px;
+  background:rgba(244,242,236,.04)}
+.role .ab{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px}
+.role h4{margin-bottom:6px}
+.role p{margin:0;font-size:.92rem;color:rgba(244,242,236,.78)}
+
+
+/* ===== what to say ===== */
+.say__grp{margin-top:32px}
+.say__grp .sl{font-family:var(--mono);font-size:.69rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);display:block;
+  padding-bottom:9px;margin-bottom:18px;border-bottom:1px solid var(--line-dark)}
+.say{margin-bottom:24px}
+.say:last-child{margin-bottom:0}
+.say__when{font-family:var(--mono);font-size:.79rem;color:rgba(244,242,236,.6);
+  margin:0 0 10px;line-height:1.6}
+.say__line{font-family:var(--body);font-size:1.06rem;line-height:1.6;
+  color:var(--paper);border-left:3px solid var(--accent);padding-left:17px;margin:0}
+.say__why{font-family:var(--mono);font-size:.77rem;color:rgba(244,242,236,.55);
+  margin:10px 0 0;padding-left:20px;line-height:1.7;max-width:62ch}
+.say__note{margin-top:34px;background:rgba(232,163,61,.11);
+  border:1px solid rgba(232,163,61,.4);border-radius:6px;padding:22px 24px}
+.say__note h4{color:var(--paper);font-size:1.1rem;margin-bottom:9px}
+.say__note p{margin:0 0 .85em;color:rgba(244,242,236,.85);font-size:.97rem;max-width:64ch}
+.say__note p:last-child{margin-bottom:0}
+.say__note b{color:var(--paper)}
+
+/* ===== faq ===== */
+.faq__grp{margin-top:30px}
+.faq__grp .gl{font-family:var(--mono);font-size:.69rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;
+  padding-bottom:9px;margin-bottom:4px;border-bottom:2px solid var(--ink)}
+.q{border-bottom:1px solid var(--line)}
+.q>summary{font-family:var(--display);font-weight:700;font-size:1.04rem;
+  letter-spacing:-.01em;padding:17px 36px 17px 0;cursor:pointer;
+  list-style:none;position:relative;line-height:1.35}
+.q>summary::-webkit-details-marker{display:none}
+.q>summary::after{content:"+";position:absolute;right:4px;top:15px;
+  font-family:var(--mono);font-size:1.28rem;color:var(--accent-deep);font-weight:400}
+.q[open]>summary::after{content:"–"}
+.q[open]>summary{color:var(--accent-deep)}
+.qa{padding:0 0 20px}
+.qa .a{font-size:1.02rem;font-weight:600;color:var(--ink);margin:0 0 10px;
+  border-left:3px solid var(--accent);padding-left:15px}
+.qa p{font-size:.96rem;color:var(--ink-2);margin:0 0 .85em;max-width:66ch}
+.qa p:last-child{margin-bottom:0}
+.qa .more{font-family:var(--mono);font-size:.75rem;color:var(--accent-deep);
+  text-decoration:none;border-bottom:1px solid rgba(201,127,27,.4);padding-bottom:1px}
+.qa .more:hover{border-bottom-color:var(--accent-deep)}
+.faq__lost{background:var(--ink);color:var(--paper);border-radius:8px;
+  padding:26px 28px;margin-top:32px}
+.faq__lost .k{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:11px}
+.faq__lost h3{color:var(--paper);font-size:1.3rem;margin-bottom:11px;max-width:26ch}
+.faq__lost p{margin:0 0 .9em;color:rgba(244,242,236,.85);font-size:.98rem;max-width:62ch}
+.faq__lost p:last-child{margin-bottom:0}
+.faq__lost b{color:var(--paper)}
+.faq__lost a{color:var(--accent)}
+
+/* ===== identity header ===== */
+.idbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:20px}
+.idbar .sep{color:rgba(244,242,236,.3)}
+.idbar .plain{color:rgba(244,242,236,.6)}
+.head h1.idname{font-size:clamp(2.1rem,5.6vw,3.5rem);max-width:15ch;margin-bottom:18px}
+.iddef{font-size:clamp(1.08rem,2.1vw,1.28rem);line-height:1.5;max-width:52ch;
+  color:var(--paper);margin:0 0 20px}
+.idmeta{display:grid;gap:11px;max-width:56ch;margin:0 0 26px;padding-left:0;list-style:none}
+.idmeta li{padding-left:26px;position:relative;font-size:1rem;color:rgba(244,242,236,.8)}
+.idmeta li::before{content:"";position:absolute;left:0;top:.62em;width:13px;height:2px;background:var(--accent)}
+.idmeta b{color:var(--paper);font-weight:600}
+.idline{margin-top:26px;padding-top:22px;border-top:1px solid var(--line-dark);
+  font-family:var(--display);font-weight:700;font-size:clamp(1.15rem,2.3vw,1.45rem);
+  letter-spacing:-.01em;color:rgba(244,242,236,.62);max-width:34ch}
+.idline em{font-style:normal;color:var(--accent)}
+
+/* ===== what this is ===== */
+.what{background:var(--paper-2);border-bottom:1px solid var(--line);
+  padding:clamp(34px,5vw,52px) 0}
+.what__lead{font-family:var(--display);font-weight:700;font-size:clamp(1.15rem,2.4vw,1.5rem);
+  line-height:1.35;letter-spacing:-.01em;max-width:34ch;margin:0 0 26px}
+.what__grid{display:grid;gap:18px}
+@media(min-width:760px){.what__grid{grid-template-columns:repeat(2,1fr);gap:22px 40px}}
+.what__i{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+.what__i .n{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+  color:var(--accent-deep);border:1.5px solid var(--accent-deep);border-radius:50%;
+  width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px}
+.what__i h3{font-size:1rem;margin-bottom:5px}
+.what__i p{margin:0;font-size:.95rem;color:var(--ink-2)}
+.what__not{margin-top:28px;border-left:3px solid var(--ink-3);padding-left:18px;
+  max-width:66ch;font-size:.96rem;color:var(--ink-2)}
+.what__not b{color:var(--ink)}
+.inside{margin-top:22px}
+.inside .lbl{font-family:var(--mono);font-size:.69rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:14px}
+.inside ul{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+@media(min-width:700px){.inside ul{grid-template-columns:1fr 1fr;gap:9px 32px}}
+.inside li{padding-left:22px;position:relative;font-size:.95rem;color:var(--ink-2)}
+.inside li::before{content:"";position:absolute;left:0;top:.62em;width:11px;height:2px;background:var(--accent-deep)}
+.inside a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.inside a:hover{border-bottom-color:var(--accent-deep)}
+
+/* ===== sources ===== */
+.src{margin-top:26px;padding-top:14px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:.73rem;line-height:1.8;color:var(--ink-3)}
+.src b{color:var(--ink-2);font-weight:500}
+.src a{color:var(--accent-deep);word-break:break-word}
+.src .chk{display:inline-block;margin-left:6px;padding:2px 7px;border-radius:3px;
+  background:rgba(166,64,47,.12);color:var(--warn);font-size:.68rem;letter-spacing:.04em}
+.src .chk--ok{background:rgba(46,125,91,.14);color:var(--free)}
+.band--dark .src{border-top-color:var(--line-dark);color:rgba(244,242,236,.55)}
+.band--dark .src b{color:rgba(244,242,236,.8)}
+.band--dark .src a{color:var(--accent)}
+.srcbox{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;
+  padding:clamp(22px,3.2vw,30px);margin-top:30px}
+.srcbox h3{font-size:1.2rem;margin-bottom:10px}
+.srcbox>p{font-size:.96rem;color:var(--ink-2);max-width:64ch}
+.srctable{margin-top:20px;border-top:1px solid var(--line)}
+.srcrow{display:grid;grid-template-columns:1fr;gap:4px;padding:14px 0;
+  border-bottom:1px solid var(--line)}
+@media(min-width:760px){.srcrow{grid-template-columns:1fr 220px;gap:20px;align-items:baseline}}
+.srcrow .w{font-size:.94rem;color:var(--ink-2)}
+.srcrow .w a{font-family:var(--mono);font-size:.8rem;color:var(--accent-deep);
+  display:block;margin-top:3px;word-break:break-word}
+.srcrow .st{font-family:var(--mono);font-size:.72rem;color:var(--warn)}
+
+/* ===== find my question ===== */
+.find{position:sticky;top:0;z-index:40;background:var(--paper);
+  border-bottom:1px solid var(--line);padding:14px 0}
+.find__in{position:relative;max-width:640px}
+.find__box{display:flex;align-items:center;gap:10px;
+  border:2px solid var(--line);border-radius:6px;background:#fff;padding:0 14px}
+.find__box:focus-within{border-color:var(--accent-deep)}
+.find__box .ic{font-family:var(--mono);font-size:.95rem;color:var(--ink-3);flex:none}
+.find input{flex:1;border:0;outline:0;background:none;font-family:var(--body);
+  font-size:1.02rem;padding:13px 0;color:var(--ink);min-width:0}
+.find input::placeholder{color:var(--ink-3)}
+.find__clear{border:0;background:none;cursor:pointer;font-family:var(--mono);
+  font-size:1.05rem;color:var(--ink-3);padding:6px;display:none}
+.find__clear[data-on="true"]{display:block}
+.find__clear:hover{color:var(--ink)}
+.find__res{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:50;
+  background:#fff;border:1px solid var(--line);border-radius:6px;
+  box-shadow:0 6px 24px rgba(20,29,46,.13);max-height:min(62vh,440px);
+  overflow-y:auto;display:none}
+.find__res[data-on="true"]{display:block}
+.find__hit{display:block;width:100%;text-align:left;border:0;background:none;
+  cursor:pointer;padding:14px 16px;border-bottom:1px solid var(--line);font-family:inherit}
+.find__hit:last-child{border-bottom:0}
+.find__hit:hover,.find__hit[data-sel="true"]{background:rgba(232,163,61,.13)}
+.find__hit .q{display:block;font-family:var(--display);font-weight:700;
+  font-size:.99rem;color:var(--ink);line-height:1.3;margin-bottom:4px}
+.find__hit .w{display:block;font-family:var(--mono);font-size:.68rem;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent-deep)}
+.find__none{padding:20px 18px}
+.find__none p{margin:0 0 10px;font-size:.95rem;color:var(--ink-2)}
+.find__none p:last-child{margin:0;font-family:var(--mono);font-size:.8rem;color:var(--ink-3)}
+.find__none a{color:var(--accent-deep)}
+.find__hint{margin-top:9px;font-family:var(--mono);font-size:.71rem;
+  color:var(--ink-3);letter-spacing:.02em}
+@keyframes flash{0%{background:rgba(232,163,61,.32)}100%{background:transparent}}
+.flash{animation:flash 1.6s ease-out}
+@media print{.find{display:none}}
+
+/* ===== embedded tools ===== */
+.tk{background:#fff;border:1px solid var(--line);border-radius:8px;
+  padding:clamp(22px,3.2vw,32px);margin-top:22px}
+.tk__h{display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;
+  padding-bottom:16px;margin-bottom:20px;border-bottom:2px solid var(--ink)}
+.tk__h h3{font-size:1.32rem}
+.tk__h .n{margin-left:auto;font-family:var(--mono);font-size:.7rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.tk__intro{font-size:.97rem;color:var(--ink-2);max-width:64ch;margin:0 0 20px}
+.tk__langs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
+.tk__langs button{font-family:var(--intl);font-weight:600;font-size:.88rem;
+  border:2px solid var(--line);background:var(--paper-2);color:var(--ink-3);
+  padding:10px 14px;border-radius:5px;cursor:pointer;transition:.15s;line-height:1.25}
+.tk__langs button small{display:block;font-family:var(--mono);font-weight:400;
+  font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;margin-top:3px;opacity:.7}
+.tk__langs button:hover{border-color:var(--accent-deep);color:var(--ink)}
+.tk__langs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.tk__form{display:grid;gap:14px}
+@media(min-width:640px){.tk__form{grid-template-columns:1fr 1fr}}
+.tk__form.tk__form--3{grid-template-columns:1fr}
+@media(min-width:700px){.tk__form.tk__form--3{grid-template-columns:repeat(3,1fr)}}
+.tk__f{display:flex;flex-direction:column}
+.tk__f--wide{grid-column:1/-1}
+.tk__f label{font-family:var(--mono);font-size:.68rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.tk__f input{font-family:var(--body);font-size:1rem;padding:11px 13px;
+  border:1px solid var(--line);border-radius:4px;background:var(--paper-2);color:var(--ink)}
+.tk__f input:focus{outline:3px solid var(--accent);outline-offset:1px}
+.tk__f .hint{font-family:var(--mono);font-size:.69rem;color:var(--ink-3);margin-top:5px;line-height:1.5}
+.tk__f .req{color:var(--accent-deep)}
+.tk__err{font-family:var(--mono);font-size:.78rem;color:var(--warn);margin-top:10px;display:none}
+.tk__err[data-on="true"]{display:block}
+.tk__priv{margin-top:18px;font-family:var(--mono);font-size:.74rem;color:var(--ink-3);
+  line-height:1.7;border-left:3px solid var(--accent-deep);padding-left:14px;max-width:62ch}
+.tk__acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+.tk__btn{font-family:var(--display);font-weight:700;font-size:.96rem;padding:12px 22px;
+  border-radius:4px;border:2px solid transparent;cursor:pointer;transition:.15s}
+.tk__btn--go{background:var(--accent);color:var(--ink)}
+.tk__btn--go:hover{background:#F0B257}
+.tk__btn--gh{border-color:var(--line);color:var(--ink-2);background:none}
+.tk__btn--gh:hover{border-color:var(--accent-deep);color:var(--ink)}
+.tk__copied{font-family:var(--mono);font-size:.76rem;color:var(--accent-deep);opacity:0;transition:.2s}
+.tk__copied[data-on="true"]{opacity:1}
+.tk__out{margin-top:24px;padding-top:22px;border-top:1px solid var(--line)}
+.tk__col{margin-bottom:26px}
+.tk__col:last-child{margin-bottom:0}
+.tk__col .lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;
+  padding-bottom:7px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.tk__txt{font-size:.99rem;line-height:1.75;color:var(--ink)}
+.tk__txt p{margin:0 0 .95em}
+.tk__txt p:last-child{margin-bottom:0}
+.tk__txt .fill{background:rgba(232,163,61,.24);padding:1px 5px;border-radius:2px;font-weight:600}
+.tk__txt--intl{font-family:var(--intl);line-height:1.85}
+.tk__txt--rtl{direction:rtl;text-align:right}
+.tk__sig{margin-top:22px;padding-top:18px;border-top:1px dashed var(--line);
+  font-family:var(--mono);font-size:.8rem;color:var(--ink-3);line-height:2.3}
+.tk__d{background:var(--paper-2);border:1px solid var(--line);border-left:4px solid var(--accent-deep);
+  border-radius:5px;padding:18px 20px;margin-bottom:12px}
+.tk__d--urgent{border-left-color:var(--warn)}
+.tk__d--past{border-left-color:var(--ink-3);opacity:.7}
+.tk__dtop{display:flex;flex-wrap:wrap;gap:9px;align-items:baseline;margin-bottom:9px}
+.tk__dwhen{font-family:var(--display);font-weight:800;font-size:1.18rem;letter-spacing:-.01em}
+.tk__dc{font-family:var(--mono);font-size:.72rem;padding:3px 9px;border-radius:3px;
+  background:rgba(232,163,61,.2);color:var(--accent-deep)}
+.tk__dc--urgent{background:rgba(166,64,47,.14);color:var(--warn)}
+.tk__dc--past{background:rgba(20,29,46,.08);color:var(--ink-3)}
+.tk__d h4{font-family:var(--display);font-weight:700;font-size:.99rem;margin:0 0 6px}
+.tk__d p{margin:0;font-size:.93rem;color:var(--ink-2)}
+.tk__d .act{margin-top:11px;padding-top:11px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:.76rem;color:var(--ink-3);line-height:1.7}
+.tk__d .act b{color:var(--ink);font-weight:500}
+.tk__stage{background:var(--ink);color:var(--paper);border-radius:6px;padding:20px 22px;margin-bottom:18px}
+.tk__stage .k{font-family:var(--mono);font-size:.65rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:9px}
+.tk__stage h4{color:var(--paper);font-family:var(--display);font-size:1.18rem;margin:0 0 8px}
+.tk__stage p{margin:0;color:rgba(244,242,236,.85);font-size:.95rem}
+.tk__empty{background:var(--paper-2);border:1px dashed var(--line);border-radius:6px;
+  padding:26px;text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:.84rem}
+.tk__flag{background:rgba(166,64,47,.09);border:1px solid rgba(166,64,47,.35);
+  border-radius:5px;padding:14px 16px;margin-top:20px;font-family:var(--mono);
+  font-size:.76rem;line-height:1.7;color:#8A3527}
+
+/* three doors */
+.doors{display:grid;gap:16px;margin-top:34px}
+@media(min-width:860px){.doors{grid-template-columns:repeat(3,1fr)}}
+.door{background:#fff;border:1px solid var(--line);border-top:4px solid var(--accent-deep);
+  border-radius:6px;padding:22px 24px;display:flex;flex-direction:column}
+.door:nth-child(2){border-top-color:#8E93A0}
+.door:nth-child(3){border-top-color:var(--ink-3)}
+.door .who{font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:9px}
+.door h3{margin-bottom:9px;font-size:1.18rem}
+.door p{font-size:.94rem;color:var(--ink-2);margin:0 0 13px}
+.door ul{list-style:none;margin:0;padding:0;font-size:.91rem}
+.door li{padding-left:19px;position:relative;margin-bottom:7px;color:var(--ink-2)}
+.door li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:2px;background:var(--accent-deep)}
+
+/* free box */
+.freebox{background:rgba(46,125,91,.09);border:1px solid rgba(46,125,91,.4);
+  border-radius:6px;padding:24px 26px;margin-top:32px}
+.freebox .tag{font-family:var(--mono);font-size:.67rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--free);display:block;margin-bottom:11px}
+.freebox h3{margin-bottom:11px;font-size:1.24rem}
+.freelist{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:11px}
+@media(min-width:700px){.freelist{grid-template-columns:1fr 1fr}}
+.freelist li{padding-left:23px;position:relative;font-size:.95rem;color:var(--ink-2)}
+.freelist li::before{content:"✓";position:absolute;left:0;top:0;color:var(--free);font-weight:700}
+.freelist b{color:var(--ink)}
+
+.catch{background:#fff;border:1px solid var(--warn);border-left:4px solid var(--warn);
+  border-radius:5px;padding:20px 22px;margin:20px 0}
+.catch .lbl{font-family:var(--mono);font-size:.65rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--warn);display:block;margin-bottom:9px}
+.catch p{margin:0 0 .8em;font-size:.96rem;color:var(--ink-2)}
+.catch p:last-child{margin-bottom:0}
+.catch b{color:var(--ink)}
+.ask{font-family:var(--mono);font-size:.92rem;color:var(--ink);
+  background:var(--paper);padding:12px 14px;border-radius:4px;margin-top:12px;display:block}
+
+.short{background:rgba(232,163,61,.13);border-left:3px solid var(--accent);
+  padding:17px 19px;border-radius:4px;margin-bottom:16px}
+.short .lbl{font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;margin-bottom:7px}
+.short p{margin:0;font-size:1.03rem;font-weight:600;color:var(--ink)}
+
+.path{list-style:none;margin:20px 0 0;padding:0;counter-reset:p}
+.path li{counter-increment:p;padding:13px 0 13px 40px;position:relative;
+  border-bottom:1px dashed var(--line-dark);font-size:.97rem;color:rgba(244,242,236,.85)}
+.path li:last-child{border-bottom:0}
+.path li::before{content:counter(p);position:absolute;left:0;top:13px;
+  font-family:var(--mono);font-size:.73rem;color:var(--accent);
+  border:1.5px solid var(--accent);width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center}
+.path b{color:var(--paper);font-weight:600}
+.bigfact{background:rgba(232,163,61,.12);border:1px solid rgba(232,163,61,.45);
+  border-radius:6px;padding:24px 26px;margin-top:24px}
+.bigfact .tag{font-family:var(--mono);font-size:.67rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);display:block;margin-bottom:11px}
+.bigfact h4{font-size:1.2rem;margin-bottom:11px;line-height:1.25}
+.bigfact p{margin:0 0 .85em;color:rgba(244,242,236,.86);font-size:.97rem}
+.bigfact p:last-child{margin-bottom:0}
+.bigfact .small{font-family:var(--mono);font-size:.79rem;color:rgba(244,242,236,.6);line-height:1.7}
+
+/* tools */
+.tools{display:grid;gap:16px;margin-top:34px}
+@media(min-width:760px){.tools{grid-template-columns:1fr 1fr}}
+.tool{background:#fff;border:1px solid var(--line);border-radius:8px;padding:26px 28px;
+  display:flex;flex-direction:column}
+.tool .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;margin-bottom:11px}
+.tool h3{font-size:1.28rem;margin-bottom:10px}
+.tool p{font-size:.96rem;color:var(--ink-2);margin:0 0 16px}
+.tool .btn{margin-top:auto;align-self:flex-start}
+
+/* glossary */
+.gloss{margin-top:28px;border-top:1px solid var(--line)}
+details{border-bottom:1px solid var(--line)}
+summary{font-family:var(--display);font-weight:700;font-size:1.02rem;letter-spacing:-.01em;
+  padding:18px 34px 18px 0;cursor:pointer;list-style:none;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:4px;top:15px;
+  font-family:var(--mono);font-size:1.3rem;color:var(--accent-deep);font-weight:400}
+details[open] summary::after{content:"–"}
+details .ans{padding:0 0 20px;font-size:.97rem;color:var(--ink-2);max-width:66ch}
+details .ans p:last-child{margin-bottom:0}
+details .ans b{font-weight:600;color:var(--ink)}
+
+.helps{display:grid;gap:15px;margin-top:30px}
+@media(min-width:700px){.helps{grid-template-columns:1fr 1fr}}
+.help{background:#fff;border:1px solid var(--line);border-radius:5px;padding:20px 22px}
+.help h4{margin-bottom:6px}
+.help .k{font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;margin-bottom:9px}
+.help p{margin:0 0 11px;font-size:.92rem;color:var(--ink-3)}
+.help a{font-family:var(--mono);font-size:.79rem;color:var(--ink);word-break:break-word}
+
+.scopestrip{background:rgba(232,163,61,.13);border:1px solid rgba(232,163,61,.4);
+  border-radius:6px;padding:24px 26px;margin-top:32px}
+.scopestrip h3{margin-bottom:10px}
+.scopestrip p{margin:0 0 .85em;color:var(--ink-2);font-size:.98rem}
+.scopestrip p:last-child{margin-bottom:0}
+
+.btn{display:inline-block;font-family:var(--display);font-weight:700;font-size:1rem;
+  padding:14px 26px;border-radius:4px;text-decoration:none;border:2px solid transparent;transition:.16s}
+.btn--go{background:var(--accent);color:var(--ink)}
+.btn--go:hover{background:#F0B257}
+.btn--dark{background:var(--ink);color:var(--paper)}
+.btn--dark:hover{background:var(--ink-2)}
+.btn--ghost{border-color:rgba(244,242,236,.35);color:var(--paper)}
+.btn--ghost:hover{border-color:var(--accent);color:var(--accent)}
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+
+.foot{background:var(--ink);color:var(--paper);padding:clamp(50px,7vw,80px) 0 36px}
+.stamp{margin-top:28px;font-family:var(--mono);font-size:.75rem;color:rgba(244,242,236,.5)}
+.legal{margin-top:30px;padding-top:20px;border-top:1px solid var(--line-dark);
+  font-family:var(--mono);font-size:.72rem;line-height:1.75;
+  color:rgba(244,242,236,.45);max-width:78ch}
+@media print{.draft,.nav,.rtabs{display:none}.rpane{display:block!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<div class="draft">
+  <b>INTERNAL PREVIEW — NOT LIVE.</b> Facts are pending verification and translations are unreviewed. This banner is removed before the page goes to families.
+</div>
+
+<header class="head">
+  <div class="wrap">
+    <div class="brandbar">
+      <span class="dot" aria-hidden="true"></span>
+      <a href="/">Kirton Learning</a>
+      <span class="lang">EN · ES · HT</span>
+    </div>
+
+    <div class="idbar">
+      <span>Free handbook</span><span class="sep">·</span>
+      <span>New York City</span><span class="sep">·</span>
+      <span class="plain">Birth to age 21</span>
+    </div>
+
+    <h1 class="idname">The NYC Special Education Handbook</h1>
+
+    <p class="iddef">A free, plain-English handbook for parents raising a child with a disability in New York City — and two free tools to use alongside it.</p>
+
+    <ul class="idmeta">
+      <li><b>It explains</b> how the school system, the money, and your rights actually work — the committees, the deadlines, the vocabulary, and what you can ask for.</li>
+      <li><b>It does not</b> tell you what your child needs. That belongs to your child's evaluation team. We point you to free people for the rest.</li>
+      <li><b>It costs nothing.</b> No account, no sign-up, no email, no tracking. Nothing is sold on this page.</li>
+      <li><b>It was written by</b> Kirton Learning, a Brooklyn company that tutors children with IEPs, because families kept asking us these questions.</li>
+    </ul>
+
+    <p class="idline">Nobody hands you a map when this starts. <em>So here's the map.</em></p>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Sections">
+  <div class="wrap">
+    <ul>
+      <li><a href="#faq"><span class="st">?</span>Quick answers</a></li>
+      <li><a href="#school"><span class="st">01</span>School and the IEP</a></li>
+      <li><a href="#placement"><span class="st">02</span>Placement</a></li>
+      <li><a href="#whoswho"><span class="st">03</span>Who's who</a></li>
+      <li><a href="#money"><span class="st">04</span>Paying for it</a></li>
+      <li><a href="#opwdd"><span class="st">05</span>OPWDD</a></li>
+      <li><a href="#tools"><span class="st">06</span>Free tools</a></li>
+      <li><a href="#say"><span class="st">07</span>What to say</a></li>
+      <li><a href="#decoder"><span class="st">08</span>Decoder</a></li>
+      <li><a href="#help"><span class="st">09</span>Get help</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<section class="what">
+  <div class="wrap">
+    <p class="what__lead">Start with the quick answers, or jump to your question.</p>
+    <div class="inside">
+      <ul>
+        <li><a href="#faq">Quick answers</a> — short answers to what parents ask first</li>
+        <li><a href="#school">School and the IEP</a> — which committee handles your child, and when</li>
+        <li><a href="#placement">Placement</a> — general education, ICT, special class, District 75</li>
+        <li><a href="#whoswho">Who's who</a> — what a speech therapist, OT, or behavior analyst actually does</li>
+        <li><a href="#money">Paying for it</a> — what the school owes you, and what insurance covers</li>
+        <li><a href="#opwdd">OPWDD</a> — state funding for respite and long-term support</li>
+        <li><a href="#tools">Two free tools</a> — an interpreter request letter, and your child's deadlines</li>
+        <li><a href="#say">What to say</a> — the exact sentences to use in the meeting</li>
+        <li><a href="#decoder">The decoder</a> — FAPE, LRE, RSA, ICT, and the rest of the alphabet</li>
+        <li><a href="#help">Get help</a> — free organizations that take your call</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="find">
+  <div class="wrap">
+    <div class="find__in">
+      <div class="find__box">
+        <span class="ic" aria-hidden="true">?</span>
+        <input id="findq" type="search" autocomplete="off" role="combobox"
+          aria-expanded="false" aria-controls="findres" aria-label="Find my question"
+          placeholder="Type your question — &ldquo;he isn't getting speech&rdquo;, &ldquo;turning 5&rdquo;, &ldquo;too much money&rdquo;">
+        <button class="find__clear" id="findx" aria-label="Clear">&times;</button>
+      </div>
+      <div class="find__res" id="findres" role="listbox" aria-label="Matching questions"></div>
+      <p class="find__hint">Ask it the way you'd say it out loud. Nothing you type is saved.</p>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK ANSWERS -->
+<section class="band band--alt" id="faq">
+  <div class="wrap narrow">
+    <p class="eyebrow eyebrow--dark">Quick answers</p>
+    <h2>The questions parents ask us first.</h2>
+    <p class="lede">Short answers, in the order they usually come up. Each one links to the fuller explanation if you want it.</p>
+
+    <div class="faq__grp">
+      <span class="gl">Just starting out</span>
+
+      <details class="q"><summary>My child was just diagnosed. What's the first thing I should do?</summary>
+        <div class="qa">
+          <p class="a">Ask the school district for an evaluation, in writing, today.</p>
+          <p>That one letter starts a legal clock: once you sign consent, the district has 60 calendar days to complete the evaluation. Everything else — services, an IEP, funding — follows from it. Write the date you sent it on your own copy.</p>
+          <a class="more" href="#school">More in School and the IEP →</a>
+        </div></details>
+
+      <details class="q"><summary>Do I need a diagnosis before I can get any services?</summary>
+        <div class="qa">
+          <p class="a">No. You can ask for an evaluation without one.</p>
+          <p>Waiting for a diagnosis first is one of the most common ways families lose months. School eligibility is a separate decision from a medical diagnosis, and you can start the school process now.</p>
+          <a class="more" href="#school">More in School and the IEP →</a>
+        </div></details>
+
+      <details class="q"><summary>Does the evaluation cost me anything?</summary>
+        <div class="qa">
+          <p class="a">No. An evaluation by the school district is free to you.</p>
+          <p>The same is true of Early Intervention for children under 3. If someone is asking you to pay for an evaluation, that is a private evaluation — a different thing, and sometimes useful, but not the one the district owes you.</p>
+          <a class="more" href="#money">More in Paying for it →</a>
+        </div></details>
+
+      <details class="q"><summary>How do I actually ask? Do I call someone?</summary>
+        <div class="qa">
+          <p class="a">Put it in writing. A verbal request to a teacher is not a referral.</p>
+          <p>Write to the CSE or CPSE office that serves your district — a short letter saying who your child is and why you are asking. Keep a dated copy of everything you send. If you hand it in at the school, ask them to date-stamp your copy.</p>
+          <a class="more" href="#school">More in School and the IEP →</a>
+        </div></details>
+    </div>
+
+    <div class="faq__grp">
+      <span class="gl">School and placement</span>
+
+      <details class="q"><summary>Can my autistic child go to a regular school?</summary>
+        <div class="qa">
+          <p class="a">Yes — and under federal law that's the starting point, not the exception.</p>
+          <p>Least Restrictive Environment means the question isn't whether your child has earned a general education classroom. It's whether anyone can justify moving her out of one. Most children with disabilities in this city attend their ordinary neighborhood school.</p>
+          <a class="more" href="#placement">More in Placement →</a>
+        </div></details>
+
+      <details class="q"><summary>Will my child be sent to District 75?</summary>
+        <div class="qa">
+          <p class="a">Not automatically. An autism classification by itself does not mean District 75.</p>
+          <p>D75 is one end of a continuum that starts with general education. The IEP team — which includes you — decides where on that continuum your child belongs, and the least restrictive appropriate option comes first.</p>
+          <a class="more" href="#placement">More in Placement →</a>
+        </div></details>
+
+      <details class="q"><summary>Do I have to sign the IEP at the meeting?</summary>
+        <div class="qa">
+          <p class="a">You can ask for time to read it before you agree to anything.</p>
+          <p>You are a member of that committee, not a guest at it. Asking for a copy to review is normal and reasonable. If you are unsure about something in it, one of the free organizations at the bottom of this page will read it with you at no cost.</p>
+          <a class="more" href="#help">More in Get help →</a>
+        </div></details>
+
+      <details class="q"><summary>Can I bring someone with me to the meeting?</summary>
+        <div class="qa">
+          <p class="a">Yes. You can bring anyone you want — a friend, a relative, an advocate.</p>
+          <p>You do not need permission and you do not need to explain who they are. Many parents find that having a second person taking notes changes how the meeting goes.</p>
+          <a class="more" href="#help">Free advocates in Get help →</a>
+        </div></details>
+
+      <details class="q"><summary>What happens when my child turns 5?</summary>
+        <div class="qa">
+          <p class="a">Preschool services hand off to school-age services, and it is the most common place families lose ground.</p>
+          <p>New committee, different eligibility criteria, new paperwork. Watch for the notice between December and August — and if nothing has arrived by February 1, call the CSE for your home district yourself.</p>
+          <a class="more" href="#school">More in School and the IEP →</a>
+        </div></details>
+    </div>
+
+    <div class="faq__grp">
+      <span class="gl">Money</span>
+
+      <details class="q"><summary>Do I have to pay for any of this?</summary>
+        <div class="qa">
+          <p class="a">Not for anything written on the IEP. That is the district's obligation, not a favor.</p>
+          <p>Evaluations, the services listed on the IEP, transportation when the IEP requires it, an interpreter — all free to you. Families routinely pay out of pocket for things they are already owed.</p>
+          <a class="more" href="#money">More in Paying for it →</a>
+        </div></details>
+
+      <details class="q"><summary>Will my insurance cover therapy?</summary>
+        <div class="qa">
+          <p class="a">Many New York plans must — but it depends on one thing most parents have never been asked.</p>
+          <p>The state mandate applies to fully insured plans, not to self-funded employer plans. The card in your wallet looks the same either way. Call HR and ask: "Is our health plan fully insured or self-funded?"</p>
+          <a class="more" href="#money">More in Paying for it →</a>
+        </div></details>
+
+      <details class="q"><summary>Do I earn too much to qualify for state help?</summary>
+        <div class="qa">
+          <p class="a">Probably not. For a child living at home seeking HCBS Waiver enrollment, parental income is not counted.</p>
+          <p>Families rule themselves out of years of support based on an assumption nobody ever corrected. If you have never applied because you assumed your salary disqualified your child, that assumption is worth checking with the OPWDD Front Door.</p>
+          <a class="more" href="#opwdd">More in OPWDD →</a>
+        </div></details>
+
+      <details class="q"><summary>The IEP says speech twice a week and it isn't happening.</summary>
+        <div class="qa">
+          <p class="a">Ask about an RSA before you start paying for it yourself.</p>
+          <p>When the district can't staff a service your child's IEP mandates, it can issue a Related Services Authorization — a voucher letting you find an independent provider at DOE expense. Ask your school's IEP team or your CSE office.</p>
+          <a class="more" href="#decoder">More in the decoder →</a>
+        </div></details>
+    </div>
+
+    <div class="faq__grp">
+      <span class="gl">Language</span>
+
+      <details class="q"><summary>English isn't my first language. Can I get help?</summary>
+        <div class="qa">
+          <p class="a">Yes. An interpreter at meetings and a translated IEP are both rights, on request.</p>
+          <p>You should never be asked to bring your own interpreter, and your child should never be used as your interpreter. Request an interpreter in writing at least 72 hours before a meeting — there's a free letter tool on this page that writes it for you in nine languages.</p>
+          <a class="more" href="#tools">Open the letter tool →</a>
+        </div></details>
+    </div>
+
+    <div class="faq__grp">
+      <span class="gl">When it isn't working</span>
+
+      <details class="q"><summary>Nobody is calling me back. What do I do?</summary>
+        <div class="qa">
+          <p class="a">Put your request in writing again, keep the date, and then call a free advocate.</p>
+          <p>Silence is common and it is not something you have to solve alone. Advocates for Children of New York does exactly this, at no cost, and they have been doing it in this city for decades.</p>
+          <a class="more" href="#help">Who to call in Get help →</a>
+        </div></details>
+
+      <details class="q"><summary>I disagree with what the school decided.</summary>
+        <div class="qa">
+          <p class="a">You have real options — an independent evaluation, mediation, or an impartial hearing.</p>
+          <p>You do not have to accept a decision you think is wrong, and you do not have to know which route to take before you ask for help. Call a free advocate before you sign anything you are unsure about.</p>
+          <a class="more" href="#help">Who to call in Get help →</a>
+        </div></details>
+    </div>
+
+    <div class="faq__lost">
+      <span class="k">If you read nothing else</span>
+      <h3>Overwhelmed and don't know where to start?</h3>
+      <p>Do one thing this week: <b>write to your CSE or CPSE office asking for an evaluation, and keep a dated copy.</b> That single letter starts the clock that everything else depends on.</p>
+      <p>Then call <a href="https://www.advocatesforchildren.org">Advocates for Children of New York</a>. It's free, it's what they do, and you do not need to have your questions organized before you call.</p>
+      <p>You are not behind. This system is genuinely confusing, and nobody hands you instructions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 01 SCHOOL -->
+<section class="band" id="school">
+  <div class="wrap">
+    <div class="secmark"><span class="secnum">01</span><h2>School and the IEP</h2></div>
+    <p class="lede">Everything in this system runs on your child's age. Which committee handles them, what they're entitled to, and who to call all change at three and again at five. Pick the age that fits.</p>
+
+    <div class="router">
+      <div class="rtabs" role="group" aria-label="Choose your child's age">
+        <button type="button" data-r="ei" aria-pressed="true">Under 3<small>Early Intervention</small></button>
+        <button type="button" data-r="cpse" aria-pressed="false">3 to 4<small>CPSE · preschool</small></button>
+        <button type="button" data-r="five" aria-pressed="false">Turning 5<small>the handoff</small></button>
+        <button type="button" data-r="cse" aria-pressed="false">5 to 21<small>CSE · school age</small></button>
+      </div>
+
+      <div class="rpane" data-r="ei" data-on="true">
+        <div class="rcard">
+          <span class="who">Birth to age 3</span>
+          <h3>Early Intervention, run by the Health Department — not the schools</h3>
+          <p>The one part of the system that isn't run by the Department of Education. Free, and services can happen at home or wherever your child already spends the day.</p>
+          <ol class="rsteps">
+            <li><b>Make the referral.</b> You can refer your own child. No doctor's permission, no diagnosis needed first.</li>
+            <li><b>An evaluation gets scheduled.</b> Free to you.</li>
+            <li><b>If eligible,</b> you and the team write an IFSP — an Individualized Family Service Plan. Note the word <i>family</i>. At this age the plan supports you too.</li>
+            <li><b>Around age 2½, ask about the handoff.</b> EI stops at 3. Preschool special education is a different system with a different committee, and the switch isn't automatic if nobody starts it.</li>
+          </ol>
+          <p class="rdate">Children already in Early Intervention should be referred for a preschool evaluation about four months before becoming eligible for preschool services. Don't wait for someone to bring it up.</p>
+        </div>
+      </div>
+
+      <div class="rpane" data-r="cpse" data-on="false">
+        <div class="rcard">
+          <span class="who">Ages 3 to 5</span>
+          <h3>CPSE — the Committee on Preschool Special Education</h3>
+          <p>Your CPSE is assigned by <b>where your child lives</b>. There are eleven CSE/CPSE offices across the city, each covering three or four districts.</p>
+          <ol class="rsteps">
+            <li><b>Refer in writing.</b> A letter to the CPSE serving your district, saying who your child is and why you're referring. Keep a copy of everything.</li>
+            <li><b>Consent to the evaluation.</b> Once you sign, the district has <b>60 calendar days</b> to complete it. Write down the date you signed.</li>
+            <li><b>Go to the meeting.</b> You are a member of the committee, not a guest at it. Bring every report you have.</li>
+            <li><b>If eligible, an IEP is written</b> and services begin — in a preschool program, a Head Start, a child care setting you chose, or at home.</li>
+          </ol>
+          <p class="rdate">Start dates run on a calendar: turning 3 between January 1 and June 30 means services can begin January 2; between July 1 and December 31 means July 1.</p>
+        </div>
+      </div>
+
+      <div class="rpane" data-r="five" data-on="false">
+        <div class="rcard">
+          <span class="who">The year before kindergarten</span>
+          <h3>Turning 5 — where families fall through the floor</h3>
+          <p>The handoff from preschool to school-age special education, and the single most common place we see families lose services. New committee, new criteria, new paperwork, on a deadline nobody explains.</p>
+          <ol class="rsteps">
+            <li><b>Winter of the year before kindergarten, it starts.</b> If your child already gets preschool services, CPSE refers to CSE automatically. If not, you make the referral yourself.</li>
+            <li><b>Watch for the blue letter.</b> The Notice of Referral goes out between December and August; families are typically contacted January to March. <b>If nothing has arrived by February 1, call the CSE for your home district.</b></li>
+            <li><b>Consent to reevaluation.</b> Preschool and school-age eligibility use different criteria — a child who qualified at 3 does not automatically qualify at 5.</li>
+            <li><b>The transition meeting happens before the fifth birthday</b>, usually January to June.</li>
+            <li><b>Bring paper.</b> Every evaluation, progress report, therapy note. The new committee doesn't know your child.</li>
+          </ol>
+          <p class="rdate">The hard deadline: the first school-age IEP must be finalized by the fifth birthday. Every delay upstream eats into that. This is why February matters.</p>
+        </div>
+      </div>
+
+      <div class="rpane" data-r="cse" data-on="false">
+        <div class="rcard">
+          <span class="who">Ages 5 to 21</span>
+          <h3>CSE — the Committee on Special Education</h3>
+          <p>School-age special education runs to 21 or high school completion. You're generally assigned to the CSE where your child <b>goes to school</b> — unless they're homeschooled, attend school outside the city, or aren't attending, in which case it's where you live.</p>
+          <ol class="rsteps">
+            <li><b>Suspect a problem? Refer in writing.</b> Date it. A verbal request to a teacher is not a referral.</li>
+            <li><b>Consent starts the 60-day clock</b> for the evaluation.</li>
+            <li><b>The IEP meeting sets goals, services, and placement.</b> You're a member of that team.</li>
+            <li><b>Reviewed at least yearly,</b> reevaluated at least every three years unless you and the district agree otherwise.</li>
+            <li><b>Disagree? You have real options</b> — an independent evaluation, mediation, an impartial hearing. Talk to a free organization before signing anything you're unsure about.</li>
+          </ol>
+          <p class="rdate">If your child attends a private, parochial, or charter school in NYC, or is homeschooled, your case sits with a CSE/CPSE office rather than a school-based team.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="src"><b>Source:</b> NYC Public Schools — Special Education, and NYSED Commissioner's Regulations Part 200. <a href="https://www.schools.nyc.gov/learning/special-education">schools.nyc.gov/learning/special-education</a><span class="chk">not yet verified</span></p>
+  </div>
+</section>
+
+<!-- 02 PLACEMENT -->
+<section class="band band--alt" id="placement">
+  <div class="wrap">
+    <div class="secmark"><span class="secnum">02</span><h2>"Which school should I look at?"</h2></div>
+    <p class="lede">The most common question we hear, and the honest answer starts before the school list. Placement in New York is a continuum, and the law says you start at the least restrictive end and only move along it when there's a documented reason.</p>
+
+    <div class="cont">
+      <div class="step2"><span class="lvl">Least restrictive</span><h4>General education</h4>
+        <p>A regular class with related services and supports written into the IEP. Most children with disabilities attend their ordinary neighborhood school.</p></div>
+      <div class="step2"><span class="lvl">More support</span><h4>ICT — integrated co-teaching</h4>
+        <p>One general education teacher and one special education teacher in the same room, serving students with and without IEPs.</p></div>
+      <div class="step2"><span class="lvl">More support</span><h4>Special class in a community school</h4>
+        <p>A smaller self-contained class inside a regular school building. Programs like ASD Nest and ASD Horizon sit around here.</p></div>
+      <div class="step2"><span class="lvl">Most restrictive</span><h4>District 75</h4>
+        <p>The citywide district for students with the most significant disabilities. Small ratios, built-in therapy, roughly 23,000 students across dozens of schools.</p></div>
+    </div>
+
+    <div class="callout">
+      <p><strong>An autism classification does not by itself mean District 75.</strong> Most students with disabilities are served in ordinary NYC public schools. D75 is one end of a continuum, not the default destination for a diagnosis — and the IEP team, which includes you, decides where on that continuum your child belongs.</p>
+    </div>
+
+    <div class="myth">
+      <p class="m"><b>What people say:</b> "He's autistic, so he'll go to District 75."</p>
+      <p class="t">What's actually true: the team recommends a setting based on your child's needs, and the least restrictive appropriate option comes first. Some District 75 students spend part of their day in general education classes with their peers. Some autistic children never go near D75. Both are normal.</p>
+    </div>
+
+    <div class="myth">
+      <p class="m"><b>What people say:</b> "There's a list of autism schools I should apply to."</p>
+      <p class="t">What's actually true: it doesn't work like admissions. Placement follows the IEP. If a District 75 program is recommended, the school team or the CSE refers your child, generally within your borough as close to home as possible. There are specialized programs worth asking about by name — ASD Nest, ASD Horizon, AIMS — but you ask the IEP team, you don't apply.</p>
+    </div>
+
+    <p class="src"><b>Source:</b> NYC Public Schools — District 75 and specialized programs. <a href="https://www.schools.nyc.gov/learning/special-education/school-settings/district-75">schools.nyc.gov · District 75</a><span class="chk">not yet verified</span></p>
+  </div>
+</section>
+
+
+<!-- 03 WHO'S WHO -->
+<section class="band band--dark" id="whoswho">
+  <div class="wrap">
+    <div class="secmark"><span class="secnum">03</span><h2>"I don't know which professional to call"</h2></div>
+    <p class="lede">Here's what each of these people actually does. We're describing the roles — which one your child needs is a question for your pediatrician and your child's evaluation team, not for a website.</p>
+
+    <div class="roles">
+      <div class="role"><span class="ab">SLP</span><h4>Speech-language pathologist</h4>
+        <p>Communication — speech sounds, understanding and using language, and for some children, communication devices and systems.</p></div>
+      <div class="role"><span class="ab">OT</span><h4>Occupational therapist</h4>
+        <p>The work of daily life at your child's age: fine motor skills, handwriting, dressing, feeding, sensory processing, self-care.</p></div>
+      <div class="role"><span class="ab">PT</span><h4>Physical therapist</h4>
+        <p>Gross motor — walking, balance, coordination, strength, moving safely through a school building.</p></div>
+      <div class="role"><span class="ab">LBA / BCBA</span><h4>Behavior analyst</h4>
+        <p>Applies behavior analysis to assess and address behavior. In New York this is a licensed health profession with its own credential.</p></div>
+      <div class="role"><span class="ab">Neuropsych</span><h4>Neuropsychologist</h4>
+        <p>In-depth testing of thinking, learning, attention, and memory. Often the evaluation that produces a diagnosis or explains a puzzling learning profile.</p></div>
+      <div class="role"><span class="ab">Dev Peds</span><h4>Developmental pediatrician</h4>
+        <p>A physician specializing in development. Frequently the doctor who makes or confirms an autism diagnosis.</p></div>
+      <div class="role"><span class="ab">SEIT</span><h4>Special education itinerant teacher</h4>
+        <p>A preschool special education teacher who comes to your child's classroom or home rather than your child going to a special class.</p></div>
+      <div class="role"><span class="ab">Advocate</span><h4>Special education advocate</h4>
+        <p>Helps you prepare for and navigate IEP meetings and disputes with the district. Several organizations below do this at no charge.</p></div>
+    </div>
+
+    <p class="lede" style="margin-top:26px">Before you hire anyone in New York, you can check their license yourself through the NYSED Office of the Professions. It takes a minute and it's worth doing.</p>
+
+    <p class="src"><b>Source:</b> NYSED Office of the Professions — licensure requirements by profession. <a href="https://www.op.nysed.gov">op.nysed.gov</a><span class="chk">not yet verified</span></p>
+  </div>
+</section>
+
+<!-- 04 MONEY -->
+<section class="band" id="money">
+  <div class="wrap">
+    <div class="secmark"><span class="secnum">04</span><h2>Paying for it</h2></div>
+    <p class="lede">Families spend thousands on services their district already owes them, and rule themselves out of state funding they'd qualify for. There are three different money systems, and they don't talk to each other. Sort your question first.</p>
+
+    <div class="doors">
+      <div class="door">
+        <span class="who">System one</span><h3>The school district</h3>
+        <p>Anything about your child's education. An obligation, not a benefit — provided at no cost to you.</p>
+        <ul><li>Evaluations</li><li>Everything on the IEP</li><li>Speech, OT, PT at school</li><li>Placement</li><li>Transportation when the IEP requires it</li></ul>
+      </div>
+      <div class="door">
+        <span class="who">System two</span><h3>Health insurance</h3>
+        <p>Medical and therapeutic treatment outside school. New York law requires many plans to cover autism treatment.</p>
+        <ul><li>Diagnosis and evaluation</li><li>ABA, speech, OT, PT in clinic or at home</li><li>Doctor visits</li><li>Some equipment and devices</li></ul>
+      </div>
+      <div class="door">
+        <span class="who">System three</span><h3>OPWDD and the waiver</h3>
+        <p>Long-term supports funded through the state. The one families most often don't know exists.</p>
+        <ul><li>Respite</li><li>Community habilitation</li><li>Assistive technology</li><li>Home modifications</li><li>Support into adulthood</li></ul>
+      </div>
+    </div>
+
+    <div class="freebox">
+      <span class="tag">Free to you</span>
+      <h3>Start with what already costs nothing</h3>
+      <ul class="freelist">
+        <li><b>The evaluation.</b> Ask in writing. 60 calendar days from the date you sign consent.</li>
+        <li><b>Early Intervention</b> for children under 3. Free. Refer your own child.</li>
+        <li><b>Everything written on the IEP.</b> If speech twice a week is on there, it's owed. Not offered — owed.</li>
+        <li><b>An interpreter and a translated IEP,</b> in your language, on request.</li>
+        <li><b>An RSA</b> when the district can't staff a mandated service — a voucher to find your own provider at DOE expense.</li>
+        <li><b>Free advocacy.</b> Advocates for Children and Disability Rights New York cost nothing.</li>
+      </ul>
+    </div>
+
+    <div style="margin-top:36px">
+      <h3 style="font-size:1.35rem;margin-bottom:14px">Does my insurance have to cover autism treatment?</h3>
+      <div class="short">
+        <span class="lbl">Short answer</span>
+        <p>Many New York plans must — but whether yours does depends on one thing most parents have never been asked.</p>
+      </div>
+      <p style="max-width:66ch;color:var(--ink-2);font-size:.98rem">New York's autism insurance law requires state-regulated health plans to cover the screening, diagnosis, and treatment of autism spectrum disorder. Treatment explicitly includes applied behavior analysis, therapeutic care from licensed speech, occupational, and physical therapists, and assistive communication devices.</p>
+
+      <div class="catch">
+        <span class="lbl">Here's the catch</span>
+        <p>The mandate applies to <b>fully insured, New York State–regulated plans.</b> It generally does <b>not</b> apply to self-funded employer plans governed by federal ERISA law.</p>
+        <p>The card in your wallet looks identical either way. Large employers are the most likely to self-fund, so a parent with a good job at a big company can have <b>weaker</b> autism coverage than a neighbor on a marketplace plan.</p>
+        <span class="ask">Call HR and ask: "Is our health plan fully insured or self-funded?"</span>
+      </div>
+    </div>
+
+    <p class="src"><b>Sources:</b> NYS Department of Financial Services (insurance mandate); NYC Public Schools (district obligations). The mandate's enactment year, hour caps, and age caps are deliberately not stated here — sources conflicted.<span class="chk">not yet verified</span></p>
+  </div>
+</section>
+
+<!-- 05 OPWDD -->
+<section class="band band--dark" id="opwdd">
+  <div class="wrap">
+    <div class="secmark"><span class="secnum">05</span><h2>OPWDD — the door most families never find</h2></div>
+    <p class="lede">The Office for People With Developmental Disabilities funds long-term supports across a lifetime. Autism can qualify. Getting in has a specific order, and doing it out of order costs months.</p>
+
+    <ol class="path">
+      <li><b>Gather your documents,</b> including a psychological evaluation — see the note below about what it must contain.</li>
+      <li><b>Contact the Front Door</b> at your regional office. The mandatory entry point for all OPWDD services.</li>
+      <li><b>Attend a Front Door information session.</b></li>
+      <li><b>Eligibility determination.</b> You'll receive a letter.</li>
+      <li><b>Assessment</b> to identify strengths, needs, and interests.</li>
+      <li><b>Choose a Care Coordination Organization.</b> They become your ongoing point of contact.</li>
+      <li><b>A Life Plan is written and services begin.</b></li>
+    </ol>
+
+    <div class="bigfact">
+      <span class="tag">The thing families get wrong</span>
+      <h4>"We make too much money to qualify." Usually, that's not how this works.</h4>
+      <p>For a child living at home seeking enrollment in the HCBS Waiver, <b>parental income and resources are not counted.</b> The waiver looks at the child, not the household.</p>
+      <p>Families rule themselves out of years of support based on an assumption nobody ever corrected.</p>
+      <p class="small">Careful with this one: the rule is specific to children living at home seeking HCBS Waiver enrollment. Other OPWDD services have different cost-of-care rules. Confirm your own situation with the Front Door — don't take a website's word for it, including this one.</p>
+    </div>
+
+    <div class="bigfact">
+      <span class="tag">Ask before the evaluation, not after</span>
+      <h4>Make sure the psychological evaluation includes adaptive behavior testing.</h4>
+      <p>Eligibility generally rests on documentation of substantial functional limitations, and an evaluation without adaptive behavior testing often can't establish that. If it's missing, the process stalls while you go back and get it.</p>
+      <p class="small">Tell the evaluator up front the report may be used for an OPWDD eligibility determination. Costs nothing to ask; can save months.</p>
+    </div>
+
+    <p class="src"><b>Source:</b> NYS Office for People With Developmental Disabilities. <a href="https://opwdd.ny.gov/get-started">opwdd.ny.gov/get-started</a><span class="chk">not yet verified</span></p>
+  </div>
+</section>
+
+<!-- 06 TOOLS -->
+<section class="band" id="tools">
+  <div class="wrap">
+    <div class="secmark"><span class="secnum">06</span><h2>Free tools</h2></div>
+    <p class="lede">Not more reading. Two things you fill in and walk away holding. Nothing you type is sent anywhere or saved — it stays on your phone, and closing this page erases it.</p>
+
+    <!-- TOOL A -->
+    <div class="tk" id="toolA">
+      <div class="tk__h"><h3>Ask for an interpreter, in writing</h3><span class="n">Tool one · nine languages</span></div>
+      <p class="tk__intro">Fill in four boxes and print a letter in your language and English, requesting an interpreter for your child's IEP meeting and a translated copy of the IEP. Hand it in at least 72 hours before the meeting and keep a dated copy. <b>You should never be asked to bring your own interpreter, and your child should never be used as one.</b></p>
+
+      <div class="tk__langs" role="group" aria-label="Choose language">
+        <button type="button" data-l="es" aria-pressed="true">Español<small>Spanish</small></button>
+        <button type="button" data-l="ht" aria-pressed="false">Kreyòl<small>Haitian Creole</small></button>
+        <button type="button" data-l="zh" aria-pressed="false">中文<small>Chinese</small></button>
+        <button type="button" data-l="bn" aria-pressed="false">বাংলা<small>Bengali</small></button>
+        <button type="button" data-l="ar" aria-pressed="false">العربية<small>Arabic</small></button>
+        <button type="button" data-l="ur" aria-pressed="false">اردو<small>Urdu</small></button>
+        <button type="button" data-l="fr" aria-pressed="false">Français<small>French</small></button>
+        <button type="button" data-l="ru" aria-pressed="false">Русский<small>Russian</small></button>
+        <button type="button" data-l="ko" aria-pressed="false">한국어<small>Korean</small></button>
+      </div>
+
+      <div class="tk__form">
+        <div class="tk__f"><label for="A-child">Your child's full name</label>
+          <input id="A-child" type="text" placeholder="Maya Rivera" autocomplete="off"></div>
+        <div class="tk__f"><label for="A-school">School or CSE office</label>
+          <input id="A-school" type="text" placeholder="P.S. 272 / CSE 2" autocomplete="off"></div>
+        <div class="tk__f"><label for="A-parent">Your name</label>
+          <input id="A-parent" type="text" placeholder="Ana Rivera" autocomplete="off"></div>
+        <div class="tk__f"><label for="A-phone">Your phone number</label>
+          <input id="A-phone" type="tel" placeholder="(718) 555-0134" autocomplete="off"></div>
+        <div class="tk__f tk__f--wide"><label for="A-date">Meeting date, if you know it</label>
+          <input id="A-date" type="text" placeholder="March 14, 2027 — or leave blank">
+          <span class="hint">Request an interpreter in writing at least 72 hours before the meeting.</span></div>
+      </div>
+
+      <p class="tk__priv">Nothing here is sent anywhere. It never leaves your phone and nothing is saved.</p>
+
+      <div class="tk__acts">
+        <button class="tk__btn tk__btn--go" id="A-print">Print the letter</button>
+        <button class="tk__btn tk__btn--gh" id="A-copy">Copy the text</button>
+        <span class="tk__copied" id="A-copied">Copied</span>
+      </div>
+
+      <div class="tk__out">
+        <div class="tk__col"><span class="lbl" id="A-lbl">Español</span><div class="tk__txt tk__txt--intl" id="A-native"></div></div>
+        <div class="tk__col"><span class="lbl">English</span><div class="tk__txt" id="A-english"></div></div>
+        <div class="tk__sig">Signature: ______________________________<br>Date: ______________________________</div>
+      </div>
+
+      <div class="tk__flag">Translation status: draft, pending native-speaker review. The English column is authoritative.</div>
+    </div>
+
+    <!-- TOOL B -->
+    <div class="tk" id="toolB" style="margin-top:28px">
+      <div class="tk__h"><h3>Which deadlines apply to your child</h3><span class="n">Tool two · your dates</span></div>
+      <p class="tk__intro">Every deadline in this system runs off two dates: when your child was born, and when you signed consent. Enter them and get your own timeline. This is a calendar, not an assessment — it knows nothing about your child beyond an age.</p>
+
+      <div class="tk__form tk__form--3">
+        <div class="tk__f"><label for="B-dob">Child's date of birth <span class="req">· required</span></label>
+          <input id="B-dob" type="date">
+          <span class="hint">Decides which committee handles your child and when the Turning 5 clock starts.</span></div>
+        <div class="tk__f"><label for="B-consent">Date you signed consent to evaluate</label>
+          <input id="B-consent" type="date">
+          <span class="hint">The single most useful date you own. Leave blank if you haven't signed yet.</span></div>
+        <div class="tk__f"><label for="B-meeting">Next meeting date</label>
+          <input id="B-meeting" type="date">
+          <span class="hint">If you know it. Used for the interpreter cutoff.</span></div>
+      </div>
+
+      <p class="tk__err" id="B-err">Enter your child's date of birth to see your dates.</p>
+      <p class="tk__priv">Nothing here is sent anywhere either. Same rule: it stays on your phone.</p>
+
+      <div class="tk__acts">
+        <button class="tk__btn tk__btn--go" id="B-calc">Show my dates</button>
+        <button class="tk__btn tk__btn--gh" id="B-print">Print them</button>
+      </div>
+
+      <div class="tk__out" id="B-out">
+        <div class="tk__empty">Enter a date of birth above and your timeline appears here.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 WHAT TO SAY -->
+<section class="band band--dark" id="say">
+  <div class="wrap narrow">
+    <div class="secmark"><span class="secnum">07</span><h2>What to say in the room</h2></div>
+    <p class="lede">Knowing you have a right and knowing how to say it out loud are two different things. These are sentences you can use exactly as written. Say them plainly — you are not being difficult, you are being a member of the committee.</p>
+
+    <div class="say__grp">
+      <span class="sl">When you need time</span>
+
+      <div class="say">
+        <p class="say__when">They hand you a document and wait for you to sign.</p>
+        <p class="say__line">"I'd like to take this home and read it before I agree to anything. When do you need it back?"</p>
+        <p class="say__why">Asking for time is normal. The second sentence keeps it collaborative rather than a refusal.</p>
+      </div>
+
+      <div class="say">
+        <p class="say__when">The meeting is moving faster than you can follow.</p>
+        <p class="say__line">"Can we slow down? I want to make sure I understand this part before we move on."</p>
+        <p class="say__why">Nobody will offer you this. You have to ask, and you are allowed to ask more than once.</p>
+      </div>
+
+      <div class="say">
+        <p class="say__when">Someone uses a term you don't know.</p>
+        <p class="say__line">"What does that mean, in plain words?"</p>
+        <p class="say__why">Not knowing the acronym is not a failure on your part. Everyone in that room learned it at work.</p>
+      </div>
+    </div>
+
+    <div class="say__grp">
+      <span class="sl">When they propose a more separate setting</span>
+
+      <div class="say">
+        <p class="say__when">A special class or District 75 is recommended.</p>
+        <p class="say__line">"What supports would make general education work for her? I'd like those considered first."</p>
+        <p class="say__why">This is the Least Restrictive Environment question, asked out loud. It puts the burden where the law puts it.</p>
+      </div>
+
+      <div class="say">
+        <p class="say__when">You want the reasoning on the record.</p>
+        <p class="say__line">"Can you help me understand what was tried in the general education setting, and what happened?"</p>
+        <p class="say__why">A more restrictive placement is supposed to follow a documented reason. This asks for it without accusing anyone.</p>
+      </div>
+    </div>
+
+    <div class="say__grp">
+      <span class="sl">When something is promised</span>
+
+      <div class="say">
+        <p class="say__when">Someone says they'll take care of it.</p>
+        <p class="say__line">"That sounds good — can we write that into the IEP?"</p>
+        <p class="say__why">The single most useful sentence on this page. A promise in the room is not enforceable. A line in the IEP is.</p>
+      </div>
+
+      <div class="say">
+        <p class="say__when">You want to know what happens if it doesn't get delivered.</p>
+        <p class="say__line">"If this service doesn't start on time, who should I contact, and by when?"</p>
+        <p class="say__why">Asking in advance is far easier than chasing later, and it tells the room you'll be following up.</p>
+      </div>
+    </div>
+
+    <div class="say__grp">
+      <span class="sl">When you need help or a change</span>
+
+      <div class="say">
+        <p class="say__when">English isn't your preferred language.</p>
+        <p class="say__line">"I need an interpreter in [your language] for this meeting, and a translated copy of the IEP."</p>
+        <p class="say__why">Both are rights, on request. Put it in writing at least 72 hours ahead — there's a free letter tool on this page.</p>
+      </div>
+
+      <div class="say">
+        <p class="say__when">A service on the IEP isn't happening.</p>
+        <p class="say__line">"The IEP mandates speech twice a week and it hasn't started. Can we discuss an RSA?"</p>
+        <p class="say__why">Naming the mechanism shows you know it exists, which often changes how the conversation goes.</p>
+      </div>
+
+      <div class="say">
+        <p class="say__when">You disagree and want it noted.</p>
+        <p class="say__line">"I don't agree with that recommendation, and I'd like my disagreement noted in the minutes."</p>
+        <p class="say__why">You can disagree without ending the meeting. Getting it on record preserves your options later.</p>
+      </div>
+    </div>
+
+    <div class="say__note">
+      <h4>Two things that make all of these work better</h4>
+      <p><b>Bring a second person.</b> A friend, a relative, anyone. You don't need permission and you don't have to explain who they are. Having someone taking notes changes how a meeting runs.</p>
+      <p><b>Write down what was agreed, in the room.</b> Then send a short email afterward: "Thank you for meeting. My understanding is that we agreed to X and Y." That email is now a dated record, and it costs you five minutes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 DECODER -->
+<section class="band band--alt" id="decoder">
+  <div class="wrap narrow">
+    <div class="secmark"><span class="secnum">08</span><h2>The decoder</h2></div>
+    <p class="lede">The words they use in the meeting. Nobody explains these and everybody assumes you know them. You're not behind — the vocabulary is genuinely opaque.</p>
+
+    <div class="gloss">
+      <details id="g-fape"><summary>FAPE</summary><div class="ans">
+        <p><b>Free Appropriate Public Education.</b> The core promise of federal special education law: your child is entitled to an education suited to their needs, at no cost to you.</p></div></details>
+      <details id="g-lre"><summary>LRE — and why it matters more than any other four letters</summary><div class="ans">
+        <p><b>Least Restrictive Environment.</b> Your child should be educated with non-disabled peers to the greatest extent appropriate, and moved to a more separate setting only when the disability makes that necessary. This is the legal reason a general education classroom is the starting point of the conversation, not a special class.</p></div></details>
+      <details id="g-ifsp"><summary>IFSP vs IEP</summary><div class="ans">
+        <p>An <b>IFSP</b> is what Early Intervention writes for children under 3, and it supports the family, not only the child. An <b>IEP</b> is what CPSE and CSE write from age 3 up, focused on the child's education.</p></div></details>
+      <details id="g-rsa"><summary>RSA — what to do when a service isn't happening</summary><div class="ans">
+        <p><b>Related Services Authorization.</b> When the district can't staff a service your child's IEP mandates, it can issue an RSA letting you find an independent provider at DOE expense. If the IEP says speech twice a week and none has happened since September, this is the mechanism to ask your IEP team or CSE office about.</p></div></details>
+      <details id="g-ict"><summary>ICT, SETSS, and the class ratios</summary><div class="ans">
+        <p><b>ICT</b> is integrated co-teaching — two teachers, one room, mixed group. <b>SETSS</b> is special education teacher support services, delivered in or out of the classroom. The numbers — 12:1:1, 8:1:1, 6:1:1, 12:1:4 — are students to teacher to paraprofessional. Smaller first number, more adult attention.</p></div></details>
+      <details id="g-pwn"><summary>Prior Written Notice (PWN)</summary><div class="ans">
+        <p>The formal written notice the district must send when it proposes or refuses to change your child's identification, evaluation, placement, or services. Keep every one.</p></div></details>
+      <details id="g-60day"><summary>The 60-day clock</summary><div class="ans">
+        <p>After you sign consent for an initial evaluation, the district has <b>60 calendar days</b> to complete it. Write the consent date on your own calendar. It is the single most useful date you will hold.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- 09 HELP -->
+<section class="band" id="help">
+  <div class="wrap">
+    <div class="secmark"><span class="secnum">09</span><h2>When you need a person</h2></div>
+    <p class="lede">All free. All doing this in New York for decades. We don't get anything if you contact them, and we'd rather you called them than guessed.</p>
+
+    <div class="helps">
+      <div class="help"><span class="k">Rights · disputes · helpline</span><h4>Advocates for Children of New York</h4>
+        <p>Free advice and advocacy for NYC families, strongest on disputes and children's education rights. Their written guides are the best plain-language material in the city.</p>
+        <a href="https://www.advocatesforchildren.org">advocatesforchildren.org</a></div>
+      <div class="help"><span class="k">Navigation · workshops</span><h4>INCLUDEnyc</h4>
+        <p>Help center, trainings, and guides for NYC families of young people with disabilities, birth to 26.</p>
+        <a href="https://includenyc.org">includenyc.org</a></div>
+      <div class="help"><span class="k">Legal help</span><h4>Disability Rights New York</h4>
+        <p>Free legal and advocacy services for people with disabilities across the state.</p>
+        <a href="https://www.drny.org">drny.org</a></div>
+      <div class="help"><span class="k">District 75 questions</span><h4>District 75 Placement Office</h4>
+        <p>For questions about D75 programs, including kindergarten placement. Main office 212-802-1500; placement 212-802-1578.</p>
+        <a href="https://www.schools.nyc.gov/learning/special-education/school-settings/district-75">schools.nyc.gov · District 75</a></div>
+      <div class="help"><span class="k">The system itself</span><h4>NYC Public Schools — Special Education</h4>
+        <p>Official source for CSE/CPSE office contacts, referral addresses, and program descriptions. Find your district's office and save the number.</p>
+        <a href="https://www.schools.nyc.gov/learning/special-education">schools.nyc.gov · special education</a></div>
+    </div>
+
+    <div class="scopestrip">
+      <h3>What we do and don't do here</h3>
+      <p>Everything on this page explains <b>how the system works</b> — the law, the committees, the deadlines, the vocabulary, who does what job, where the money comes from. That's public information, and it should have been handed to you already.</p>
+      <p>What we don't do is tell you what your particular child needs. We're not therapists, evaluators, advocates, or benefits counselors, and a website answering that question about a child it has never met would be doing you harm dressed up as help. For that, call the organizations above.</p>
+    </div>
+
+    <div class="srcbox">
+      <h3>Where this comes from</h3>
+      <p>Every fact on this page traces to a public source, listed below. We would rather you checked us than trusted us — and if you find something here that is wrong or out of date, tell us and we will fix it.</p>
+
+      <div class="srctable">
+        <div class="srcrow">
+          <span class="w">Committees, evaluations, referral process, Turning 5, placement, District 75
+            <a href="https://www.schools.nyc.gov/learning/special-education">schools.nyc.gov/learning/special-education</a></span>
+          <span class="st">not yet verified</span>
+        </div>
+        <div class="srcrow">
+          <span class="w">The 60-day evaluation clock and IEP procedure
+            <a href="https://www.nysed.gov/special-education">nysed.gov/special-education — Commissioner's Regulations Part 200</a></span>
+          <span class="st">not yet verified</span>
+        </div>
+        <div class="srcrow">
+          <span class="w">Language access rights, interpreters, translated documents
+            <a href="https://www.schools.nyc.gov/school-life/school-environment/hello">schools.nyc.gov · Speak Your Language</a></span>
+          <span class="st">not yet verified</span>
+        </div>
+        <div class="srcrow">
+          <span class="w">Autism insurance mandate and which plans it covers
+            <a href="https://www.dfs.ny.gov">dfs.ny.gov — NYS Department of Financial Services</a></span>
+          <span class="st">not yet verified</span>
+        </div>
+        <div class="srcrow">
+          <span class="w">OPWDD eligibility, the Front Door, and the HCBS Waiver income rule
+            <a href="https://opwdd.ny.gov/get-started">opwdd.ny.gov/get-started</a></span>
+          <span class="st">not yet verified</span>
+        </div>
+        <div class="srcrow">
+          <span class="w">Professional licensure and license verification
+            <a href="https://www.op.nysed.gov">op.nysed.gov — Office of the Professions</a></span>
+          <span class="st">not yet verified</span>
+        </div>
+      </div>
+
+      <p style="margin-top:20px;font-family:var(--mono);font-size:.79rem;color:var(--ink-3);line-height:1.8">
+        <b>Why every line says &ldquo;not yet verified&rdquo;:</b> this page is a draft. Nothing here has been confirmed against a primary source by a person who works in this system. When that review happens, each line will carry the name of who checked it and the date. Until then, treat this as a map drawn from public documents — useful for orientation, not a substitute for calling your CSE office.
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="eyebrow">The one thing we do sell</p>
+    <h2 class="narrow">Once there's an IEP, there's the other question: what does she actually do all year?</h2>
+    <p class="lede" style="color:rgba(244,242,236,.82)">That's the part we work on — taking the reading, writing, and math goals already in the IEP and building a year of real projects around them, plus a dated record for the next meeting. Everything on this page stays free either way.</p>
+    <div class="cta-row">
+      <a class="btn btn--go" href="/">See how that works</a>
+      <a class="btn btn--ghost" href="/record/">The free record tool</a>
+    </div>
+    <p class="stamp">Last reviewed: <b>not yet reviewed</b> · <a href="#help" style="color:var(--accent)">See where every fact comes from</a></p>
+    <p class="legal">
+      This page is general information about how special education and disability funding work in New York City and New York State. It is not legal advice, insurance advice, benefits counseling, medical advice, or advice about any individual child, and reading it creates no professional relationship. Rules, deadlines, and program details change — confirm anything that matters with your CSE or CPSE office, your health plan, the OPWDD Front Door, or one of the free organizations listed above.
+      <br><br>
+      Kirton Learning is operated by Our Rose LLC, Brooklyn, NY. We provide supplemental academic instruction only — reading, writing, and mathematics. We do not provide speech-language pathology, occupational or physical therapy, psychological or counseling services, behavioral intervention, evaluation, diagnosis, benefits counseling, special education advocacy, or legal advice. We receive no payment from any organization named on this page.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var IDX = [
+    {q:"What do I actually say in the meeting?", w:"What to say", t:"say",
+     k:"what say words script sentence how ask speak up talk nervous scared meeting say it"},
+    {q:"They want me to sign right now", w:"What to say", t:"say",
+     k:"sign now pressure time read take home refuse hurry pushed rushed"},
+    {q:"How do I get something written into the IEP?", w:"What to say", t:"say",
+     k:"written into iep promise verbal agreed enforce record put in writing"},
+    {q:"How do I disagree without making it worse?", w:"What to say", t:"say",
+     k:"disagree object push back difficult confrontation nervous polite noted minutes"},
+    {q:"I'm overwhelmed and don't know where to start", w:"Quick answers", t:"faq",
+     k:"overwhelmed lost confused dont know where start help stuck scared alone drowning give up"},
+    {q:"Do I have to sign the IEP at the meeting?", w:"Quick answers", t:"faq",
+     k:"sign signing signature agree refuse take home review time pressure"},
+    {q:"Can I bring someone to the IEP meeting?", w:"Quick answers", t:"faq",
+     k:"bring someone friend relative advocate support person alone meeting attend"},
+    {q:"Nobody is calling me back", w:"Quick answers", t:"faq",
+     k:"no response ignored calling back not answering silence waiting ghosted nobody responds"},
+    {q:"My child was just diagnosed. What do I do first?", w:"School and the IEP", t:"school",
+     k:"diagnosed diagnosis just found out new start begin where do i start first steps autism"},
+    {q:"My child is under 3. What can we get?", w:"Early Intervention", t:"school", tab:"ei",
+     k:"baby toddler infant under three 2 year old early intervention EI IFSP not talking delay"},
+    {q:"How do I get an evaluation, and what does it cost?", w:"School and the IEP", t:"school", tab:"cpse",
+     k:"evaluation evaluated testing assessment how much cost free refer referral request"},
+    {q:"My child is 3 or 4. Which committee handles us?", w:"CPSE — preschool", t:"school", tab:"cpse",
+     k:"preschool three four 3 4 CPSE committee pre-k prek daycare"},
+    {q:"What happens when my child turns 5?", w:"Turning 5", t:"school", tab:"five",
+     k:"turning 5 five kindergarten transition handoff blue letter notice CSE change school age"},
+    {q:"Nothing has arrived and my child starts kindergarten soon", w:"Turning 5", t:"school", tab:"five",
+     k:"february 1 no letter nothing came waiting heard nothing late deadline kindergarten"},
+    {q:"My child is school age. How does the CSE work?", w:"CSE — ages 5 to 21", t:"school", tab:"cse",
+     k:"CSE school age 5 to 21 elementary middle high school annual review reevaluation"},
+    {q:"I disagree with the IEP. What are my options?", w:"CSE — ages 5 to 21", t:"school", tab:"cse",
+     k:"disagree dispute fight appeal hearing mediation independent evaluation refuse sign unhappy"},
+    {q:"Can I put my autistic child in a general education school?", w:"Placement", t:"placement",
+     k:"general education gen ed regular school mainstream inclusion register enroll normal class"},
+    {q:"Which school should I look at for my child?", w:"Placement", t:"placement",
+     k:"which school list schools apply choose placement where send best school program"},
+    {q:"What is District 75, and is my child going there?", w:"Placement", t:"placement",
+     k:"district 75 D75 special school separate self contained citywide"},
+    {q:"What are ASD Nest, Horizon, and AIMS?", w:"Placement", t:"placement",
+     k:"nest horizon AIMS autism program specialized ASD"},
+    {q:"I don't know which professional to call", w:"Who's who", t:"whoswho",
+     k:"professional who call therapist doctor specialist SLP OT PT BCBA neuropsych evaluator advocate"},
+    {q:"What does a speech therapist actually do?", w:"Who's who", t:"whoswho",
+     k:"speech language pathologist SLP talking communication nonverbal AAC device"},
+    {q:"What does an occupational therapist do?", w:"Who's who", t:"whoswho",
+     k:"occupational therapy OT handwriting sensory fine motor dressing feeding self care"},
+    {q:"How do I check someone is really licensed?", w:"Who's who", t:"whoswho",
+     k:"licensed license verify check credential real legitimate NYSED scam"},
+    {q:"Who pays for what?", w:"Paying for it", t:"money",
+     k:"pay paying cost money afford expensive who pays free charge bill fees broke"},
+    {q:"What does the school have to pay for?", w:"Paying for it", t:"money",
+     k:"school pays district obligation owed free entitled must provide responsibility"},
+    {q:"Does my insurance have to cover autism treatment?", w:"Paying for it", t:"money",
+     k:"insurance coverage covered ABA denied claim plan HR employer ERISA self funded mandate"},
+    {q:"What is OPWDD and how do I get in the door?", w:"OPWDD", t:"opwdd",
+     k:"OPWDD front door waiver HCBS medicaid state long term supports apply eligibility"},
+    {q:"Do I make too much money to qualify?", w:"OPWDD", t:"opwdd",
+     k:"too much money income salary earn qualify disqualify rich afford limit means test"},
+    {q:"What is respite and how do I get it?", w:"OPWDD", t:"opwdd",
+     k:"respite break relief exhausted tired babysitter care worker help at home"},
+    {q:"What should the evaluation include for OPWDD?", w:"OPWDD", t:"opwdd",
+     k:"adaptive behavior testing vineland psychological evaluation report eligibility documents"},
+    {q:"Can I get an interpreter at the IEP meeting?", w:"Free tools", t:"toolA",
+     k:"interpreter translate translated language spanish creole chinese bengali arabic urdu russian korean french english not my language"},
+    {q:"Can I get the IEP translated into my language?", w:"Free tools", t:"toolA",
+     k:"translate IEP document translated language read understand papers spanish creole"},
+    {q:"Which deadlines apply to my child?", w:"Free tools", t:"toolB",
+     k:"deadline dates calendar when timeline 60 days clock late overdue my dates"},
+    {q:"The IEP says speech twice a week and it isn't happening", w:"Decoder — RSA", t:"decoder", d:"g-rsa",
+     k:"not happening not getting services missing no speech no OT never started RSA voucher provider"},
+    {q:"What does LRE mean?", w:"Decoder", t:"decoder", d:"g-lre",
+     k:"lre lre lre least restrictive environment restrictive mainstream meaning"},
+    {q:"What does FAPE mean?", w:"Decoder", t:"decoder", d:"g-fape",
+     k:"fape fape fape free appropriate public education denied"},
+    {q:"What's the difference between an IFSP and an IEP?", w:"Decoder", t:"decoder", d:"g-ifsp",
+     k:"ifsp ifsp iep difference plan document under 3"},
+    {q:"What do ICT, SETSS, and 12:1:1 mean?", w:"Decoder", t:"decoder", d:"g-ict",
+     k:"ICT SETSS ratio 12:1:1 8:1:1 6:1:1 class size co-teaching numbers meaning"},
+    {q:"What is Prior Written Notice?", w:"Decoder", t:"decoder", d:"g-pwn",
+     k:"prior written notice PWN letter change refuse propose"},
+    {q:"How long can the district take to evaluate?", w:"Decoder", t:"decoder", d:"g-60day",
+     k:"60 days how long wait taking forever slow delay clock consent signed"},
+    {q:"I need to talk to a real person", w:"Get help", t:"help",
+     k:"help person call phone number advocate free lawyer legal someone talk speak human stuck"}
+  ];
+
+  var box=document.getElementById('findq'), res=document.getElementById('findres'),
+      clr=document.getElementById('findx');
+  if(!box) return;
+  var sel=-1, shown=[];
+
+  var STOP={what:1,is:1,are:1,was:1,my:1,the:1,a:1,an:1,to:1,for:1,and:1,of:1,in:1,on:1,
+    i:1,me:1,we:1,do:1,does:1,did:1,can:1,should:1,would:1,it:1,that:1,this:1,with:1,
+    about:1,from:1,you:1,your:1,so:1,but:1,if:1,at:1,be:1,been:1,have:1,has:1,get:1,
+    child:1,kid:1,son:1,daughter:1};
+
+  function norm(x){ return x.toLowerCase().replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim(); }
+
+  function toks(q){
+    var all=norm(q).split(' ').filter(function(t){ return t.length>1; });
+    var keep=all.filter(function(t){ return !STOP[t]; });
+    return keep.length ? keep : all;
+  }
+
+  function score(item,ts){
+    var hay=' '+norm(item.q+' '+item.w+' '+item.k)+' ', sc=0, hitCount=0;
+    ts.forEach(function(t){
+      var s=0;
+      if(hay.indexOf(' '+t+' ')>-1) s=4;
+      else if(hay.indexOf(' '+t)>-1) s=3;
+      else if(hay.indexOf(t)>-1) s=2;
+      else if(t.length>=6 && hay.indexOf(' '+t.slice(0,t.length-2))>-1) s=1;
+      if(s){ sc+=s; hitCount++; }
+    });
+    if(!hitCount) return 0;
+    if(sc<3) return 0;
+    return sc + (hitCount>1 ? hitCount : 0);
+  }
+
+  function paint(){
+    var q=box.value.trim();
+    clr.setAttribute('data-on', q?'true':'false');
+    if(!q){ res.setAttribute('data-on','false'); box.setAttribute('aria-expanded','false'); return; }
+    var ts=toks(q);
+    shown=IDX.map(function(it){ return {it:it,s:score(it,ts)}; })
+             .filter(function(r){ return r.s>0; })
+             .sort(function(a,b){ return b.s-a.s; })
+             .slice(0,7).map(function(r){ return r.it; });
+    sel=-1;
+    if(!shown.length){
+      res.innerHTML='<div class="find__none"><p>Nothing on this page matches that — which may mean it is a question for a person rather than a website.</p>'
+        +'<p>Try <a href="https://www.advocatesforchildren.org">Advocates for Children</a> or <a href="https://includenyc.org">INCLUDEnyc</a>. Both are free.</p></div>';
+    } else {
+      res.innerHTML=shown.map(function(it,n){
+        return '<button class="find__hit" role="option" data-n="'+n+'"><span class="q">'+it.q+'</span><span class="w">'+it.w+'</span></button>';
+      }).join('');
+    }
+    res.setAttribute('data-on','true');
+    box.setAttribute('aria-expanded','true');
+  }
+
+  function go(it){
+    if(it.tab){
+      document.querySelectorAll('.rtabs button').forEach(function(b){
+        b.setAttribute('aria-pressed', String(b.dataset.r===it.tab)); });
+      document.querySelectorAll('.rpane').forEach(function(p){
+        p.setAttribute('data-on', String(p.dataset.r===it.tab)); });
+    }
+    if(it.d){ var dt=document.getElementById(it.d); if(dt) dt.open=true; }
+    var el=document.getElementById(it.d||it.t) || document.getElementById(it.t);
+    if(el){
+      el.scrollIntoView({behavior:'smooth',block:'start'});
+      el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+    }
+    res.setAttribute('data-on','false');
+    box.setAttribute('aria-expanded','false');
+    box.blur();
+  }
+
+  box.addEventListener('input',paint);
+  box.addEventListener('focus',function(){ if(box.value.trim()) paint(); });
+  box.addEventListener('keydown',function(e){
+    if(!shown.length) return;
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+      e.preventDefault();
+      sel = e.key==='ArrowDown' ? Math.min(sel+1,shown.length-1) : Math.max(sel-1,0);
+      res.querySelectorAll('.find__hit').forEach(function(h,n){
+        h.setAttribute('data-sel',String(n===sel));
+        if(n===sel) h.scrollIntoView({block:'nearest'});
+      });
+    } else if(e.key==='Enter'){
+      e.preventDefault(); go(shown[sel>-1?sel:0]);
+    } else if(e.key==='Escape'){
+      res.setAttribute('data-on','false'); box.setAttribute('aria-expanded','false');
+    }
+  });
+  res.addEventListener('click',function(e){
+    var h=e.target.closest('.find__hit'); if(h) go(shown[+h.dataset.n]);
+  });
+  clr.addEventListener('click',function(){ box.value=''; paint(); box.focus(); });
+  document.addEventListener('click',function(e){
+    if(!e.target.closest('.find__in')){ res.setAttribute('data-on','false'); box.setAttribute('aria-expanded','false'); }
+  });
+})();
+
+(function(){
+  var btns=document.querySelectorAll('.rtabs button'), panes=document.querySelectorAll('.rpane');
+  btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      var t=b.dataset.r;
+      btns.forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.r===t));});
+      panes.forEach(function(p){p.setAttribute('data-on',String(p.dataset.r===t));});
+    });
+  });
+})();
+
+(function(){
+  var L = {
+    es:{name:"Español", rtl:false, t:function(d){return [
+      "A quien corresponda:",
+      "Mi nombre es <b class='fill'>"+d.parent+"</b>. Soy el padre o tutor de <b class='fill'>"+d.child+"</b>, estudiante de <b class='fill'>"+d.school+"</b>.",
+      "Mi idioma preferido es el español. Solicito por escrito lo siguiente:",
+      "1. Un intérprete de español en todas las reuniones de educación especial de mi hijo/a, incluida la reunión del IEP"+(d.mdate?" programada para el <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "2. Una copia traducida al español del IEP de mi hijo/a, de los informes de evaluación y de todos los avisos relacionados.",
+      "Entiendo que tengo derecho a estos servicios sin costo alguno, y que no se me debe pedir que traiga mi propio intérprete ni que mi hijo/a sirva de intérprete.",
+      "Por favor confirme por escrito que se proporcionará el intérprete. Puede comunicarse conmigo al <b class='fill'>"+d.phone+"</b>.",
+      "Gracias por su atención.",
+      "Atentamente,"
+    ];}},
+    ht:{name:"Kreyòl Ayisyen", rtl:false, t:function(d){return [
+      "Pou moun ki konsène a:",
+      "Non mwen se <b class='fill'>"+d.parent+"</b>. Mwen se paran oswa gadyen <b class='fill'>"+d.child+"</b>, ki se yon elèv nan <b class='fill'>"+d.school+"</b>.",
+      "Lang mwen pi pito se Kreyòl Ayisyen. Mwen ap mande bagay sa yo alekri:",
+      "1. Yon entèprèt Kreyòl Ayisyen nan tout reyinyon edikasyon espesyal pitit mwen an, ki gen ladan reyinyon IEP la"+(d.mdate?" ki fikse pou <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "2. Yon kopi IEP pitit mwen an, rapò evalyasyon yo, ak tout avi ki gen rapò, tradui an Kreyòl Ayisyen.",
+      "Mwen konprann mwen gen dwa a sèvis sa yo gratis, e yo pa dwe mande m pou m mennen pwòp entèprèt mwen oswa pou pitit mwen sèvi kòm entèprèt.",
+      "Tanpri konfime alekri ke entèprèt la ap disponib. Ou ka rele m nan <b class='fill'>"+d.phone+"</b>.",
+      "Mèsi pou atansyon ou.",
+      "Ak respè,"
+    ];}},
+    zh:{name:"中文", rtl:false, t:function(d){return [
+      "敬启者：",
+      "我叫 <b class='fill'>"+d.parent+"</b>，是 <b class='fill'>"+d.child+"</b> 的家长或监护人，我的孩子就读于 <b class='fill'>"+d.school+"</b>。",
+      "我的首选语言是中文。我在此书面请求：",
+      "1. 在我孩子的所有特殊教育会议中提供中文口译员，包括"+(d.mdate?"定于 <b class='fill'>"+d.mdate+"</b> 举行的":"")+" IEP 会议。",
+      "2. 提供我孩子的 IEP、评估报告及所有相关通知的中文译本。",
+      "我了解我有权免费获得这些服务，学校不应要求我自带口译员，也不应让我的孩子担任口译。",
+      "请以书面形式确认将提供口译员。您可以通过 <b class='fill'>"+d.phone+"</b> 与我联系。",
+      "感谢您的关注。",
+      "此致"
+    ];}},
+    bn:{name:"বাংলা", rtl:false, t:function(d){return [
+      "সংশ্লিষ্ট কর্তৃপক্ষের প্রতি:",
+      "আমার নাম <b class='fill'>"+d.parent+"</b>। আমি <b class='fill'>"+d.child+"</b>-এর অভিভাবক, যে <b class='fill'>"+d.school+"</b>-এ পড়ে।",
+      "আমার পছন্দের ভাষা বাংলা। আমি লিখিতভাবে অনুরোধ করছি:",
+      "১. আমার সন্তানের সকল বিশেষ শিক্ষা সভায় একজন বাংলা দোভাষী, যার মধ্যে "+(d.mdate?"<b class='fill'>"+d.mdate+"</b> তারিখে নির্ধারিত ":"")+"IEP সভা অন্তর্ভুক্ত।",
+      "২. আমার সন্তানের IEP, মূল্যায়ন প্রতিবেদন এবং সংশ্লিষ্ট সকল নোটিশের বাংলা অনুবাদ।",
+      "আমি জানি যে এই সেবাগুলি বিনামূল্যে পাওয়া আমার অধিকার, এবং আমাকে নিজের দোভাষী আনতে বলা উচিত নয় বা আমার সন্তানকে দোভাষী হিসেবে ব্যবহার করা উচিত নয়।",
+      "অনুগ্রহ করে লিখিতভাবে নিশ্চিত করুন যে দোভাষী উপস্থিত থাকবেন। আমার সাথে <b class='fill'>"+d.phone+"</b> নম্বরে যোগাযোগ করা যাবে।",
+      "ধন্যবাদ।",
+      "বিনীত,"
+    ];}},
+    ar:{name:"العربية", rtl:true, t:function(d){return [
+      "إلى من يهمه الأمر:",
+      "اسمي <b class='fill'>"+d.parent+"</b>. أنا والد/ولي أمر <b class='fill'>"+d.child+"</b>، الطالب في <b class='fill'>"+d.school+"</b>.",
+      "لغتي المفضلة هي العربية. أطلب كتابةً ما يلي:",
+      "١. مترجم فوري باللغة العربية في جميع اجتماعات التربية الخاصة الخاصة بطفلي، بما في ذلك اجتماع الـ IEP"+(d.mdate?" المقرر في <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "٢. نسخة مترجمة إلى العربية من الـ IEP الخاص بطفلي وتقارير التقييم وجميع الإشعارات ذات الصلة.",
+      "أفهم أن من حقي الحصول على هذه الخدمات مجاناً، وأنه لا ينبغي أن يُطلب مني إحضار مترجم خاص بي أو أن يُستخدم طفلي كمترجم.",
+      "يرجى التأكيد كتابةً على توفير المترجم. يمكن الاتصال بي على الرقم <b class='fill'>"+d.phone+"</b>.",
+      "شكراً لاهتمامكم.",
+      "مع خالص التقدير،"
+    ];}},
+    ur:{name:"اردو", rtl:true, t:function(d){return [
+      "بخدمت جناب:",
+      "میرا نام <b class='fill'>"+d.parent+"</b> ہے۔ میں <b class='fill'>"+d.child+"</b> کا والد/سرپرست ہوں، جو <b class='fill'>"+d.school+"</b> میں زیرِ تعلیم ہے۔",
+      "میری ترجیحی زبان اردو ہے۔ میں تحریری طور پر درخواست کرتا/کرتی ہوں:",
+      "۱۔ میرے بچے کی تمام خصوصی تعلیمی میٹنگز میں اردو مترجم، بشمول "+(d.mdate?"<b class='fill'>"+d.mdate+"</b> کو طے شدہ ":"")+"IEP میٹنگ۔",
+      "۲۔ میرے بچے کے IEP، تشخیصی رپورٹس اور تمام متعلقہ نوٹسز کا اردو ترجمہ۔",
+      "میں سمجھتا/سمجھتی ہوں کہ یہ خدمات مفت حاصل کرنا میرا حق ہے، اور مجھ سے اپنا مترجم لانے کو نہیں کہا جانا چاہیے اور نہ ہی میرے بچے کو مترجم کے طور پر استعمال کیا جانا چاہیے۔",
+      "براہِ کرم تحریری تصدیق فرمائیں کہ مترجم فراہم کیا جائے گا۔ مجھ سے <b class='fill'>"+d.phone+"</b> پر رابطہ کیا جا سکتا ہے۔",
+      "آپ کی توجہ کا شکریہ۔",
+      "مخلص،"
+    ];}},
+    fr:{name:"Français", rtl:false, t:function(d){return [
+      "À qui de droit :",
+      "Je m'appelle <b class='fill'>"+d.parent+"</b>. Je suis le parent ou tuteur de <b class='fill'>"+d.child+"</b>, élève à <b class='fill'>"+d.school+"</b>.",
+      "Ma langue préférée est le français. Je demande par écrit ce qui suit :",
+      "1. Un interprète francophone lors de toutes les réunions d'éducation spécialisée concernant mon enfant, y compris la réunion IEP"+(d.mdate?" prévue le <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "2. Une copie traduite en français de l'IEP de mon enfant, des rapports d'évaluation et de tous les avis s'y rapportant.",
+      "Je comprends que j'ai droit à ces services gratuitement, et qu'on ne doit pas me demander d'amener mon propre interprète ni utiliser mon enfant comme interprète.",
+      "Veuillez confirmer par écrit qu'un interprète sera fourni. Vous pouvez me joindre au <b class='fill'>"+d.phone+"</b>.",
+      "Je vous remercie de votre attention.",
+      "Cordialement,"
+    ];}},
+    ru:{name:"Русский", rtl:false, t:function(d){return [
+      "Кому это касается:",
+      "Меня зовут <b class='fill'>"+d.parent+"</b>. Я родитель или опекун <b class='fill'>"+d.child+"</b>, учащегося школы <b class='fill'>"+d.school+"</b>.",
+      "Мой предпочитаемый язык — русский. Настоящим письменно прошу:",
+      "1. Предоставить переводчика русского языка на всех собраниях по специальному образованию моего ребёнка, включая собрание IEP"+(d.mdate?", назначенное на <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "2. Предоставить перевод на русский язык IEP моего ребёнка, отчётов об оценке и всех сопутствующих уведомлений.",
+      "Я понимаю, что имею право на эти услуги бесплатно, и что от меня не должны требовать привести собственного переводчика или использовать моего ребёнка в качестве переводчика.",
+      "Пожалуйста, подтвердите письменно, что переводчик будет предоставлен. Со мной можно связаться по телефону <b class='fill'>"+d.phone+"</b>.",
+      "Благодарю за внимание.",
+      "С уважением,"
+    ];}},
+    ko:{name:"한국어", rtl:false, t:function(d){return [
+      "관계자 귀하,",
+      "저는 <b class='fill'>"+d.parent+"</b>입니다. <b class='fill'>"+d.school+"</b>에 재학 중인 <b class='fill'>"+d.child+"</b>의 학부모 또는 보호자입니다.",
+      "제가 선호하는 언어는 한국어입니다. 다음 사항을 서면으로 요청합니다:",
+      "1. 자녀의 모든 특수교육 회의에 한국어 통역사 배정"+(d.mdate?" (<b class='fill'>"+d.mdate+"</b>로 예정된 IEP 회의 포함)":" (IEP 회의 포함)")+".",
+      "2. 자녀의 IEP, 평가 보고서 및 관련 모든 통지문의 한국어 번역본 제공.",
+      "저는 이러한 서비스를 무료로 받을 권리가 있으며, 제가 직접 통역사를 데려오도록 요구받거나 자녀가 통역을 맡아서는 안 된다는 점을 알고 있습니다.",
+      "통역사가 제공된다는 점을 서면으로 확인해 주시기 바랍니다. 연락처는 <b class='fill'>"+d.phone+"</b>입니다.",
+      "관심에 감사드립니다.",
+      "감사합니다,"
+    ];}}
+  };
+
+  function eng(d, langName){return [
+    "To Whom It May Concern:",
+    "My name is <b class='fill'>"+d.parent+"</b>. I am the parent or guardian of <b class='fill'>"+d.child+"</b>, a student at <b class='fill'>"+d.school+"</b>.",
+    "My preferred language is "+langName+". I am requesting the following in writing:",
+    "1. A "+langName+" interpreter at all special education meetings concerning my child, including the IEP meeting"+(d.mdate?" scheduled for <b class='fill'>"+d.mdate+"</b>":"")+".",
+    "2. A copy of my child's IEP, evaluation reports, and all related notices translated into "+langName+".",
+    "I understand that I have the right to these services at no cost, and that I should not be asked to bring my own interpreter or to have my child act as interpreter.",
+    "Please confirm in writing that an interpreter will be provided. I can be reached at <b class='fill'>"+d.phone+"</b>.",
+    "Thank you for your attention.",
+    "Sincerely,"
+  ];}
+
+  var cur='es';
+  var ids=['child','school','parent','phone','date'];
+  var ph={child:"[your child's name]",school:"[school or CSE office]",parent:"[your name]",phone:"[your phone number]",date:""};
+  var names={es:'Spanish',ht:'Haitian Creole',zh:'Chinese',bn:'Bengali',ar:'Arabic',ur:'Urdu',fr:'French',ru:'Russian',ko:'Korean'};
+
+  function data(){
+    var d={};
+    ids.forEach(function(i){
+      var v=document.getElementById('A-'+i).value.trim();
+      d[i]= v || ph[i];
+    });
+    d.mdate = d.date;
+    return d;
+  }
+  function render(){
+    var d=data(), cfg=L[cur];
+    var nat=document.getElementById('A-native');
+    nat.innerHTML = cfg.t(d).map(function(p){return "<p>"+p+"</p>";}).join('');
+    nat.className='tk__txt tk__txt--intl'+(cfg.rtl?' tk__txt--rtl':'');
+    nat.setAttribute('lang',cur);
+    nat.setAttribute('dir',cfg.rtl?'rtl':'ltr');
+    document.getElementById('A-lbl').textContent=cfg.name;
+    document.getElementById('A-english').innerHTML =
+      eng(d,names[cur]).map(function(p){return "<p>"+p+"</p>";}).join('');
+  }
+  document.querySelectorAll('#toolA .tk__langs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      cur=b.dataset.l;
+      document.querySelectorAll('#toolA .tk__langs button').forEach(function(x){
+        x.setAttribute('aria-pressed',String(x.dataset.l===cur));});
+      render();
+    });
+  });
+  ids.forEach(function(i){document.getElementById('A-'+i).addEventListener('input',render);});
+  document.getElementById('A-print').addEventListener('click',function(){window.print();});
+  document.getElementById('A-copy').addEventListener('click',function(){
+    var t=document.getElementById('A-native').innerText+"\n\n---\n\n"+document.getElementById('A-english').innerText;
+    navigator.clipboard.writeText(t).then(function(){
+      var c=document.getElementById('A-copied');
+      c.setAttribute('data-on','true');
+      setTimeout(function(){c.setAttribute('data-on','false');},1800);
+    });
+  });
+  render();
+})();
+
+(function(){
+  var MS=86400000;
+  function parse(v){ if(!v) return null; var p=v.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+  function fmt(d){ return d.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'long',day:'numeric'}); }
+  function addDays(d,n){ var x=new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
+  function today(){ var t=new Date(); return new Date(t.getFullYear(),t.getMonth(),t.getDate()); }
+  function ageOn(dob,d){ var a=d.getFullYear()-dob.getFullYear(); var m=d.getMonth()-dob.getMonth();
+    if(m<0||(m===0&&d.getDate()<dob.getDate()))a--; return a; }
+  function birthday(dob,age){ return new Date(dob.getFullYear()+age,dob.getMonth(),dob.getDate()); }
+  function countdown(d){
+    var n=Math.round((d-today())/MS);
+    if(n<0) return {txt:Math.abs(n)+' days ago',cls:'past'};
+    if(n===0) return {txt:'today',cls:'urgent'};
+    if(n<=30) return {txt:'in '+n+' days',cls:'urgent'};
+    if(n<=365) return {txt:'in '+n+' days',cls:''};
+    return {txt:'in '+Math.round(n/30)+' months',cls:''};
+  }
+  function card(d,title,body,act){
+    var c=countdown(d);
+    var k=c.cls==='past'?' tk__d--past':(c.cls==='urgent'?' tk__d--urgent':'');
+    var b=c.cls==='past'?' tk__dc--past':(c.cls==='urgent'?' tk__dc--urgent':'');
+    return '<div class="tk__d'+k+'"><div class="tk__dtop"><span class="tk__dwhen">'+fmt(d)+'</span>'
+      +'<span class="tk__dc'+b+'">'+c.txt+'</span></div><h4>'+title+'</h4><p>'+body+'</p>'
+      +(act?'<p class="act">'+act+'</p>':'')+'</div>';
+  }
+  function stageFor(age){
+    if(age<3) return {k:'Right now',h:'Early Intervention \u2014 birth to 3',
+      p:'Run by the Health Department, not the schools. Free. You can refer your own child, and you do not need a diagnosis or a doctor\u2019s note first.'};
+    if(age<5) return {k:'Right now',h:'CPSE \u2014 preschool special education, ages 3 to 5',
+      p:'Your CPSE is assigned by where your child lives. Referrals go in writing to the office serving your district.'};
+    return {k:'Right now',h:'CSE \u2014 school-age special education, ages 5 to 21',
+      p:'For most school-age students you are assigned to the CSE where your child attends school.'};
+  }
+  function run(){
+    var dob=parse(document.getElementById('B-dob').value);
+    var err=document.getElementById('B-err');
+    if(!dob){ err.setAttribute('data-on','true'); return; }
+    err.setAttribute('data-on','false');
+    var consent=parse(document.getElementById('B-consent').value);
+    var meeting=parse(document.getElementById('B-meeting').value);
+    var age=ageOn(dob,today());
+    var st=stageFor(age);
+    var out='<div class="tk__stage"><span class="k">'+st.k+'</span><h4>'+st.h+'</h4><p>'+st.p+'</p></div>';
+    var items=[];
+    if(consent){ items.push({d:addDays(consent,60),f:function(d){return card(d,
+      'The evaluation must be complete',
+      'Once you signed consent for an initial evaluation, the district has 60 calendar days to finish it.',
+      '<b>If this date passes with no evaluation:</b> call your CSE or CPSE office, then Advocates for Children. Bring the date you signed.');}}); }
+    if(age<3){
+      var third=birthday(dob,3);
+      items.push({d:addDays(third,-120),f:function(d){return card(d,
+        'Start the handoff to preschool',
+        'Children in Early Intervention should be referred for a preschool evaluation about four months before becoming eligible for preschool services.',
+        '<b>Nobody may raise this with you.</b> Ask your service coordinator about the transition to CPSE.');}});
+      items.push({d:third,f:function(d){return card(d,
+        'Your child turns 3 \u2014 Early Intervention ends',
+        'EI stops at 3 and preschool special education is a different system with a different committee. The switch is not automatic if nobody starts it.',
+        '<b>Service start dates run on a calendar:</b> turning 3 between January 1 and June 30 means services can begin January 2; between July 1 and December 31 means July 1.');}});
+    }
+    if(age<5){
+      var fifth=birthday(dob,5);
+      items.push({d:new Date(fifth.getFullYear()-1,11,1),f:function(d){return card(d,
+        'Turning 5 season opens',
+        'The Notice of Referral goes out between December and August, and families are typically contacted by the school-age IEP team between January and March.',
+        '<b>Watch the mail.</b> If your child already receives preschool services, CPSE refers to CSE automatically. If not, you make the referral yourself.');}});
+      items.push({d:new Date(fifth.getFullYear(),1,1),f:function(d){return card(d,
+        'Your February 1 checkpoint',
+        'If no notice has arrived by February 1, contact the CSE for your home district. Do not wait politely.',
+        '<b>Highest-value date here.</b> Everything downstream depends on this starting on time.');}});
+      items.push({d:fifth,f:function(d){return card(d,
+        'Your child turns 5 \u2014 the IEP deadline',
+        'The first school-age IEP must be finalized by the fifth birthday. Preschool and school-age eligibility use different criteria, so a child who qualified at 3 does not automatically qualify at 5.',
+        '<b>Bring paper.</b> Every evaluation, progress report, and therapy note. The new committee does not know your child.');}});
+    }
+    if(meeting){
+      items.push({d:addDays(meeting,-3),f:function(d){return card(d,
+        'Interpreter request cutoff',
+        'If English is not your preferred language, request an interpreter in writing at least 72 hours before the meeting.',
+        '<b>Use the letter tool above.</b> You should never be asked to bring your own interpreter.');}});
+      items.push({d:meeting,f:function(d){return card(d,
+        'Your meeting',
+        'You are a member of this committee, not a guest at it.',
+        '<b>Write down what is agreed, in the room.</b> Ask for anything promised to be written into the IEP itself.');}});
+    }
+    if(age>=5){
+      items.push({d:birthday(dob,age+1),f:function(d){return card(d,
+        'Annual review, roughly',
+        'The IEP is reviewed at least once a year. Yours may sit on a different month \u2014 check the date on your current IEP and use that instead.',
+        '<b>Reevaluation happens at least every three years</b> unless you and the district agree otherwise.');}});
+    }
+    items.sort(function(a,b){return a.d-b.d;});
+    items.forEach(function(i){ out+=i.f(i.d); });
+    if(!items.length) out+='<div class="tk__empty">Add a consent date or meeting date to see deadlines.</div>';
+    document.getElementById('B-out').innerHTML=out;
+  }
+  document.getElementById('B-calc').addEventListener('click',run);
+  document.getElementById('B-print').addEventListener('click',function(){window.print();});
+  ['dob','consent','meeting'].forEach(function(id){
+    document.getElementById('B-'+id).addEventListener('change',function(){
+      if(document.getElementById('B-dob').value) run();
+    });
+  });
+})();
+</script>
+</body>
+</html>

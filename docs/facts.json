@@ -1,0 +1,369 @@
+{
+  "_README": {
+    "purpose": "Single source of truth for every factual claim on the resource platform. Pages must read from this file, never hardcode a date, deadline, phone number, or office name. One edit here updates every page and every language.",
+    "rules": [
+      "NEVER add a fact without a source URL and a verified_on date.",
+      "NEVER invent, estimate, or infer a value. If it is not here, stop and ask Lamont.",
+      "Every entry starts at status 'unverified' and only Lamont or his colleague may move it to 'verified'.",
+      "Nothing with status 'unverified' may appear on a published page.",
+      "Re-verify school-year timelines each August; everything else every six months.",
+      "If a source URL 404s or the page has changed materially, set status back to 'unverified' immediately."
+    ],
+    "status_values": ["unverified", "verified", "stale"],
+    "last_full_review": null,
+    "next_review_due": "2026-08-01",
+    "compiled_on": "2026-09-09",
+    "compiled_by": "drafted from public sources; NOT yet reviewed by a practitioner"
+  },
+
+  "committees": {
+    "early_intervention": {
+      "label": "Early Intervention (EI)",
+      "ages": "Birth to 3",
+      "run_by": "NYC Department of Health, not the Department of Education",
+      "plan_document": "IFSP — Individualized Family Service Plan",
+      "notes": "Parent may self-refer. No diagnosis or physician referral required first. Services may be delivered at home or in the child's existing setting.",
+      "transition_note": "Children in EI should be referred to CPSE for evaluation about four months before becoming eligible for preschool services.",
+      "source": "https://includenyc.org/help-center/resources/preschool-special-education/",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "cpse": {
+      "label": "Committee on Preschool Special Education (CPSE)",
+      "ages": "3 to 5",
+      "assigned_by": "where the child lives",
+      "plan_document": "IEP",
+      "service_start_rule": {
+        "turns_3_jan_1_to_jun_30": "may begin preschool services January 2",
+        "turns_3_jul_1_to_dec_31": "may begin preschool services July 1"
+      },
+      "referral_method": "Written letter to the CPSE serving the family's district, identifying the child and stating the reason for referral.",
+      "source": "https://includenyc.org/help-center/resources/preschool-special-education/",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "cse": {
+      "label": "Committee on Special Education (CSE)",
+      "ages": "5 to 21, or through high school completion",
+      "assigned_by": "where the child attends school, EXCEPT when the child attends school outside NYC, is homeschooled, or is not attending school — then by where the child lives",
+      "offices_citywide": 11,
+      "offices_note": "Each CSE/CPSE office supports families across three to four community school districts.",
+      "also_serves": [
+        "preschool children ages 3-5",
+        "students in private, parochial, charter, State Supported or State Approved Non-Public schools in NYC",
+        "NYC residents attending non-public schools outside NYC and NYS",
+        "students receiving home or hospital instruction as their IEP placement",
+        "homeschooled students",
+        "students not attending school"
+      ],
+      "source": "https://www.schools.nyc.gov/learning/special-education",
+      "verified_on": null,
+      "status": "unverified"
+    }
+  },
+
+  "timelines": {
+    "evaluation_completion": {
+      "value": "60 calendar days",
+      "trigger": "the date the parent signs consent for an initial evaluation",
+      "plain_language": "After you sign consent, the district has 60 calendar days to finish the evaluation. Write the consent date on your calendar.",
+      "authority": "NY Commissioner's Regulations Part 200",
+      "source": "https://specialedstartguide.com/blog/new-york-what-is-an-iep",
+      "verify_against": "Primary source is NYSED Part 200. Confirm before publishing.",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "turning_5_notice_window": {
+      "value": "December through August",
+      "what": "The blue Notice of Referral is sent after a referral is received.",
+      "source": "https://www.p771k.org/turning5.html",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "turning_5_no_letter_deadline": {
+      "value": "February 1",
+      "action": "If no notice has arrived by February 1, contact the CSE in your home district.",
+      "why_it_matters": "Highest-value single date on the site. A late start compounds into a missed IEP deadline.",
+      "source": "https://includenyc.org/help-center/resources/turning-5-preschoolers-transitioning-to-kindergarten/",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "turning_5_contact_window": {
+      "value": "January through March",
+      "what": "Families are typically contacted by the school-age IEP team in this window.",
+      "source": "https://tiegerman.org/wp-content/uploads/2025/03/January-2025-Parent-Training-Understanding-the-Turning-5-Process.pdf",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "turning_5_conference": {
+      "value": "before the child's fifth birthday, commonly January to June",
+      "source": "https://www.columbiapsychiatry.org/research/research-centers-interdisciplinary-programs/progress-center/families/transition-cpse-cse-what-parents-need-know",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "first_school_age_iep": {
+      "value": "must be finalized by the child's fifth birthday",
+      "authority": "IDEA",
+      "source": "https://brooklynletters.com/turning-5-nyc-cpse-to-cse-transition/",
+      "verify_against": "Secondary source — confirm against NYSED or NYC DOE before publishing.",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "interpreter_request_notice": {
+      "value": "at least 72 hours before the meeting, in writing",
+      "source": "https://www.schools.nyc.gov/learning/special-education/the-iep-process/iep-meeting",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "d75_initial_referral": {
+      "value": "within 60 days of the date consent to evaluate was given",
+      "source": "https://p371k.org/d75placement.html",
+      "verified_on": null,
+      "status": "unverified"
+    }
+  },
+
+  "eligibility_warnings": {
+    "preschool_to_school_age": {
+      "warning": "Preschool and school-age eligibility use different criteria. A child who qualified under CPSE does not automatically qualify under CSE, and preschool services do not automatically carry over.",
+      "why_it_matters": "This is the fact that blindsides families at Turning 5. It belongs high on the page, not in a footnote.",
+      "source": "https://www.columbiapsychiatry.org/research/research-centers-interdisciplinary-programs/progress-center/families/transition-cpse-cse-what-parents-need-know",
+      "verified_on": null,
+      "status": "unverified"
+    }
+  },
+
+  "placement": {
+    "lre_principle": {
+      "label": "Least Restrictive Environment",
+      "plain_language": "A child should be educated with non-disabled peers to the greatest extent appropriate. A more separate setting requires a documented reason.",
+      "authority": "IDEA",
+      "editorial_note": "Frame as: the question is not whether a child has earned general education, but whether anyone can justify moving her out of it.",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "continuum": [
+      {"order": 1, "name": "General education with related services and supports"},
+      {"order": 2, "name": "ICT — Integrated Co-Teaching", "detail": "One general education teacher and one special education teacher in the same room, serving students with and without IEPs."},
+      {"order": 3, "name": "Special class in a community school", "detail": "Smaller self-contained class inside a regular school building."},
+      {"order": 4, "name": "District 75", "detail": "Citywide district for students with the most significant disabilities."}
+    ],
+    "district_75": {
+      "what": "A citywide service district, not a geographic one, providing highly specialized instructional support.",
+      "serves": "Students ages 3 to 21 with significant challenges including autism spectrum disorders, significant cognitive delays, emotional disabilities, sensory impairments, and multiple disabilities.",
+      "student_count": "more than 23,000",
+      "sites": "roughly 69 schools and programs across more than 300 sites",
+      "class_ratios": ["12:1:1", "8:1:1", "6:1:1", "12:1:4"],
+      "placement_process": "If a D75 program is recommended, the school team or the CSE refers the student. Placement is generally within the student's borough, as close to home as possible.",
+      "transportation": "Students in D75 programs are entitled to travel by school bus.",
+      "critical_correction": "An autism classification does not by itself mean District 75. Most children with disabilities attend ordinary NYC public schools and receive services there. Some D75 students attend classes with general education peers.",
+      "phone_main": "212-802-1500",
+      "phone_placement": "212-802-1578",
+      "source": "https://www.schools.nyc.gov/learning/special-education/school-settings/district-75",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "specialized_autism_programs": {
+      "editorial_note": "Describe what each program is. NEVER suggest which one a child should be in — that is an IEP team decision. Ask the team about them by name.",
+      "programs": [
+        {"name": "ASD Nest", "detail": "Integrated, reduced-size class in a community school for autistic students at or above grade level who require minimal support."},
+        {"name": "ASD Horizon", "detail": "Special class in a community school for autistic students at or near grade level who may require more support."},
+        {"name": "AIMS", "detail": "Special education program in select District 75 schools. Each classroom has a special education teacher, a speech teacher, and a paraprofessional."}
+      ],
+      "source": "https://includenyc.org/help-center/resources/specialized-programs/",
+      "verified_on": null,
+      "status": "unverified"
+    }
+  },
+
+  "language_access": {
+    "right_summary": "All parents whose primary language is not English have a right to free translation and interpretation services. A student does not need to be identified as an English Language Learner for a parent to have this right.",
+    "covered_languages": ["Arabic", "Bengali", "Chinese", "French", "Haitian Creole", "Korean", "Russian", "Spanish", "Urdu"],
+    "covered_languages_note": "These nine plus English account for over 95% of NYC DOE student households. Parents speaking other languages may still request services.",
+    "translatable_documents": ["IEPs", "Section 504 plans", "evaluation reports", "meeting notices", "consent notices", "prior written notices", "Related Services Authorizations", "Nickerson Letters"],
+    "interpretation_at_meetings": "Schools and the CSE are obligated to provide an interpreter at IEP meetings, in both covered and non-covered languages, upon parental request.",
+    "phone_interpretation": "Available in more than 200 languages",
+    "request_notice": "Request an interpreter in writing at least 72 hours before the meeting.",
+    "iep_translation_request": {
+      "web": "schools.nyc.gov/IEPHello",
+      "phone": "718-935-2013"
+    },
+    "sign_language": {
+      "right": "Deaf and hard-of-hearing parents, guardians, and DOE staff have a legal right to a sign language interpreter at an IEP meeting.",
+      "contact": "OSLIS@schools.nyc.gov, or the school's parent coordinator"
+    },
+    "the_fact_families_most_need": "Parents should not be asked to bring their own interpreter, and children should not be used as interpreters. Many families have been doing both for years without knowing there was an alternative.",
+    "legal_note": "The English version of a translated IEP remains the legal document.",
+    "general_request_route": "Call 311, or ask any NYC Public Schools staff member. 'I Speak' cards are available.",
+    "sources": [
+      "https://www.schools.nyc.gov/learning/special-education/the-iep-process/iep-meeting",
+      "https://advocatesforchildren.org/wp-content/uploads/2024/02/language_access_english.pdf",
+      "https://www.schools.nyc.gov/school-life/school-environment/hello"
+    ],
+    "verified_on": null,
+    "status": "unverified"
+  },
+
+  "services_not_delivered": {
+    "rsa": {
+      "label": "Related Services Authorization (RSA)",
+      "what": "A voucher issued by the NYC DOE to parents of students whose IEPs mandate related services when the DOE has been unable to secure those services. It lets the parent find an independent provider at DOE expense.",
+      "plain_language": "If the IEP says speech twice a week and no speech has happened, this is the mechanism to ask about.",
+      "who_to_ask": "The school's IEP team, or the CSE office for your district.",
+      "editorial_boundary": "State that the mechanism exists and who to ask. NEVER advise on a specific child's situation or predict an outcome. Route to Advocates for Children.",
+      "source": "https://www.ed.gov/media/document/02121269-apdf-22592.pdf",
+      "verified_on": null,
+      "status": "unverified"
+    }
+  },
+
+  "funding": {
+    "insurance_mandate_ny": {
+      "label": "New York autism insurance mandate",
+      "what": "New York law requires state-regulated health plans to cover the screening, diagnosis, and treatment of autism spectrum disorder. Treatment includes applied behavior analysis, therapeutic care from licensed providers (speech, occupational, physical therapy), and assistive communication devices.",
+      "the_critical_limit": {
+        "headline": "The mandate applies to fully insured, New York State-regulated plans. Self-funded employer plans governed by federal ERISA law are generally exempt.",
+        "why_it_matters": "The insurance card looks identical either way. Large employers are the most likely to self-fund, so a parent with a good job at a big company can have weaker autism coverage than a neighbor on a marketplace plan. Most parents have never been told to ask.",
+        "the_question_to_ask": "Is our health plan fully insured or self-funded?",
+        "if_self_funded": "Federal mental health parity rules may still apply. Do not tell a family they have no options — tell them to get help from Advocates for Children or Disability Rights New York."
+      },
+      "editorial_caution": "Do NOT publish a specific enactment year, hour cap, or age cap. Sources conflict and several are low-quality secondary sites. Verify against NYS Department of Financial Services or NYSED before adding any number.",
+      "sources": [
+        "https://www.autismspeaks.org/new-york-state-regulated-insurance-coverage"
+      ],
+      "verify_against": "Primary source is New York State Department of Financial Services. Autism Speaks is secondary. MUST be confirmed before publishing.",
+      "verified_on": null,
+      "status": "unverified"
+    },
+    "opwdd": {
+      "label": "Office for People With Developmental Disabilities (OPWDD)",
+      "what": "The New York State agency coordinating long-term services and supports for people with developmental disabilities, including autism.",
+      "entry_point": "The Front Door",
+      "pathway_order": [
+        "Gather documents, including a psychological evaluation with adaptive behavior testing",
+        "Contact the Front Door / regional office (DDRO)",
+        "Attend a Front Door information session",
+        "Eligibility determination",
+        "Assessment",
+        "Choose a Care Coordination Organization",
+        "Life Plan written and services begin"
+      ],
+      "income_rule": {
+        "headline": "Parental income and resources are not considered for children living at home seeking enrollment in the HCBS Waiver.",
+        "why_it_matters": "Families rule themselves out constantly because they assume they earn too much. This may be the single highest-value sentence on the money track.",
+        "caution": "This rule is specific to children living at home seeking HCBS Waiver enrollment. Other OPWDD services have different cost-of-care rules under Mental Hygiene Law Article 43. Do not over-generalize it.",
+        "source": "https://medicaidwaiver.org/state/new_york.html"
+      },
+      "evaluation_tip": {
+        "content": "Eligibility generally requires a psychological evaluation that includes adaptive behavior testing. If the evaluation does not include it, ask the evaluator to add it.",
+        "why_it_matters": "Missing this reportedly costs families months of back-and-forth."
+      },
+      "waiver_services_include": ["respite", "community habilitation", "assistive technology", "environmental modifications", "family education and training", "supported employment"],
+      "important_caveat": "Approval for OPWDD eligibility is not the same as enrollment in the HCBS Waiver. Families may be approved for one and not the other.",
+      "sources": [
+        "https://opwdd.ny.gov/get-started",
+        "https://medicaidwaiver.org/state/new_york.html",
+        "https://www.kidswaivers.org/ny/"
+      ],
+      "verify_against": "opwdd.ny.gov is the primary source. Several supporting sources here are secondary and MUST be confirmed before publishing.",
+      "verified_on": null,
+      "status": "unverified"
+    }
+  },
+
+  "professional_roles": {
+    "_editorial_rule": "Describe what each role does. NEVER state or imply which one a given child needs. That is for the pediatrician and the evaluation team.",
+    "slp": {"label": "Speech-language pathologist", "does": "Communication — speech sounds, understanding and using language, and for some children communication devices and systems.", "nys_licensed": true},
+    "ot": {"label": "Occupational therapist", "does": "The work of daily life at the child's age: fine motor skills, handwriting, dressing, feeding, sensory processing, self-care.", "nys_licensed": true},
+    "pt": {"label": "Physical therapist", "does": "Gross motor — walking, balance, coordination, strength, moving safely through a building.", "nys_licensed": true},
+    "lba": {
+      "label": "Licensed Behavior Analyst (LBA)",
+      "does": "Applies behavior analysis to assess and address behavior.",
+      "nys_licensed": true,
+      "credential_note": "New York requires its own LBA credential through NYSED; BCBA certification alone is not sufficient to practice as an LBA in New York. LBA licensure requires 1,500 hours of supervised experience; CBAA requires 1,000. CBAAs practice only under LBA supervision.",
+      "source": "https://www.op.nysed.gov/professions/licensed-behavior-analysts/licensecertification-requirements"
+    },
+    "neuropsychologist": {"label": "Neuropsychologist", "does": "In-depth testing of thinking, learning, attention, and memory. Often produces a diagnosis or explains a puzzling learning profile."},
+    "developmental_pediatrician": {"label": "Developmental pediatrician", "does": "A physician specializing in development. Frequently the doctor who makes or confirms an autism diagnosis."},
+    "seit": {"label": "Special Education Itinerant Teacher (SEIT)", "does": "A preschool special education teacher who comes to the child's classroom or home."},
+    "advocate": {"label": "Special education advocate", "does": "Helps a parent prepare for and navigate IEP meetings and disputes. Several NYC organizations provide this free."},
+    "license_verification": {
+      "how": "Check any New York licensed professional against the NYSED Office of the Professions verification tool.",
+      "url": "https://www.op.nysed.gov/verification-search",
+      "requirement": "Every provider on the referral directory must be verified this way, with the license number and check date recorded, and re-checked every six months."
+    },
+    "verified_on": null,
+    "status": "unverified"
+  },
+
+  "glossary": {
+    "FAPE": "Free Appropriate Public Education — the entitlement to an education suited to a child's needs, at no cost to the family.",
+    "LRE": "Least Restrictive Environment — education alongside non-disabled peers to the greatest extent appropriate.",
+    "IFSP": "Individualized Family Service Plan — the Early Intervention plan for children under 3. Supports the family, not only the child.",
+    "IEP": "Individualized Education Program — the plan written by CPSE or CSE from age 3 up.",
+    "PWN": "Prior Written Notice — the formal notice a district must send when it proposes or refuses a change to identification, evaluation, placement, or services.",
+    "ICT": "Integrated Co-Teaching — one general education and one special education teacher in the same classroom.",
+    "SETSS": "Special Education Teacher Support Services — support delivered to a student in or out of the classroom.",
+    "RSA": "Related Services Authorization — a DOE voucher for an independent provider when the district cannot deliver a mandated service.",
+    "CPSE": "Committee on Preschool Special Education — ages 3 to 5.",
+    "CSE": "Committee on Special Education — ages 5 to 21.",
+    "class_ratios": "Numbers like 12:1:1 mean students to teacher to paraprofessional. A smaller first number means more adult attention.",
+    "verified_on": null,
+    "status": "unverified"
+  },
+
+  "referral_organizations": {
+    "_rule": "No compensation in either direction, ever. No endorsement language — 'organizations other families have used', never 'recommended' or 'vetted'.",
+    "organizations": [
+      {
+        "name": "Advocates for Children of New York",
+        "url": "https://www.advocatesforchildren.org",
+        "strength": "Free advice and advocacy for NYC families; strongest on rights and disputes. Publishes the clearest plain-language guides in the city.",
+        "free": true
+      },
+      {
+        "name": "INCLUDEnyc",
+        "url": "https://includenyc.org",
+        "strength": "Help center, trainings, and guides for NYC families of young people with disabilities, birth to 26. Strong on CPSE, Turning 5, and specialized programs.",
+        "free": true
+      },
+      {
+        "name": "NYC Public Schools — Special Education",
+        "url": "https://www.schools.nyc.gov/learning/special-education",
+        "strength": "Official source for CSE/CPSE office contacts, referral addresses, and program descriptions.",
+        "free": true
+      },
+      {
+        "name": "Disability Rights New York",
+        "url": "https://www.drny.org",
+        "strength": "Free legal and advocacy services for people with disabilities statewide.",
+        "free": true
+      }
+    ],
+    "verified_on": null,
+    "status": "unverified"
+  },
+
+  "translation_review": {
+    "_rule": "A language may not be published until reviewed_by names a native speaker and reviewed_on has a date. Until then the page shows a visible draft flag. AI drafting is permitted; unreviewed publishing is not.",
+    "_priority_note": "Spanish and Haitian Creole first — largest language communities in the Brooklyn service area. The rest can wait.",
+    "languages": {
+      "es": {"label": "Español", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
+      "ht": {"label": "Kreyòl Ayisyen", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
+      "zh": {"label": "中文", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
+      "bn": {"label": "বাংলা", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
+      "ar": {"label": "العربية", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
+      "ur": {"label": "اردو", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
+      "fr": {"label": "Français", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
+      "ru": {"label": "Русский", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"},
+      "ko": {"label": "한국어", "drafted": true, "reviewed_by": null, "reviewed_on": null, "status": "draft"}
+    },
+    "authoritative_version": "English. Say so on every translated page. The NYC DOE applies the same rule — the English IEP remains the legal document."
+  },
+
+  "site_disclaimers": {
+    "every_page": "This page explains how the system works in general. It is not legal advice, medical advice, advice about any individual child, diagnosis, or advocacy. Rules and deadlines change — confirm anything that matters with your CSE or CPSE office, or with one of the free organizations listed here.",
+    "scope": "Kirton Learning provides supplemental academic instruction only — reading, writing, and mathematics. We do not provide speech-language pathology, occupational or physical therapy, psychological or counseling services, behavioral intervention, evaluation, diagnosis, special education advocacy, or legal advice.",
+    "referrals": "We receive no payment from any organization or provider named on this site, and we pay nothing to be listed anywhere."
+  }
+}

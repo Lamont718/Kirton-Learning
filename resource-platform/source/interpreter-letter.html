@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ask for an interpreter and a translated IEP — a letter you can hand in</title>
+<meta name="description" content="Free bilingual letter requesting an interpreter for your child's IEP meeting and a translated copy of the IEP. Fill it in, print it, hand it to the school. Nine languages.">
+<meta name="theme-color" content="#141D2E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans:wght@400;600&family=Noto+Sans+Arabic:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&family=Noto+Sans+SC:wght@400;600&family=Noto+Sans+KR:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#141D2E; --ink-2:#25324A; --ink-3:#4A5872;
+  --paper:#F4F2EC; --paper-2:#FBFAF7;
+  --accent:#E8A33D; --accent-deep:#C97F1B;
+  --line:rgba(20,29,46,.14); --line-dark:rgba(244,242,236,.16);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --intl:"Noto Sans","Noto Sans Arabic","Noto Sans Bengali","Noto Sans SC","Noto Sans KR",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:920px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(1.8rem,4.8vw,2.9rem)}
+h2{font-size:clamp(1.4rem,3.2vw,2rem)}
+h3{font-size:1.1rem;font-weight:700}
+p{margin:0 0 1.05em}
+.eyebrow{font-family:var(--mono);font-size:.71rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 1.2rem}
+.eyebrow--dark{color:var(--accent-deep)}
+
+.head{background:var(--ink);color:var(--paper);padding:clamp(26px,4.5vw,40px) 0 clamp(40px,6vw,60px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1rem;margin-bottom:clamp(30px,5vw,48px)}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);flex:none}
+.brandbar a{text-decoration:none}
+.brandbar .back{margin-left:auto;font-family:var(--mono);font-weight:400;
+  font-size:.73rem;color:rgba(244,242,236,.6);text-decoration:none}
+.head h1{max-width:19ch}
+.head h1 em{font-style:normal;color:var(--accent)}
+.head .sub{max-width:56ch;margin-top:1.2rem;font-size:1.07rem;color:rgba(244,242,236,.82)}
+.rights{margin-top:26px;border-left:3px solid var(--accent);padding-left:18px;
+  max-width:58ch;font-size:1rem;color:rgba(244,242,236,.9)}
+.rights b{color:var(--accent)}
+
+.band{padding:clamp(44px,6.5vw,72px) 0;border-bottom:1px solid var(--line)}
+.band--alt{background:var(--paper-2)}
+
+/* language picker */
+.langs{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.langs button{font-family:var(--intl);font-weight:600;font-size:.92rem;
+  border:2px solid var(--line);background:#fff;color:var(--ink-3);
+  padding:11px 16px;border-radius:5px;cursor:pointer;transition:.15s;line-height:1.3}
+.langs button small{display:block;font-family:var(--mono);font-weight:400;font-size:.63rem;
+  letter-spacing:.08em;text-transform:uppercase;margin-top:3px;opacity:.7}
+.langs button:hover{border-color:var(--accent-deep);color:var(--ink)}
+.langs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+
+/* form */
+.form{display:grid;gap:16px;margin-top:30px}
+@media(min-width:700px){.form{grid-template-columns:1fr 1fr}}
+.f{display:flex;flex-direction:column}
+.f--wide{grid-column:1/-1}
+.f label{font-family:var(--mono);font-size:.7rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:7px}
+.f input{font-family:var(--body);font-size:1.02rem;padding:12px 14px;
+  border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink)}
+.f input:focus{outline:3px solid var(--accent);outline-offset:1px}
+.f .hint{font-family:var(--mono);font-size:.71rem;color:var(--ink-3);margin-top:6px}
+.privacy{margin-top:22px;font-family:var(--mono);font-size:.78rem;color:var(--ink-3);
+  line-height:1.7;border-left:3px solid var(--accent-deep);padding-left:16px;max-width:64ch}
+
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.btn{font-family:var(--display);font-weight:700;font-size:1rem;padding:14px 26px;
+  border-radius:4px;border:2px solid transparent;cursor:pointer;transition:.15s;
+  text-decoration:none;display:inline-block}
+.btn--go{background:var(--accent);color:var(--ink)}
+.btn--go:hover{background:#F0B257}
+.btn--ghost{border-color:var(--line);color:var(--ink-2);background:none}
+.btn--ghost:hover{border-color:var(--accent-deep);color:var(--ink)}
+.copied{font-family:var(--mono);font-size:.78rem;color:var(--accent-deep);
+  align-self:center;opacity:0;transition:.2s}
+.copied[data-on="true"]{opacity:1}
+
+/* letter */
+.letterwrap{margin-top:34px}
+.letter{background:#fff;border:1px solid var(--line);border-radius:6px;
+  padding:clamp(26px,4vw,44px);box-shadow:0 2px 12px rgba(20,29,46,.06)}
+.lhead{display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;
+  padding-bottom:18px;margin-bottom:24px;border-bottom:2px solid var(--ink)}
+.lhead .t{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3)}
+.lhead .d{margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--ink-3)}
+.col{margin-bottom:30px}
+.col:last-child{margin-bottom:0}
+.col .lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent-deep);display:block;
+  padding-bottom:8px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+.ltext{font-size:1rem;line-height:1.75;color:var(--ink)}
+.ltext p{margin:0 0 1em}
+.ltext p:last-child{margin-bottom:0}
+.ltext .fill{background:rgba(232,163,61,.22);padding:1px 5px;border-radius:2px;font-weight:600}
+.ltext--intl{font-family:var(--intl);font-size:1rem;line-height:1.85}
+.ltext--rtl{direction:rtl;text-align:right}
+.sigline{margin-top:26px;padding-top:20px;border-top:1px dashed var(--line);
+  font-family:var(--mono);font-size:.82rem;color:var(--ink-3);line-height:2.4}
+
+.draftflag{background:rgba(166,64,47,.09);border:1px solid rgba(166,64,47,.35);
+  border-radius:5px;padding:16px 18px;margin-top:24px;font-family:var(--mono);
+  font-size:.79rem;line-height:1.7;color:#8A3527}
+.draftflag b{color:#6E2A1E}
+
+/* how to use */
+.steps{margin-top:30px;border-top:1px solid var(--line)}
+.step{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:20px 0;
+  border-bottom:1px solid var(--line);align-items:start}
+.step .n{font-family:var(--display);font-weight:800;font-size:1.35rem;
+  color:var(--accent-deep);line-height:1}
+.step h3{margin-bottom:5px}
+.step p{margin:0;font-size:.96rem;color:var(--ink-2)}
+
+.facts{display:grid;gap:14px;margin-top:28px}
+@media(min-width:700px){.facts{grid-template-columns:1fr 1fr}}
+.fact{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:5px;padding:18px 20px}
+.fact h3{font-size:1rem;margin-bottom:7px}
+.fact p{margin:0;font-size:.93rem;color:var(--ink-2)}
+.fact .num{font-family:var(--mono);font-size:.88rem;color:var(--accent-deep);
+  display:block;margin-top:8px}
+
+.foot{background:var(--ink);color:var(--paper);padding:clamp(44px,6vw,68px) 0 34px}
+.legal{margin-top:34px;padding-top:20px;border-top:1px solid var(--line-dark);
+  font-family:var(--mono);font-size:.72rem;line-height:1.75;
+  color:rgba(244,242,236,.45);max-width:76ch}
+
+@media print{
+  body{background:#fff;font-size:11pt}
+  .head,.foot,.noprint,.band--alt,.draftflag{display:none!important}
+  .band{padding:0;border:0}
+  .letter{border:0;box-shadow:none;padding:0}
+  .letterwrap{margin:0}
+  .col{page-break-inside:avoid}
+  .wrap{max-width:100%;padding:0}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<header class="head noprint">
+  <div class="wrap">
+    <div class="brandbar">
+      <span class="dot" aria-hidden="true"></span>
+      <a href="/">Kirton Learning</a>
+      <a class="back" href="/start.html">← Start Here</a>
+    </div>
+    <p class="eyebrow">Free tool · New York City</p>
+    <h1>Ask for an interpreter. <em>In writing.</em></h1>
+    <p class="sub">Fill in four boxes and print a letter in your language and English, requesting an interpreter for your child's IEP meeting and a translated copy of the IEP. Hand it to the school. Keep a copy.</p>
+    <div class="rights">
+      <p style="margin:0"><b>This is a right, not a favor.</b> Parents in New York City have the right, on request, to interpretation at special education meetings and translation of IEPs, evaluations, and notices. You should never be asked to bring your own interpreter, and your child should never be used as your interpreter.</p>
+    </div>
+  </div>
+</header>
+
+<section class="band noprint">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">Step one</p>
+    <h2>Choose your language.</h2>
+    <div class="langs" role="group" aria-label="Choose language">
+      <button type="button" data-l="es" aria-pressed="true">Español<small>Spanish</small></button>
+      <button type="button" data-l="ht" aria-pressed="false">Kreyòl<small>Haitian Creole</small></button>
+      <button type="button" data-l="zh" aria-pressed="false">中文<small>Chinese</small></button>
+      <button type="button" data-l="bn" aria-pressed="false">বাংলা<small>Bengali</small></button>
+      <button type="button" data-l="ar" aria-pressed="false">العربية<small>Arabic</small></button>
+      <button type="button" data-l="ur" aria-pressed="false">اردو<small>Urdu</small></button>
+      <button type="button" data-l="fr" aria-pressed="false">Français<small>French</small></button>
+      <button type="button" data-l="ru" aria-pressed="false">Русский<small>Russian</small></button>
+      <button type="button" data-l="ko" aria-pressed="false">한국어<small>Korean</small></button>
+    </div>
+
+    <p class="eyebrow eyebrow--dark" style="margin-top:40px">Step two</p>
+    <h2>Fill in four things.</h2>
+    <div class="form">
+      <div class="f"><label for="child">Your child's full name</label>
+        <input id="child" type="text" placeholder="Maya Rivera" autocomplete="off"></div>
+      <div class="f"><label for="school">School or CSE office</label>
+        <input id="school" type="text" placeholder="P.S. 272 / CSE 2" autocomplete="off"></div>
+      <div class="f"><label for="parent">Your name</label>
+        <input id="parent" type="text" placeholder="Ana Rivera" autocomplete="off"></div>
+      <div class="f"><label for="phone">Your phone number</label>
+        <input id="phone" type="tel" placeholder="(718) 555-0134" autocomplete="off"></div>
+      <div class="f f--wide"><label for="mdate">Meeting date, if you know it</label>
+        <input id="mdate" type="text" placeholder="March 14, 2026 — or leave blank">
+        <span class="hint">Request an interpreter in writing at least 72 hours before the meeting.</span></div>
+    </div>
+
+    <p class="privacy">Nothing you type here is sent anywhere. It never leaves your phone, we cannot see it, and nothing is saved. Close this page and it's gone.</p>
+
+    <div class="actions">
+      <button class="btn btn--go" id="print">Print the letter</button>
+      <button class="btn btn--ghost" id="copy">Copy the text</button>
+      <span class="copied" id="copied">Copied</span>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="letterwrap">
+      <div class="letter">
+        <div class="lhead">
+          <span class="t">Request for language assistance · Special education</span>
+          <span class="d" id="today"></span>
+        </div>
+
+        <div class="col">
+          <span class="lbl" id="lbl-native">Español</span>
+          <div class="ltext ltext--intl" id="native"></div>
+        </div>
+
+        <div class="col">
+          <span class="lbl">English</span>
+          <div class="ltext" id="english"></div>
+        </div>
+
+        <div class="sigline">
+          Signature / Firma: ______________________________<br>
+          Date / Fecha: ______________________________
+        </div>
+      </div>
+
+      <div class="draftflag noprint">
+        <b>Translation status: draft, pending native-speaker review.</b> Every non-English version on this page is a first draft and has not yet been checked by a native speaker. The English column is authoritative. Do not publish this tool until each language has been reviewed and signed off — a mistranslated request is worse than no request. Review status is tracked in facts.json.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band band--alt noprint">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--dark">How to use it</p>
+    <h2>Four steps, and keep proof of every one.</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1</span>
+        <div><h3>Print two copies</h3><p>One for the school, one for you. If you can't print, copy the text and send it as an email — email is written proof too.</p></div></div>
+      <div class="step"><span class="n">2</span>
+        <div><h3>Hand it in at least 72 hours before the meeting</h3><p>Give it to the school secretary, your child's IEP team, or the CSE office. Ask them to date-stamp your copy.</p></div></div>
+      <div class="step"><span class="n">3</span>
+        <div><h3>Write down the date you gave it in</h3><p>On your own copy. If the interpreter doesn't show up, that date is the most useful thing you own.</p></div></div>
+      <div class="step"><span class="n">4</span>
+        <div><h3>If nothing happens, call</h3><p>Use the numbers below. If it still doesn't get fixed, call Advocates for Children — free, and this is exactly what they do.</p></div></div>
+    </div>
+
+    <div class="facts">
+      <div class="fact"><h3>Translated IEP requests</h3>
+        <p>You can request a translation of your child's IEP directly.</p>
+        <span class="num">schools.nyc.gov/IEPHello · <a href="tel:+17189352013">718-935-2013</a></span></div>
+      <div class="fact"><h3>Any language assistance</h3>
+        <p>Call 311 and ask for language assistance for your child's school. Phone interpretation is available in more than 200 languages.</p>
+        <span class="num"><a href="tel:311">311</a></span></div>
+      <div class="fact"><h3>Deaf or hard of hearing</h3>
+        <p>You have a legal right to a sign language interpreter at an IEP meeting.</p>
+        <span class="num">OSLIS@schools.nyc.gov</span></div>
+      <div class="fact"><h3>If they refuse, or nothing changes</h3>
+        <p>Advocates for Children of New York. Free. They have been doing this in this city for decades.</p>
+        <span class="num">advocatesforchildren.org</span></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot noprint">
+  <div class="wrap">
+    <p class="eyebrow">More free tools</p>
+    <h2 style="max-width:20ch">The rest of the map is free too.</h2>
+    <p style="max-width:54ch;color:rgba(244,242,236,.82);margin-top:1rem">How evaluations, committees, placement, and Turning 5 actually work in New York City — in the order you'll meet them.</p>
+    <p style="margin-top:20px"><a class="btn btn--go" href="/start.html">Start Here</a></p>
+    <p class="legal">
+      This tool produces a letter you send yourself. It is general information about how the New York City system works, not legal advice, and not advice about any individual child. Nothing you enter is transmitted or stored. Rules and phone numbers change — confirm anything that matters with your CSE office or with Advocates for Children.
+      <br><br>
+      Kirton Learning provides supplemental academic instruction only — reading, writing, and mathematics. We do not provide speech-language pathology, occupational or physical therapy, psychological or counseling services, behavioral intervention, evaluation, diagnosis, special education advocacy, or legal advice. We receive no payment from any organization named here.
+    </p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var L = {
+    es:{name:"Español", rtl:false, t:function(d){return [
+      "A quien corresponda:",
+      "Mi nombre es <b class='fill'>"+d.parent+"</b>. Soy el padre o tutor de <b class='fill'>"+d.child+"</b>, estudiante de <b class='fill'>"+d.school+"</b>.",
+      "Mi idioma preferido es el español. Solicito por escrito lo siguiente:",
+      "1. Un intérprete de español en todas las reuniones de educación especial de mi hijo/a, incluida la reunión del IEP"+(d.mdate?" programada para el <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "2. Una copia traducida al español del IEP de mi hijo/a, de los informes de evaluación y de todos los avisos relacionados.",
+      "Entiendo que tengo derecho a estos servicios sin costo alguno, y que no se me debe pedir que traiga mi propio intérprete ni que mi hijo/a sirva de intérprete.",
+      "Por favor confirme por escrito que se proporcionará el intérprete. Puede comunicarse conmigo al <b class='fill'>"+d.phone+"</b>.",
+      "Gracias por su atención.",
+      "Atentamente,"
+    ];}},
+    ht:{name:"Kreyòl Ayisyen", rtl:false, t:function(d){return [
+      "Pou moun ki konsène a:",
+      "Non mwen se <b class='fill'>"+d.parent+"</b>. Mwen se paran oswa gadyen <b class='fill'>"+d.child+"</b>, ki se yon elèv nan <b class='fill'>"+d.school+"</b>.",
+      "Lang mwen pi pito se Kreyòl Ayisyen. Mwen ap mande bagay sa yo alekri:",
+      "1. Yon entèprèt Kreyòl Ayisyen nan tout reyinyon edikasyon espesyal pitit mwen an, ki gen ladan reyinyon IEP la"+(d.mdate?" ki fikse pou <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "2. Yon kopi IEP pitit mwen an, rapò evalyasyon yo, ak tout avi ki gen rapò, tradui an Kreyòl Ayisyen.",
+      "Mwen konprann mwen gen dwa a sèvis sa yo gratis, e yo pa dwe mande m pou m mennen pwòp entèprèt mwen oswa pou pitit mwen sèvi kòm entèprèt.",
+      "Tanpri konfime alekri ke entèprèt la ap disponib. Ou ka rele m nan <b class='fill'>"+d.phone+"</b>.",
+      "Mèsi pou atansyon ou.",
+      "Ak respè,"
+    ];}},
+    zh:{name:"中文", rtl:false, t:function(d){return [
+      "敬启者：",
+      "我叫 <b class='fill'>"+d.parent+"</b>，是 <b class='fill'>"+d.child+"</b> 的家长或监护人，我的孩子就读于 <b class='fill'>"+d.school+"</b>。",
+      "我的首选语言是中文。我在此书面请求：",
+      "1. 在我孩子的所有特殊教育会议中提供中文口译员，包括"+(d.mdate?"定于 <b class='fill'>"+d.mdate+"</b> 举行的":"")+" IEP 会议。",
+      "2. 提供我孩子的 IEP、评估报告及所有相关通知的中文译本。",
+      "我了解我有权免费获得这些服务，学校不应要求我自带口译员，也不应让我的孩子担任口译。",
+      "请以书面形式确认将提供口译员。您可以通过 <b class='fill'>"+d.phone+"</b> 与我联系。",
+      "感谢您的关注。",
+      "此致"
+    ];}},
+    bn:{name:"বাংলা", rtl:false, t:function(d){return [
+      "সংশ্লিষ্ট কর্তৃপক্ষের প্রতি:",
+      "আমার নাম <b class='fill'>"+d.parent+"</b>। আমি <b class='fill'>"+d.child+"</b>-এর অভিভাবক, যে <b class='fill'>"+d.school+"</b>-এ পড়ে।",
+      "আমার পছন্দের ভাষা বাংলা। আমি লিখিতভাবে অনুরোধ করছি:",
+      "১. আমার সন্তানের সকল বিশেষ শিক্ষা সভায় একজন বাংলা দোভাষী, যার মধ্যে "+(d.mdate?"<b class='fill'>"+d.mdate+"</b> তারিখে নির্ধারিত ":"")+"IEP সভা অন্তর্ভুক্ত।",
+      "২. আমার সন্তানের IEP, মূল্যায়ন প্রতিবেদন এবং সংশ্লিষ্ট সকল নোটিশের বাংলা অনুবাদ।",
+      "আমি জানি যে এই সেবাগুলি বিনামূল্যে পাওয়া আমার অধিকার, এবং আমাকে নিজের দোভাষী আনতে বলা উচিত নয় বা আমার সন্তানকে দোভাষী হিসেবে ব্যবহার করা উচিত নয়।",
+      "অনুগ্রহ করে লিখিতভাবে নিশ্চিত করুন যে দোভাষী উপস্থিত থাকবেন। আমার সাথে <b class='fill'>"+d.phone+"</b> নম্বরে যোগাযোগ করা যাবে।",
+      "ধন্যবাদ।",
+      "বিনীত,"
+    ];}},
+    ar:{name:"العربية", rtl:true, t:function(d){return [
+      "إلى من يهمه الأمر:",
+      "اسمي <b class='fill'>"+d.parent+"</b>. أنا والد/ولي أمر <b class='fill'>"+d.child+"</b>، الطالب في <b class='fill'>"+d.school+"</b>.",
+      "لغتي المفضلة هي العربية. أطلب كتابةً ما يلي:",
+      "١. مترجم فوري باللغة العربية في جميع اجتماعات التربية الخاصة الخاصة بطفلي، بما في ذلك اجتماع الـ IEP"+(d.mdate?" المقرر في <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "٢. نسخة مترجمة إلى العربية من الـ IEP الخاص بطفلي وتقارير التقييم وجميع الإشعارات ذات الصلة.",
+      "أفهم أن من حقي الحصول على هذه الخدمات مجاناً، وأنه لا ينبغي أن يُطلب مني إحضار مترجم خاص بي أو أن يُستخدم طفلي كمترجم.",
+      "يرجى التأكيد كتابةً على توفير المترجم. يمكن الاتصال بي على الرقم <b class='fill'>"+d.phone+"</b>.",
+      "شكراً لاهتمامكم.",
+      "مع خالص التقدير،"
+    ];}},
+    ur:{name:"اردو", rtl:true, t:function(d){return [
+      "بخدمت جناب:",
+      "میرا نام <b class='fill'>"+d.parent+"</b> ہے۔ میں <b class='fill'>"+d.child+"</b> کا والد/سرپرست ہوں، جو <b class='fill'>"+d.school+"</b> میں زیرِ تعلیم ہے۔",
+      "میری ترجیحی زبان اردو ہے۔ میں تحریری طور پر درخواست کرتا/کرتی ہوں:",
+      "۱۔ میرے بچے کی تمام خصوصی تعلیمی میٹنگز میں اردو مترجم، بشمول "+(d.mdate?"<b class='fill'>"+d.mdate+"</b> کو طے شدہ ":"")+"IEP میٹنگ۔",
+      "۲۔ میرے بچے کے IEP، تشخیصی رپورٹس اور تمام متعلقہ نوٹسز کا اردو ترجمہ۔",
+      "میں سمجھتا/سمجھتی ہوں کہ یہ خدمات مفت حاصل کرنا میرا حق ہے، اور مجھ سے اپنا مترجم لانے کو نہیں کہا جانا چاہیے اور نہ ہی میرے بچے کو مترجم کے طور پر استعمال کیا جانا چاہیے۔",
+      "براہِ کرم تحریری تصدیق فرمائیں کہ مترجم فراہم کیا جائے گا۔ مجھ سے <b class='fill'>"+d.phone+"</b> پر رابطہ کیا جا سکتا ہے۔",
+      "آپ کی توجہ کا شکریہ۔",
+      "مخلص،"
+    ];}},
+    fr:{name:"Français", rtl:false, t:function(d){return [
+      "À qui de droit :",
+      "Je m'appelle <b class='fill'>"+d.parent+"</b>. Je suis le parent ou tuteur de <b class='fill'>"+d.child+"</b>, élève à <b class='fill'>"+d.school+"</b>.",
+      "Ma langue préférée est le français. Je demande par écrit ce qui suit :",
+      "1. Un interprète francophone lors de toutes les réunions d'éducation spécialisée concernant mon enfant, y compris la réunion IEP"+(d.mdate?" prévue le <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "2. Une copie traduite en français de l'IEP de mon enfant, des rapports d'évaluation et de tous les avis s'y rapportant.",
+      "Je comprends que j'ai droit à ces services gratuitement, et qu'on ne doit pas me demander d'amener mon propre interprète ni utiliser mon enfant comme interprète.",
+      "Veuillez confirmer par écrit qu'un interprète sera fourni. Vous pouvez me joindre au <b class='fill'>"+d.phone+"</b>.",
+      "Je vous remercie de votre attention.",
+      "Cordialement,"
+    ];}},
+    ru:{name:"Русский", rtl:false, t:function(d){return [
+      "Кому это касается:",
+      "Меня зовут <b class='fill'>"+d.parent+"</b>. Я родитель или опекун <b class='fill'>"+d.child+"</b>, учащегося школы <b class='fill'>"+d.school+"</b>.",
+      "Мой предпочитаемый язык — русский. Настоящим письменно прошу:",
+      "1. Предоставить переводчика русского языка на всех собраниях по специальному образованию моего ребёнка, включая собрание IEP"+(d.mdate?", назначенное на <b class='fill'>"+d.mdate+"</b>":"")+".",
+      "2. Предоставить перевод на русский язык IEP моего ребёнка, отчётов об оценке и всех сопутствующих уведомлений.",
+      "Я понимаю, что имею право на эти услуги бесплатно, и что от меня не должны требовать привести собственного переводчика или использовать моего ребёнка в качестве переводчика.",
+      "Пожалуйста, подтвердите письменно, что переводчик будет предоставлен. Со мной можно связаться по телефону <b class='fill'>"+d.phone+"</b>.",
+      "Благодарю за внимание.",
+      "С уважением,"
+    ];}},
+    ko:{name:"한국어", rtl:false, t:function(d){return [
+      "관계자 귀하,",
+      "저는 <b class='fill'>"+d.parent+"</b>입니다. <b class='fill'>"+d.school+"</b>에 재학 중인 <b class='fill'>"+d.child+"</b>의 학부모 또는 보호자입니다.",
+      "제가 선호하는 언어는 한국어입니다. 다음 사항을 서면으로 요청합니다:",
+      "1. 자녀의 모든 특수교육 회의에 한국어 통역사 배정"+(d.mdate?" (<b class='fill'>"+d.mdate+"</b>로 예정된 IEP 회의 포함)":" (IEP 회의 포함)")+".",
+      "2. 자녀의 IEP, 평가 보고서 및 관련 모든 통지문의 한국어 번역본 제공.",
+      "저는 이러한 서비스를 무료로 받을 권리가 있으며, 제가 직접 통역사를 데려오도록 요구받거나 자녀가 통역을 맡아서는 안 된다는 점을 알고 있습니다.",
+      "통역사가 제공된다는 점을 서면으로 확인해 주시기 바랍니다. 연락처는 <b class='fill'>"+d.phone+"</b>입니다.",
+      "관심에 감사드립니다.",
+      "감사합니다,"
+    ];}}
+  };
+
+  function eng(d, langName){return [
+    "To Whom It May Concern:",
+    "My name is <b class='fill'>"+d.parent+"</b>. I am the parent or guardian of <b class='fill'>"+d.child+"</b>, a student at <b class='fill'>"+d.school+"</b>.",
+    "My preferred language is "+langName+". I am requesting the following in writing:",
+    "1. A "+langName+" interpreter at all special education meetings concerning my child, including the IEP meeting"+(d.mdate?" scheduled for <b class='fill'>"+d.mdate+"</b>":"")+".",
+    "2. A copy of my child's IEP, evaluation reports, and all related notices translated into "+langName+".",
+    "I understand that I have the right to these services at no cost, and that I should not be asked to bring my own interpreter or to have my child act as interpreter.",
+    "Please confirm in writing that an interpreter will be provided. I can be reached at <b class='fill'>"+d.phone+"</b>.",
+    "Thank you for your attention.",
+    "Sincerely,"
+  ];}
+
+  var cur='es';
+  var ids=['child','school','parent','phone','mdate'];
+  var ph={child:"[your child's name]",school:"[school or CSE office]",parent:"[your name]",phone:"[your phone number]",mdate:""};
+
+  function data(){
+    var d={};
+    ids.forEach(function(i){
+      var v=document.getElementById(i).value.trim();
+      d[i]= v || ph[i];
+    });
+    return d;
+  }
+
+  function render(){
+    var d=data(), cfg=L[cur];
+    var nat=document.getElementById('native');
+    nat.innerHTML = cfg.t(d).map(function(p){return "<p>"+p+"</p>";}).join('');
+    nat.className = 'ltext ltext--intl' + (cfg.rtl ? ' ltext--rtl' : '');
+    nat.setAttribute('lang', cur);
+    nat.setAttribute('dir', cfg.rtl ? 'rtl' : 'ltr');
+    document.getElementById('lbl-native').textContent = cfg.name;
+    document.getElementById('english').innerHTML =
+      eng(d, cfg.name.split(' ')[0]==='Kreyòl'?'Haitian Creole':({es:'Spanish',ht:'Haitian Creole',zh:'Chinese',bn:'Bengali',ar:'Arabic',ur:'Urdu',fr:'French',ru:'Russian',ko:'Korean'})[cur])
+        .map(function(p){return "<p>"+p+"</p>";}).join('');
+  }
+
+  document.querySelectorAll('.langs button').forEach(function(b){
+    b.addEventListener('click',function(){
+      cur=b.dataset.l;
+      document.querySelectorAll('.langs button').forEach(function(x){
+        x.setAttribute('aria-pressed', String(x.dataset.l===cur));
+      });
+      render();
+    });
+  });
+  ids.forEach(function(i){document.getElementById(i).addEventListener('input',render);});
+
+  document.getElementById('print').addEventListener('click',function(){window.print();});
+  document.getElementById('copy').addEventListener('click',function(){
+    var t=document.getElementById('native').innerText+"\n\n---\n\n"+document.getElementById('english').innerText;
+    navigator.clipboard.writeText(t).then(function(){
+      var c=document.getElementById('copied');
+      c.setAttribute('data-on','true');
+      setTimeout(function(){c.setAttribute('data-on','false');},1800);
+    });
+  });
+
+  document.getElementById('today').textContent =
+    new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  render();
+})();
+</script>
+</body>
+</html>

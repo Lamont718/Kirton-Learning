@@ -13,6 +13,13 @@
 #                hide, but it is internal legal thinking, not a customer document.
 #   supabase-setup.sql  maps the schema and bucket rules. Nothing secret in it,
 #                but no reason to hand it to anyone who guesses the filename.
+#   docs/RESOURCE.md          the rules for the free resource platform.
+#   docs/platform-design.html the design rationale behind it. Same class as the
+#                four above: internal working documents, not product.
+#
+# docs/facts.json is NOT here on purpose. It is operational data with public
+# source URLs and nothing internal in it, and the pages have to read it at
+# runtime, so it has to be versioned and shipped.
 #
 # If this repo is ever made private, revisit — they are useful to have versioned.
 # ---------------------------------------------------------------------------
@@ -21,6 +28,8 @@ CONTEXT.md
 VOICE.md
 SCOPE.md
 supabase-setup.sql
+docs/RESOURCE.md
+docs/platform-design.html
 
 # Never commit secrets or build/deploy scratch.
 .env

@@ -45,6 +45,13 @@ h2{font-family:var(--display);font-weight:700;font-size:1.15rem;margin:0 0 .6rem
 a{color:var(--accent-deep)}
 a:focus-visible,.back:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 
+.dothis{margin-top:2.5rem;padding:1.4rem 1.5rem;background:#fff;
+  border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:4px}
+.dothis h2{margin-bottom:.75rem}
+.dothis ol{margin:0;padding-left:1.25rem}
+.dothis li{margin-bottom:.7rem;color:var(--ink-2)}
+.dothis li:last-child{margin-bottom:0}
+
 .route{margin-top:2.5rem;padding:1.25rem 1.4rem;background:var(--paper-2);
   border:1px solid var(--line);border-radius:4px}
 .route p{margin:0 0 .4rem;font-size:.98rem}
@@ -74,6 +81,7 @@ a:focus-visible,.back:focus-visible{outline:2px solid var(--ink);outline-offset:
   .a{border-left:2px solid #000}
   .foot{border-top:1px solid #000}
   .route{background:none;border:1px solid #000}
+  .dothis{background:none;border:1px solid #000;border-left:3px solid #000;break-inside:avoid}
   .printurl{display:block;margin-top:.5rem}
 }
 

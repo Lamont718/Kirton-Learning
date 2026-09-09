@@ -190,6 +190,17 @@ p{margin:0 0 1.05em}
 /* The "More in ..." links sit as close as 30px apart in the question list,
    so theirs is 28px — still over the 24px minimum, and it clears the one below. */
 .qa .more::after,.more::after{height:28px}
+
+/* Meeting mode. A parent prints this and carries it into a room with six
+   professionals, so the paper carries the content and its own address — and
+   none of the navigation, which is useless once it is printed. */
+.printurl{display:none}
+@media print{
+  .draft,.brandbar,.nav,.rtabs,.cta-row,.btn,.foot .cta-row,.noprint{display:none!important}
+  body{background:#fff;font-size:11pt}
+  a{color:#000;text-decoration:none}
+  .printurl{display:block;margin-top:.5rem}
+}
 </style>
 </head>
 <body>
@@ -438,6 +449,7 @@ p{margin:0 0 1.05em}
       <a class="btn btn--ghost" href="/source/interpreter-letter.html">Ask for an interpreter</a>
     </div>
     <p class="stamp">Last reviewed: <b data-fact-reviewed>not yet reviewed</b> · Sources: NYC Public Schools, NYSED, OPWDD, NYS Department of Financial Services</p>
+    <p class="stamp printurl" data-page-url></p>
     <p style="margin:0 0 1rem"><a class="back" href="/">← The handbook</a> · <a class="back" href="/start/">All 16 questions</a></p>
     <p class="legal">
       This page is general information about how funding systems work in New York State and New York City. It is not legal advice, insurance advice, benefits counseling, medical advice, or advice about any individual child or family, and reading it creates no professional relationship. Insurance rules, eligibility criteria, and program details change and vary by plan — confirm anything that matters with your plan, the OPWDD Front Door, your CSE office, or one of the free organizations listed above.

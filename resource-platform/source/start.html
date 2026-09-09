@@ -182,6 +182,17 @@ details .ans b{font-weight:600;color:var(--ink)}
 /* The "More in ..." links sit as close as 30px apart in the question list,
    so theirs is 28px — still over the 24px minimum, and it clears the one below. */
 .qa .more::after,.more::after{height:28px}
+
+/* Meeting mode. A parent prints this and carries it into a room with six
+   professionals, so the paper carries the content and its own address — and
+   none of the navigation, which is useless once it is printed. */
+.printurl{display:none}
+@media print{
+  .draft,.brandbar,.nav,.rtabs,.cta-row,.btn,.foot .cta-row,.noprint{display:none!important}
+  body{background:#fff;font-size:11pt}
+  a{color:#000;text-decoration:none}
+  .printurl{display:block;margin-top:.5rem}
+}
 </style>
 </head>
 <body>
@@ -459,6 +470,7 @@ details .ans b{font-weight:600;color:var(--ink)}
       Kirton Learning is operated by Our Rose LLC, Brooklyn, NY. We provide supplemental academic instruction only — reading, writing, and mathematics. We do not provide speech-language pathology, occupational or physical therapy, psychological or counseling services, behavioral intervention, evaluation, diagnosis, special education advocacy, or legal advice. We receive no payment from any organization or provider named on this page.
     </p>
     <p class="stamp factline">Last reviewed: <b data-fact-reviewed>not yet reviewed</b></p>
+    <p class="stamp printurl" data-page-url></p>
   </div>
 </footer>
 

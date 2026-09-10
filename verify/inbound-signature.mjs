@@ -135,9 +135,7 @@ const ping = JSON.stringify({ type: 'email.delivered', data: {} });
 }
 
 console.log(`\n  ${pass} passed, ${fail} failed`);
-console.log('
-  This file covers the SIGNATURE only. The rest of the path was proven on');
+console.log('\n  This file covers the SIGNATURE only. The rest of the path was proven on');
 console.log('  2026-09-10 with real messages — plain, and with a 40KB PDF attachment — sent');
-console.log('  to lamont@kirtonlearning.com and confirmed delivered onward to Gmail.
-');
+console.log('  to lamont@kirtonlearning.com and confirmed delivered onward to Gmail.\n');
 process.exitCode = fail ? 1 : 0;

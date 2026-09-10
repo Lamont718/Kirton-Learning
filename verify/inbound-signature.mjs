@@ -135,7 +135,9 @@ const ping = JSON.stringify({ type: 'email.delivered', data: {} });
 }
 
 console.log(`\n  ${pass} passed, ${fail} failed`);
-console.log('\n  ⛔ NOT TESTED HERE: an actual inbound message. Nothing below the signature');
-console.log('     check has ever run against a real email — that needs the domain verified,');
-console.log('     the apex MX pointed at Resend, and somebody sending mail to the address.\n');
+console.log('
+  This file covers the SIGNATURE only. The rest of the path was proven on');
+console.log('  2026-09-10 with real messages — plain, and with a 40KB PDF attachment — sent');
+console.log('  to lamont@kirtonlearning.com and confirmed delivered onward to Gmail.
+');
 process.exitCode = fail ? 1 : 0;

@@ -1,44 +1,46 @@
-// Can the handbook be served yet?
+// The handbook is on the main site now. What still protects a parent from its
+// unverified facts?
 //
 //   node verify/publish-gate.mjs
 //
-// The handbook is a plain-language guide to how special education works in NYC:
-// deadlines, phone numbers, office names, what a district must do and by when.
-// A parent reads it and acts on it — asks for an evaluation, disagrees with a
-// placement, brings a letter to a meeting. A wrong date in it is not a typo.
+// Until 2026-09-10 the guard was "keep it out of the deploy" — resource-platform/
+// sat in .vercelignore and the whole question was whether that line survived.
+// The handbook has now been merged onto kirtonlearning.com, so that guard is gone
+// and this file had to be rebuilt around what actually matters:
 //
-// ★★★★★ Every one of its 22 facts is `unverified` and every one of its 9
-// translations is `draft`. That is why `resource-platform/` and `docs/` are in
-// .vercelignore. The gate is EDITORIAL, not technical — only Lamont and his
-// colleague move a fact to `verified`, and nobody else gets to decide it is
-// close enough.
+//   Every one of the 22 facts is still `unverified` and all 9 translations are
+//   `draft`. These are NYC special-education deadlines, phone numbers and office
+//   names. A parent reads them and ACTS — asks for an evaluation, disagrees with
+//   a placement, carries a letter into a meeting. A wrong date is not a typo.
 //
-// ⛔ The whole risk is that publishing is ONE LINE. Deleting `resource-platform/`
-// from .vercelignore takes two seconds, looks like a deploy config tidy-up, and
-// silently puts unchecked legal deadlines in front of parents. This check exists
-// so that line cannot be removed quietly: it fails, loudly, naming what is not
-// yet verified.
+// ⛔ So while anything is unverified, three things must hold, and each of them is
+// one careless edit away from not holding:
 //
-// It reads the ignore file and the facts together, because either one alone
-// looks fine. That is the point — the fault is in the COMBINATION.
+//   1. every handbook page carries noindex        — search must not send anyone
+//   2. every question page carries its draft mark — the reader must be told
+//   3. nothing indexable links to it, and it is   — the site must not invite
+//      not in sitemap.xml                            anyone in
+//
+// Being merged is not the same as being published. This is the difference.
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
+import { dirname, join, basename } from 'node:path';
+import { globSync } from 'node:fs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
+const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 
 let fail = 0;
 const ok = (n, d = '') => console.log('  ok    ' + n + (d ? '  — ' + d : ''));
 const bad = (n, d = '') => { fail++; console.log('  FAIL  ' + n + (d ? '\n        ' + d : '')); };
 
-console.log('\nPublish gate — may the handbook be served?\n');
+console.log('\nPublish gate — the handbook is merged; is it still safely unpublished?\n');
 
 // ---------------------------------------------------------------------------
 // 1. What is still unverified?
 // ---------------------------------------------------------------------------
-const facts = JSON.parse(readFileSync(join(ROOT, 'docs/facts.json'), 'utf8'));
-
+const facts = JSON.parse(read('docs/facts.json'));
 const unverified = [];
 const drafts = [];
 (function walk(node, path) {
@@ -56,50 +58,86 @@ const clean = unverified.length === 0 && drafts.length === 0;
 console.log(`  ${unverified.length} unverified fact(s), ${drafts.length} draft translation(s)\n`);
 
 // ---------------------------------------------------------------------------
-// 2. Is it currently kept off the live site?
+// Which files are the handbook?
 // ---------------------------------------------------------------------------
-const ignore = readFileSync(join(ROOT, '.vercelignore'), 'utf8')
-  .split('\n').map((l) => l.trim()).filter((l) => l && !l.startsWith('#'));
+const handbookPages = ['handbook.html', ...globSync('start/*.html', { cwd: ROOT }), ...globSync('source/*.html', { cwd: ROOT })];
 
-const hidden = ignore.includes('resource-platform/') && ignore.includes('docs/');
-
-// ---------------------------------------------------------------------------
-// 3. The only combination that is not allowed
-// ---------------------------------------------------------------------------
-if (!hidden && !clean) {
-  bad('THE HANDBOOK WOULD BE PUBLISHED WITH UNCHECKED FACTS IN IT',
-    `resource-platform/ and/or docs/ are no longer in .vercelignore, and ${unverified.length} fact(s) ` +
-    `are still marked unverified.\n        These are NYC special-education deadlines, phone numbers and ` +
-    `office names that a parent will act on.\n        Put both lines back, or verify the facts first. ` +
-    `Only Lamont and his colleague can move a fact to "verified".`);
-  console.log('\n        Still unverified:');
-  for (const p of unverified.slice(0, 8)) console.log('          · ' + p);
-  if (unverified.length > 8) console.log(`          … and ${unverified.length - 8} more`);
-} else if (!hidden && clean) {
-  ok('handbook is servable and every fact is verified', 'this is the state that allows publishing');
-} else if (hidden && clean) {
-  ok('every fact is verified', 'the handbook may now be un-ignored and merged — see CLAUDE.md for the steps');
-} else {
-  ok('handbook is kept off the live site', `${unverified.length} unverified, ${drafts.length} draft — correctly not published`);
+if (!existsSync(join(ROOT, 'handbook.html'))) {
+  bad('handbook.html is missing', 'the merge moved resource-platform/index.html here');
 }
 
 // ---------------------------------------------------------------------------
-// 4. The route the merge collides on
+// 2. noindex on every page
 // ---------------------------------------------------------------------------
-// The handbook's index and its 35 internal links live at /start/. The main site
-// used to serve /start.html — the page a family reaches AFTER PAYING. On one
-// site those fight, and the losing case is specific: a parent who has never paid
-// follows "Start Here" in the free handbook and lands in the post-payment flow.
-// Renamed to /welcome.html on 2026-09-10 so /start/ is free.
-import { existsSync } from 'node:fs';
-if (existsSync(join(ROOT, 'start.html'))) {
-  bad('start.html is back on the main site',
-    'The handbook owns /start/ and has 35 internal links to it. The post-payment page is ' +
-    'welcome.html. Two different meanings for /start on one site sends unpaid parents into ' +
-    'the post-payment flow.');
+if (clean) {
+  ok('every fact is verified', 'the noindex tags may now come off — see CLAUDE.md');
 } else {
-  ok('/start/ is free for the handbook', 'the post-payment page is welcome.html');
+  const exposed = handbookPages.filter((p) => !/name="robots"\s+content="noindex/.test(read(p)));
+  exposed.length
+    ? bad(`${exposed.length} handbook page(s) would be INDEXED while facts are unverified`,
+        exposed.slice(0, 6).join(', ') + (exposed.length > 6 ? ` … +${exposed.length - 6}` : ''))
+    : ok(`all ${handbookPages.length} handbook pages are noindex`, 'search will not send anyone here');
 }
+
+// ---------------------------------------------------------------------------
+// 3. the draft mark on the question pages
+// ---------------------------------------------------------------------------
+const questions = globSync('start/*.html', { cwd: ROOT }).filter((p) => basename(p) !== 'index.html');
+if (!clean) {
+  const unmarked = questions.filter((p) => !/class="draft/.test(read(p)));
+  unmarked.length
+    ? bad(`${unmarked.length} question page(s) carry no draft mark`, unmarked.slice(0, 6).join(', '))
+    : ok(`all ${questions.length} question pages carry their draft mark`, 'the reader is told');
+}
+
+// ---------------------------------------------------------------------------
+// 4. nothing invites anyone in
+// ---------------------------------------------------------------------------
+// ⛔ The one that will actually happen: somebody adds a "free handbook" link to
+// the homepage because it is a good idea — and it IS a good idea, the day the
+// facts are checked. Until then a link is an invitation to unverified content
+// from the one page the whole business points at.
+const indexable = ['index.html', 'demo.html', 'privacy.html', 'terms.html', 'referrals.html']
+  .filter((p) => existsSync(join(ROOT, p)));
+if (!clean) {
+  const linking = indexable.filter((p) => /href="\/(handbook|start\/|source\/)/.test(read(p)));
+  linking.length
+    ? bad(`${linking.length} indexable page(s) link to the handbook while facts are unverified`,
+        linking.join(', ') + ' — remove the link, or verify the facts first')
+    : ok('no indexable page links to the handbook', 'it is reachable, not offered');
+
+  const sitemap = read('sitemap.xml');
+  /\/(handbook|start|source)/.test(sitemap)
+    ? bad('sitemap.xml lists handbook URLs while facts are unverified')
+    : ok('sitemap.xml does not list the handbook');
+}
+
+// ---------------------------------------------------------------------------
+// 5. the facts file is actually served
+// ---------------------------------------------------------------------------
+// facts.js fetches /docs/facts.json at runtime and rewrites each page's numbers.
+// If that file is not deployed the fetch 404s and every page silently keeps the
+// value hardcoded in its HTML — which is the 09-09 dead-loader failure exactly:
+// it looks right because the fallback matches, until the day a number changes.
+const vercelignore = read('.vercelignore').split('\n').map((l) => l.trim());
+vercelignore.includes('docs/') || vercelignore.includes('docs/facts.json')
+  ? bad('docs/facts.json is not deployed', 'facts.js will 404 and every page will silently keep its hardcoded number')
+  : ok('docs/facts.json is served', 'facts.js can do its job');
+
+['docs/RESOURCE.md', 'docs/platform-design.html'].forEach((p) => {
+  vercelignore.includes(p)
+    ? ok(`${p} stays private`)
+    : bad(`${p} would be served`, 'internal working document');
+});
+
+// ---------------------------------------------------------------------------
+// 6. the route that used to collide
+// ---------------------------------------------------------------------------
+existsSync(join(ROOT, 'start.html'))
+  ? bad('start.html is back on the main site',
+      'The handbook owns /start/. The post-payment page is welcome.html. Two meanings for ' +
+      '/start on one site sends unpaid parents into the post-payment flow.')
+  : ok('/start/ belongs to the handbook', 'the post-payment page is /welcome');
 
 console.log(fail ? `\n  ${fail} failure(s)\n` : '\n  gate is satisfied\n');
 process.exitCode = fail ? 1 : 0;

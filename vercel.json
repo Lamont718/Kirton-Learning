@@ -1,11 +1,6 @@
 {
-  "redirects": [
-    {
-      "source": "/start.html",
-      "destination": "/welcome.html",
-      "permanent": true
-    }
-  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/fonts/(.*)",

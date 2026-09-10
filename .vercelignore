@@ -24,11 +24,11 @@ supabase-setup-2.sql
 #                      Phase 0 adds a loader that reads this at runtime; when that
 #                      lands, facts.json has to come OUT of this list so it can be
 #                      served. The other two stay ignored forever.
-docs/
+docs/RESOURCE.md
+docs/platform-design.html
 
 # The resource platform itself, in draft. Not servable: all 22 entries in
 # facts.json are status "unverified", all 9 translations are "draft", and none of
 # these pages carries a noindex tag. Nothing here goes in front of a family until
 # a human verifies the facts against primary sources. Phase 0 splits these into
 # per-question pages under /start/, /es/start/ and /ht/start/.
-resource-platform/

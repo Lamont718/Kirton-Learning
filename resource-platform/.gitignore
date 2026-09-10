@@ -1,8 +1,0 @@
-.vercel
-.env*
-
-# Generated copy of ../docs/facts.json, so this standalone deploy can serve it
-# at the same /docs/facts.json path it will have once the handbook moves onto the
-# main site. One source of truth stays ../docs/facts.json — refresh with:
-#   cp ../docs/facts.json docs/facts.json
-docs/

@@ -8,12 +8,13 @@ import { promises as dns } from 'node:dns'
 
 const SITE = process.env.SITE || 'https://kirtonlearning.com'
 const PAGES = [
-  '/', '/demo.html', '/privacy.html', '/terms.html',
-  '/partner.html', '/refer.html', '/referrals.html', '/upload.html', '/record/',
-  // Where a family lands after paying. noindex and unlinked from the public
-  // pages on purpose — it is for people who have already bought, and it is the
-  // only place the delivery app is named.
-  '/welcome.html',
+  '/', '/demo', '/privacy', '/terms',
+  '/partner', '/refer', '/referrals', '/upload.html', '/record/',
+  // Where a family lands after paying. noindex and unlinked on purpose.
+  '/welcome',
+  // The handbook, merged onto this site on 2026-09-10. Reachable, deliberately
+  // NOT offered: every page is noindex and every fact in it is still unverified.
+  '/handbook', '/start', '/start/how-to-ask-for-an-evaluation', '/source/money',
 ]
 
 let pass = 0, fail = 0, warn = 0

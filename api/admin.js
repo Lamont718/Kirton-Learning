@@ -1,0 +1,273 @@
+// POST /api/admin
+//
+// The back office. Before this, issuing a link meant opening the Supabase SQL
+// editor and writing an INSERT by hand at nine at night, and answering "did she
+// ever get it?" meant guessing.
+//
+// Actions: list · issue · resend · reissue · revoke
+//
+// Locked by ADMIN_KEY, a shared secret in the Vercel env, sent as a header. Not
+// a login: there is exactly one person on this side and a password table for one
+// person is more attack surface than it removes. If a second person ever needs
+// access, this becomes real auth — do not hand out the key.
+
+const {
+  reject, supabase, parseJson, secretEquals, sendEmail, uploadLink,
+} = require('./_common');
+const { iepLinkEmail, recordLinkEmail } = require('./_email');
+
+// Every column the admin page shows. `token` is in here on purpose: it lets him
+// copy a working link and hand it over another way when email is down — which,
+// while kirtonlearning.com has no MX record, is every time.
+const COLUMNS =
+  'token,parent_email,child_label,kind,plan,issued_by,created_at,expires_at,' +
+  'used_at,object_path,sent_at,send_count,revoked_at,stripe_session_id';
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const UUID_RE = /^[0-9a-f-]{36}$/i;
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// What the row means, worked out in one place so the page and the API can never
+// disagree about whether a link is alive.
+function statusOf(row) {
+  if (row.used_at) return 'used';
+  if (row.revoked_at) return 'revoked';
+  if (new Date(row.expires_at).getTime() < Date.now()) return 'expired';
+  if (!row.sent_at) return 'unsent';
+  return 'live';
+}
+
+function decorate(row) {
+  return { ...row, status: statusOf(row), link: uploadLink(row.token, row.kind) };
+}
+
+async function mailFor(row, name, why) {
+  const link = uploadLink(row.token, row.kind);
+  return row.kind === 'record'
+    ? recordLinkEmail({ link, name, why })
+    : iepLinkEmail({ link, name });
+}
+
+module.exports = async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+
+  if (req.method !== 'POST') return reject(res, 405, 'Method not allowed.');
+
+  const ADMIN_KEY = process.env.ADMIN_KEY;
+  if (!ADMIN_KEY) return reject(res, 503, 'ADMIN_KEY is not set, so this page is closed.');
+
+  const given = req.headers['x-admin-key'];
+  if (!secretEquals(String(given || ''), ADMIN_KEY)) {
+    await sleep(500); // slow a guesser down; there is no state here to count with
+    return reject(res, 401, 'Not authorized.');
+  }
+
+  const rest = supabase();
+  if (!rest) return reject(res, 503, 'Supabase is not configured.');
+
+  const body = parseJson(req);
+  if (!body) return reject(res, 400, 'Body is not JSON.');
+  const action = String(body.action || '');
+
+  const oneRow = async (token) => {
+    const r = await rest(
+      `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}&select=${COLUMNS}`,
+      { method: 'GET' }
+    );
+    if (!r.ok) return { error: `Could not read that token (${r.status}).` };
+    const rows = await r.json();
+    const row = Array.isArray(rows) ? rows[0] : null;
+    return row ? { row } : { error: 'No token with that id.' };
+  };
+
+  try {
+    // -----------------------------------------------------------------------
+    if (action === 'list') {
+      const limit = Math.min(Math.max(Number(body.limit) || 100, 1), 500);
+      const r = await rest(
+        `/rest/v1/upload_tokens?select=${COLUMNS}&order=created_at.desc&limit=${limit}`,
+        { method: 'GET' }
+      );
+      if (!r.ok) {
+        // The most likely cause by a distance: supabase-setup-2.sql has not been
+        // run, so half these columns do not exist yet. Say that, rather than
+        // making him read a PostgREST error.
+        return reject(res, 502,
+          `Could not read the list (${r.status}). If this is the first time: run ` +
+          'supabase-setup-2.sql in the Supabase SQL editor.');
+      }
+      const rows = await r.json();
+      return res.status(200).json({ ok: true, rows: rows.map(decorate) });
+    }
+
+    // -----------------------------------------------------------------------
+    if (action === 'issue') {
+      const email = String(body.email || '').trim();
+      const kind = body.kind === 'record' ? 'record' : 'iep';
+      const childLabel = String(body.childLabel || '').trim().slice(0, 60) || null;
+      const name = String(body.name || '').trim().slice(0, 40) || null;
+      const why = String(body.why || '').trim().slice(0, 120) || null;
+      const send = body.send !== false;
+
+      if (!EMAIL_RE.test(email) || email.length > 200) {
+        return reject(res, 400, 'That does not look like an email address.');
+      }
+      // child_label is a FIRST NAME ONLY — supabase-setup.sql says so and it is
+      // the difference between a label and a record about a child.
+      if (childLabel && /\s/.test(childLabel)) {
+        return reject(res, 400, 'Child label is a first name only — no spaces.');
+      }
+
+      const insert = await rest('/rest/v1/upload_tokens', {
+        method: 'POST',
+        headers: { Prefer: 'return=representation' },
+        body: JSON.stringify({
+          parent_email: email,
+          child_label: childLabel,
+          kind,
+          issued_by: 'admin',
+        }),
+      });
+      if (!insert.ok) return reject(res, 502, `Could not create the token (${insert.status}).`);
+      const rows = await insert.json();
+      const row = Array.isArray(rows) ? rows[0] : rows;
+      if (!row || !row.token) return reject(res, 502, 'Token row came back empty.');
+
+      if (!send) {
+        const back = await oneRow(row.token);
+        return res.status(200).json({ ok: true, row: decorate(back.row || row), sent: false });
+      }
+
+      const mail = await mailFor(row, name, why);
+      const out = await sendEmail({ to: email, subject: mail.subject, text: mail.text, html: mail.html });
+      if (out.ok) {
+        await rest(`/rest/v1/upload_tokens?token=eq.${encodeURIComponent(row.token)}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ sent_at: new Date().toISOString(), send_count: 1 }),
+        });
+      }
+
+      const back = await oneRow(row.token);
+      // ★ The link is returned either way. A token that exists and could not be
+      // emailed is still a working link he can hand over another way — and the
+      // page has to say plainly that the email did NOT go, not quietly succeed.
+      return res.status(200).json({
+        ok: true,
+        row: decorate(back.row || row),
+        sent: out.ok,
+        sendError: out.ok ? null : out.error,
+      });
+    }
+
+    // -----------------------------------------------------------------------
+    // Same link, sent again. For "it went to spam" — not for a dead link.
+    if (action === 'resend') {
+      const token = String(body.token || '');
+      if (!UUID_RE.test(token)) return reject(res, 400, 'That is not a token.');
+
+      const got = await oneRow(token);
+      if (got.error) return reject(res, 404, got.error);
+      const row = got.row;
+
+      const status = statusOf(row);
+      if (status !== 'live' && status !== 'unsent') {
+        return reject(res, 409, `That link is ${status}. Use Reissue to make a fresh one.`);
+      }
+
+      const mail = await mailFor(row, String(body.name || '').trim() || null, String(body.why || '').trim() || null);
+      const out = await sendEmail({
+        to: row.parent_email, subject: mail.subject, text: mail.text, html: mail.html,
+      });
+      if (!out.ok) return reject(res, 502, `Did not send: ${out.error}`);
+
+      await rest(`/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          sent_at: new Date().toISOString(),
+          send_count: (Number(row.send_count) || 0) + 1,
+        }),
+      });
+      const back = await oneRow(token);
+      return res.status(200).json({ ok: true, row: decorate(back.row || row), sent: true });
+    }
+
+    // -----------------------------------------------------------------------
+    // Kill the old one, make a fresh one for the same family. For "the link
+    // expired" and "the link says it was already used" — the two things the
+    // rejection messages in upload-url.js actually tell a parent to email about.
+    if (action === 'reissue') {
+      const token = String(body.token || '');
+      if (!UUID_RE.test(token)) return reject(res, 400, 'That is not a token.');
+
+      const got = await oneRow(token);
+      if (got.error) return reject(res, 404, got.error);
+      const old = got.row;
+
+      if (!old.revoked_at && !old.used_at) {
+        await rest(`/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ revoked_at: new Date().toISOString() }),
+        });
+      }
+
+      const insert = await rest('/rest/v1/upload_tokens', {
+        method: 'POST',
+        headers: { Prefer: 'return=representation' },
+        body: JSON.stringify({
+          parent_email: old.parent_email,
+          child_label: old.child_label,
+          kind: old.kind,
+          plan: old.plan,
+          issued_by: 'admin',
+          // ⛔ stripe_session_id is deliberately NOT copied. It is UNIQUE, so
+          // copying it would fail — and it should: it records which payment the
+          // ORIGINAL link came from, and there is only ever one of those.
+        }),
+      });
+      if (!insert.ok) return reject(res, 502, `Could not create the replacement (${insert.status}).`);
+      const rows = await insert.json();
+      const row = Array.isArray(rows) ? rows[0] : rows;
+
+      const mail = await mailFor(row, String(body.name || '').trim() || null, String(body.why || '').trim() || null);
+      const out = await sendEmail({
+        to: old.parent_email, subject: mail.subject, text: mail.text, html: mail.html,
+      });
+      if (out.ok) {
+        await rest(`/rest/v1/upload_tokens?token=eq.${encodeURIComponent(row.token)}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ sent_at: new Date().toISOString(), send_count: 1 }),
+        });
+      }
+      const back = await oneRow(row.token);
+      return res.status(200).json({
+        ok: true, row: decorate(back.row || row), sent: out.ok, sendError: out.ok ? null : out.error,
+      });
+    }
+
+    // -----------------------------------------------------------------------
+    // Kill a link without losing the fact that it existed.
+    if (action === 'revoke') {
+      const token = String(body.token || '');
+      if (!UUID_RE.test(token)) return reject(res, 400, 'That is not a token.');
+
+      const r = await rest(
+        `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}&revoked_at=is.null`,
+        {
+          method: 'PATCH',
+          headers: { Prefer: 'return=representation' },
+          body: JSON.stringify({ revoked_at: new Date().toISOString() }),
+        }
+      );
+      if (!r.ok) return reject(res, 502, `Could not revoke that token (${r.status}).`);
+      const back = await oneRow(token);
+      if (back.error) return reject(res, 404, back.error);
+      return res.status(200).json({ ok: true, row: decorate(back.row) });
+    }
+
+    return reject(res, 400, 'Unknown action.');
+  } catch (err) {
+    return reject(res, 500, 'Something went wrong on my end.');
+  }
+};

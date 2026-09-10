@@ -486,7 +486,7 @@ function viewGoals (c) {
 
   <div class="card">
     <h2>Or add one by hand</h2>
-    <label class="field" for="ga">What area is it? (reading, writing, maths, speech…)</label>
+    <label class="field" for="ga">What area is it? (reading, writing, math, speech…)</label>
     <input id="ga" placeholder="Reading" autocomplete="off">
     <label class="field" for="gt">The goal, exactly as the IEP words it</label>
     <textarea id="gt" placeholder="Given a list of unfamiliar two-syllable words, she will decode 8 of 10 accurately across 3 consecutive sessions."></textarea>
@@ -656,9 +656,9 @@ async function pdfToLines (file) {
 const AREAS = [
   [/read|decod|phonic|comprehen|fluenc|main idea|supporting detail|passage|informational text|sight word/i, 'Reading'],
   [/writ|paragraph|topic sentence|spell|compose|punctuat/i, 'Writing'],
-  [/math|numer|number|addition|subtract|multiplic|division|comput|word problem|equation|place value|count/i, 'Maths'],
+  [/math|numer|number|addition|subtract|multiplic|division|comput|word problem|equation|place value|count/i, 'Math'],
   [/speech|articul|expressive|receptive|vocabulary|wh-question|intelligib/i, 'Speech'],
-  [/behav|self-regul|attention|transition|frustrat|redirect/i, 'Behaviour'],
+  [/behav|self-regul|attention|transition|frustrat|redirect/i, 'Behavior'],
   [/motor|handwriting|occupational|grasp|keyboard/i, 'Motor'],
 ]
 
@@ -785,7 +785,7 @@ function restore (input) {
 }
 
 /* ------------------------------ the record -------------------------------- */
-/* Met/not-met is FILLED vs HOLLOW, never colour alone, and the criterion is a
+/* Met/not-met is FILLED vs HOLLOW, never color alone, and the criterion is a
    dashed line drawn across the chart rather than a legend entry — so it still
    reads after somebody photocopies it in black and white. */
 function chart (g) {

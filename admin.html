@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Links — Kirton Learning</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!--
+  The back office. One page, one person.
+
+  It holds NO secret of its own: the key is typed in, kept in sessionStorage for
+  the tab, and every answer comes from /api/admin, which checks the key server-side.
+  Nothing here works without it, so this file is safe in a public repo.
+
+  It deliberately shows the whole link. While kirtonlearning.com has no MX record,
+  email cannot reach a parent at all, and a link he can copy into a text message is
+  the difference between a family being served and a family waiting.
+-->
+<style>
+:root{
+  --ink:#141D2E;--ink-2:#25324A;--ink-3:#3F4C66;
+  --paper:#F4F2EC;--paper-2:#FBFAF7;
+  --spark:#E8A33D;--spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);
+  --ok:#1E6F43;--bad:#9B2226;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+header{background:var(--ink);color:var(--paper);padding:18px 0}
+header .wrap{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+header b{font-size:1.05rem}
+header span{color:rgba(244,242,236,.66);font-size:.88rem}
+main{padding:22px 0 60px}
+h2{font-size:1.02rem;margin:0 0 12px;letter-spacing:.01em}
+.card{background:var(--paper-2);border:1px solid var(--line);padding:18px;margin-bottom:20px}
+label{display:block;font-size:.82rem;color:var(--ink-3);margin-bottom:4px}
+input,select{font:inherit;padding:9px 10px;border:1px solid var(--line);background:#fff;
+  color:var(--ink);width:100%;border-radius:0}
+input:focus,select:focus{outline:2px solid var(--spark-deep);outline-offset:1px}
+.row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.row>div{flex:1 1 190px;min-width:0}
+.btn{font:inherit;font-weight:600;padding:10px 16px;border:1px solid var(--ink);
+  background:var(--ink);color:var(--paper);cursor:pointer}
+.btn:hover{background:var(--ink-2)}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn--ghost{background:transparent;color:var(--ink)}
+.btn--ghost:hover{background:rgba(20,29,46,.06)}
+.btn--sm{padding:5px 9px;font-size:.8rem;font-weight:500}
+.check{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--ink-2)}
+.check input{width:auto}
+.msg{padding:11px 13px;margin-bottom:14px;font-size:.92rem;border-left:3px solid}
+.msg--ok{background:rgba(30,111,67,.09);border-color:var(--ok);color:#14512F}
+.msg--bad{background:rgba(155,34,38,.08);border-color:var(--bad);color:#78191C}
+.msg--warn{background:rgba(232,163,61,.14);border-color:var(--spark-deep);color:#6B4109}
+.msg code{font-family:var(--mono);font-size:.85em}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);background:#fff}
+table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:900px}
+th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--paper);font-size:.76rem;text-transform:uppercase;letter-spacing:.05em;
+  color:var(--ink-3);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
+.pill{display:inline-block;padding:2px 8px;font-size:.74rem;font-weight:600;
+  text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.p-live{background:rgba(30,111,67,.14);color:#14512F}
+.p-used{background:rgba(20,29,46,.1);color:var(--ink-2)}
+.p-unsent{background:rgba(232,163,61,.22);color:#6B4109}
+.p-expired,.p-revoked{background:rgba(155,34,38,.1);color:#78191C}
+.acts{display:flex;gap:5px;flex-wrap:wrap}
+.linkcell{max-width:230px}
+.linkcell button{font-family:var(--mono);font-size:.72rem;word-break:break-all;
+  text-align:left;background:none;border:0;color:var(--spark-deep);cursor:pointer;padding:0}
+.muted{color:var(--ink-3);font-size:.86rem}
+.gate{max-width:390px;margin:60px auto}
+@media(max-width:620px){.wrap{padding:0 12px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <b>Kirton Learning</b>
+    <span>Upload links &mdash; who has one, who used it, who is still waiting</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- the key -->
+  <section id="gate" class="card gate">
+    <h2>Admin key</h2>
+    <p class="muted" style="margin-top:0">The value of <code>ADMIN_KEY</code> in Vercel. Kept in this
+      tab only &mdash; closing it forgets the key.</p>
+    <div id="gate-err" class="msg msg--bad" hidden></div>
+    <div style="margin-bottom:12px">
+      <label for="key">Key</label>
+      <input type="password" id="key" autocomplete="off" spellcheck="false">
+    </div>
+    <button class="btn" id="unlock">Open</button>
+  </section>
+
+  <!-- the desk -->
+  <section id="desk" hidden>
+    <div id="flash"></div>
+
+    <div class="card">
+      <h2>Issue a link</h2>
+      <p class="muted" style="margin-top:0">A payment through Stripe issues its own link
+        automatically. Use this when that failed, when a link expired, or when you are asking a
+        family to send the record back.</p>
+      <div class="row">
+        <div>
+          <label for="i-email">Parent email</label>
+          <input type="email" id="i-email" autocomplete="off" placeholder="parent@example.com">
+        </div>
+        <div>
+          <label for="i-name">Their first name <span class="muted">(for the greeting)</span></label>
+          <input type="text" id="i-name" autocomplete="off" placeholder="optional">
+        </div>
+        <div>
+          <label for="i-child">Child's first name <span class="muted">(label only)</span></label>
+          <input type="text" id="i-child" autocomplete="off" placeholder="optional">
+        </div>
+        <div>
+          <label for="i-kind">What for</label>
+          <select id="i-kind">
+            <option value="iep">The IEP</option>
+            <option value="record">The record, coming back</option>
+          </select>
+        </div>
+        <div>
+          <label for="i-why">When, in the email <span class="muted">(record only)</span></label>
+          <input type="text" id="i-why" autocomplete="off" placeholder="before our call on the 14th">
+        </div>
+      </div>
+      <div class="row" style="align-items:center">
+        <div style="flex:0 0 auto">
+          <label class="check"><input type="checkbox" id="i-send" checked> Email it now</label>
+        </div>
+        <div style="flex:0 0 auto"><button class="btn" id="issue">Issue</button></div>
+      </div>
+      <p class="muted" style="margin:0">Uncheck <b>Email it now</b> to get a link you can copy and send
+        another way. That is the honest option while the domain has no mailbox.</p>
+    </div>
+
+    <div class="card">
+      <h2 style="display:inline-block">Links</h2>
+      <button class="btn btn--ghost btn--sm" id="refresh" style="float:right">Refresh</button>
+      <div id="list"><p class="muted">Loading&hellip;</p></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY_STORE = 'kl_admin_key';
+  var key = '';
+
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function when(iso) {
+    if (!iso) return '—';
+    var d = new Date(iso);
+    if (isNaN(d)) return '—';
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ' ' +
+      d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+  }
+
+  function flash(kind, html) {
+    $('flash').innerHTML = '<div class="msg msg--' + kind + '">' + html + '</div>';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function clearFlash() { $('flash').innerHTML = ''; }
+
+  // Every call goes through here so the 401 path is written once.
+  function api(payload) {
+    return fetch('/api/admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-key': key },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json().catch(function () { return { ok: false, message: 'Server sent something unreadable.' }; })
+        .then(function (j) { return { status: r.status, body: j }; });
+    });
+  }
+
+  // ---- the gate ----
+  function unlock() {
+    var typed = $('key').value.trim();
+    if (!typed) return;
+    key = typed;
+    $('unlock').disabled = true;
+    api({ action: 'list', limit: 1 }).then(function (r) {
+      $('unlock').disabled = false;
+      if (r.status === 401) {
+        $('gate-err').textContent = 'That key is not right.';
+        $('gate-err').hidden = false;
+        key = '';
+        return;
+      }
+      // A 503 or a 502 still means the key was accepted — show the desk and let
+      // the list explain what is wrong, rather than blaming the key for it.
+      try { sessionStorage.setItem(KEY_STORE, key); } catch (e) { /* private window */ }
+      $('gate').hidden = true;
+      $('desk').hidden = false;
+      render(r);
+    });
+  }
+
+  $('unlock').addEventListener('click', unlock);
+  $('key').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
+
+  // ---- the list ----
+  function load() {
+    $('list').innerHTML = '<p class="muted">Loading…</p>';
+    api({ action: 'list' }).then(render);
+  }
+
+  function render(r) {
+    if (r.status === 401) {
+      $('desk').hidden = true; $('gate').hidden = false;
+      $('gate-err').textContent = 'The key stopped working. Type it again.';
+      $('gate-err').hidden = false;
+      return;
+    }
+    if (!r.body || !r.body.ok) {
+      $('list').innerHTML = '<div class="msg msg--bad">' +
+        esc((r.body && r.body.message) || 'Could not load the list.') + '</div>';
+      return;
+    }
+    var rows = r.body.rows || [];
+    if (!rows.length) {
+      $('list').innerHTML = '<p class="muted">No links yet. Nobody has paid, and none have been ' +
+        'issued by hand.</p>';
+      return;
+    }
+
+    var html = '<div class="tblwrap"><table><thead><tr>' +
+      '<th>Parent</th><th>Child</th><th>For</th><th>Status</th><th>Issued</th>' +
+      '<th>Sent</th><th>Used</th><th>Link</th><th></th>' +
+      '</tr></thead><tbody>';
+
+    rows.forEach(function (row) {
+      var st = row.status;
+      html += '<tr>' +
+        '<td>' + esc(row.parent_email) +
+          (row.plan ? '<br><span class="muted">' + esc(row.plan) + '</span>' : '') + '</td>' +
+        '<td>' + esc(row.child_label || '—') + '</td>' +
+        '<td>' + (row.kind === 'record' ? 'Record' : 'IEP') +
+          '<br><span class="muted">' + esc(row.issued_by) + '</span></td>' +
+        '<td><span class="pill p-' + esc(st) + '">' + esc(st) + '</span></td>' +
+        '<td class="mono">' + when(row.created_at) + '</td>' +
+        '<td class="mono">' + when(row.sent_at) +
+          (Number(row.send_count) > 1 ? ' <span class="muted">×' + row.send_count + '</span>' : '') + '</td>' +
+        '<td class="mono">' + when(row.used_at) + '</td>' +
+        '<td class="linkcell">' + (st === 'used' || st === 'revoked' || st === 'expired'
+          ? '<span class="muted">—</span>'
+          : '<button data-copy="' + esc(row.link) + '" title="Copy this link">' +
+            esc(row.link) + '</button>') + '</td>' +
+        '<td><div class="acts">' +
+          (st === 'live' || st === 'unsent'
+            ? '<button class="btn btn--ghost btn--sm" data-act="resend" data-t="' + esc(row.token) + '">Resend</button>' : '') +
+          (st !== 'used'
+            ? '<button class="btn btn--ghost btn--sm" data-act="reissue" data-t="' + esc(row.token) + '">Reissue</button>' : '') +
+          (st === 'live' || st === 'unsent'
+            ? '<button class="btn btn--ghost btn--sm" data-act="revoke" data-t="' + esc(row.token) + '">Revoke</button>' : '') +
+        '</div></td>' +
+      '</tr>';
+    });
+
+    html += '</tbody></table></div>';
+
+    var unsent = rows.filter(function (x) { return x.status === 'unsent'; }).length;
+    if (unsent) {
+      html = '<div class="msg msg--warn"><b>' + unsent + ' link' + (unsent === 1 ? '' : 's') +
+        ' issued but never emailed.</b> Copy the link and get it to them another way, or fix ' +
+        '<code>RESEND_API_KEY</code> / <code>MAIL_FROM</code> and press Resend.</div>' + html;
+    }
+    $('list').innerHTML = html;
+  }
+
+  // ---- row actions ----
+  $('list').addEventListener('click', function (e) {
+    var copy = e.target.closest('[data-copy]');
+    if (copy) {
+      var text = copy.getAttribute('data-copy');
+      // A page served over https has the clipboard API; the fallback is for a
+      // browser that refuses it, which is not a reason to leave him with nothing.
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { flash('ok', 'Link copied.'); },
+          function () { window.prompt('Copy this link:', text); });
+      } else {
+        window.prompt('Copy this link:', text);
+      }
+      return;
+    }
+
+    var btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    var act = btn.getAttribute('data-act');
+    var token = btn.getAttribute('data-t');
+
+    var confirms = {
+      revoke: 'Kill this link? The row stays, the link stops working.',
+      reissue: 'Kill this link and email a fresh one to the same address?'
+    };
+    if (confirms[act] && !window.confirm(confirms[act])) return;
+
+    btn.disabled = true;
+    clearFlash();
+    api({ action: act, token: token }).then(function (r) {
+      btn.disabled = false;
+      if (!r.body || !r.body.ok) {
+        flash('bad', esc((r.body && r.body.message) || 'That did not work.'));
+        return;
+      }
+      if (r.body.sent === false && r.body.sendError) {
+        flash('warn', '<b>The link was made and the email did NOT go:</b> ' +
+          esc(r.body.sendError) + ' Copy the link from the table and send it another way.');
+      } else if (act === 'revoke') {
+        flash('ok', 'Link killed.');
+      } else {
+        flash('ok', 'Sent.');
+      }
+      load();
+    });
+  });
+
+  // ---- issue ----
+  $('issue').addEventListener('click', function () {
+    clearFlash();
+    var payload = {
+      action: 'issue',
+      email: $('i-email').value.trim(),
+      name: $('i-name').value.trim(),
+      childLabel: $('i-child').value.trim(),
+      kind: $('i-kind').value,
+      why: $('i-why').value.trim(),
+      send: $('i-send').checked
+    };
+    if (!payload.email) { flash('bad', 'An email address is needed — it is where the link goes.'); return; }
+
+    $('issue').disabled = true;
+    api(payload).then(function (r) {
+      $('issue').disabled = false;
+      if (!r.body || !r.body.ok) {
+        flash('bad', esc((r.body && r.body.message) || 'Could not issue that.'));
+        return;
+      }
+      var link = r.body.row && r.body.row.link;
+      if (r.body.sent === false && r.body.sendError) {
+        flash('warn', '<b>Link made. The email did NOT go:</b> ' + esc(r.body.sendError) +
+          '<br>Copy it and send it another way:<br><code>' + esc(link) + '</code>');
+      } else if (r.body.sent === false) {
+        flash('ok', 'Link made, not emailed — as asked.<br><code>' + esc(link) + '</code>');
+      } else {
+        flash('ok', 'Issued and emailed to ' + esc(payload.email) + '.');
+      }
+      ['i-email', 'i-name', 'i-child', 'i-why'].forEach(function (id) { $(id).value = ''; });
+      load();
+    });
+  });
+
+  $('refresh').addEventListener('click', load);
+
+  // ---- resume in this tab ----
+  var saved = null;
+  try { saved = sessionStorage.getItem(KEY_STORE); } catch (e) { /* private window */ }
+  if (saved) { $('key').value = saved; unlock(); }
+})();
+</script>
+</body>
+</html>

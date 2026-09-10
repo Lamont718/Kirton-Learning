@@ -15,6 +15,7 @@ SCOPE.md
 # Database setup script. Nothing secret in it, but it maps the schema and
 # bucket rules — no reason to hand that to anyone who guesses the filename.
 supabase-setup.sql
+supabase-setup-2.sql
 
 # Internal docs for the free resource platform.
 # RESOURCE.md          the rules for everything under /start/

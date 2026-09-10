@@ -99,7 +99,7 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
       <span class="dot" aria-hidden="true"></span><span>Kirton Learning</span>
     </a>
     <p class="eyebrow">Private upload</p>
-    <h1>Send me your child's IEP.</h1>
+    <h1 id="h-title">Send me your child's IEP.</h1>
     <p>This page is yours alone — it opened from a one-time link in your email. The document goes straight into an encrypted folder only I can open. It is never posted, never sold, and never shared with your school.</p>
   </div>
 </header>
@@ -118,7 +118,7 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
 
       <div class="card">
         <h2>Choose the file</h2>
-        <p style="color:var(--ink-3);font-size:.97rem">A PDF, a Word document, or a clear photo of each page. Up to 25MB.</p>
+        <p id="file-hint" style="color:var(--ink-3);font-size:.97rem">A PDF, a Word document, or a clear photo of each page. Up to 25MB.</p>
 
         <label class="drop" id="drop" for="file">
           <span class="big">Tap to choose a file</span>
@@ -138,15 +138,15 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
         </div>
       </div>
 
-      <p class="note">If your IEP is several photos, send the clearest one now and email me the rest — I'll match them up.</p>
+      <p class="note" id="note-extra">If your IEP is several photos, send the clearest one now and email me the rest — I'll match them up.</p>
     </section>
 
     <!-- done -->
     <section id="v-done" class="hide">
-      <div class="msg msg--ok"><strong>Got it.</strong> Your child's IEP is in and the link you used is now closed.</div>
+      <div class="msg msg--ok"><strong>Got it.</strong> <span id="done-msg">Your child's IEP is in and the link you used is now closed.</span></div>
       <div class="card">
-        <h2>What happens next</h2>
-        <ul class="steps">
+        <h2 id="done-h">What happens next</h2>
+        <ul class="steps" id="done-steps">
           <li>I read the whole IEP and translate every goal into plain English.</li>
           <li>I map those goals across 36 weeks and design the first build around something your child actually cares about.</li>
           <li><strong>Within 5 business days</strong> your Blueprint lands in your inbox, along with a link to book our 30-minute walkthrough call.</li>
@@ -184,6 +184,27 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   var hide = function (id) { $(id).classList.add('hide'); };
 
   if (!/^[0-9a-f-]{36}$/i.test(token)) { show('v-notoken'); return; }
+
+  // The same page takes the IEP on the way in and the record on the way back.
+  // ★ `k` changes WORDING ONLY. Where the file lands is decided server-side from
+  // the token's own row, so a parent who edits this parameter changes what she
+  // reads and nothing else. It is not a permission and it is not a switch.
+  if (new URLSearchParams(location.search).get('k') === 'record') {
+    document.title = 'Send the record — Kirton Learning for Families';
+    $('h-title').textContent = 'Send me the record.';
+    $('file-hint').textContent = 'The record from the app, saved as a PDF. Up to 25MB.';
+    $('note-extra').textContent = 'In the app: open The record, set the date range, press Print, ' +
+      'and choose Save as PDF instead of a printer.';
+    $('done-msg').textContent = 'The record is in and the link you used is now closed.';
+    $('done-h').textContent = 'What I do with it';
+    $('done-steps').innerHTML =
+      '<li>I read it against the goals as the IEP words them, not against a grade level.</li>' +
+      '<li>I look for the weeks that went quiet and the work that is landing wrong — too hard, ' +
+      'too easy, or measuring something the goal never asked for.</li>' +
+      '<li>We go through it on our call. If a meeting is coming up, tell me the date and I will ' +
+      'read it before then.</li>';
+  }
+
   show('v-form');
 
   var file = null;

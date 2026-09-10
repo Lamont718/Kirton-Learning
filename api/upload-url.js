@@ -61,12 +61,30 @@ module.exports = async (req, res) => {
     });
 
   try {
-    // ---- the token must exist, be unused, and be unexpired ----
-    const lookup = await rest(
+    // ---- the token must exist, be unused, unrevoked, and unexpired ----
+    //
+    // `revoked_at` and `kind` arrive with supabase-setup-2.sql. Until that has
+    // been run they do not exist, and PostgREST answers 400 for the whole SELECT
+    // — which would take THIS endpoint down, the one path that already works, on
+    // a deploy that was supposed to be additive. So: ask for them, and if the
+    // schema is still the old one, fall back to the columns part 1 shipped.
+    //
+    // ⚠️ This fallback is a bridge, not a mode. In it there is no revoke check
+    // and every token reads as an IEP. It is not silent: /api/admin answers the
+    // very first list with "run supabase-setup-2.sql", so the state announces
+    // itself on the page he opens to do anything at all.
+    let lookup = await rest(
       `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}` +
-        `&select=token,used_at,expires_at`,
+        `&select=token,used_at,expires_at,revoked_at,kind`,
       { method: 'GET' }
     );
+    if (lookup.status === 400) {
+      lookup = await rest(
+        `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}` +
+          `&select=token,used_at,expires_at`,
+        { method: 'GET' }
+      );
+    }
     if (!lookup.ok) return reject(res, 502, 'Something went wrong on my end. Try again shortly.');
 
     const rows = await lookup.json();
@@ -76,6 +94,13 @@ module.exports = async (req, res) => {
     if (row.used_at) {
       return reject(res, 403, 'That link has already been used. Email me and I will send a fresh one.');
     }
+    // A link Lamont killed on purpose — forwarded to the wrong person, or a lost
+    // laptop. Same sentence as an expired one: a parent does not need to know
+    // which, and a difference in wording here tells anyone holding the link why
+    // it stopped working.
+    if (row.revoked_at) {
+      return reject(res, 403, 'That link has expired. Email me and I will send a fresh one.');
+    }
     if (new Date(row.expires_at).getTime() < Date.now()) {
       return reject(res, 403, 'That link has expired. Email me and I will send a fresh one.');
     }
@@ -83,7 +108,11 @@ module.exports = async (req, res) => {
     // ---- name the object ourselves; never reuse the client's filename ----
     // The parent's original name can carry the child's full name, so it is
     // deliberately discarded. The token already tells us whose file this is.
-    const objectPath = `${token}/iep.${ext}`;
+    //
+    // The kind comes off the ROW, never off the URL. upload.html reads a `k`
+    // parameter to choose its wording, and a parent who edits it should change
+    // what she reads and nothing about where the file goes.
+    const objectPath = `${token}/${row.kind === 'record' ? 'record' : 'iep'}.${ext}`;
 
     const signed = await rest(`/storage/v1/object/upload/sign/${BUCKET}/${objectPath}`, {
       method: 'POST',

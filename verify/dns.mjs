@@ -2,10 +2,16 @@
 // outside.
 //
 //   node verify/dns.mjs             check only — what is actually resolving
-//   node verify/dns.mjs --apply     write the missing records at GoDaddy, then check
+//   node verify/dns.mjs --apply     add the missing records at GoDaddy, then check
 //
-// Applying needs GODADDY_KEY and GODADDY_SECRET in the environment. They are
-// never read from a file and never written to one.
+// Applying needs GODADDY_PAT in the environment — a Personal Access Token from
+// https://developer.godaddy.com/personal-access-token. It is never read from a
+// file and never written to one.
+//
+// ⚠️ The old developer Key/Secret pair (`Authorization: sso-key KEY:SECRET`) and
+// its OTE/Production choice are GONE from the dashboard. GoDaddy moved to PATs,
+// and the classic key does not work against the v3 Domains API at all. If a guide
+// tells you to pick an environment, it is describing the retired flow.
 //
 // ★★ Why this exists as a file and not a checklist: sending and receiving are
 // separate records that fail separately and silently. A verified sending domain
@@ -13,18 +19,21 @@
 // nothing about whether anything can leave. Both have to be asserted, and the
 // only honest assertion is a lookup from outside, not the panel's own screen.
 //
-// ⛔ This never touches the apex A record. That is Vercel's, the site is on it,
-// and nothing about email needs it changed.
+// ⛔ This adds records. It never deletes or overwrites one. Anything unexpected
+// already in the zone is REPORTED for a person to decide about — silently
+// rewriting somebody's DNS is not a thing a script gets to do.
 
 import { promises as dns } from 'node:dns';
 
 const DOMAIN = 'kirtonlearning.com';
 const APPLY = process.argv.includes('--apply');
+const API = 'https://api.godaddy.com/v3/domains';
 
 // ---------------------------------------------------------------------------
 // What we want, and why each one is there
 // ---------------------------------------------------------------------------
 const WANT = [
+  // ---- sending: Resend, so the link email can leave and not land in spam ----
   {
     type: 'TXT', name: 'resend._domainkey', ttl: 3600,
     data: 'p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqk8DLpXV3sv7LPWvcb88S4m46zGhwZSZ0gYBDxNUTwfXeiW2d7t6CYbgZkSkUm8BXEWFZsCD92lK4GMaZHqVFn6JsBDUnofZKXMQ80PDu+hS3QqRs1XmKg5CkIVNMOFljojNGPL5xg8FqpVjHeLn9hNLWZxOoL9zLhg681+2J6QIDAQAB',
@@ -43,11 +52,11 @@ const WANT = [
 
   // ---- receiving: forwarding to his Gmail, chosen 2026-09-09 ----
   //
-  // ⚠️ These two records alone do NOT deliver anything. They hand the domain's
-  // mail to ImprovMX, and ImprovMX drops it unless an alias exists there saying
+  // ⚠️ These records alone do NOT deliver anything. They hand the domain's mail
+  // to ImprovMX, and ImprovMX REJECTS it unless an alias exists there saying
   // where lamont@ goes. Records first is still right — mail bounces either way
-  // until both halves are done, and ImprovMX will not verify the domain until
-  // it can see its own MX.
+  // until both halves are done, and ImprovMX will not verify the domain until it
+  // can see its own MX.
   {
     type: 'MX', name: '@', ttl: 3600, priority: 10,
     data: 'mx1.improvmx.com',
@@ -57,7 +66,6 @@ const WANT = [
     type: 'MX', name: '@', ttl: 3600, priority: 20,
     data: 'mx2.improvmx.com',
     why: 'second one, so a single host being down is not a bounced IEP question',
-    sibling: true, // same type+name as the record above; written together, not twice
   },
   {
     type: 'TXT', name: '@', ttl: 3600,
@@ -67,17 +75,17 @@ const WANT = [
 ];
 
 // ---------------------------------------------------------------------------
-// GoDaddy
+// GoDaddy v3
 // ---------------------------------------------------------------------------
-const KEY = process.env.GODADDY_KEY;
-const SECRET = process.env.GODADDY_SECRET;
+const PAT = process.env.GODADDY_PAT;
 
 async function gd(path, init) {
-  const r = await fetch(`https://api.godaddy.com${path}`, {
+  const r = await fetch(`${API}${path}`, {
     ...init,
     headers: {
-      Authorization: `sso-key ${KEY}:${SECRET}`,
+      Authorization: `Bearer ${PAT}`,
       'Content-Type': 'application/json',
+      Accept: 'application/json',
       ...(init && init.headers),
     },
   });
@@ -87,65 +95,68 @@ async function gd(path, init) {
   return { ok: r.ok, status: r.status, body };
 }
 
-// PUT replaces every record of one type+name. That is the right verb here —
-// each of these is a single-valued record and we want it to end up as exactly
-// what is written above, not appended to whatever was there.
-//
-// ⚠️ Read first and skip if it already matches, so a re-run is a no-op instead
-// of a rewrite. Rewriting is not harmless: it resets the TTL and, on a record
-// somebody else edited by hand, silently discards their version.
+// v3 filters server-side by type and name, so each question is asked as its own
+// small request. That sidesteps the paginated collection entirely — no chance of
+// reading page one, not seeing a record, and adding a duplicate of it.
+async function recordsAt(type, name) {
+  const q = `?type=${encodeURIComponent(type)}&name=${encodeURIComponent(name)}`;
+  const r = await gd(`/zones/${encodeURIComponent(DOMAIN)}/dns-records${q}`, { method: 'GET' });
+  if (!r.ok) return { error: `${r.status} ${JSON.stringify(r.body).slice(0, 200)}` };
+  const items = (r.body && r.body.items) || [];
+  return { items };
+}
+
+const unquote = (s) => String(s == null ? '' : s).replace(/^"|"$/g, '').replace(/\.$/, '');
+
 async function apply() {
-  if (!KEY || !SECRET) {
-    console.log('  GODADDY_KEY / GODADDY_SECRET are not set — nothing applied.\n');
-    return false;
+  if (!PAT) {
+    console.log('  GODADDY_PAT is not set — nothing applied.');
+    console.log('  Make one at https://developer.godaddy.com/personal-access-token\n');
+    return;
   }
 
-  const all = await gd(`/v1/domains/${DOMAIN}/records`, { method: 'GET' });
-  if (!all.ok) {
-    console.log(`  GoDaddy refused the read: ${all.status} ${JSON.stringify(all.body).slice(0, 220)}\n`);
-    return false;
+  // Say out loud what is on the apex BEFORE touching anything. The A record is
+  // Vercel's and the site is on it; nothing about email needs it moved, and it
+  // should be visible in the output that it was not.
+  const a = await recordsAt('A', '@');
+  if (a.error) {
+    console.log(`  GoDaddy refused the read: ${a.error}`);
+    console.log('  A 401 means the token is wrong or expired. A 403 means the token is real');
+    console.log('  but lacks the DNS scope, or the account is not entitled to the API.\n');
+    return;
   }
-  const existing = Array.isArray(all.body) ? all.body : [];
-  console.log(`  GoDaddy has ${existing.length} records on ${DOMAIN}.`);
+  console.log(`  apex A: ${a.items.map((r) => r.data).join(', ') || 'none'}  (left alone)`);
 
-  // Say out loud what is already there on the apex, so nothing gets clobbered
-  // without it being visible in the output.
-  const apexA = existing.filter((r) => r.type === 'A' && r.name === '@');
-  const apexMX = existing.filter((r) => r.type === 'MX' && r.name === '@');
-  console.log(`  apex A: ${apexA.map((r) => r.data).join(', ') || 'none'} (left alone)`);
-  console.log(`  apex MX: ${apexMX.map((r) => r.data).join(', ') || 'none — mail to this domain bounces'}\n`);
-
-  // ⛔ PUT replaces EVERY record of one type+name, so the two apex MX records
-  // have to go up in one call. Writing them one at a time would put mx1 up and
-  // then delete it by writing mx2 — leaving a single point of failure in front
-  // of the address parents are told to write to, and looking like it worked.
-  const groups = new Map();
   for (const w of WANT) {
-    const k = `${w.type}|${w.name}`;
-    if (!groups.has(k)) groups.set(k, []);
-    groups.get(k).push(w);
-  }
+    const found = await recordsAt(w.type, w.name);
+    if (found.error) { console.log(`  ! ${w.type} ${w.name} read failed — ${found.error}`); continue; }
 
-  for (const [k, want] of groups) {
-    const [type, name] = k.split('|');
-    const have = existing.filter((r) => r.type === type && r.name === name);
-    const norm = (s) => String(s).replace(/^"|"$/g, '');
-    const same = have.length === want.length &&
-      want.every((w) => have.some((h) => norm(h.data) === w.data));
-    if (same) { console.log(`  = ${type} ${name} already correct`); continue; }
+    if (found.items.some((r) => unquote(r.data) === unquote(w.data))) {
+      console.log(`  = ${w.type} ${w.name} already correct`);
+      continue;
+    }
 
-    const payload = want.map((w) => ({
-      data: w.data, ttl: w.ttl, ...(w.priority ? { priority: w.priority } : {}),
-    }));
-    const put = await gd(`/v1/domains/${DOMAIN}/records/${type}/${encodeURIComponent(name)}`, {
-      method: 'PUT', body: JSON.stringify(payload),
+    // Anything else sitting at this type+name is somebody's decision, not a
+    // stale artefact to clean up. Name it and leave it.
+    const others = found.items.filter((r) => unquote(r.data) !== unquote(w.data));
+    if (others.length && w.type !== 'MX') {
+      console.log(`  ? ${w.type} ${w.name} already holds: ${others.map((r) => unquote(r.data)).join(' | ')}`);
+      console.log('    Adding ours alongside it. Two SPF records on one name is invalid —');
+      console.log('    if the line above is an SPF record, one of them has to go, by hand.');
+    }
+
+    const post = await gd(`/zones/${encodeURIComponent(DOMAIN)}/dns-records`, {
+      method: 'POST',
+      body: JSON.stringify({
+        name: w.name, type: w.type, data: w.data, ttl: w.ttl,
+        ...(w.priority !== undefined ? { priority: w.priority } : {}),
+      }),
     });
-    console.log(put.ok
-      ? `  + ${type} ${name} written (${want.length} record${want.length > 1 ? 's' : ''})`
-      : `  ! ${type} ${name} FAILED ${put.status} ${JSON.stringify(put.body).slice(0, 200)}`);
+    console.log(post.ok
+      ? `  + ${w.type} ${w.name} added`
+      : `  ! ${w.type} ${w.name} FAILED ${post.status} ${JSON.stringify(post.body).slice(0, 200)}`);
   }
   console.log('');
-  return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -157,49 +168,42 @@ const bad = (n, d = '') => { fail++; console.log('  FAIL  ' + n + (d ? '\n      
 const note = (n, d = '') => { warn++; console.log('  warn  ' + n + (d ? '\n        ' + d : '')); };
 
 const flat = (rows) => rows.map((r) => (Array.isArray(r) ? r.join('') : String(r)));
+const fqdn = (name) => (name === '@' ? DOMAIN : `${name}.${DOMAIN}`);
 
-async function check() {
-  // Ask a public resolver, not the machine's — the panel and the world can
-  // disagree for hours and only the world matters.
-  dns.setServers(['8.8.8.8', '1.1.1.1']);
-
-  // '@' means the domain itself, not a host called "@".
-  const fqdn = (name) => (name === '@' ? DOMAIN : `${name}.${DOMAIN}`);
-
-  console.log('Sending — can email leave as kirtonlearning.com?\n');
-
-  const sending = WANT.filter((w) => w.name !== '@');
-  const receiving = WANT.filter((w) => w.name === '@');
-
-  async function assertRecords(set) {
-    for (const w of set.filter((x) => x.type === 'TXT')) {
-      try {
-        const rows = flat(await dns.resolveTxt(fqdn(w.name)));
-        const hit = rows.find((r) => r.includes(w.data.slice(0, 40)));
-        hit ? ok(`TXT ${w.name}`, w.why)
-            : bad(`TXT ${w.name} is wrong`, `found: ${rows.join(' | ') || '(none)'}`);
-      } catch {
-        bad(`TXT ${w.name} is missing`, w.why);
-      }
-    }
-    // Every wanted MX must be present — checking that "some MX exists" would
-    // pass with only one of the pair up, which is the exact failure the second
-    // one is there to prevent.
-    const mx = set.filter((x) => x.type === 'MX');
-    for (const w of mx) {
-      try {
-        const rows = await dns.resolveMx(fqdn(w.name));
-        rows.some((r) => r.exchange === w.data)
-          ? ok(`MX ${w.name} ${w.data}`, w.why)
-          : bad(`MX ${w.name} ${w.data} is missing`,
-                `found: ${rows.map((r) => `${r.exchange} (${r.priority})`).join(', ') || '(none)'}`);
-      } catch {
-        bad(`MX ${w.name} ${w.data} is missing`, w.why);
-      }
+async function assertRecords(set) {
+  for (const w of set.filter((x) => x.type === 'TXT')) {
+    try {
+      const rows = flat(await dns.resolveTxt(fqdn(w.name)));
+      const hit = rows.find((r) => r.includes(w.data.slice(0, 40)));
+      hit ? ok(`TXT ${w.name}`, w.why)
+          : bad(`TXT ${w.name} is wrong`, `found: ${rows.join(' | ') || '(none)'}`);
+    } catch {
+      bad(`TXT ${w.name} is missing`, w.why);
     }
   }
+  // Every wanted MX must be present. Checking that "some MX exists" would pass
+  // with only one of a pair up — which is the exact failure the second one is
+  // there to prevent.
+  for (const w of set.filter((x) => x.type === 'MX')) {
+    try {
+      const rows = await dns.resolveMx(fqdn(w.name));
+      rows.some((r) => r.exchange === w.data)
+        ? ok(`MX ${w.name} ${w.data}`, w.why)
+        : bad(`MX ${w.name} ${w.data} is missing`,
+              `found: ${rows.map((r) => `${r.exchange} (${r.priority})`).join(', ') || '(none)'}`);
+    } catch {
+      bad(`MX ${w.name} ${w.data} is missing`, w.why);
+    }
+  }
+}
 
-  await assertRecords(sending);
+async function check() {
+  // Ask public resolvers, not the machine's — the panel and the world can
+  // disagree for hours, and only the world matters.
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+
+  console.log('Sending — can email leave as kirtonlearning.com?\n');
+  await assertRecords(WANT.filter((w) => w.name !== '@'));
 
   // ★ The check that matters more than the three above: Resend's own verdict.
   // Three records resolving is not the same as Resend having verified them, and
@@ -231,16 +235,12 @@ async function check() {
       'which print it to be typed off paper. It is also what every rejection message in ' +
       'api/upload-url.js tells a parent to write to.');
   } else {
-    await assertRecords(receiving);
-  }
-
-  // ★★★ The records are half of it. Mail reaching ImprovMX with no alias behind
-  // it is REJECTED, and from the DNS side that looks identical to working. This
-  // cannot be proved from here — the only proof is sending a real message to the
-  // address and watching it arrive in his Gmail.
-  if (anyMx) {
+    await assertRecords(WANT.filter((w) => w.name === '@'));
+    // ★★★ The records are half of it. Mail reaching ImprovMX with no alias behind
+    // it is REJECTED, and from the DNS side that looks identical to working. This
+    // cannot be proved from here.
     note('DNS cannot prove the forward actually delivers',
-      'Send a test message to lamont@kirtonlearning.com from a phone and confirm it lands. ' +
+      'Send a message to lamont@kirtonlearning.com from a phone and confirm it lands in Gmail. ' +
       'Records with no alias behind them reject mail and look correct from out here.');
   }
 

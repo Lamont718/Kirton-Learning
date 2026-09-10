@@ -1,18 +1,19 @@
 {
-  "_comment": [
-    "start.html became welcome.html so the handbook can own /start/ when it merges.",
-    "The redirect is explicit and Vercel runs redirects BEFORE cleanUrls, so it keeps",
-    "winning if cleanUrls is switched on for the merged site. Do not remove it while",
-    "any emailed link might still say start.html."
-  ],
   "redirects": [
-    { "source": "/start.html", "destination": "/welcome.html", "permanent": true }
+    {
+      "source": "/start.html",
+      "destination": "/welcome.html",
+      "permanent": true
+    }
   ],
   "headers": [
     {
       "source": "/fonts/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
       ]
     }
   ]

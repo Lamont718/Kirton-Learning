@@ -334,6 +334,7 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
             ? '<button class="btn btn--ghost btn--sm" data-act="reissue" data-t="' + esc(row.token) + '">Reissue</button>' : '') +
           (st === 'live' || st === 'unsent'
             ? '<button class="btn btn--ghost btn--sm" data-act="revoke" data-t="' + esc(row.token) + '">Revoke</button>' : '') +
+          '<button class="btn btn--ghost btn--sm" data-act="delete" data-t="' + esc(row.token) + '">Delete</button>' +
         '</div></td>' +
       '</tr>';
     });
@@ -372,7 +373,10 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
 
     var confirms = {
       revoke: 'Kill this link? The row stays, the link stops working.',
-      reissue: 'Kill this link and email a fresh one to the same address?'
+      reissue: 'Kill this link and email a fresh one to the same address?',
+      // Named plainly. This is the button that honours "delete my child's
+      // document", and it is also the button that loses one by accident.
+      delete: 'Permanently delete the uploaded document AND this row? This cannot be undone.'
     };
     if (confirms[act] && !window.confirm(confirms[act])) return;
 
@@ -387,6 +391,8 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
       if (r.body.sent === false && r.body.sendError) {
         flash('warn', '<b>The link was made and the email did NOT go:</b> ' +
           esc(r.body.sendError) + ' Copy the link from the table and send it another way.');
+      } else if (act === 'delete') {
+        flash('ok', 'Deleted' + (r.body.fileRemoved ? ' — row and uploaded file.' : ' — row (there was no file).'));
       } else if (act === 'revoke') {
         flash('ok', 'Link killed.');
       } else {

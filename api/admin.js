@@ -305,6 +305,47 @@ module.exports = async (req, res) => {
       return res.status(200).json({ ok: true, row: decorate(back.row) });
     }
 
+    // -----------------------------------------------------------------------
+    // Erase it: the uploaded document AND the row.
+    //
+    // Not tidying — privacy.html promises a family their child's document is
+    // "deleted on request", and until this existed there was no way to keep that
+    // promise short of opening the Supabase dashboard by hand.
+    //
+    // ⛔ The FILE goes first. If the row went first and the object delete then
+    // failed, the document would still be sitting in the bucket with nothing
+    // left pointing at it — undeletable through this screen and invisible on it.
+    // Losing the pointer to a child's IEP is worse than failing loudly.
+    if (action === 'delete') {
+      const token = String(body.token || '');
+      if (!UUID_RE.test(token)) return reject(res, 400, 'That is not a token.');
+
+      const got = await oneRow(token);
+      if (got.error) return reject(res, 404, got.error);
+      const row = got.row;
+
+      if (row.object_path) {
+        const gone = await rest(`/storage/v1/object/ieps/${row.object_path}`, { method: 'DELETE' });
+        // 404 means it is already not there, which is the state we want.
+        if (!gone.ok && gone.status !== 404) {
+          return reject(res, 502,
+            `The row was left alone because the file could not be deleted (${gone.status}). ` +
+            'Nothing has been removed.');
+        }
+      }
+
+      const del = await rest(`/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}`, {
+        method: 'DELETE',
+      });
+      if (!del.ok) {
+        return reject(res, 502,
+          `The file is deleted but the row could not be removed (${del.status}). ` +
+          'The row now points at nothing — delete it in Supabase.');
+      }
+
+      return res.status(200).json({ ok: true, deleted: token, fileRemoved: !!row.object_path });
+    }
+
     return reject(res, 400, 'Unknown action.');
   } catch (err) {
     return reject(res, 500, 'Something went wrong on my end.');

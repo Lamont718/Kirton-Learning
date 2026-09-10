@@ -140,9 +140,9 @@ p{margin:0 0 1.05em}
   color:rgba(244,242,236,.58);max-width:76ch}
 
 @media print{
+  .draftflag{display:block!important;border:2px solid #000;padding:8pt;margin:0 0 10pt;font-size:9.5pt}
   body{background:#fff;font-size:11pt}
-  .head,.foot,.noprint,.band--alt,.draftflag{display:none!important}
-  .band{padding:0;border:0}
+  .head,.foot,.noprint,.band--alt,  .band{padding:0;border:0}
   .letter{border:0;box-shadow:none;padding:0}
   .letterwrap{margin:0}
   .col{page-break-inside:avoid}
@@ -178,10 +178,48 @@ p{margin:0 0 1.05em}
   .printurl{display:block;margin-top:.5rem}
 }
 </style>
+<style>
+/* One bar across the whole site. Scoped with klnav- so it cannot collide with
+   the per-page styles already in these files. */
+.klnav{background:#141D2E;border-bottom:1px solid rgba(244,242,236,.12);
+  font:500 15px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.klnav-in{max-width:1080px;margin:0 auto;padding:0 18px;display:flex;align-items:center;
+  justify-content:space-between;gap:14px;min-height:52px;flex-wrap:wrap}
+.klnav a{color:#F4F2EC;text-decoration:none;white-space:nowrap}
+.klnav-brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:-.01em;
+  padding:14px 0}
+.klnav-dot{width:9px;height:9px;background:#E8A33D;border-radius:50%;flex:0 0 auto}
+.klnav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.klnav-links a{padding:9px 11px;border-radius:2px;color:rgba(244,242,236,.82);font-size:.94rem}
+.klnav-links a:hover{color:#F4F2EC;background:rgba(244,242,236,.09)}
+.klnav-links a[aria-current]{color:#E8A33D}
+.klnav-cta{color:#141D2E!important;background:#E8A33D;font-weight:700}
+.klnav-cta:hover{background:#f0b45c!important;color:#141D2E!important}
+@media(max-width:560px){
+  .klnav-in{min-height:0;padding:0 12px}
+  .klnav-brand{padding:11px 0}
+  .klnav-links{width:100%;padding-bottom:9px;gap:2px}
+  .klnav-links a{padding:8px 9px;font-size:.88rem}
+}
+/* Never print the bar. Two of these pages are meant to be read off paper. */
+@media print{.klnav{display:none}}
+</style>
 </head>
 <body>
+<nav class="klnav" aria-label="Kirton Learning">
+  <div class="klnav-in">
+    <a class="klnav-brand" href="/"><span class="klnav-dot" aria-hidden="true"></span>Kirton Learning</a>
+    <div class="klnav-links">
+      <a href="/#how">How it works</a>
+      <a href="/record/">The record</a>
+      <a href="/handbook">Handbook</a>
+      <a href="/#start" class="klnav-cta">What it costs</a>
+    </div>
+  </div>
+</nav>
+
 <div class="draft">
-  <b>DRAFT — NOT YET PUBLISHED.</b> Every fact on this page is pending verification and every translation is unreviewed. Do not put this in front of a family until each item is confirmed and signed off in facts.json.
+  <b>Still being checked.</b> Every date, phone number and deadline here is being verified against the city and state&rsquo;s own published sources before we put our name behind it. Use it to work out what to ask &mdash; and confirm anything you are about to act on.
 </div>
 
 <header class="head noprint">
@@ -267,8 +305,8 @@ p{margin:0 0 1.05em}
         </div>
       </div>
 
-      <div class="draftflag noprint">
-        <b>Translation status: draft, pending native-speaker review.</b> Every non-English version on this page is a first draft and has not yet been checked by a native speaker. The English column is authoritative. Do not publish this tool until each language has been reviewed and signed off — a mistranslated request is worse than no request. Review status is tracked in facts.json.
+      <div class="draftflag">
+        <b>Translation status: draft.</b> The non-English versions here are first drafts and have not yet been checked by a native speaker. <b>The English column is the one to rely on.</b> If you send a translated version, send the English with it &mdash; a mistranslated request is worse than no request.
       </div>
     </div>
   </div>

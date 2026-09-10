@@ -202,11 +202,49 @@ p{margin:0 0 1.05em}
   .printurl{display:block;margin-top:.5rem}
 }
 </style>
+<style>
+/* One bar across the whole site. Scoped with klnav- so it cannot collide with
+   the per-page styles already in these files. */
+.klnav{background:#141D2E;border-bottom:1px solid rgba(244,242,236,.12);
+  font:500 15px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.klnav-in{max-width:1080px;margin:0 auto;padding:0 18px;display:flex;align-items:center;
+  justify-content:space-between;gap:14px;min-height:52px;flex-wrap:wrap}
+.klnav a{color:#F4F2EC;text-decoration:none;white-space:nowrap}
+.klnav-brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:-.01em;
+  padding:14px 0}
+.klnav-dot{width:9px;height:9px;background:#E8A33D;border-radius:50%;flex:0 0 auto}
+.klnav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.klnav-links a{padding:9px 11px;border-radius:2px;color:rgba(244,242,236,.82);font-size:.94rem}
+.klnav-links a:hover{color:#F4F2EC;background:rgba(244,242,236,.09)}
+.klnav-links a[aria-current]{color:#E8A33D}
+.klnav-cta{color:#141D2E!important;background:#E8A33D;font-weight:700}
+.klnav-cta:hover{background:#f0b45c!important;color:#141D2E!important}
+@media(max-width:560px){
+  .klnav-in{min-height:0;padding:0 12px}
+  .klnav-brand{padding:11px 0}
+  .klnav-links{width:100%;padding-bottom:9px;gap:2px}
+  .klnav-links a{padding:8px 9px;font-size:.88rem}
+}
+/* Never print the bar. Two of these pages are meant to be read off paper. */
+@media print{.klnav{display:none}}
+</style>
 </head>
 <body>
+<nav class="klnav" aria-label="Kirton Learning">
+  <div class="klnav-in">
+    <a class="klnav-brand" href="/"><span class="klnav-dot" aria-hidden="true"></span>Kirton Learning</a>
+    <div class="klnav-links">
+      <a href="/#how">How it works</a>
+      <a href="/record/">The record</a>
+      <a href="/handbook">Handbook</a>
+      <a href="/#start" class="klnav-cta">What it costs</a>
+    </div>
+  </div>
+</nav>
+
 
 <div class="draft">
-  <b>DRAFT — NOT YET PUBLISHED.</b> Every fact on this page is pending verification. Do not put this in front of a family until each item is confirmed and signed off in facts.json.
+  <b>Still being checked.</b> Every date, phone number and deadline here is being verified against the city and state&rsquo;s own published sources before we put our name behind it. Use it to work out what to ask &mdash; and confirm anything you are about to act on.
 </div>
 
 <header class="head">

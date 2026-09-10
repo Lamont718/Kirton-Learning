@@ -93,23 +93,36 @@ if (!clean) {
 // ---------------------------------------------------------------------------
 // 4. nothing invites anyone in
 // ---------------------------------------------------------------------------
-// ⛔ The one that will actually happen: somebody adds a "free handbook" link to
-// the homepage because it is a good idea — and it IS a good idea, the day the
-// facts are checked. Until then a link is an invitation to unverified content
-// from the one page the whole business points at.
-const indexable = ['index.html', 'demo.html', 'privacy.html', 'terms.html', 'referrals.html']
-  .filter((p) => existsSync(join(ROOT, p)));
+// ⚠️ THIS RULE CHANGED ON 2026-09-10, ON LAMONT'S CALL.
+// It used to be "no indexable page may link to the handbook while facts are
+// unverified" — the guard was to keep people away from it. He asked twice for the
+// handbook to appear on the site, which is his decision to make, so the homepage
+// now carries a section for it.
+//
+// The guard did not disappear, it MOVED. A link is fine; a link that presents
+// unchecked deadlines as finished work is not. So what is asserted now is that
+// the invitation carries its own caveat — if somebody tidies that paragraph away
+// while the facts are still unverified, the homepage starts making a promise
+// nobody has earned, and this fails.
 if (!clean) {
-  const linking = indexable.filter((p) => /href="\/(handbook|start\/|source\/)/.test(read(p)));
-  linking.length
-    ? bad(`${linking.length} indexable page(s) link to the handbook while facts are unverified`,
-        linking.join(', ') + ' — remove the link, or verify the facts first')
-    : ok('no indexable page links to the handbook', 'it is reachable, not offered');
+  const home = read('index.html');
+  if (/href="\/(handbook|start\/|source\/)/.test(home)) {
+    /still being checked|being verified against/i.test(home)
+      ? ok('the homepage links the handbook AND says it is still being checked')
+      : bad('the homepage links the handbook with no caveat',
+          'All 22 facts are unverified. The section must keep the sentence saying so — a parent ' +
+          'following that link is about to act on a deadline.');
+  } else {
+    ok('the homepage does not link the handbook');
+  }
 
+  // Indexing is a separate decision from linking, and still not taken. A link is
+  // an offer to people already here; indexing puts unverified deadlines in front
+  // of strangers searching for exactly this.
   const sitemap = read('sitemap.xml');
   /\/(handbook|start|source)/.test(sitemap)
     ? bad('sitemap.xml lists handbook URLs while facts are unverified')
-    : ok('sitemap.xml does not list the handbook');
+    : ok('sitemap.xml does not list the handbook', 'linked, not indexed');
 }
 
 // ---------------------------------------------------------------------------

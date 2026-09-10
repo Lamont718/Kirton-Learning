@@ -325,12 +325,23 @@ module.exports = async (req, res) => {
       const row = got.row;
 
       if (row.object_path) {
-        const gone = await rest(`/storage/v1/object/ieps/${row.object_path}`, { method: 'DELETE' });
+        // ⚠️ The BULK form, with the path in a JSON body — not
+        // `DELETE /object/ieps/<path>`. The single-object route answers 400 when
+        // it is sent a JSON content-type with no body, which is exactly what a
+        // shared REST helper does. Found by trying it: the delete failed, the
+        // guard below correctly refused to orphan the file, and the 400 said
+        // nothing about why until the provider's own message was surfaced.
+        const gone = await rest('/storage/v1/object/ieps', {
+          method: 'DELETE',
+          body: JSON.stringify({ prefixes: [row.object_path] }),
+        });
         // 404 means it is already not there, which is the state we want.
         if (!gone.ok && gone.status !== 404) {
+          let why = '';
+          try { why = JSON.stringify(await gone.json()).slice(0, 160); } catch { /* not json */ }
           return reject(res, 502,
             `The row was left alone because the file could not be deleted (${gone.status}). ` +
-            'Nothing has been removed.');
+            `Nothing has been removed. ${why}`);
         }
       }
 

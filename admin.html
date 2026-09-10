@@ -108,6 +108,14 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
   <section id="desk" hidden>
     <div id="flash"></div>
 
+    <div class="card" id="setup-card" hidden>
+      <h2>What is wired up</h2>
+      <p class="muted" style="margin-top:0">Tested on this deployment just now, not read off a
+        list of variable names. A name proves nothing &mdash; a variable can exist and hold
+        nothing.</p>
+      <div id="setup"></div>
+    </div>
+
     <div class="card">
       <h2>Issue a link</h2>
       <p class="muted" style="margin-top:0">A payment through Stripe issues its own link
@@ -214,6 +222,7 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
       try { sessionStorage.setItem(KEY_STORE, key); } catch (e) { /* private window */ }
       $('gate').hidden = true;
       $('desk').hidden = false;
+      loadStatus();
       render(r);
     });
   }
@@ -221,8 +230,58 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
   $('unlock').addEventListener('click', unlock);
   $('key').addEventListener('keydown', function (e) { if (e.key === 'Enter') unlock(); });
 
+  // ---- what is wired up ----
+  function loadStatus() {
+    api({ action: 'status' }).then(function (r) {
+      if (!r.body || !r.body.ok) return;
+      var s = r.body;
+      var items = [
+        [s.supabase, 'Encrypted storage and the token table',
+          'Supabase is answering.',
+          'SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are not set in Vercel.'],
+        [s.migrated, 'The token table is up to date',
+          'It has the columns the links need.',
+          'Open the Supabase SQL editor and run <code>supabase-setup-2.sql</code>. Nothing on ' +
+          'this page works until you do.'],
+        [s.stripeWebhookSecret, 'Stripe tells the site about a payment',
+          'The signing secret is set. A payment issues a link on its own.',
+          'In the Stripe dashboard: Developers &rarr; Webhooks &rarr; add endpoint ' +
+          '<code>' + esc(s.origin) + '/api/stripe-webhook</code>, event ' +
+          '<code>checkout.session.completed</code>. Copy the signing secret it gives you into ' +
+          'Vercel as <code>STRIPE_WEBHOOK_SECRET</code>. <b>Until this is done, a payment ' +
+          'issues nothing and you have to come here and issue the link by hand.</b>'],
+        [s.mailReady, 'Email can actually leave',
+          'Sending from ' + esc(s.mailFrom || '') + '.',
+          (!s.resendKey
+            ? 'RESEND_API_KEY is not set in Vercel.'
+            : 'The key works, but <b>' + esc((String(s.mailFrom || '').match(/@([^>\s]+)/) || [])[1] || 'the domain') +
+              ' is not verified for sending</b>. Add the three DNS records Resend gives you, ' +
+              'then this turns green. Until then every link has to be copied out of the table ' +
+              'below and sent another way.')]
+      ];
+
+      var html = '';
+      items.forEach(function (it) {
+        html += '<div class="msg msg--' + (it[0] ? 'ok' : 'warn') + '">' +
+          '<b>' + (it[0] ? '✓ ' : '— ') + it[1] + '</b><br>' + (it[0] ? it[2] : it[3]) + '</div>';
+      });
+      // Receiving is a separate thing from sending, and they fail separately.
+      // A verified sending domain does not give the address a mailbox, so every
+      // "reply to this email and I'll send a fresh one" still goes nowhere.
+      html += '<div class="msg msg--warn"><b>— Mail coming back to you</b><br>' +
+        'Sending and receiving are two different records. Even with sending verified, ' +
+        '<code>lamont@kirtonlearning.com</code> needs an <b>MX record on the apex domain</b> ' +
+        'before anyone can reply to you. That address is printed on 18 lines across 9 pages, ' +
+        'including the two you hand out on paper.</div>';
+
+      $('setup').innerHTML = html;
+      $('setup-card').hidden = false;
+    });
+  }
+
   // ---- the list ----
   function load() {
+    loadStatus();
     $('list').innerHTML = '<p class="muted">Loading…</p>';
     api({ action: 'list' }).then(render);
   }

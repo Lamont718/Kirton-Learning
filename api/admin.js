@@ -12,7 +12,7 @@
 // access, this becomes real auth — do not hand out the key.
 
 const {
-  reject, supabase, parseJson, secretEquals, sendEmail, uploadLink,
+  reject, supabase, parseJson, secretEquals, sendEmail, uploadLink, siteOrigin,
 } = require('./_common');
 const { iepLinkEmail, recordLinkEmail } = require('./_email');
 
@@ -83,6 +83,45 @@ module.exports = async (req, res) => {
   };
 
   try {
+    // -----------------------------------------------------------------------
+    // What is actually wired up, right now, on the deployment answering this
+    // request. Written because a variable NAME proves nothing: a var can exist
+    // and hold an empty string, and every screen that lists names rather than
+    // testing behaviour will call that configured.
+    //
+    // ⛔ Booleans only. MAIL_FROM is the exception and is not a secret — it is
+    // the From line printed on every email a parent receives.
+    if (action === 'status') {
+      const probe = await rest('/rest/v1/upload_tokens?select=kind,revoked_at&limit=1', { method: 'GET' });
+      let mailReady = false;
+      if (process.env.RESEND_API_KEY && process.env.MAIL_FROM) {
+        // Ask the provider whether the domain in MAIL_FROM can actually send.
+        // A key that authenticates is not a domain that is verified, and the
+        // difference is every email silently 403ing.
+        try {
+          const dom = (String(process.env.MAIL_FROM).match(/@([^>\s]+)/) || [])[1];
+          const r = await fetch('https://api.resend.com/domains', {
+            headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}` },
+          });
+          if (r.ok && dom) {
+            const list = await r.json();
+            const rows = Array.isArray(list) ? list : list.data || [];
+            mailReady = rows.some((d) => d.name === dom && d.status === 'verified');
+          }
+        } catch { /* leave it false — unproven is not ready */ }
+      }
+      return res.status(200).json({
+        ok: true,
+        supabase: true, // we would not have got here otherwise
+        migrated: probe.ok,
+        stripeWebhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET,
+        resendKey: !!process.env.RESEND_API_KEY,
+        mailFrom: process.env.MAIL_FROM || null,
+        mailReady,
+        origin: siteOrigin(),
+      });
+    }
+
     // -----------------------------------------------------------------------
     if (action === 'list') {
       const limit = Math.min(Math.max(Number(body.limit) || 100, 1), 500);

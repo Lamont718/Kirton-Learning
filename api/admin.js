@@ -110,10 +110,23 @@ module.exports = async (req, res) => {
           }
         } catch { /* leave it false — unproven is not ready */ }
       }
+      // Does the apex have anywhere to deliver mail to?
+      // ⚠️ Reported as a HOST LIST, never as a boolean "receiving works". MX
+      // records with nothing behind them are a destination that refuses every
+      // message, and that is invisible from here — the same false green the
+      // site audit was about to start showing.
+      let apexMx = [];
+      try {
+        const dns = require('node:dns').promises;
+        dns.setServers(['8.8.8.8', '1.1.1.1']);
+        apexMx = (await dns.resolveMx('kirtonlearning.com')).map((r) => r.exchange);
+      } catch { apexMx = []; }
+
       return res.status(200).json({
         ok: true,
         supabase: true, // we would not have got here otherwise
         migrated: probe.ok,
+        apexMx,
         stripeWebhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET,
         resendKey: !!process.env.RESEND_API_KEY,
         mailFrom: process.env.MAIL_FROM || null,

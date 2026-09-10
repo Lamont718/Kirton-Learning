@@ -95,7 +95,20 @@ for (const [p, html] of body) {
   holes.length ? bad(`${p} still has a placeholder: ${holes.join(', ')}`) : ok(`${p} has no placeholders`)
 }
 
-console.log('\n=== the contact address can actually receive mail ===')
+console.log('\n=== the contact address has somewhere to deliver to ===')
+//
+// ⛔⛔ THIS CHECK USED TO CLAIM THE ADDRESS "CAN ACTUALLY RECEIVE MAIL" AND IT
+// WAS ABOUT TO START LYING. Before 2026-09-10 the domain had no MX at all, so it
+// failed for the right reason and looked like a working check. The moment MX
+// records were added it flipped to a green tick — while the address still
+// rejected every message, because MX records with nothing behind them (no
+// mailbox, no forwarder alias) are a delivery target that refuses delivery.
+//
+// ★★★★ An MX lookup proves a destination is NAMED, not that anything is HOME.
+// The distinction is invisible from out here and there is no DNS query that
+// closes it: the only proof is a real message arriving. So the presence of MX
+// is a floor, not a pass, and this says so rather than banking a tick it has
+// not earned.
 const addrs = new Set()
 for (const html of body.values())
   for (const m of html.matchAll(/mailto:([^"?]+)/g)) addrs.add(m[1])
@@ -103,8 +116,14 @@ for (const a of addrs) {
   const domain = a.split('@')[1]
   let mx = []
   try { mx = await dns.resolveMx(domain) } catch {}
-  mx.length ? ok(`${a} → ${mx.length} MX record(s)`)
-            : bad(`${a} has NO MX record — every one of these links bounces`)
+  if (!mx.length) {
+    bad(`${a} has NO MX record — every one of these links bounces`)
+  } else {
+    note(`${a} → ${mx.map((r) => r.exchange).join(', ')}`,
+      'MX records exist, which is NOT the same as mail arriving. Nothing here can tell the ' +
+      'difference between a working mailbox and a host that refuses every message. Send one ' +
+      'to this address and confirm it lands before treating it as working.')
+  }
 }
 console.log(`  (${addrs.size} distinct address(es) across the site)`)
 

@@ -268,11 +268,21 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
       // Receiving is a separate thing from sending, and they fail separately.
       // A verified sending domain does not give the address a mailbox, so every
       // "reply to this email and I'll send a fresh one" still goes nowhere.
+      // ⚠️ Never a green tick. MX records exist, which is NOT the same as mail
+      // arriving — a host with nothing behind it refuses every message and looks
+      // identical from out here. The only proof is a real email landing.
+      var mx = s.apexMx || [];
       html += '<div class="msg msg--warn"><b>— Mail coming back to you</b><br>' +
-        'Sending and receiving are two different records. Even with sending verified, ' +
-        '<code>lamont@kirtonlearning.com</code> needs an <b>MX record on the apex domain</b> ' +
-        'before anyone can reply to you. That address is printed on 18 lines across 9 pages, ' +
-        'including the two you hand out on paper.</div>';
+        (mx.length
+          ? 'Mail for the domain is pointed at <code>' + esc(mx.join(', ')) + '</code>. ' +
+            'That is a destination, <b>not proof anything arrives</b> &mdash; a host with no ' +
+            'mailbox or alias behind it refuses every message and looks exactly like this from ' +
+            'the outside. <b>Send one to <code>lamont@kirtonlearning.com</code> from your phone ' +
+            'and confirm it lands.</b> Until you have, treat the address as dead.'
+          : 'The apex has <b>no MX record</b>, so every message to ' +
+            '<code>lamont@kirtonlearning.com</code> bounces.') +
+        ' That address is printed on 18 lines across 9 pages, including the two you hand out ' +
+        'on paper.</div>';
 
       $('setup').innerHTML = html;
       $('setup-card').hidden = false;

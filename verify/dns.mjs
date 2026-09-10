@@ -184,15 +184,22 @@ async function assertRecords(set) {
   // Every wanted MX must be present. Checking that "some MX exists" would pass
   // with only one of a pair up — which is the exact failure the second one is
   // there to prevent.
-  for (const w of set.filter((x) => x.type === 'MX')) {
-    try {
-      const rows = await dns.resolveMx(fqdn(w.name));
+  //
+  // ⛔ ONE lookup per NAME, then check every wanted record against that single
+  // answer. Asking once per wanted record made the pair's verdict depend on two
+  // different queries, and a transient partial answer to the second one reported
+  // "mx2 is missing" while mx2 was demonstrably in the zone and served by three
+  // public resolvers. A flaky check is worse than no check: it teaches you to
+  // ignore the output, which is the whole value of having it.
+  const mxNames = [...new Set(set.filter((x) => x.type === 'MX').map((x) => x.name))];
+  for (const name of mxNames) {
+    let rows = [];
+    try { rows = await dns.resolveMx(fqdn(name)); } catch { rows = []; }
+    const found = rows.map((r) => `${r.exchange} (${r.priority})`).join(', ') || '(none)';
+    for (const w of set.filter((x) => x.type === 'MX' && x.name === name)) {
       rows.some((r) => r.exchange === w.data)
         ? ok(`MX ${w.name} ${w.data}`, w.why)
-        : bad(`MX ${w.name} ${w.data} is missing`,
-              `found: ${rows.map((r) => `${r.exchange} (${r.priority})`).join(', ') || '(none)'}`);
-    } catch {
-      bad(`MX ${w.name} ${w.data} is missing`, w.why);
+        : bad(`MX ${w.name} ${w.data} is missing`, `found: ${found}`);
     }
   }
 }

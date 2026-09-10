@@ -50,27 +50,24 @@ const WANT = [
     why: 'SPF for the sending subdomain',
   },
 
-  // ---- receiving: forwarding to his Gmail, chosen 2026-09-09 ----
+  // ---- receiving: Resend, chosen 2026-09-10 ----
   //
-  // ⚠️ These records alone do NOT deliver anything. They hand the domain's mail
-  // to ImprovMX, and ImprovMX REJECTS it unless an alias exists there saying
-  // where lamont@ goes. Records first is still right — mail bounces either way
-  // until both halves are done, and ImprovMX will not verify the domain until it
-  // can see its own MX.
+  // He said "use my resend" and was right — Resend receives as well as sends, so
+  // ImprovMX was dropped and its two apex MX records deleted. One vendor.
+  //
+  // ⚠️ Priority 9 sits BELOW the records it replaced on purpose; they are gone
+  // now, and a leftover fallback pointing at a host that rejects everything is
+  // worse than no fallback at all — mail would silently land somewhere that
+  // refuses it the first time this host had a bad minute.
   {
-    type: 'MX', name: '@', ttl: 3600, priority: 10,
-    data: 'mx1.improvmx.com',
-    why: 'receives mail for the domain and forwards it on',
-  },
-  {
-    type: 'MX', name: '@', ttl: 3600, priority: 20,
-    data: 'mx2.improvmx.com',
-    why: 'second one, so a single host being down is not a bounced IEP question',
+    type: 'MX', name: '@', ttl: 3600, priority: 9,
+    data: 'inbound-smtp.us-east-1.amazonaws.com',
+    why: 'receives mail for the domain; /api/inbound forwards it to his Gmail',
   },
   {
     type: 'TXT', name: '@', ttl: 3600,
-    data: 'v=spf1 include:spf.improvmx.com ~all',
-    why: 'lets the forwarder re-send without the forward being marked as spam',
+    data: 'v=spf1 include:amazonses.com ~all',
+    why: 'what actually sends as @kirtonlearning.com (it named improvmx until 09-10)',
   },
 ];
 

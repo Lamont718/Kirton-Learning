@@ -13,7 +13,7 @@ const PAGES = [
   // Where a family lands after paying. noindex and unlinked from the public
   // pages on purpose — it is for people who have already bought, and it is the
   // only place the delivery app is named.
-  '/start.html',
+  '/welcome.html',
 ]
 
 let pass = 0, fail = 0, warn = 0

@@ -80,7 +80,7 @@ function iepLinkEmail({ link, name }) {
     '  3. On the call I walk you through what I found. Bring questions. Bring the parts of',
     '     the IEP nobody has ever explained to you.',
     '',
-    `Everything about what happens next is on one page: ${origin}/start.html`,
+    `Everything about what happens next is on one page: ${origin}/welcome.html`,
     '',
     'If you change your mind within fourteen days of getting your Blueprint, tell me and I',
     'refund it in full. You keep the Blueprint either way.',
@@ -122,7 +122,7 @@ function iepLinkEmail({ link, name }) {
         IEP nobody has ever explained to you.</li>
     </ol>
     <p style="margin:0 0 16px">Everything about what happens next is on one page:
-      <a href="${esc(origin)}/start.html" style="color:#94590D">${esc(origin)}/start.html</a></p>
+      <a href="${esc(origin)}/welcome.html" style="color:#94590D">${esc(origin)}/welcome.html</a></p>
     <p style="margin:0 0 16px">If you change your mind within fourteen days of getting your
       Blueprint, tell me and I refund it in full. You keep the Blueprint either way.</p>
     <p style="margin:0">Lamont Kirton<br><span style="color:#5A6273">Kirton Learning</span></p>
@@ -137,7 +137,7 @@ function iepLinkEmail({ link, name }) {
 //
 // The record lives on the family's device and nowhere else, which is the point,
 // and it means the only way it reaches Lamont is if she sends it. This is the
-// email that asks. start.html already promises this exact mechanism.
+// email that asks. welcome.html already promises this exact mechanism.
 
 function recordLinkEmail({ link, name, why }) {
   const hi = name ? `Hi ${name},` : 'Hi,';

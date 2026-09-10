@@ -511,6 +511,9 @@ details .ans b{font-weight:600;color:var(--ink)}
 /* The "More in ..." links sit as close as 30px apart in the question list,
    so theirs is 28px — still over the 24px minimum, and it clears the one below. */
 .qa .more::after,.more::after{height:28px}
+
+.printurl{display:none}
+@media print{.printurl{display:block;margin-top:.5rem}}
 </style>
 </head>
 <body>
@@ -1278,6 +1281,7 @@ details .ans b{font-weight:600;color:var(--ink)}
       <a class="btn btn--ghost" href="https://kirtonlearning.com/record/">The free record tool</a>
     </div>
     <p class="stamp">Last reviewed: <b data-fact-reviewed>not yet reviewed</b> · <a href="#help" style="color:var(--accent)">See where every fact comes from</a></p>
+    <p class="stamp printurl" data-page-url></p>
     <p class="legal">
       This page is general information about how special education and disability funding work in New York City and New York State. It is not legal advice, insurance advice, benefits counseling, medical advice, or advice about any individual child, and reading it creates no professional relationship. Rules, deadlines, and program details change — confirm anything that matters with your CSE or CPSE office, your health plan, the OPWDD Front Door, or one of the free organizations listed above.
       <br><br>

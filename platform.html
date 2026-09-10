@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The whole platform — Kirton Learning</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<!--
+  Everything Kirton Learning is, on one page, for Lamont.
+
+  Built 2026-09-10 because merging the handbook onto this domain made it one
+  DEPLOY without making it one EXPERIENCE: the homepage never mentioned the
+  handbook, the handbook did not lead back, and nothing anywhere named the
+  delivery app. "One platform" was true of the hosting and false of the site.
+
+  ⛔ noindex, and deliberately not linked from any indexable page. It names the
+  admin desk and the state of unverified content; it is a back-office map, not a
+  page for parents.
+
+  ★ Every status here is a fact checked at build time, not a claim. Where
+  something is NOT done, this page says so in the same voice it says the rest.
+-->
+<style>
+:root{
+  --ink:#141D2E;--ink-2:#25324A;--ink-3:#3F4C66;
+  --paper:#F4F2EC;--paper-2:#FBFAF7;
+  --spark:#E8A33D;--spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);
+  --ok:#1E6F43;--bad:#9B2226;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px}
+header{background:var(--ink);color:var(--paper);padding:30px 0 34px}
+header h1{margin:0 0 6px;font-size:1.6rem;letter-spacing:-.01em}
+header p{margin:0;color:rgba(244,242,236,.72);font-size:.97rem;max-width:60ch}
+main{padding:30px 0 70px}
+section{margin-bottom:34px}
+h2{font-size:1.12rem;margin:0 0 4px;letter-spacing:-.01em}
+h2 .n{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);font-weight:400;margin-left:8px}
+.sub{margin:0 0 14px;color:var(--ink-3);font-size:.93rem;max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.card{background:var(--paper-2);border:1px solid var(--line);padding:14px 15px;display:flex;
+  flex-direction:column;gap:5px}
+.card a.t{font-weight:600;text-decoration:none;color:var(--ink);font-size:1rem}
+.card a.t:hover{color:var(--spark-deep);text-decoration:underline}
+.card .u{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);word-break:break-all}
+.card .d{font-size:.9rem;color:var(--ink-2)}
+.tag{display:inline-block;padding:1px 7px;font-size:.7rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.04em;white-space:nowrap;align-self:flex-start}
+.t-live{background:rgba(30,111,67,.14);color:#14512F}
+.t-private{background:rgba(20,29,46,.1);color:var(--ink-2)}
+.t-draft{background:rgba(232,163,61,.22);color:#6B4109}
+.t-todo{background:rgba(155,34,38,.1);color:#78191C}
+.note{background:var(--paper-2);border-left:3px solid var(--spark-deep);padding:13px 15px;
+  font-size:.93rem;margin-bottom:14px}
+.note b{color:var(--ink)}
+footer{background:var(--ink);color:rgba(244,242,236,.7);padding:24px 0;font-size:.87rem}
+footer code{font-family:var(--mono);font-size:.85em}
+@media(max-width:600px){.wrap{padding:0 14px}header{padding:22px 0 26px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>The whole platform</h1>
+    <p>Every part of Kirton Learning and where it actually lives. Statuses are what is true
+      right now, not what is planned.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h2>The front door <span class="n">public · indexed</span></h2>
+    <p class="sub">What a parent finds and what convinces her. All on kirtonlearning.com.</p>
+    <div class="grid">
+      <div class="card"><a class="t" href="/">The sales page</a>
+        <span class="u">kirtonlearning.com/</span>
+        <span class="d">The offer, the four steps, the FAQ, both Stripe buttons.</span>
+        <span class="tag t-live">live</span></div>
+      <div class="card"><a class="t" href="/demo">A worked example</a>
+        <span class="u">/demo</span>
+        <span class="d">A fictional student's IEP, the Blueprint built from it, one week of work.</span>
+        <span class="tag t-live">live</span></div>
+      <div class="card"><a class="t" href="/referrals">Referrals</a>
+        <span class="u">/referrals</span>
+        <span class="d">Licensed providers for what we cannot do. Built and deliberately empty.</span>
+        <span class="tag t-draft">empty by choice</span></div>
+      <div class="card"><a class="t" href="/privacy">Privacy</a>
+        <span class="u">/privacy · /terms</span>
+        <span class="d">Written, wired into every footer.</span>
+        <span class="tag t-live">live</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The handbook <span class="n">16 questions · 4 long reads</span></h2>
+    <p class="sub">The free plain-language guide to how special education works in NYC. Merged onto
+      this domain on 10 September 2026 — it used to live on its own URL.</p>
+    <div class="note">
+      <b>Reachable, not offered.</b> Every page is <code>noindex</code> and carries its draft mark,
+      and nothing on the public site links here. That is on purpose: all 22 facts in it are still
+      marked unverified and all 9 translations are draft. Deadlines, phone numbers and placement
+      rules a parent will act on. Verify them, then it gets a link from the homepage and goes into
+      the sitemap.
+    </div>
+    <div class="grid">
+      <div class="card"><a class="t" href="/handbook">Handbook home</a>
+        <span class="u">/handbook</span>
+        <span class="d">The way in: money, school, help, the jargon decoder.</span>
+        <span class="tag t-draft">unverified</span></div>
+      <div class="card"><a class="t" href="/start">The 16 questions</a>
+        <span class="u">/start</span>
+        <span class="d">"Nobody is calling me back", "Do I need a diagnosis first", and 14 more.</span>
+        <span class="tag t-draft">unverified</span></div>
+      <div class="card"><a class="t" href="/source/money">Paying for it</a>
+        <span class="u">/source/money</span>
+        <span class="d">The long read on what costs money and what does not.</span>
+        <span class="tag t-draft">unverified</span></div>
+      <div class="card"><a class="t" href="/source/interpreter-letter">The interpreter letter</a>
+        <span class="u">/source/interpreter-letter</span>
+        <span class="d">A letter a parent can send to ask for one. 9 languages, all draft.</span>
+        <span class="tag t-draft">unverified</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where the work happens <span class="n">a separate app</span></h2>
+    <p class="sub">The two tools a family actually uses week to week.</p>
+    <div class="note">
+      <b>The delivery app is not on this domain.</b> It is a different repo and a different
+      deploy, at <code>kirton-learn.vercel.app</code>, and nothing on the public site names it —
+      only <a href="/welcome">/welcome</a> does, which a family reaches after paying. Bringing it
+      onto kirtonlearning.com is a real piece of work, not a config change: it has its own service
+      worker, it works offline, and 11 engines and 1,363 tests sit behind it.
+    </div>
+    <div class="grid">
+      <div class="card"><a class="t" href="https://kirton-learn.vercel.app/">The delivery app</a>
+        <span class="u">kirton-learn.vercel.app</span>
+        <span class="d">Where a child does the work, built from the goals in her IEP. Nothing
+          leaves the device.</span>
+        <span class="tag t-todo">separate domain</span></div>
+      <div class="card"><a class="t" href="/record/">The free record tool</a>
+        <span class="u">/record/</span>
+        <span class="d">Log what you see, print a record for the meeting. No account, nothing
+          uploaded.</span>
+        <span class="tag t-live">live</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Taking money and taking documents</h2>
+    <p class="sub">The paid flow, end to end.</p>
+    <div class="grid">
+      <div class="card"><a class="t" href="/welcome">After payment</a>
+        <span class="u">/welcome</span>
+        <span class="d">What happens now, in order. Emailed, never linked publicly.</span>
+        <span class="tag t-private">unlisted</span></div>
+      <div class="card"><a class="t" href="/upload.html">The private upload</a>
+        <span class="u">/upload.html?t=…</span>
+        <span class="d">One-time link, seven days, encrypted bucket. Takes the IEP in and the
+          record back.</span>
+        <span class="tag t-private">token only</span></div>
+      <div class="card"><a class="t" href="/admin.html">The links desk</a>
+        <span class="u">/admin.html</span>
+        <span class="d">Issue, resend, reissue, revoke, delete. Shows what is wired up, tested
+          live rather than listed.</span>
+        <span class="tag t-private">key required</span></div>
+      <div class="card"><span class="t">Stripe → link, automatically</span>
+        <span class="u">/api/stripe-webhook</span>
+        <span class="d">Built and tested. Needs the signing secret from the Stripe dashboard
+          before a payment issues anything.</span>
+        <span class="tag t-todo">needs the secret</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The two pages you hand people</h2>
+    <p class="sub">Printed and read off paper, so the address on them has to be real.</p>
+    <div class="grid">
+      <div class="card"><a class="t" href="/partner">For a partner</a>
+        <span class="u">/partner</span>
+        <span class="d">Where it honestly stands, including the parts that are not working yet.</span>
+        <span class="tag t-private">noindex</span></div>
+      <div class="card"><a class="t" href="/refer">For someone referring</a>
+        <span class="u">/refer</span>
+        <span class="d">What to say to a family, and what not to promise.</span>
+        <span class="tag t-private">noindex</span></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    One repo, one deploy: <code>github.com/Lamont718/Kirton-Learning</code> →
+    <code>kirtonlearning.com</code>. The delivery app is its own.
+    Check the site with <code>node verify/audit-site.mjs</code> and
+    <code>node verify/publish-gate.mjs</code>.
+  </div>
+</footer>
+
+</body>
+</html>

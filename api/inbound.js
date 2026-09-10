@@ -6,10 +6,12 @@
 // anywhere in that sentence — which is the point: no second inbox to remember to
 // check, and the address on the printed pages finally goes somewhere.
 //
-// ⛔ THIS IS UNVERIFIED UNTIL A REAL MESSAGE HAS FLOWED THROUGH IT. It cannot be
-// tested end to end until the domain verifies at Resend and the apex MX points
-// here. Nothing below has ever seen a real inbound email. Treat every claim in
-// these comments as intent, not evidence, until that test is done.
+// ✅ Proven on 2026-09-10 with real messages, both with and without an attachment:
+// mail reached the address, Resend called this, and it arrived in his Gmail.
+//
+// ⛔ Attachments are either CARRIED or NAMED — never silently dropped. A parent
+// replying with the IEP attached is the obvious thing for her to do, and losing
+// it while the forward looks fine is worse than not forwarding at all.
 //
 // Env: RESEND_INBOUND_SECRET (the webhook's signing secret, whsec_…)
 //      RESEND_API_KEY · MAIL_FROM · FORWARD_TO (his Gmail)
@@ -96,20 +98,75 @@ module.exports = async (req, res) => {
 
     const sender = (Array.isArray(mail.from) ? mail.from[0] : mail.from) || 'unknown sender';
     const subject = mail.subject || '(no subject)';
-    const attachments = Array.isArray(mail.attachments) ? mail.attachments : [];
 
-    // ★★★ ATTACHMENTS ARE NOT CARRIED YET, AND THAT IS SAID OUT LOUD IN THE MAIL.
-    // A parent may well attach the IEP to a reply — it is the obvious thing to
-    // do — and a forwarder that silently drops it would lose the one document
-    // the whole business runs on while looking like it worked. Until attachment
-    // relaying is built and TESTED, every dropped file is named in the body,
-    // with where to go and get it.
-    const dropped = attachments.length
-      ? `\n\n---\n${attachments.length} attachment${attachments.length > 1 ? 's were' : ' was'} ` +
-        `NOT carried through this forward:\n` +
-        attachments.map((a) => `  · ${a.filename || '(unnamed)'} (${a.content_type || 'unknown type'})`).join('\n') +
-        `\n\nOpen it in the Resend dashboard under Emails → Receiving, message ${emailId}.\n` +
-        `If it is an IEP, ask them to send it through the private upload link instead.`
+    // ---- carry the attachments ----
+    //
+    // A parent replying with the IEP attached is the obvious thing for her to
+    // do, so this has to work. But it must never fail SILENTLY: losing the one
+    // document the business runs on, while the forward looks fine, is worse than
+    // not forwarding at all.
+    //
+    // ⛔ Every file is either carried or NAMED. There is no third outcome.
+    const MAX_TOTAL = 20 * 1024 * 1024; // base64 inflates ~33%; keep well under Resend's cap
+    const carried = [];
+    const skipped = [];
+    let budget = MAX_TOTAL;
+
+    let list = [];
+    try {
+      const r = await fetch(
+        `https://api.resend.com/emails/receiving/${encodeURIComponent(emailId)}/attachments`,
+        { headers: { Authorization: `Bearer ${KEY}` } }
+      );
+      if (r.ok) list = (await r.json()).data || [];
+      else if (Array.isArray(mail.attachments)) {
+        // Could not enumerate them — fall back to the metadata on the message so
+        // the names still reach him. Better a list of what he is missing than
+        // silence about it.
+        list = mail.attachments;
+      }
+    } catch {
+      list = Array.isArray(mail.attachments) ? mail.attachments : [];
+    }
+
+    for (const a of list) {
+      const name = a.filename || '(unnamed)';
+      const size = Number(a.size) || 0;
+      if (!a.download_url) { skipped.push(`${name} — no download link from Resend`); continue; }
+      if (size > budget) { skipped.push(`${name} — ${(size / 1048576).toFixed(1)}MB, over what one email can carry`); continue; }
+      try {
+        const bin = await fetch(a.download_url);
+        if (!bin.ok) { skipped.push(`${name} — download failed (${bin.status})`); continue; }
+        const buf = Buffer.from(await bin.arrayBuffer());
+        budget -= buf.length;
+        carried.push({ filename: name, content: buf.toString('base64') });
+      } catch {
+        skipped.push(`${name} — could not be fetched`);
+      }
+    }
+
+    // ⛔⛔ THE THIRD OUTCOME I SAID DID NOT EXIST.
+    // "carried or named" holds only while the ENUMERATION is right. If
+    // /attachments comes back empty for a message that has them, the loop above
+    // has nothing to carry AND nothing to skip — so the forward arrives looking
+    // perfect with the file gone and no notice on it. Silent, and exactly the
+    // failure this whole section exists to prevent.
+    // The message's own metadata is a second, independent count. If the two
+    // disagree, the difference is announced.
+    const declared = Array.isArray(mail.attachments) ? mail.attachments.length : 0;
+    const accountedFor = carried.length + skipped.length;
+    if (declared > accountedFor) {
+      skipped.push(
+        `${declared - accountedFor} more file(s) are on the original message but could not be ` +
+        `listed — open the message in Resend to get them`
+      );
+    }
+
+    const dropped = skipped.length
+      ? `\n\n---\n${skipped.length} attachment${skipped.length > 1 ? 's' : ''} did NOT come through:\n` +
+        skipped.map((s) => `  · ${s}`).join('\n') +
+        `\n\nIt is still in Resend under Emails → Receiving, message ${emailId}.\n` +
+        `If it is an IEP, the private upload link is the right way to receive it anyway.`
       : '';
 
     const header =
@@ -127,6 +184,7 @@ module.exports = async (req, res) => {
         // ★ reply_to is the original sender, so hitting Reply in Gmail answers
         // the parent and not himself.
         reply_to: sender,
+        ...(carried.length ? { attachments: carried } : {}),
         text: header + (mail.text || '(no plain-text body)') + dropped,
         ...(mail.html
           ? { html: `<p style="color:#5A6273;font-size:13px">Forwarded from ${esc(sender)}</p><hr>` +
@@ -144,7 +202,9 @@ module.exports = async (req, res) => {
       return reject(res, 502, `Could not forward: ${detail || sent.status}`);
     }
 
-    return res.status(200).json({ ok: true, forwarded: emailId, attachmentsDropped: attachments.length });
+    return res.status(200).json({
+      ok: true, forwarded: emailId, attachmentsCarried: carried.length, attachmentsSkipped: skipped.length,
+    });
   } catch (err) {
     return reject(res, 500, 'Something went wrong forwarding that message.');
   }

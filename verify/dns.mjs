@@ -215,6 +215,15 @@ async function check() {
   // ★ The check that matters more than the three above: Resend's own verdict.
   // Three records resolving is not the same as Resend having verified them, and
   // it is Resend that decides whether an email actually goes.
+  //
+  // ⛔⛔ READ ONLY. Do NOT call POST /domains/{id}/verify from a polling loop.
+  // Each call RESETS every record to "pending" and re-queues the check — so a
+  // loop that triggers on every pass restarts the work it is waiting for and
+  // never finishes. Observed here: two records had reached "verified", and
+  // 41 polls later all three were back to "pending" because the poller kept
+  // poking them. Trigger once by hand, then watch without touching.
+  // ★★ The general shape: a watcher that acts on the thing it watches is not
+  // observing it, it is driving it.
   if (process.env.RESEND_API_KEY) {
     try {
       const r = await fetch('https://api.resend.com/domains', {

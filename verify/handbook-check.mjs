@@ -1,7 +1,7 @@
-// Checks the resource platform against the rules in docs/RESOURCE.md and
+// Checks the handbook against the rules in docs/RESOURCE.md and
 // docs/SCOPE.md. Runs offline against the files on disk, needs nothing installed:
 //
-//     node verify/check.mjs
+//     node verify/handbook-check.mjs
 //
 // Browser-level checks — contrast, touch targets, print output, whether the
 // loader actually runs — are not here, because they need a real browser and this
@@ -15,26 +15,35 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const FACTS = path.join(ROOT, '..', 'docs', 'facts.json');
+// The merge moved this file up one level. It used to live inside
+// resource-platform/, where '..' was the repo root; now ROOT already is the repo
+// root and '..' pointed at repos/ — the script threw ENOENT and checked nothing.
+const FACTS = path.join(ROOT, 'docs', 'facts.json');
 
 let failures = 0, warnings = 0, checks = 0;
 const fail = (what, detail) => { failures++; console.log(`  FAIL  ${what}\n        ${detail}`); };
 const warn = (what, detail) => { warnings++; console.log(`  warn  ${what}\n        ${detail}`); };
 const pass = (what) => { checks++; console.log(`  ok    ${what}`); };
 
-const html = [];
-(function walk(dir) {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) { if (!['fonts', 'docs', 'verify', 'node_modules', '.vercel'].includes(e.name)) walk(p); }
-    else if (e.name.endsWith('.html')) html.push(p);
-  }
-})(ROOT);
+// Before the merge this walked the whole of resource-platform/, and the whole of
+// resource-platform/ WAS the handbook. Now it shares a repo with the sales site,
+// and a walk from the root hands handbook rules — noindex, the draft banner, the
+// facts loader — to pages that must never obey them: index.html is the thing we
+// are trying to get INDEXED. Same set the publish gate uses, and for the same
+// reason: the handbook is a list of files, not a directory.
+const html = [
+  path.join(ROOT, 'handbook.html'),
+  ...['start', 'source'].flatMap((dir) => {
+    const d = path.join(ROOT, dir);
+    if (!fs.existsSync(d)) return [];
+    return fs.readdirSync(d).filter((n) => n.endsWith('.html')).map((n) => path.join(d, n));
+  }),
+].filter((p) => fs.existsSync(p));
 
 const rel = p => path.relative(ROOT, p).replace(/\\/g, '/');
 const read = p => fs.readFileSync(p, 'utf8');
 
-console.log(`\nresource platform — ${html.length} pages\n`);
+console.log(`\nhandbook — ${html.length} pages\n`);
 
 // ---------------------------------------------------------------- facts.json
 console.log('facts.json');

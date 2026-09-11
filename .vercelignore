@@ -32,3 +32,12 @@ docs/platform-design.html
 # these pages carries a noindex tag. Nothing here goes in front of a family until
 # a human verifies the facts against primary sources. Phase 0 splits these into
 # per-question pages under /start/, /es/start/ and /ht/start/.
+
+# The test suites. They are developer tools that run on a laptop against the
+# files on disk and against prod; nothing on the site loads them, and every one
+# of them was being SERVED at https://kirtonlearning.com/verify/*.mjs — a
+# readable map of the token rules, the admin actions and the DNS setup, handed to
+# anyone who guesses the filename. Same reasoning as supabase-setup.sql above.
+# (The repo is public, so this hides nothing that is secret. It stops the
+# customer domain from volunteering it.)
+verify/

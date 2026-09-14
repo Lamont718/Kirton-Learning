@@ -27,6 +27,13 @@ supabase-setup-2.sql
 docs/RESOURCE.md
 docs/platform-design.html
 
+# The fact verification worksheet. Internal working notes: it names the lines we
+# could not corroborate, including a phone number a parent might dial, and says
+# in as many words that the handbook is not publishable yet. Serving that on the
+# customer domain would hand a stranger the list of our own weak spots. The file
+# is the working document for moving facts.json toward verified.
+docs/FACT-VERIFICATION.md
+
 # The resource platform itself, in draft. Not servable: all 22 entries in
 # facts.json are status "unverified", all 9 translations are "draft", and none of
 # these pages carries a noindex tag. Nothing here goes in front of a family until

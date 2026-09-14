@@ -64,7 +64,8 @@
       ],
       "source": "https://www.schools.nyc.gov/learning/special-education",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "verify_against": "CHECKED 2026-09-14 — cites a primary DOE page, but that page is a section landing page, not the page that states the office list. Re-point `source` at the specific page carrying each claim before verifying."
     }
   },
   "timelines": {
@@ -74,7 +75,7 @@
       "plain_language": "After you sign consent, the district has 60 calendar days to finish the evaluation. Write the consent date on your calendar.",
       "authority": "NY Commissioner's Regulations Part 200",
       "source": "https://specialedstartguide.com/blog/new-york-what-is-an-iep",
-      "verify_against": "Primary source is NYSED Part 200. Confirm before publishing.",
+      "verify_against": "CHECKED 2026-09-14 — CONFIRMED, and the citation is a blog. Primary: 8 NYCRR 200.4(b)(1), \"The initial individual evaluation shall be completed within 60 days of receipt of consent unless extended by mutual agreement of the student's parents and the CSE.\" Plain \"days\", i.e. calendar days, matching federal 34 CFR 300.301(c)(1)(i). Replace the specialedstartguide.com blog with https://www.nysed.gov/special-education/section-2004-procedures-referral-evaluation-iep-development-placement-and-review GAP: there is a SECOND 60 in the same regulation and it is the one a parent cares about — 8 NYCRR 200.4(e)(1), \"the board of education shall arrange for appropriate special programs and services...within 60 SCHOOL days of the receipt of consent to evaluate.\" 60 days to finish testing; 60 SCHOOL days until services start. The handbook currently teaches only the first, so a parent counting calendar days will think services are late when they are not, or think they are on time when they are months overdue.",
       "verified_on": null,
       "status": "unverified",
       "days": 60,
@@ -87,7 +88,8 @@
       "verified_on": null,
       "status": "unverified",
       "opens_month": 12,
-      "machine_twin_of": "value"
+      "machine_twin_of": "value",
+      "verify_against": "CHECKED 2026-09-14 — NOT VERIFIED. Source is secondary (a single school, an advocacy org, a private provider, or a dated parent-training PDF), and the four Turning 5 dates in this file come from four DIFFERENT such sources, so nothing guarantees they describe the same year or the same process. Turning 5 dates move year to year. Verify the whole cluster together against ONE current DOE Turning 5 page or the current year's DOE Turning 5 letter, and record the school year the dates belong to."
     },
     "turning_5_no_letter_deadline": {
       "value": "February 1",
@@ -98,26 +100,29 @@
       "status": "unverified",
       "month": 2,
       "day": 1,
-      "machine_twin_of": "value"
+      "machine_twin_of": "value",
+      "verify_against": "CHECKED 2026-09-14 — NOT VERIFIED. Source is secondary (a single school, an advocacy org, a private provider, or a dated parent-training PDF), and the four Turning 5 dates in this file come from four DIFFERENT such sources, so nothing guarantees they describe the same year or the same process. Turning 5 dates move year to year. Verify the whole cluster together against ONE current DOE Turning 5 page or the current year's DOE Turning 5 letter, and record the school year the dates belong to."
     },
     "turning_5_contact_window": {
       "value": "January through March",
       "what": "Families are typically contacted by the school-age IEP team in this window.",
       "source": "https://tiegerman.org/wp-content/uploads/2025/03/January-2025-Parent-Training-Understanding-the-Turning-5-Process.pdf",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "verify_against": "CHECKED 2026-09-14 — NOT VERIFIED. Source is secondary (a single school, an advocacy org, a private provider, or a dated parent-training PDF), and the four Turning 5 dates in this file come from four DIFFERENT such sources, so nothing guarantees they describe the same year or the same process. Turning 5 dates move year to year. Verify the whole cluster together against ONE current DOE Turning 5 page or the current year's DOE Turning 5 letter, and record the school year the dates belong to."
     },
     "turning_5_conference": {
       "value": "before the child's fifth birthday, commonly January to June",
       "source": "https://www.columbiapsychiatry.org/research/research-centers-interdisciplinary-programs/progress-center/families/transition-cpse-cse-what-parents-need-know",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "verify_against": "CHECKED 2026-09-14 — NOT VERIFIED. Source is secondary (a single school, an advocacy org, a private provider, or a dated parent-training PDF), and the four Turning 5 dates in this file come from four DIFFERENT such sources, so nothing guarantees they describe the same year or the same process. Turning 5 dates move year to year. Verify the whole cluster together against ONE current DOE Turning 5 page or the current year's DOE Turning 5 letter, and record the school year the dates belong to."
     },
     "first_school_age_iep": {
       "value": "must be finalized by the child's fifth birthday",
       "authority": "IDEA",
       "source": "https://brooklynletters.com/turning-5-nyc-cpse-to-cse-transition/",
-      "verify_against": "Secondary source — confirm against NYSED or NYC DOE before publishing.",
+      "verify_against": "CHECKED 2026-09-14 — NOT VERIFIED. Source is secondary (a single school, an advocacy org, a private provider, or a dated parent-training PDF), and the four Turning 5 dates in this file come from four DIFFERENT such sources, so nothing guarantees they describe the same year or the same process. Turning 5 dates move year to year. Verify the whole cluster together against ONE current DOE Turning 5 page or the current year's DOE Turning 5 letter, and record the school year the dates belong to.",
       "verified_on": null,
       "status": "unverified"
     },
@@ -127,13 +132,15 @@
       "verified_on": null,
       "status": "unverified",
       "hours": 72,
-      "machine_twin_of": "value"
+      "machine_twin_of": "value",
+      "verify_against": "CHECKED 2026-09-14 — CONFIRMED VERBATIM against the cited DOE page, read in a real browser (the page is client-rendered; a plain fetch returns the nav shell only, which is why nobody had read it). The page says: \"If English is not your preferred language, make a request for an interpreter in writing at least 72 hours before the meeting.\" FOUND ON THE SAME PAGE, not in the handbook: the same 72-hour written notice also gets you (a) a certified IEP Parent Member — a trained parent of a child with an IEP who attends with you, free — and (b) a school physician for grades K-12. Deaf or hard-of-hearing parents have a separate legal right to a sign language interpreter via the parent coordinator or OSLIS@schools.nyc.gov. The Parent Member is the one most parents have never heard of and it belongs in the handbook."
     },
     "d75_initial_referral": {
       "value": "within 60 days of the date consent to evaluate was given",
       "source": "https://p371k.org/d75placement.html",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "verify_against": "CHECKED 2026-09-14 — SOURCE IS A SINGLE SCHOOL'S OWN WEBSITE (p371k.org), not the DOE and not the regulation. The value \"within 60 days of the date consent to evaluate was given\" restates the general initial-evaluation clock in 8 NYCRR 200.4(b)(1); it is probably right for that reason and NOT because it is a D75-specific rule. Either re-point it at the regulation and say so, or drop it — a D75-flavored 60 days implies a rule that may not exist."
     }
   },
   "eligibility_warnings": {
@@ -193,7 +200,8 @@
       "phone_placement": "212-802-1578",
       "source": "https://www.schools.nyc.gov/learning/special-education/school-settings/district-75",
       "verified_on": null,
-      "status": "unverified"
+      "status": "unverified",
+      "verify_against": "CHECKED 2026-09-14 against the cited DOE page, rendered in a real browser with every accordion expanded. CONFIRMED: `serves` matches the DOE list word for word. `class_ratios` are right — note the DOE prose writes them 12:1+1, 8:1+1, 6:1+1 and 12:1+3:1, while its own kindergarten listings use 12:1:4; both spellings mean the same thing. phone_main 212-802-1500 is corroborated (D75 central office, 400 1st Ave, D75info@schools.nyc.gov). NOT SUPPORTED BY THE CITED URL: student_count (\"more than 23,000\") and sites (\"roughly 69 schools and programs across more than 300 sites\") appear nowhere on that DOE page — both trace to InsideSchools, which is secondary and undated. Either cite InsideSchools honestly or drop the numbers; a student count drifts every year. UNCONFIRMED AND THE RISKIEST ITEM IN THE FILE: phone_placement 212-802-1578 could not be corroborated anywhere. A parent dials a number in a handbook. Confirm it by calling it, or remove it."
     },
     "specialized_autism_programs": {
       "editorial_note": "Describe what each program is. NEVER suggest which one a child should be in — that is an IEP team decision. Ask the team about them by name.",

@@ -40,8 +40,11 @@ ws.onmessage = (m) => {
   if (d.method === 'Runtime.exceptionThrown')
     errors.push(d.params.exceptionDetails.exception?.description
       ?? d.params.exceptionDetails.text ?? 'error')
+  // Chrome's text for a bad subresource is "Failed to load resource: the
+  // server responded with a status of 404 ()" — it names no file. Carry the
+  // entry's own url, or a failure tells you a page is broken and not where.
   if (d.method === 'Log.entryAdded' && d.params.entry.level === 'error')
-    errors.push(d.params.entry.text)
+    errors.push(d.params.entry.text + (d.params.entry.url ? ` — ${d.params.entry.url}` : ''))
   if (d.method === 'Network.loadingFailed')
     failedReqs.push(d.params.errorText)
 }
@@ -78,8 +81,16 @@ const PAGES = ['/', '/demo.html', '/privacy.html', '/terms.html', '/partner.html
 console.log('\n=== no page throws a script error or drops a request ===')
 for (const p of PAGES) {
   await go(SITE + p)
-  const e = errors.filter(x => !/favicon/i.test(x))
-  const f = failedReqs.filter(x => !/ERR_ABORTED/.test(x))
+  // /_vercel/insights/script.js is the analytics beacon. It 404s until Web
+  // Analytics is enabled on the Vercel project, and a 404 on a <script src>
+  // is logged by the browser whatever the page does about it. Excluded here
+  // so ONE gate owns that failure and reports it with the fix:
+  // verify/analytics.mjs --prod. Delete this exception once it is enabled —
+  // after that, a 404 on this path means the analytics have been turned back
+  // off and every page is loading nothing again.
+  const noise = x => /favicon/i.test(x) || /_vercel\/insights/.test(x)
+  const e = errors.filter(x => !noise(x))
+  const f = failedReqs.filter(x => !/ERR_ABORTED/.test(x) && !noise(x))
   e.length ? bad(`${p} threw`, e.slice(0, 2).join(' | ')) : ok(`${p} — no script errors`)
   if (f.length) bad(`${p} had a failed request`, f.slice(0, 2).join(' | '))
 }

@@ -66,6 +66,100 @@ function verifyStripeSignature(raw, header, secret) {
 }
 
 // ---------------------------------------------------------------------------
+// Whose sale is this?
+// ---------------------------------------------------------------------------
+//
+// ⛔ THE BUG THIS EXISTS TO STOP. Every Our Rose brand bills through ONE Stripe
+// account, and seven webhook endpoints are subscribed to
+// `checkout.session.completed` on it. Stripe fans every sale out to all seven,
+// each signed with that endpoint's own secret — so the signature check passes on
+// somebody else's sale. It proves Stripe sent the event. It never proves the
+// sale was ours.
+//
+// On 2026-09-16 the first order the account ever took was a $40 picture book,
+// and this file issued that buyer a live IEP upload link and emailed it to her.
+// ★ ON A SHARED ACCOUNT, `checkout.session.completed` IS NOT YOUR EVENT — IT IS
+// EVERYONE'S. Checking the event TYPE is not checking that the sale is yours.
+//
+// The event payload carries no line items, and this deployment has no
+// STRIPE_SECRET_KEY to go and fetch them, so identity has to come from what is
+// already on the session: the payment link it came through, or metadata set by
+// a checkout we created ourselves.
+const KIRTON_PAYMENT_LINKS = [
+  'plink_1UCLO91pO3j9etUdYeeIyKYr', // Kirton Learning Family
+  'plink_1UCLO81pO3j9etUd9FVhdDCa', // Kirton Learning Blueprint
+];
+
+// Other brands on the same account. Known and expected, so they are ignored in
+// silence — without this list every book sale would page him.
+const OTHER_BRAND_PAYMENT_LINKS = [
+  'plink_1U4TQS1pO3j9etUdeLT70hgT', // Emeka Books — My Crown
+  'plink_1U9vVO1pO3j9etUdqnA3RSeV', // Emeka Books — The House That Smiled
+];
+
+// 'ours' | 'theirs' | 'unknown'
+//
+// ★ Unknown is deliberately NOT treated as ours. Guessing in that direction is
+// exactly what mailed a stranger a private link. It is not treated as a silent
+// no either — see the handler.
+function whoseSale(session) {
+  const raw = session.payment_link;
+  const link = typeof raw === 'string' ? raw : (raw && raw.id) || null;
+
+  if (link && KIRTON_PAYMENT_LINKS.includes(link)) return 'ours';
+  if (link && OTHER_BRAND_PAYMENT_LINKS.includes(link)) return 'theirs';
+
+  // A checkout this site builds itself can just say so. Nothing does yet; this
+  // is here so that adding one later is not another edit to a list of ids.
+  const brand = session.metadata && session.metadata.brand;
+  if (brand) return brand === 'kirton' ? 'ours' : 'theirs';
+
+  return 'unknown';
+}
+
+// Tell Lamont about a paid session this file could not place.
+//
+// Never throws. The alert failing must not become a Stripe retry loop over a
+// sale that was not ours in the first place.
+async function alertUnplaceableSale(session) {
+  const to = process.env.ALERT_TO || process.env.FORWARD_TO;
+  if (!to) return;
+
+  const amount = Number.isFinite(session.amount_total)
+    ? `$${(session.amount_total / 100).toFixed(2)}`
+    : 'an unknown amount';
+  const buyer =
+    (session.customer_details && session.customer_details.email) || 'no email on the session';
+  const raw = session.payment_link;
+  const link = (typeof raw === 'string' ? raw : (raw && raw.id)) || '(no payment link)';
+
+  try {
+    await sendEmail({
+      to,
+      subject: `Payment this site could not place — ${amount}`,
+      text: [
+        'A paid Stripe session arrived that kirtonlearning.com does not recognise,',
+        'so NO IEP link was issued and nobody was emailed.',
+        '',
+        `Amount:       ${amount}`,
+        `Buyer:        ${buyer}`,
+        `Session:      ${session.id}`,
+        `Payment link: ${link}`,
+        '',
+        'If this WAS a Kirton purchase: add that payment link id to',
+        'KIRTON_PAYMENT_LINKS in api/stripe-webhook.js, and issue this family',
+        'their link by hand from /admin.html in the meantime.',
+        '',
+        'If it was another brand on the shared Stripe account, nothing is wrong.',
+        'Add it to OTHER_BRAND_PAYMENT_LINKS and these emails stop.',
+      ].join('\n'),
+    });
+  } catch {
+    // Swallowed on purpose. See above.
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Reading the session
 // ---------------------------------------------------------------------------
 
@@ -130,6 +224,22 @@ module.exports = async (req, res) => {
   // session gets a link.
   const paid = session.payment_status === 'paid' || session.payment_status === 'no_payment_required';
   if (!paid) return res.status(200).json({ ok: true, ignored: 'unpaid session' });
+
+  // ---- and is it even ours? ----
+  const whose = whoseSale(session);
+
+  if (whose === 'theirs') {
+    return res.status(200).json({ ok: true, ignored: 'another brand on this Stripe account' });
+  }
+
+  if (whose === 'unknown') {
+    // Nothing is issued — a link is not worth guessing about. But a paid session
+    // this file cannot place is also exactly what a NEW Kirton payment link would
+    // look like on its first sale, and staying quiet then would strand a family
+    // who paid. So: issue nothing, and tell him.
+    await alertUnplaceableSale(session);
+    return res.status(200).json({ ok: true, ignored: 'unrecognised payment link' });
+  }
 
   const email =
     (session.customer_details && session.customer_details.email) || session.customer_email || null;

@@ -109,10 +109,19 @@ function whoseSale(session) {
   if (link && KIRTON_PAYMENT_LINKS.includes(link)) return 'ours';
   if (link && OTHER_BRAND_PAYMENT_LINKS.includes(link)) return 'theirs';
 
-  // A checkout this site builds itself can just say so. Nothing does yet; this
-  // is here so that adding one later is not another edit to a list of ids.
+  // A checkout this site builds itself can just say so. No session sets this
+  // today — ⚠ Stripe does NOT copy a payment link's metadata onto the session it
+  // creates, so the `brand: kirton-learning` tag already sitting on both Kirton
+  // links arrives here as {}. This path is for a session we build ourselves.
+  //
+  // ★ Both spellings are accepted on purpose. The tag on the live payment links
+  // reads 'kirton-learning'; a future server-built checkout will almost
+  // certainly be written to match it. Recognising only one spelling would send
+  // a real Kirton sale down the 'theirs' branch and issue nothing — stranding a
+  // family who paid, which is the exact failure this file was written to stop.
+  const KIRTON_BRAND_TAGS = ['kirton', 'kirton-learning'];
   const brand = session.metadata && session.metadata.brand;
-  if (brand) return brand === 'kirton' ? 'ours' : 'theirs';
+  if (brand) return KIRTON_BRAND_TAGS.includes(brand) ? 'ours' : 'theirs';
 
   return 'unknown';
 }

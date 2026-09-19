@@ -243,6 +243,11 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
           'It has the columns the links need.',
           'Open the Supabase SQL editor and run <code>supabase-setup-2.sql</code>. Nothing on ' +
           'this page works until you do.'],
+        [s.migrated3, 'The six questions have somewhere to land',
+          'The intake table is there and /intake is open.',
+          'Open the Supabase SQL editor and run <code>supabase-setup-3.sql</code>. Until you ' +
+          'do, the form tells a parent it is not open yet and stores nothing — which is ' +
+          'the right failure, but it is still a closed form.'],
         [s.stripeWebhookSecret, 'Stripe tells the site about a payment',
           'The signing secret is set. A payment issues a link on its own.',
           'In the Stripe dashboard: Developers &rarr; Webhooks &rarr; add endpoint ' +
@@ -317,7 +322,7 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
 
     var html = '<div class="tblwrap"><table><thead><tr>' +
       '<th>Parent</th><th>Child</th><th>For</th><th>Status</th><th>Issued</th>' +
-      '<th>Sent</th><th>Used</th><th>Link</th><th></th>' +
+      '<th>Sent</th><th>Used</th><th>Intake</th><th>Link</th><th></th>' +
       '</tr></thead><tbody>';
 
     rows.forEach(function (row) {
@@ -333,6 +338,11 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
         '<td class="mono">' + when(row.sent_at) +
           (Number(row.send_count) > 1 ? ' <span class="muted">×' + row.send_count + '</span>' : '') + '</td>' +
         '<td class="mono">' + when(row.used_at) + '</td>' +
+        // The six questions. A dash for a record link, because there is
+        // nothing to ask a family when the record is coming back.
+        '<td class="mono">' + (row.kind === 'record'
+          ? '<span class="muted">&mdash;</span>'
+          : (row.intake_at ? when(row.intake_at) : '<span class="muted">not yet</span>')) + '</td>' +
         '<td class="linkcell">' + (st === 'used' || st === 'revoked' || st === 'expired'
           ? '<span class="muted">—</span>'
           : '<button data-copy="' + esc(row.link) + '" title="Copy this link">' +

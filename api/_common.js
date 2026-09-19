@@ -150,6 +150,14 @@ function uploadLink(token, kind) {
   return kind === 'record' ? `${base}&k=record` : base;
 }
 
+// The same token, a different page. The upload burns `used_at` and the intake
+// is guarded by its own primary key, so one link answers twice — see the long
+// note in api/intake.js. Only ever offered for an IEP token: there is nothing
+// to ask a family when the record is coming back.
+function intakeLink(token) {
+  return `${siteOrigin()}/intake.html?t=${encodeURIComponent(token)}`;
+}
+
 module.exports = {
   reject,
   supabase,
@@ -159,4 +167,5 @@ module.exports = {
   sendEmail,
   siteOrigin,
   uploadLink,
+  intakeLink,
 };

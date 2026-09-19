@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Six questions — Kirton Learning for Families</title>
+<meta name="theme-color" content="#141D2E">
+<!-- Never index a page reached by a private one-time link. -->
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/bricolage-grotesque-800-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-serif-4-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --ink:#141D2E;--ink-2:#25324A;--ink-3:#3F4C66;
+  --paper:#F4F2EC;--paper-2:#FBFAF7;
+  --spark:#E8A33D;--spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);--line-dark:rgba(244,242,236,.16);
+  --ok:#1E6F43;--bad:#9B2226;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:660px;margin:0 auto;padding:0 22px}
+h1,h2{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(1.8rem,5vw,2.6rem)}
+h2{font-size:1.25rem;margin:0 0 .6em}
+p{margin:0 0 1.05em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spark);margin:0 0 1.3rem}
+
+.head{background:var(--ink);color:var(--paper);padding:clamp(28px,5vw,44px) 0 clamp(40px,6vw,60px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1.02rem;margin-bottom:clamp(34px,6vw,54px);text-decoration:none}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--spark);flex:none}
+.head p{color:rgba(244,242,236,.85);margin:1.2rem 0 0}
+
+main{padding:clamp(38px,6vw,60px) 0 clamp(56px,8vw,84px)}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;
+  padding:26px 24px;margin:0 0 20px}
+
+/* One question per card, so a phone shows one thing at a time. */
+.q{display:block;font-family:var(--display);font-weight:700;font-size:1.08rem;
+  line-height:1.25;margin:0 0 6px}
+.hint{font-size:.94rem;color:var(--ink-3);margin:0 0 14px}
+.opt{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);margin-left:8px;vertical-align:.12em}
+
+input[type=text],textarea{
+  width:100%;font-family:var(--body);font-size:1.0625rem;line-height:1.5;color:var(--ink);
+  background:#fff;border:1px solid rgba(20,29,46,.28);border-radius:5px;padding:13px 14px;
+}
+input[type=text]:focus,textarea:focus{border-color:var(--spark-deep);outline:none;
+  box-shadow:0 0 0 3px rgba(232,163,61,.28)}
+textarea{min-height:104px;resize:vertical}
+.short{max-width:320px}
+
+.scope{border-left:3px solid var(--spark);padding-left:16px;margin:0 0 22px;
+  font-size:.95rem;color:var(--ink-2)}
+
+.btn{
+  display:inline-block;width:100%;font-family:var(--display);font-weight:700;font-size:1.02rem;
+  padding:15px 30px;border-radius:4px;border:2px solid transparent;text-align:center;
+  background:var(--ink);color:var(--paper);cursor:pointer;transition:.16s;
+}
+.btn:hover:not(:disabled){background:var(--ink-2)}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+.status{font-family:var(--mono);font-size:.78rem;letter-spacing:.03em;color:var(--ink-3);
+  margin-top:12px;text-align:center}
+
+.note{border-left:3px solid var(--spark);padding-left:16px;margin:22px 0 0;
+  font-size:.95rem;color:var(--ink-2)}
+.msg{border-radius:6px;padding:16px 18px;margin:0 0 22px;font-size:.97rem}
+.msg--bad{background:#FDF1F1;border:1px solid rgba(155,34,38,.35);color:#6E1013}
+.msg--ok{background:#F1F8F3;border:1px solid rgba(30,111,67,.35);color:#14512F}
+
+.steps{list-style:none;margin:18px 0 0;padding:0}
+.steps li{padding-left:26px;position:relative;margin-bottom:.7em;color:var(--ink-2)}
+.steps li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:2px;background:var(--spark-deep)}
+
+.foot{background:var(--ink);color:var(--paper);padding:40px 0 34px}
+.legal{font-family:var(--mono);font-size:.72rem;line-height:1.75;color:rgba(244,242,236,.72)}
+.legal a{color:var(--paper)}
+.hide{display:none!important}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brandbar" href="/">
+      <span class="dot" aria-hidden="true"></span><span>Kirton Learning</span>
+    </a>
+    <p class="eyebrow">Six questions</p>
+    <h1>Tell me about your kid.</h1>
+    <p>The IEP tells me what the district wrote down. It does not tell me who they are. Six questions, about five minutes, and the answers shape the first month of work more than the document does.</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- no token in the URL -->
+    <section id="v-notoken" class="hide">
+      <div class="msg msg--bad">This page needs the private link I emailed you after checkout. Open it from that email, or <a href="mailto:lamont@kirtonlearning.com">email me</a> and I&rsquo;ll send a fresh one.</div>
+    </section>
+
+    <!-- link dead, or the form is not open yet -->
+    <section id="v-closed" class="hide">
+      <div class="msg msg--bad" id="closed-msg" role="alert"></div>
+      <p>Reply to the email I sent you, or write to <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a>, and I&rsquo;ll sort it out. It costs you nothing and it is normal.</p>
+    </section>
+
+    <!-- checking -->
+    <section id="v-wait">
+      <p class="status">Opening your form&hellip;</p>
+    </section>
+
+    <!-- the form -->
+    <form id="v-form" class="hide" novalidate>
+      <div id="err" class="msg msg--bad hide" role="alert"></div>
+
+      <div class="card">
+        <label class="q" for="f-name">What is your child&rsquo;s first name?</label>
+        <p class="hint">First name only. I don&rsquo;t need a surname and I&rsquo;d rather not hold one.</p>
+        <input type="text" id="f-name" class="short" maxlength="40" autocomplete="off" autocapitalize="words" required>
+      </div>
+
+      <div class="card">
+        <label class="q" for="f-grade">What grade are they in?</label>
+        <p class="hint">Write it however the school writes it &mdash; 3rd, K, 12:1:1, ungraded. All of those are fine.</p>
+        <input type="text" id="f-grade" class="short" maxlength="24" autocomplete="off" required>
+      </div>
+
+      <p class="scope">The next two are about <strong>reading, writing, and math</strong> &mdash; that is the whole of what I work on. For speech, OT, counseling, or behavior, I&rsquo;m not the person, and I&rsquo;ll tell you who to call. Say whatever you want to say here; I just don&rsquo;t want you spending your five minutes on the parts I can&rsquo;t help with.</p>
+
+      <div class="card">
+        <label class="q" for="f-well">What&rsquo;s going well?<span class="opt">Optional</span></label>
+        <p class="hint">In reading, writing, or math. Anything they can do now that they couldn&rsquo;t a year ago counts, however small it sounds written down.</p>
+        <textarea id="f-well" maxlength="1200"></textarea>
+      </div>
+
+      <div class="card">
+        <label class="q" for="f-hard">What&rsquo;s hard?<span class="opt">Optional</span></label>
+        <p class="hint">Same three. The specific thing, if you have it &mdash; &ldquo;reads it fine and can&rsquo;t tell me what it said&rdquo; tells me more than &ldquo;struggles with reading.&rdquo;</p>
+        <textarea id="f-hard" maxlength="1200"></textarea>
+      </div>
+
+      <div class="card">
+        <label class="q" for="f-into">What are they into?<span class="opt">Optional</span></label>
+        <p class="hint">This is the one I build from. Trains, a game, a show they quote at you, a dog, a person. If they&rsquo;ve talked about the same thing for two years, that is the answer &mdash; put it here.</p>
+        <textarea id="f-into" maxlength="600"></textarea>
+      </div>
+
+      <div class="card">
+        <label class="q" for="f-contact">Best way to reach you?<span class="opt">Optional</span></label>
+        <p class="hint">Phone, email, text &mdash; and the hours that actually work. I&rsquo;d rather call at a good time than three times at a bad one.</p>
+        <input type="text" id="f-contact" maxlength="120" autocomplete="off">
+      </div>
+
+      <button class="btn" id="send" type="submit">Send my answers</button>
+      <p class="status" id="status">&nbsp;</p>
+
+      <p class="note">This goes into the same encrypted place as the IEP, it is used only to build your child&rsquo;s plan, and it is deleted with everything else whenever you ask. Nothing you type here is sent to an analytics service, an ad network, or anyone else.</p>
+    </form>
+
+    <!-- done -->
+    <section id="v-done" class="hide">
+      <div class="msg msg--ok"><strong>Got it.</strong> <span id="done-msg">Your answers are in.</span></div>
+      <div class="card">
+        <h2>What I do with this</h2>
+        <ul class="steps">
+          <li>I read it next to the IEP. Where the document and the answers disagree, that gap is usually the useful part.</li>
+          <li>The first build gets designed around what you put in the third box, not around the diagnosis.</li>
+          <li>If something you wrote needs a conversation rather than a plan, I&rsquo;ll raise it on our call.</li>
+        </ul>
+        <p style="margin:20px 0 0;font-size:.97rem;color:var(--ink-3)">Nothing else is needed from you right now. You can close this page. If you left something out or want to change an answer, just reply to my email &mdash; that reaches me directly.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="legal">
+      Kirton Learning is a program of Our Rose LLC, Brooklyn, NY. Supplemental academic instruction only &mdash; reading, writing, and mathematics. Not advocacy, not legal advice, not therapy, not diagnosis, and not a replacement for the services your child&rsquo;s IEP requires the district to provide.
+      <br><br>
+      <a href="/privacy.html">Privacy policy</a> &middot; <a href="/terms.html">Terms of service</a> &middot; <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var token = new URLSearchParams(location.search).get('t') || '';
+  var $ = function (id) { return document.getElementById(id); };
+  var show = function (id) { $(id).classList.remove('hide'); };
+  var hide = function (id) { $(id).classList.add('hide'); };
+
+  if (!/^[0-9a-f-]{36}$/i.test(token)) {
+    hide('v-wait');
+    show('v-notoken');
+    return;
+  }
+
+  // Nothing typed here is written to localStorage. CLAUDE.md keeps IEP content
+  // out of browser storage and these answers are the same kind of thing — a
+  // child's name and what she finds hard, on what may be a shared phone. The
+  // form is short enough not to need a draft.
+
+  function post(payload) {
+    return fetch('/api/intake', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.json()
+        .catch(function () { return {}; })
+        .then(function (j) { return { ok: r.ok, j: j }; });
+    });
+  }
+
+  function closed(msg) {
+    hide('v-wait');
+    $('closed-msg').textContent = msg;
+    show('v-closed');
+  }
+
+  // ---- is this link good, and has she already done it? ----
+  post({ action: 'check', token: token })
+    .then(function (res) {
+      hide('v-wait');
+      if (!res.ok || !res.j.ok) {
+        return closed(res.j.message || 'Something went wrong on my end. Try again shortly.');
+      }
+      if (res.j.state === 'done') {
+        $('done-msg').textContent = 'You have already sent these, and I have them.';
+        show('v-done');
+        return;
+      }
+      if (res.j.childLabel) $('f-name').value = res.j.childLabel;
+      show('v-form');
+    })
+    .catch(function () {
+      closed('I could not open the form just now. Check your connection and try again.');
+    });
+
+  // ---- submit ----
+  $('v-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    hide('err');
+
+    var payload = {
+      action: 'submit',
+      token: token,
+      childFirstName: $('f-name').value,
+      grade: $('f-grade').value,
+      goingWell: $('f-well').value,
+      whatsHard: $('f-hard').value,
+      interests: $('f-into').value,
+      bestContact: $('f-contact').value
+    };
+
+    // The server checks both of these again. This is only so she finds out
+    // before the round trip, with the cursor already in the right box.
+    if (!payload.childFirstName.trim()) {
+      $('err').textContent = 'I need your child’s first name to start.';
+      show('err');
+      $('f-name').focus();
+      return;
+    }
+    if (!payload.grade.trim()) {
+      $('err').textContent = 'Tell me what grade they are in.';
+      show('err');
+      $('f-grade').focus();
+      return;
+    }
+
+    $('send').disabled = true;
+    $('status').textContent = 'Sending…';
+
+    post(payload)
+      .then(function (res) {
+        if (!res.ok || !res.j.ok) {
+          throw new Error(res.j.message || 'That did not save. Try once more.');
+        }
+        if (res.j.already) $('done-msg').textContent = 'You had already sent these, and I have them.';
+        hide('v-form');
+        show('v-done');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      })
+      .catch(function (err) {
+        $('send').disabled = false;
+        $('status').innerHTML = '&nbsp;';
+        $('err').textContent = err.message;
+        show('err');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+  });
+})();
+</script>
+</body>
+</html>

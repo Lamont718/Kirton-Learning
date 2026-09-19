@@ -152,7 +152,16 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
           <li><strong>Within 5 business days</strong> your Blueprint lands in your inbox, along with a link to book our 30-minute walkthrough call.</li>
           <li>If I need to ask you something before then, I'll email you directly.</li>
         </ul>
-        <p style="margin:20px 0 0;font-size:.97rem;color:var(--ink-3)">Nothing else is needed from you right now. You can close this page.</p>
+        <p style="margin:20px 0 0;font-size:.97rem;color:var(--ink-3)" id="done-close">Nothing else is needed from you right now. You can close this page.</p>
+      </div>
+
+      <!-- The six questions. Shown only on the IEP path, and only here,
+           because this is the moment she is already at the finish line. -->
+      <div class="card" id="done-intake" style="margin-top:20px">
+        <h2>One more thing, and it is short</h2>
+        <p>Six questions about your child. About five minutes. The IEP tells me what the district wrote down &mdash; these tell me who your kid is, and the first month gets built from the one about what they&rsquo;re into.</p>
+        <a class="btn" id="intake-link" href="/intake.html">Answer the six questions</a>
+        <p style="margin:16px 0 0;font-size:.94rem;color:var(--ink-3)">It is also in the email I sent you, so you can do it later on the couch instead of now.</p>
       </div>
     </section>
 
@@ -189,7 +198,17 @@ input[type=file]{position:absolute;width:1px;height:1px;opacity:0;pointer-events
   // ★ `k` changes WORDING ONLY. Where the file lands is decided server-side from
   // the token's own row, so a parent who edits this parameter changes what she
   // reads and nothing else. It is not a permission and it is not a switch.
+  // The six questions ride on the same token: the upload burns `used_at`, the
+  // intake is guarded by its own primary key, so the link still opens after the
+  // IEP has landed. See the long note in api/intake.js.
+  if (new URLSearchParams(location.search).get('k') !== 'record') {
+    $('intake-link').href = '/intake.html?t=' + encodeURIComponent(token);
+    $('done-close').textContent = 'Other than that, nothing else is needed from you right now.';
+  }
+
   if (new URLSearchParams(location.search).get('k') === 'record') {
+    // Nothing to ask a family when the record is coming back the other way.
+    $('done-intake').classList.add('hide');
     document.title = 'Send the record — Kirton Learning for Families';
     $('h-title').textContent = 'Send me the record.';
     $('file-hint').textContent = 'The record from the app, saved as a PDF. Up to 25MB.';

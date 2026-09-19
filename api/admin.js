@@ -12,16 +12,22 @@
 // access, this becomes real auth — do not hand out the key.
 
 const {
-  reject, supabase, parseJson, secretEquals, sendEmail, uploadLink, siteOrigin,
+  reject, supabase, parseJson, secretEquals, sendEmail, uploadLink, intakeLink, siteOrigin,
 } = require('./_common');
 const { iepLinkEmail, recordLinkEmail } = require('./_email');
 
 // Every column the admin page shows. `token` is in here on purpose: it lets him
 // copy a working link and hand it over another way when email is down — which,
 // while kirtonlearning.com has no MX record, is every time.
-const COLUMNS =
+const COLUMNS_BASE =
   'token,parent_email,child_label,kind,plan,issued_by,created_at,expires_at,' +
   'used_at,object_path,sent_at,send_count,revoked_at,stripe_session_id';
+
+// `intake_at` arrives with supabase-setup-3.sql. PostgREST refuses the WHOLE
+// select when one column in it does not exist, so asking for it unconditionally
+// would take the entire back office down on a deploy that only added a form.
+// Part 2 taught this exact lesson in upload-url.js; same shape, same fix.
+const COLUMNS = `${COLUMNS_BASE},intake_at`;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const UUID_RE = /^[0-9a-f-]{36}$/i;
@@ -39,14 +45,21 @@ function statusOf(row) {
 }
 
 function decorate(row) {
-  return { ...row, status: statusOf(row), link: uploadLink(row.token, row.kind) };
+  return {
+    ...row,
+    status: statusOf(row),
+    link: uploadLink(row.token, row.kind),
+    // Only an IEP link ever carries one. There is nothing to ask a family when
+    // the record is coming back the other way.
+    intakeLink: row.kind === 'record' ? null : intakeLink(row.token),
+  };
 }
 
 async function mailFor(row, name, why) {
   const link = uploadLink(row.token, row.kind);
   return row.kind === 'record'
     ? recordLinkEmail({ link, name, why })
-    : iepLinkEmail({ link, name });
+    : iepLinkEmail({ link, name, intake: intakeLink(row.token) });
 }
 
 module.exports = async (req, res) => {
@@ -71,11 +84,20 @@ module.exports = async (req, res) => {
   if (!body) return reject(res, 400, 'Body is not JSON.');
   const action = String(body.action || '');
 
+  // Ask for the full column list; if the schema is still pre-part-3, ask again
+  // for the columns that definitely exist. The fallback is a bridge, not a
+  // mode: `status` reports which migration is missing, so the state announces
+  // itself on the page he opens to do anything at all.
+  const selectTokens = async (query) => {
+    let r = await rest(`/rest/v1/upload_tokens?${query}&select=${COLUMNS}`, { method: 'GET' });
+    if (!r.ok) {
+      r = await rest(`/rest/v1/upload_tokens?${query}&select=${COLUMNS_BASE}`, { method: 'GET' });
+    }
+    return r;
+  };
+
   const oneRow = async (token) => {
-    const r = await rest(
-      `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}&select=${COLUMNS}`,
-      { method: 'GET' }
-    );
+    const r = await selectTokens(`token=eq.${encodeURIComponent(token)}`);
     if (!r.ok) return { error: `Could not read that token (${r.status}).` };
     const rows = await r.json();
     const row = Array.isArray(rows) ? rows[0] : null;
@@ -93,6 +115,12 @@ module.exports = async (req, res) => {
     // the From line printed on every email a parent receives.
     if (action === 'status') {
       const probe = await rest('/rest/v1/upload_tokens?select=kind,revoked_at&limit=1', { method: 'GET' });
+      // Part 3 is the six-question intake. Probed separately so "the list is
+      // missing a column" and "the form has nowhere to write" are two answers,
+      // not one. `intakes` itself is probed too: the column can exist while the
+      // table does not, and it is the table the form actually needs.
+      const probe3 = await rest('/rest/v1/upload_tokens?select=intake_at&limit=1', { method: 'GET' });
+      const probeIntakes = await rest('/rest/v1/intakes?select=token&limit=1', { method: 'GET' });
       let mailReady = false;
       if (process.env.RESEND_API_KEY && process.env.MAIL_FROM) {
         // Ask the provider whether the domain in MAIL_FROM can actually send.
@@ -126,6 +154,8 @@ module.exports = async (req, res) => {
         ok: true,
         supabase: true, // we would not have got here otherwise
         migrated: probe.ok,
+        // Both halves of part 3, and the file to run if either is false.
+        migrated3: probe3.ok && probeIntakes.ok,
         apexMx,
         stripeWebhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET,
         resendKey: !!process.env.RESEND_API_KEY,
@@ -138,10 +168,7 @@ module.exports = async (req, res) => {
     // -----------------------------------------------------------------------
     if (action === 'list') {
       const limit = Math.min(Math.max(Number(body.limit) || 100, 1), 500);
-      const r = await rest(
-        `/rest/v1/upload_tokens?select=${COLUMNS}&order=created_at.desc&limit=${limit}`,
-        { method: 'GET' }
-      );
+      const r = await selectTokens(`order=created_at.desc&limit=${limit}`);
       if (!r.ok) {
         // The most likely cause by a distance: supabase-setup-2.sql has not been
         // run, so half these columns do not exist yet. Say that, rather than

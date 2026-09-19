@@ -47,9 +47,26 @@ const PHISHING_LINE =
 // 1. After payment — the link for the IEP
 // ---------------------------------------------------------------------------
 
-function iepLinkEmail({ link, name }) {
+// `intake` is the six-question form. Optional on purpose: a caller that does
+// not pass it sends exactly the email this template sent before the form
+// existed, rather than printing the word "undefined" at a paying family.
+function iepLinkEmail({ link, name, intake }) {
   const hi = name ? `Hi ${name},` : 'Hi,';
   const origin = siteOrigin();
+
+  const intakeText = intake
+    ? [
+        '',
+        'One more thing, and it is short: six questions about your child.',
+        '',
+        intake,
+        '',
+        'About five minutes. The IEP tells me what the district wrote down; those six answers',
+        'tell me who your kid is, and the first month gets built from the one about what they',
+        'are into. You can do it before or after you send the IEP — the form stays open either',
+        'way, and it does not matter which order they arrive in.',
+      ].join('\n')
+    : null;
 
   const text = [
     hi,
@@ -79,6 +96,7 @@ function iepLinkEmail({ link, name }) {
     '  2. Your Blueprint arrives in your inbox, with a link to book a 30-minute call.',
     '  3. On the call I walk you through what I found. Bring questions. Bring the parts of',
     '     the IEP nobody has ever explained to you.',
+    intakeText,
     '',
     `Everything about what happens next is on one page: ${origin}/welcome.html`,
     '',
@@ -87,7 +105,11 @@ function iepLinkEmail({ link, name }) {
     '',
     'Lamont Kirton',
     'Kirton Learning',
-  ].join('\n');
+  ]
+    // null is "this block is not in this send", which is different from a
+    // blank line. Filtering only null keeps every deliberate blank.
+    .filter((line) => line !== null)
+    .join('\n');
 
   const html = frame(`
     <p style="margin:0 0 16px">${esc(hi)}</p>
@@ -121,6 +143,19 @@ function iepLinkEmail({ link, name }) {
       <li>On the call I walk you through what I found. Bring questions. Bring the parts of the
         IEP nobody has ever explained to you.</li>
     </ol>
+    ${intake ? `
+    <p style="margin:0 0 8px"><b>One more thing, and it is short</b></p>
+    <p style="margin:0 0 16px">Six questions about your child &mdash; about five minutes:</p>
+    <p style="margin:0 0 20px">
+      <a href="${esc(intake)}" style="display:inline-block;background:#fff;color:#141D2E;
+        text-decoration:none;padding:12px 20px;border:2px solid #141D2E;
+        font-family:Helvetica,Arial,sans-serif;font-size:15px">Answer the six questions</a>
+    </p>
+    <p style="margin:0 0 16px">The IEP tells me what the district wrote down. Those six answers
+      tell me who your kid is, and the first month gets built from the one about what they are
+      into. Before or after you send the IEP &mdash; the form stays open either way, and it does
+      not matter which order they arrive in.</p>
+    ` : ''}
     <p style="margin:0 0 16px">Everything about what happens next is on one page:
       <a href="${esc(origin)}/welcome.html" style="color:#94590D">${esc(origin)}/welcome.html</a></p>
     <p style="margin:0 0 16px">If you change your mind within fourteen days of getting your

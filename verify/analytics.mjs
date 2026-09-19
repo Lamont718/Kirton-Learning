@@ -32,10 +32,10 @@ const pass = (what, detail) => { checks++; console.log(`  ok    ${what}${detail 
 const rel = p => path.relative(ROOT, p).replace(/\\/g, '/');
 const read = p => fs.readFileSync(p, 'utf8');
 
-// The three that must never carry a beacon. /upload has a one-time token in
-// its query string, /admin is the back office, and the design doc is not
-// served at all.
-const NEVER = ['upload.html', 'admin.html', 'docs/platform-design.html'];
+// The four that must never carry a beacon. /upload has a one-time token in
+// its query string, /intake is the six questions about a child, /admin is the
+// back office, and the design doc is not served at all.
+const NEVER = ['upload.html', 'intake.html', 'admin.html', 'docs/platform-design.html'];
 const TAG = '/analytics.js';
 
 function walk(dir, out = []) {

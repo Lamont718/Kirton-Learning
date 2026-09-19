@@ -69,10 +69,65 @@ for (const [p, html] of body) {
 }
 
 console.log('\n=== canonicals point at this domain ===')
-for (const [p, html] of body) {
+// A canonical only means something on a page a search engine is allowed to
+// index. This used to warn on every page without one, which was nine warnings
+// about the nine pages that MUST NOT have one — the handbook and its question
+// pages, the two handouts, the token page, the post-payment page. Nine warnings
+// nobody can act on are how a suite teaches people to skim its output.
+//
+// ★ So the rule is the pair, not the tag: an indexable page needs a canonical,
+// and on a noindex page the only safe canonical is one naming the page itself.
+// It also arms the publish path — the day the handbook's noindex comes off,
+// which is a documented, planned edit once the facts are verified, this turns
+// from silent to demanding a canonical on all 22 pages, with nobody having to
+// remember to ask for it.
+//
+// ★★ The first version of this failed anything noindex that carried a
+// canonical, and it immediately called /referrals wrong. /referrals is not
+// wrong: it is deliberately empty, noindex until the first verified provider
+// lands, and staged with the canonical it will need that day. The hazard is
+// narrower than "both tags present" — a noindex page canonicalizing to a
+// DIFFERENT url hands the noindex to that other page, which is how a live page
+// gets deindexed by a draft. Pointing at itself risks nothing.
+//
+// ★★★ The decision is a FUNCTION, and it has fixtures, because this whole suite
+// reads the deployment. Editing a page on disk to see the rule bite proves
+// nothing here — the run that follows fetches prod and reports on prod, looking
+// exactly as if the edit had been judged. That mistake has been made in this
+// repo before. A verdict computed from a string can be tested from a string.
+function canonicalVerdict (pagePath, html, site = SITE) {
   const m = html.match(/<link rel="canonical" href="([^"]+)"/)
-  if (!m) { note(`${p} has no canonical`); continue }
-  m[1].startsWith(SITE) ? ok(`${p} canonical → ${m[1]}`) : bad(`${p} canonical → ${m[1]}`)
+  const noindex = /<meta[^>]+name="robots"[^>]+content="[^"]*noindex/i.test(html)
+  const norm = u => u.replace(/\.html$/, '').replace(/\/+$/, '')
+  const self = !!m && norm(m[1]) === norm(`${site}${pagePath === '/' ? '' : pagePath}`)
+  if (noindex) return { code: !m ? 'noindex-bare' : self ? 'noindex-staged' : 'noindex-elsewhere', href: m && m[1] }
+  if (!m) return { code: 'indexable-bare' }
+  return { code: m[1].startsWith(site) ? 'ours' : 'foreign', href: m[1] }
+}
+
+// The five cases, stated as fixtures. If a later edit collapses the noindex
+// branches back together, /referrals goes red for no reason and someone deletes
+// the rule instead of reading it — these say which case is which.
+const FIX = 'https://example.com'
+const CASES = [
+  ['/x', `<meta name="robots" content="noindex"><link rel="canonical" href="${FIX}/x">`, 'noindex-staged'],
+  ['/x', '<meta name="robots" content="noindex, nofollow">', 'noindex-bare'],
+  ['/x', `<meta name="robots" content="noindex"><link rel="canonical" href="${FIX}/other">`, 'noindex-elsewhere'],
+  ['/x', `<link rel="canonical" href="${FIX}/x">`, 'ours'],
+  ['/x', '<p>no tags at all</p>', 'indexable-bare'],
+]
+const wrong = CASES.filter(([p, html, want]) => canonicalVerdict(p, html, FIX).code !== want)
+wrong.length
+  ? bad(`the canonical rule's own fixtures`, wrong.map(([, , w]) => `expected ${w}, got ${canonicalVerdict('/x', CASES.find(c => c[2] === w)[1], FIX).code}`).join('; '))
+  : ok(`the canonical rule decides all ${CASES.length} cases correctly — tested from strings, not from a deployment`)
+
+for (const [p, html] of body) {
+  const v = canonicalVerdict(p, html)
+  if (v.code === 'noindex-bare') { ok(`${p} is noindex, so no canonical — correct`); continue }
+  if (v.code === 'noindex-staged') { ok(`${p} is noindex and canonical → itself, staged for the day it publishes`); continue }
+  if (v.code === 'noindex-elsewhere') { bad(`${p} is noindex and canonical → ${v.href}`, 'a noindex page pointing at another url hands that page the noindex'); continue }
+  if (v.code === 'indexable-bare') { bad(`${p} is indexable and has no canonical`, 'an indexable page names its own url or it competes with itself'); continue }
+  v.code === 'ours' ? ok(`${p} canonical → ${v.href}`) : bad(`${p} canonical → ${v.href}`, 'points off this domain')
 }
 
 console.log('\n=== no page still names the old brand or domain ===')

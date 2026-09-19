@@ -20,12 +20,29 @@ const require = createRequire(import.meta.url);
 
 const SECRET = 'whsec_test_' + crypto.randomBytes(16).toString('hex');
 process.env.STRIPE_WEBHOOK_SECRET = SECRET;
-// Never dialled in any case below — but the handler fails closed on a missing
+// Never dialed in any case below — but the handler fails closed on a missing
 // Supabase config before it reads the body, so they have to be present.
 process.env.SUPABASE_URL = 'https://example.invalid';
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'not-a-real-key';
 
 const handler = require('../api/stripe-webhook.js');
+
+// One of the two live Kirton payment links, so a fixture reads as OUR sale and
+// reaches the checks that come after the brand gate. Kept in step with
+// KIRTON_PAYMENT_LINKS in the handler.
+const KIRTON_LINK = 'plink_1UCLO81pO3j9etUd9FVhdDCa'; // Kirton Learning Blueprint
+
+// If that id ever stops being one of ours, every fixture below quietly falls
+// through the brand gate and starts testing nothing — which is exactly what
+// happened to the no-email case for two days.
+if (!require('node:fs').readFileSync(new URL('../api/stripe-webhook.js', import.meta.url), 'utf8')
+  .includes(KIRTON_LINK)) {
+  console.log(`
+  FAIL  the fixture's payment link is still one of ours
+        ${KIRTON_LINK} is not in KIRTON_PAYMENT_LINKS
+`);
+  process.exit(1);
+}
 
 let pass = 0, fail = 0;
 const ok = (n) => { pass++; console.log('  ok    ' + n); };
@@ -147,14 +164,51 @@ console.log('\nStripe webhook — signature\n');
 // ---------------------------------------------------------------------------
 // A real payment with nowhere to send the link must be LOUD. A 200 here would
 // file the problem away in silence and the family would wait forever.
+//
+// ⛔ This case was RED from 2026-09-16 to 2026-09-18 and the product was fine.
+// The fix that day ("only issue a link for a sale that was actually ours")
+// added a payment-link check AHEAD of this one, and the fixture below carried
+// no payment_link — so it stopped being a Kirton sale with no email and became
+// an unrecognized sale, which correctly answers 200. The assertion still read
+// like it was about the email. ★★ A fixture that predates a new gate does not
+// fail at the gate; it quietly starts testing a different thing.
 {
   const body = JSON.stringify({
     id: 'evt_y', type: 'checkout.session.completed',
-    data: { object: { id: 'cs_noemail', payment_status: 'paid', customer_details: {} } },
+    data: {
+      object: {
+        id: 'cs_noemail',
+        payment_status: 'paid',
+        payment_link: KIRTON_LINK,
+        customer_details: {},
+      },
+    },
   });
   const r = await call(body, sign(body, SECRET));
   r.code >= 500 ? ok('a paid session with no email address fails loudly, not quietly')
     : bad('a paid session with no email address fails loudly, not quietly', `got ${r.code}`);
+}
+
+// ---------------------------------------------------------------------------
+// And the gate itself, pinned, so the case above cannot silently turn back
+// into this one. Seven webhooks share one Stripe account; a book sale must
+// never issue somebody an IEP link.
+{
+  const body = JSON.stringify({
+    id: 'evt_z', type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: 'cs_notours',
+        payment_status: 'paid',
+        payment_link: 'plink_someoneElsesProduct',
+        customer_details: { email: 'buyer@example.com' },
+      },
+    },
+  });
+  const r = await call(body, sign(body, SECRET));
+  r.code === 200 && r.body.ignored === 'unrecognized payment link'
+    ? ok('a sale that was not ours issues nothing')
+    : bad('a sale that was not ours issues nothing', `got ${r.code} ${JSON.stringify(r.body)}`);
 }
 
 // ---------------------------------------------------------------------------

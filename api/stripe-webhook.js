@@ -14,7 +14,7 @@
 // string would be the whole dependency tree for twenty lines of crypto.
 
 const crypto = require('crypto');
-const { reject, supabase, rawBody, sendEmail, uploadLink } = require('./_common');
+const { reject, supabase, rawBody, sendEmail, uploadLink, intakeLink } = require('./_common');
 const { iepLinkEmail } = require('./_email');
 
 // Stripe's own tolerance. Older than this and it is a replay, not a delivery.
@@ -116,7 +116,7 @@ function whoseSale(session) {
   //
   // ★ Both spellings are accepted on purpose. The tag on the live payment links
   // reads 'kirton-learning'; a future server-built checkout will almost
-  // certainly be written to match it. Recognising only one spelling would send
+  // certainly be written to match it. Recognizing only one spelling would send
   // a real Kirton sale down the 'theirs' branch and issue nothing — stranding a
   // family who paid, which is the exact failure this file was written to stop.
   const KIRTON_BRAND_TAGS = ['kirton', 'kirton-learning'];
@@ -147,7 +147,7 @@ async function alertUnplaceableSale(session) {
       to,
       subject: `Payment this site could not place — ${amount}`,
       text: [
-        'A paid Stripe session arrived that kirtonlearning.com does not recognise,',
+        'A paid Stripe session arrived that kirtonlearning.com does not recognize,',
         'so NO IEP link was issued and nobody was emailed.',
         '',
         `Amount:       ${amount}`,
@@ -247,7 +247,7 @@ module.exports = async (req, res) => {
     // look like on its first sale, and staying quiet then would strand a family
     // who paid. So: issue nothing, and tell him.
     await alertUnplaceableSale(session);
-    return res.status(200).json({ ok: true, ignored: 'unrecognised payment link' });
+    return res.status(200).json({ ok: true, ignored: 'unrecognized payment link' });
   }
 
   const email =
@@ -311,7 +311,7 @@ module.exports = async (req, res) => {
 
     // ---- send it ----
     const link = uploadLink(row.token, 'iep');
-    const mail = iepLinkEmail({ link, name });
+    const mail = iepLinkEmail({ link, name, intake: intakeLink(row.token) });
     const sent = await sendEmail({ to: email, subject: mail.subject, text: mail.text, html: mail.html });
 
     if (!sent.ok) {

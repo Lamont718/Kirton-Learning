@@ -252,7 +252,32 @@ const rec = body.get('/record/') || ''
 ;/og:image/.test(rec) && /og:title/.test(rec)
   ? ok('/record/ has a preview card', 'it is forwarded in a text message more often than it is searched for')
   : bad('/record/ has no preview card', 'a link with no title or image is a link nobody taps')
-rec.includes('/#start') ? ok('/record/ leads somewhere — links to the paid work') : bad('/record/ is a dead end again')
+// ⛔ This read `rec.includes('/#start')` and reported "links to the paid work".
+// The check is named "a dead end AGAIN" — it was written after the tool WAS a
+// dead end once, and then it was satisfied by the string appearing anywhere in
+// the file. Both occurrences of it are inside a <script>, in a template that
+// renders on a later screen. On the first screen a visitor lands on there is
+// exactly one link — the brand mark — and none to the paid work.
+// ★★★ Same disease as a flag that is set and never read: a guard that greps for
+// a STRING passes on the file mentioning the thing, not on the thing happening.
+// It was invisible while /record was only reachable from the homepage. It is
+// worth knowing now the page is indexed and people will arrive on it cold.
+//
+// Not raised to a failure on purpose: whether the free tool carries a link to
+// the paid work on screen one is a decision about how hard this sells, and the
+// band on index.html was worded carefully so the free tool is not bait. That is
+// Lamont's call, so this states what is true and does not make it for him.
+// ★★ And the first version of THIS fix was fooled too: it looked for the
+// anchor markup instead of the bare string, and the template inside the script
+// contains the whole `<a href="/#start">` tag as text. Strip the scripts first,
+// then ask. Checked against the live DOM at 390px to be sure the answer is the
+// same one a phone gives: one link on the first screen, the brand mark.
+const recMarkup = rec.replace(/<script[\s\S]*?<\/script>/gi, ' ')
+const startAnchor = /<a [^>]*href="[^"]*#start/i.test(recMarkup)
+if (!rec.includes('/#start')) bad('/record/ is a dead end again', 'nothing in it points at the paid work at all')
+else if (startAnchor) ok('/record/ leads somewhere — a real link to the paid work')
+else note('/record/ mentions the paid work only inside a script',
+  'the template renders on a later screen; the first screen a search visitor lands on has no link to it')
 ;(await head(SITE + '/record/sw.js')) === 200 ? ok('service worker is served') : bad('service worker is missing — "works offline" is false')
 ;(await head(SITE + '/record/manifest.webmanifest')) === 200 ? ok('manifest is served') : bad('manifest is missing')
 

@@ -76,16 +76,40 @@ meeting."*
 
 **The Turning 5 cluster** — `turning_5_notice_window`, `turning_5_no_letter_deadline`,
 `turning_5_contact_window`, `turning_5_conference`, `first_school_age_iep`.
-Five dates drawn from **five different secondary sources**: one school's website, an
-advocacy org, a private provider, a dated parent-training PDF, a university page. Nothing
-guarantees they describe the same year or the same process, and Turning 5 dates move year
-to year. Verify the cluster **together**, against one current DOE Turning 5 page or this
-year's DOE Turning 5 letter, and record which school year they belong to.
+**Chased to the end on 2026-09-19. They cannot be signed off today, and now we know why
+rather than suspecting it.** Read in a real browser, accordions expanded:
 
-**`timelines.d75_initial_referral`** — sourced to a single school's own site. The value
-restates the general initial-evaluation clock in 200.4(b)(1); it is probably right for
-that reason and not because it is a District 75 rule. Re-point it at the regulation and
-say so plainly, or drop it — a D75-flavored "60 days" implies a rule that may not exist.
+- The DOE's kindergarten page (`/special-education/preschool-to-age-21/kindergarten-students`)
+  states **none** of the five dates. No February 1. No December-to-August. No
+  January-to-March. No fifth birthday. It does not contain the phrase "Turning 5" at all.
+- `/preschool-to-age-21/moving-to-kindergarten` — the URL the DOE's **own Family Guide to
+  Preschool Special Education Services** sends parents to for the schedule — **redirects to
+  that same page**.
+- The Family Guide gives no dates either. Only: *"Children enter kindergarten in September of
+  the calendar year when they turn 5 years old"* and *"The kindergarten transition process
+  begins the school year before."*
+- The one document that would carry the schedule is the **Kindergarten Orientation Guide for
+  Families of Students with Disabilities Entering Kindergarten in Fall 2027**, and as of
+  2026-09-19 it is **not published** — the page says *"guide and flyer with translations
+  coming soon."*
+
+⇒ **The action is an email, not more searching.** Ask
+`KindergartenIEPProcess@schools.nyc.gov` for the Fall 2027 guide, verify all five dates
+against that one document, and record the school year they belong to. The DOE also still
+runs `Turning5@schools.nyc.gov`.
+
+> ⚠️ **And the handbook is teaching a word the DOE has stopped using.** Its own pages now say
+> **Kindergarten IEP Process (KIP)**; "Turning 5" survives only as that email alias. A mother
+> who calls a school and asks about "Turning 5" is using a term that is not on the DOE site
+> she will be pointed to. Worth a sentence in the handbook either way — and it is a copy
+> decision, so it is yours.
+
+**`timelines.d75_initial_referral`** — **resolved to a decision, 2026-09-19.** The value
+restates the general clock in **8 NYCRR 200.4(b)(1)**, now confirmed verbatim at NYSED's own
+page (url below). There is no District 75-specific 60-day rule on that page or on the DOE's
+District 75 page. So it is *right*, and it is *not a D75 rule*. Re-point `source` at the
+regulation and say plainly that it is the general rule as it applies to a D75 referral — or
+drop it, because a D75-flavored "60 days" implies a rule that may not exist.
 
 **`committees.cse`** — cites a real DOE page, but a section landing page rather than the
 one that carries the office list. Re-point it at the page that actually says it.

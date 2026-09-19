@@ -130,6 +130,39 @@ for (const [p, html] of body) {
   v.code === 'ours' ? ok(`${p} canonical → ${v.href}`) : bad(`${p} canonical → ${v.href}`, 'points off this domain')
 }
 
+// og:url is the canonical for everything that shares a link — it is the address
+// a preview, a like and a forward all attach to. It has to be the same address
+// the canonical names, or one page keeps two identities.
+//
+// ⛔ Four pages disagreed: /demo, /privacy, /terms and /referrals all declared
+// og:url ending in ".html" while their canonical had been rewritten to the
+// clean url. Leftovers from the 2026-09-10 merge that turned cleanUrls on and
+// rewrote every canonical and the sitemap — and stopped there. They still
+// resolved, by a 308, which is exactly why nobody noticed for nine days.
+// ★ The same shape as the redirect that sent paying families to /start: with
+// cleanUrls on, a ".html" address in a page is never the address of the page.
+console.log('\n=== og:url and canonical name the same address ===')
+for (const [p, html] of body) {
+  const can = html.match(/<link rel="canonical" href="([^"]+)"/)
+  const og = html.match(/<meta property="og:url" content="([^"]+)"/)
+  if (!og) { ok(`${p} has no og:url to disagree`); continue }
+  if (!can) { bad(`${p} has an og:url and no canonical`, 'the share knows the address and the page does not'); continue }
+  og[1] === can[1]
+    ? ok(`${p} — og:url matches the canonical`)
+    : bad(`${p} — og:url ${og[1]} but canonical ${can[1]}`, 'one page, two identities; shares land on the one nothing else names')
+}
+
+// And the picture has to exist. og:image is a content= attribute, so the link
+// sweep above — which reads href= and src= — has never once looked at it. Every
+// preview card on this site could have been pointing at a 404 and every check
+// would still have been green.
+for (const [p, html] of body) {
+  const img = html.match(/<meta property="og:image" content="([^"]+)"/)
+  if (!img) continue
+  const s = await head(img[1])
+  s === 200 ? ok(`${p} — its preview image is actually served`) : bad(`${p} — og:image → ${s}`, `${img[1]} is what a forwarded link tries to draw`)
+}
+
 console.log('\n=== no page still names the old brand or domain ===')
 for (const [p, html] of body) {
   const stale = ['sparkbuilders.org', 'iep-record.vercel.app', 'spark-coach-families.vercel.app']

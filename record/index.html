@@ -28,7 +28,13 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
 :root{
-  --bg:#f5f2ec; --card:#fffdf9; --ink:#1f2a3a; --ink-2:#3f4d63; --muted:#6f7d92;
+  /* --muted was #6f7d92, which is 3.74:1 on the page background, 4.11:1 on a
+     card and 3.49:1 inside a gray pill — all under the 4.5:1 that WCAG AA asks
+     for body text, on the tool built for parents of children with disabilities.
+     It carried the nav labels, the cadence line, every date in the log and the
+     footnote. #5b6880 is the same hue, still plainly secondary next to --ink,
+     and clears all three: 5.03, 5.53, 4.69. */
+  --bg:#f5f2ec; --card:#fffdf9; --ink:#1f2a3a; --ink-2:#3f4d63; --muted:#5b6880;
   --line:#e3dcd0; --accent:#2f6f6a; --accent-soft:#e2efed; --warm:#a85f28;
   --warm-soft:#fbeade; --good:#2f6b48; --radius:16px;
 }

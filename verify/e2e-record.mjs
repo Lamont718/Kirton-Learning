@@ -171,6 +171,40 @@ const shownIn = async (media) => {
   return ev(`(()=>{const el=document.querySelector('.printonly');if(!el)return null;
     const s=getComputedStyle(el);return {shown:s.display!=='none',text:el.innerText.replace(/\\s+/g,' ').trim()}})()`)
 }
+// ★ Contrast, measured on the rendered page rather than eyeballed in the CSS.
+// This is the tool built for parents of children with disabilities, and its
+// --muted token was 3.74:1 on the page background, 4.11:1 on a card and 3.49:1
+// inside a gray pill — all under the 4.5:1 WCAG AA asks for body text. It
+// carried the nav labels, the cadence line, every date in the log and the
+// footnote, and nobody had ever measured it, because CLAUDE.md's "100
+// accessibility" was a target with no check under it.
+//
+// Computed here, in the browser, because a contrast number depends on what is
+// actually painted behind the text — a hex pair in a stylesheet cannot tell you
+// what a token lands on three levels down.
+const contrast = await ev(`(() => {
+  const own = el => [...el.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').replace(/\\s+/g,' ').trim();
+  const lum = c => { const [r,g,b] = c.map(v => { v/=255; return v<=.03928 ? v/12.92 : Math.pow((v+.055)/1.055,2.4); }); return .2126*r+.7152*g+.0722*b; };
+  const parse = s => { const m = s.match(/rgba?\\(([^)]+)\\)/); if(!m) return null; const p = m[1].split(',').map(parseFloat); return (p.length>3 && p[3]<1) ? null : p.slice(0,3); };
+  const bgOf = el => { let n = el; while (n) { const p = parse(getComputedStyle(n).backgroundColor); if (p) return p; n = n.parentElement; } return [255,255,255]; };
+  const bad = [];
+  document.querySelectorAll('*').forEach(el => {
+    const t = own(el); if (t.length < 3) return;
+    const r = el.getBoundingClientRect(); if (r.width < 1 || r.height < 1) return;
+    const cs = getComputedStyle(el);
+    if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity === 0) return;
+    const fg = parse(cs.color); if (!fg) return;
+    const L1 = lum(fg), L2 = lum(bgOf(el));
+    const ratio = (Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05);
+    const size = parseFloat(cs.fontSize), bold = (parseInt(cs.fontWeight,10)||400) >= 700;
+    const need = (size >= 24 || (size >= 18.66 && bold)) ? 3 : 4.5;
+    if (ratio < need) bad.push(ratio.toFixed(2) + '/' + need + ' ' + Math.round(size) + 'px "' + t.slice(0,30) + '"');
+  });
+  return bad;
+})()`)
+check('★ every word on the printed record meets WCAG AA contrast',
+  contrast.length === 0, contrast.slice(0, 4).join(' · '))
+
 const onScreen = await shownIn('screen')
 const onPaper = await shownIn('print')
 await send('Emulation.setEmulatedMedia', { media: '' }, sessionId)

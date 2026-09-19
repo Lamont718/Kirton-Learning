@@ -11,7 +11,8 @@
    THE RULE THAT MATTERS: the IEP intake is never measured.
 
    /upload carries a one-time token in its query string, /intake is the six
-   questions about a child, and /admin is the back office. None of them ever
+   questions about a child, /ask is where she writes her question in her own
+   words, and /admin is the back office. None of them ever
    loads a beacon, so neither the path nor the token can reach a third party
    even by accident. The guard lives here, in
    one file, rather than in the decision about which pages get the tag —
@@ -26,7 +27,7 @@
   /* Both spellings. cleanUrls means /upload.html 308s to /upload, but a
      redirect is a round trip and this script would already have run. */
   var NEVER = ['/upload', '/upload.html', '/intake', '/intake.html',
-               '/admin', '/admin.html'];
+               '/ask', '/ask.html', '/admin', '/admin.html'];
   if (NEVER.indexOf(path) !== -1) return;
 
   /* A secret in a URL is never measured, on any page. If a token ever

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ask a question — Kirton Learning for Families</title>
+<meta name="description" content="Ask about your child's IEP and what a Blueprint would look like, before you pay anything. It goes to my own inbox and I answer it myself.">
+<meta name="theme-color" content="#141D2E">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://kirtonlearning.com/ask">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/bricolage-grotesque-800-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-serif-4-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --ink:#141D2E;--ink-2:#25324A;--ink-3:#3F4C66;
+  --paper:#F4F2EC;--paper-2:#FBFAF7;
+  --spark:#E8A33D;--spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);--line-dark:rgba(244,242,236,.16);
+  --ok:#1E6F43;--bad:#9B2226;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:1.0625rem;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:660px;margin:0 auto;padding:0 22px}
+h1,h2{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(1.8rem,5vw,2.6rem)}
+h2{font-size:1.25rem;margin:0 0 .6em}
+p{margin:0 0 1.05em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spark);margin:0 0 1.3rem}
+.head{background:var(--ink);color:var(--paper);padding:clamp(28px,5vw,44px) 0 clamp(40px,6vw,60px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1.02rem;margin-bottom:clamp(34px,6vw,54px);text-decoration:none}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--spark);flex:none}
+.head p{color:rgba(244,242,236,.85);margin:1.2rem 0 0}
+
+main{padding:clamp(38px,6vw,60px) 0 clamp(56px,8vw,84px)}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;
+  padding:26px 24px;margin:0 0 20px}
+.q{display:block;font-family:var(--display);font-weight:700;font-size:1.08rem;
+  line-height:1.25;margin:0 0 6px}
+.hint{font-size:.94rem;color:var(--ink-3);margin:0 0 14px}
+
+input[type=email],textarea{
+  width:100%;font-family:var(--body);font-size:1.0625rem;line-height:1.5;color:var(--ink);
+  background:#fff;border:1px solid rgba(20,29,46,.28);border-radius:5px;padding:13px 14px;
+}
+input[type=email]:focus,textarea:focus{border-color:var(--spark-deep);outline:none;
+  box-shadow:0 0 0 3px rgba(232,163,61,.28)}
+textarea{min-height:150px;resize:vertical}
+
+.btn{
+  display:inline-block;width:100%;font-family:var(--display);font-weight:700;font-size:1.02rem;
+  padding:15px 30px;border-radius:4px;border:2px solid transparent;text-align:center;
+  background:var(--ink);color:var(--paper);cursor:pointer;transition:.16s;
+}
+.btn:hover:not(:disabled){background:var(--ink-2)}
+.btn:disabled{opacity:.42;cursor:not-allowed}
+.status{font-family:var(--mono);font-size:.78rem;letter-spacing:.03em;color:var(--ink-3);
+  margin-top:12px;text-align:center}
+
+.note{border-left:3px solid var(--spark);padding-left:16px;margin:22px 0 0;
+  font-size:.95rem;color:var(--ink-2)}
+.msg{border-radius:6px;padding:16px 18px;margin:0 0 22px;font-size:.97rem}
+.msg--bad{background:#FDF1F1;border:1px solid rgba(155,34,38,.35);color:#6E1013}
+.msg--ok{background:#F1F8F3;border:1px solid rgba(30,111,67,.35);color:#14512F}
+
+.foot{background:var(--ink);color:var(--paper);padding:40px 0 34px}
+.legal{font-family:var(--mono);font-size:.72rem;line-height:1.75;color:rgba(244,242,236,.72)}
+.legal a{color:var(--paper)}
+.hide{display:none!important}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brandbar" href="/">
+      <span class="dot" aria-hidden="true"></span><span>Kirton Learning</span>
+    </a>
+    <p class="eyebrow">Before you pay anything</p>
+    <h1>Ask me a question first.</h1>
+    <p>About your child's IEP, about what a Blueprint would actually look like for them, or about whether this is the right thing at all. It goes to my own inbox and I answer it myself.</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <div id="err" class="msg msg--bad hide" role="alert"></div>
+
+    <form id="form" novalidate>
+      <div class="card">
+        <label class="q" for="email">Where should I write back?</label>
+        <p class="hint">Your email address. It is used to answer you and nothing else — there is no list and no newsletter to be added to.</p>
+        <input type="email" id="email" name="email" autocomplete="email" inputmode="email"
+               placeholder="you@example.com" required>
+      </div>
+
+      <div class="card">
+        <label class="q" for="message">What do you want to know?</label>
+        <p class="hint">Say it however you would say it out loud. If it helps to mention your child's grade or what the IEP is aimed at, do — but nothing here is required, and you never have to send a document to ask a question.</p>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+
+      <button class="btn" id="send" type="submit">Send it</button>
+      <p class="status" id="status">Goes to lamont@kirtonlearning.com</p>
+    </form>
+
+    <div id="done" class="hide">
+      <div class="msg msg--ok">
+        <strong>That reached me.</strong> It is saved and on its way to my inbox.
+      </div>
+      <p>I answer these myself, so the reply comes from a person who has read it — not a template.</p>
+      <p>While you wait, the thing most parents find useful is the free record tool: it turns what you already see at home into dated evidence against the goals in the IEP, and it prints for the meeting. Nothing is uploaded and there is no account to make.</p>
+      <p><a href="/record">Open the free record tool</a> · <a href="/demo">See a complete year</a></p>
+    </div>
+
+    <div class="note">
+      <p style="margin:0">What is kept: your email address, your question, and the page you asked from. It is stored so a question cannot be lost by an email going astray, and it is deleted on request. Nothing is shared with anyone and nothing is sold. <a href="/privacy">The privacy policy</a> says it in full.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="legal">
+      Kirton Learning is a program of Our Rose LLC, Brooklyn, NY. Kirton Learning provides supplemental
+      educational coaching. It is not special education advocacy, legal advice, medical advice, diagnosis,
+      or therapy, and it does not replace the services your school district is required to provide under
+      your child's IEP.
+    </p>
+    <p class="legal"><a href="/">Home</a> · <a href="/record">The free record tool</a> · <a href="/privacy">Privacy policy</a> · <a href="/terms">Terms of service</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('form');
+  var err = document.getElementById('err');
+  var done = document.getElementById('done');
+  var btn = document.getElementById('send');
+  var status = document.getElementById('status');
+
+  /* Where she was standing when she asked. The difference between a question
+     from the pricing band and one from the free record tool is two different
+     conversations, and it is the referring PAGE only — never a query string,
+     which is where tokens live. */
+  var cameFrom = '';
+  try {
+    if (document.referrer) {
+      var u = new URL(document.referrer);
+      if (u.origin === location.origin) cameFrom = u.pathname.slice(0, 60);
+    }
+  } catch (e) {}
+
+  function fail(msg) {
+    err.textContent = msg;
+    err.classList.remove('hide');
+    btn.disabled = false;
+    btn.textContent = 'Send it';
+    err.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    err.classList.add('hide');
+    var email = document.getElementById('email').value.trim();
+    var message = document.getElementById('message').value.trim();
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return fail('That email address does not look right. Check it and try again.');
+    if (message.length < 2) return fail('Add your question and send it again.');
+
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    status.textContent = '';
+
+    fetch('/api/ask', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, message: message, cameFrom: cameFrom })
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { return { status: r.status, body: j }; });
+    }).then(function (res) {
+      if (res.status === 200 && res.body.ok) {
+        form.classList.add('hide');
+        done.classList.remove('hide');
+        done.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        return;
+      }
+      fail(res.body.message || 'That did not send. Email lamont@kirtonlearning.com and it will reach me.');
+    }).catch(function () {
+      /* The one case the parent must not be left guessing about: her question
+         never left the phone, so the fallback address is given plainly. */
+      fail('That did not send — your connection dropped. Try again, or email lamont@kirtonlearning.com.');
+    });
+  });
+})();
+</script>
+</body>
+</html>

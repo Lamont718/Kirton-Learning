@@ -57,12 +57,46 @@ console.log(`\nfact sources — ${all.length} entries\n`);
 
 // ------------------------------------------------- nothing is verified on air
 console.log('a verified fact has to have been verified against something');
+// "editorial" is an exemption from needing a source, so it is a claim like any
+// other and it gets checked. An entry is editorial when it is OURS to word — a
+// glossary sentence, a rule about how we describe a profession. It stops being
+// editorial the moment it carries something a parent would act on or repeat in
+// a meeting: a class ratio, a deadline in days, a dollar figure, a phone
+// number, or a statement about who is licensed to do what.
+//
+// ⛔ This exists because the advice below used to read "some are editorial by
+// nature (a glossary, a rule about how we describe a profession). Mark those
+// editorial: true" — and of the four entries it was pointing at, the glossary
+// defines the 12:1:1 class ratios and professional_roles makes eleven licensure
+// claims. Following that advice would have walked both of them past the
+// verification gate, wearing a label that means "no source needed".
+// ★★★ An exemption that is granted by asserting it is not an exemption, it is a
+// hole. The label has to be earned.
+const NOT_EDITORIAL = [
+  [/\b\d+:\d+(?::\d+)?\b/, 'a class ratio'],
+  [/\b\d{1,3}\s*(?:calendar |school |business )?days\b/i, 'a deadline in days'],
+  [/\$\s?\d/, 'a dollar figure'],
+  [/\b(?:\(\d{3}\)|\d{3})[ .-]?\d{3}[ .-]?\d{4}\b|\b311\b/, 'a phone number'],
+  [/licens\w+/i, 'a licensure claim'],
+];
+const disqualifies = e => NOT_EDITORIAL
+  .filter(([re]) => re.test(JSON.stringify(e)))
+  .map(([, what]) => what);
+
+const claimed = all.filter(([, e]) => e.editorial === true);
+for (const [p, e] of claimed) {
+  const why = disqualifies(e);
+  why.length
+    ? fail(`${p} is marked editorial and is not`, `it carries ${why.join(', ')} — that needs a source, not a label`)
+    : pass(`${p} is editorial and carries nothing to act on`);
+}
+
 const verified = all.filter(([, e]) => e.status === 'verified');
 if (!verified.length) {
   pass('no entry claims to be verified yet', `${all.length} entries, none verified — this check has teeth the day that changes`);
 } else {
   for (const [p, e] of verified) {
-    if (e.editorial === true) { pass(`${p} is marked editorial`, 'no external source expected'); continue; }
+    if (e.editorial === true && !disqualifies(e).length) { pass(`${p} is marked editorial`, 'no external source expected'); continue; }
     const srcs = sourcesOf(e);
     if (!e.verified_on) fail(`${p} is verified with no date`, 'verified_on is null — RESOURCE.md requires a last-reviewed date on every page');
     else if (!srcs.length) fail(`${p} is verified with no source`, 'a status is not evidence');
@@ -76,15 +110,30 @@ console.log('\nevery factual claim names where it came from');
 const noSource = [], secondary = [], primary = [], editorial = [];
 for (const [p, e] of all) {
   if (e.status === 'draft') continue;           // translations, handled below
-  if (e.editorial === true) { editorial.push(p); continue; }
+  if (e.editorial === true && !disqualifies(e).length) { editorial.push(p); continue; }
   const srcs = sourcesOf(e);
   if (!srcs.length) noSource.push(p);
   else if (srcs.some(isPrimary)) primary.push(p);
   else secondary.push(p);
 }
 if (noSource.length) {
-  warn(`${noSource.length} entries have no source at all`,
-    `${noSource.join(', ')}\n        Some are editorial by nature (a glossary, a rule about how we describe a profession).\n        Mark those "editorial": true so they stop blocking publication alongside a date a parent will act on.`);
+  // Say which ones could honestly take the label and which could not, computed
+  // from what they contain rather than guessed at in a sentence. The blanket
+  // version of this advice named a glossary as the example, and that glossary
+  // defines class ratios.
+  const lines = noSource.map(p => {
+    const e = all.find(([q]) => q === p)[1];
+    const why = disqualifies(e);
+    // Note the asymmetry: this can rule an entry OUT of being editorial and it
+    // can never rule one in. "No number in it" is not the same as "ours to
+    // word" — lre_principle is a paraphrase of a federal statute and carries no
+    // digits at all. A person decides the label; this only refuses the ones
+    // that plainly cannot have it.
+    return why.length
+      ? `          ${p} — NOT editorial: it carries ${why.join(', ')}. Needs a source.`
+      : `          ${p} — nothing actionable in it. If the WORDING is ours, "editorial": true; if it restates a law or a rule, it still needs the source.`;
+  });
+  warn(`${noSource.length} entries have no source at all`, `\n${lines.join('\n')}`);
 } else pass('every non-editorial entry names a source');
 
 if (secondary.length) {

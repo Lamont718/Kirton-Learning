@@ -101,8 +101,18 @@ label.field{display:block;font-weight:700;margin:14px 0 6px}
 .empty{text-align:center;padding:26px 10px;color:var(--muted)}
 .hide{display:none!important}
 .footnote{font-size:.82rem;color:var(--muted);margin-top:26px;line-height:1.6}
+/* Hidden on screen, printed on paper. The printed record is the only thing here
+   that physically travels — it goes into an IEP meeting, in front of teachers, a
+   school psychologist and sometimes another parent — and it carried no mention
+   of where it came from. partner.html and refer.html already print the address
+   to be typed off paper; this is the same idea on the page that gets there by
+   itself. */
+.printonly{display:none}
 @media print{
   .noprint{display:none!important}
+  /* The inverse of .noprint, for the one thing that only matters on paper: where
+     this page came from. See .printonly below. */
+  .printonly{display:block!important}
   html,body{background:#fff;color:#000;font-size:11pt}
   .wrap{width:100%}
   .card{border:1px solid #999;break-inside:avoid;page-break-inside:avoid;margin-bottom:12px}
@@ -884,7 +894,9 @@ function viewRecord (c) {
     conditions a school uses. It is not a substitute for the school's own progress reporting. Where these
     numbers and the school's differ, that is usually a different room on a different day.</p>
   </div>
-  <p class="footnote">Nothing on this page has been uploaded anywhere.</p>`
+  <p class="footnote">Nothing on this page has been uploaded anywhere.</p>
+  <p class="footnote printonly">Made with the free record at <strong>kirtonlearning.com/record</strong> —
+  it runs in the browser on the family's own device, and nothing recorded in it is uploaded.</p>`
 }
 
 render()

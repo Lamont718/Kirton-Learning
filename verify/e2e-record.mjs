@@ -156,6 +156,27 @@ const rec2 = await text()
 check('the record repeats the decision rule for the room', /approach needs changing, not the goal/i.test(rec2))
 check('it states the cadence the checks were done on', /every 14 days/.test(rec2))
 check('it warns how to read a prompt count', /softest number on the page/i.test(rec2))
+
+// ★ The printed record is the only thing here that physically travels: it goes
+// into an IEP meeting, in front of teachers, a school psychologist and often
+// another parent, and for a year it carried no mention of where it came from.
+// partner.html and refer.html already print the address to be typed off paper.
+//
+// Checked in PRINT media, not on screen, because that is the whole point of the
+// element — a screen-only assertion would pass on a line that never reaches the
+// page, and a paper-only line is exactly the kind of thing nobody looks at
+// again. Emulation.setEmulatedMedia is how you look at it without a printer.
+const shownIn = async (media) => {
+  await send('Emulation.setEmulatedMedia', { media }, sessionId)
+  return ev(`(()=>{const el=document.querySelector('.printonly');if(!el)return null;
+    const s=getComputedStyle(el);return {shown:s.display!=='none',text:el.innerText.replace(/\\s+/g,' ').trim()}})()`)
+}
+const onScreen = await shownIn('screen')
+const onPaper = await shownIn('print')
+await send('Emulation.setEmulatedMedia', { media: '' }, sessionId)
+check('★ the printed record says where it came from',
+  !!onPaper && onPaper.shown && /kirtonlearning\.com\/record/.test(onPaper.text), onPaper && onPaper.text)
+check('and that line stays off the screen', !!onScreen && onScreen.shown === false)
 check('a chart is drawn once there is more than one check',
   (await ev(`document.querySelectorAll('svg.chart').length`)) >= 1)
 check('★ the chart does not rely on color — filled vs hollow, and a dashed criterion line',

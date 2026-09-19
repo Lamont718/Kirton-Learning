@@ -187,7 +187,14 @@ console.log('\n=== robots and sitemap agree with the pages ===')
 const sitemap = await (await fetch(SITE + '/sitemap.xml')).text()
 for (const [p, html] of body) {
   const noindex = /name="robots" content="noindex/.test(html)
-  const listed = sitemap.includes(SITE + (p === '/' ? '/' : p))
+  // The page is FETCHED as /record/ (a directory with an index.html) but the
+  // site is trailingSlash:false, so its canonical and its sitemap entry are
+  // both /record. Comparing the raw strings said "indexable but not in the
+  // sitemap" about a url that was sitting in the sitemap — so compare the two
+  // the way the site itself resolves them.
+  const trim = u => u.replace(/\/+$/, '') || '/'
+  const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => trim(m[1]))
+  const listed = locs.includes(trim(SITE + p))
   if (noindex && listed) bad(`${p} is noindex but IS in the sitemap`)
   else if (!noindex && !listed) note(`${p} is indexable but not in the sitemap`)
   else ok(`${p} — ${noindex ? 'noindex, not listed' : 'indexable and listed'}`)
@@ -195,7 +202,23 @@ for (const [p, html] of body) {
 
 console.log('\n=== the free tool still promises what it claims ===')
 const rec = body.get('/record/') || ''
-;/noindex/.test(rec) ? ok('/record/ is noindex (it is a tool, not a landing page)') : note('/record/ is indexable')
+// Reversed 2026-09-19, on Lamont's call. This used to pass BECAUSE the tool was
+// noindex — "it is a tool, not a landing page". The tool is the one thing here a
+// parent can be handed with nothing asked of them, and it was the only public
+// page search could never return. It is the page most worth finding, so a
+// noindex on it is now a failure, not a virtue. It needs the tags that make a
+// forwarded link and a search result work: a canonical and a preview card.
+// ⛔ Read the TAG, not the page. This was `/noindex/.test(rec)` for one commit,
+// and it failed immediately — on the comment above the tag, which explains why
+// the page used to be noindex. Third time in a day that a check was satisfied
+// or tripped by a file TALKING ABOUT the thing instead of doing it.
+;/name="robots"[^>]*content="[^"]*noindex/i.test(rec)
+  ? bad('/record/ is noindex again', 'the free tool is meant to be findable and forwardable; that was decided, not assumed')
+  : ok('/record/ is indexable — the free tool can be found')
+;/rel="canonical"/.test(rec) ? ok('/record/ names its own url') : bad('/record/ is indexable with no canonical')
+;/og:image/.test(rec) && /og:title/.test(rec)
+  ? ok('/record/ has a preview card', 'it is forwarded in a text message more often than it is searched for')
+  : bad('/record/ has no preview card', 'a link with no title or image is a link nobody taps')
 rec.includes('/#start') ? ok('/record/ leads somewhere — links to the paid work') : bad('/record/ is a dead end again')
 ;(await head(SITE + '/record/sw.js')) === 200 ? ok('service worker is served') : bad('service worker is missing — "works offline" is false')
 ;(await head(SITE + '/record/manifest.webmanifest')) === 200 ? ok('manifest is served') : bad('manifest is missing')

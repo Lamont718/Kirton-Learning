@@ -109,7 +109,7 @@ module.exports = async (req, res) => {
     // What is actually wired up, right now, on the deployment answering this
     // request. Written because a variable NAME proves nothing: a var can exist
     // and hold an empty string, and every screen that lists names rather than
-    // testing behaviour will call that configured.
+    // testing behavior will call that configured.
     //
     // ⛔ Booleans only. MAIL_FROM is the exception and is not a secret — it is
     // the From line printed on every email a parent receives.

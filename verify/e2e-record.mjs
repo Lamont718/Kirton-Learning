@@ -130,7 +130,7 @@ check('each goal carries its own check cadence',
 check('a goal that has never been checked says so', /First check not done yet/.test(await text()))
 
 await ev(`openLog('${g2}')`); await sleep(500)
-check('★ a cold check warns against using material she just practised',
+check('★ a cold check warns against using material she just practiced',
   await ev(`!document.getElementById('leak').classList.contains('hide')`))
 await click('We worked on it'); await sleep(300)
 check('and that warning goes away on helped work, where it would be noise',
@@ -158,7 +158,7 @@ check('it states the cadence the checks were done on', /every 14 days/.test(rec2
 check('it warns how to read a prompt count', /softest number on the page/i.test(rec2))
 check('a chart is drawn once there is more than one check',
   (await ev(`document.querySelectorAll('svg.chart').length`)) >= 1)
-check('★ the chart does not rely on colour — filled vs hollow, and a dashed criterion line',
+check('★ the chart does not rely on color — filled vs hollow, and a dashed criterion line',
   await ev(`(()=>{const s=document.querySelector('svg.chart');return /stroke-dasharray/.test(s.outerHTML)&&/fill="#fff"/.test(s.outerHTML)})()`))
 
 console.log('\n=== the record can survive this browser ===')
@@ -236,7 +236,7 @@ check('★ it reads the criterion off the document, not a default',
 check('★ ALL-CAPS form instructions are not mistaken for a goal',
   !G.some(g => /EXPECTED TO ACHIEVE/.test(g.text)))
 check('a service line is not mistaken for a goal', !G.some(g => /twice weekly/i.test(g.text)))
-check('it labels the area it can tell', G[0].area === 'Reading' && G[1].area === 'Maths')
+check('it labels the area it can tell', G[0].area === 'Reading' && G[1].area === 'Math')
 // NB: match on wording unique to the SAMPLE — an earlier part of this run adds a
 // reading goal by hand, and a looser pattern matched that instead.
 check('★ nothing is saved by parsing — she has to say yes',

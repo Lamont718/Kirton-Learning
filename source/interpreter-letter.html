@@ -363,6 +363,10 @@ p{margin:0 0 1.05em}
 
 <script>
 (function(){
+  /* not-english:start  The interpreter letter, in the parent's own language.
+     Swept as English, the French line's "utiliser" reads as a British
+     spelling of "utilize" and the gate turns into noise. The English version is
+     eng() below, outside the markers, and is swept like everything else. */
   var L = {
     es:{name:"Español", rtl:false, t:function(d){return [
       "A quien corresponda:",
@@ -464,6 +468,7 @@ p{margin:0 0 1.05em}
       "감사합니다,"
     ];}}
   };
+  /* not-english:end */
 
   function eng(d, langName){return [
     "To Whom It May Concern:",

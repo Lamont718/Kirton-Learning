@@ -171,7 +171,18 @@ if (!untappable) pass('every phone number is a tel: link');
 console.log('\nvoice and scope');
 const BANNED = /\b(unlock|empower|transformative|revolutioniz\w*|holistic|synergy|game-changing|cutting-edge|leverage|your child's potential|catch up|close the gap|on grade level|suffers from|high-functioning|low-functioning|behavior problem)\b/gi;
 const CLINICAL = /\b(social skills group|emotional regulation|self-regulation|sensory diet|sensory break|coping strateg\w+|behavior management|articulation target|whole child|comprehensive support)\b/gi;
-const BRITISH = /\b(programme|organisation|organise\w*|colour\w*|behaviour\w*|centre|licence|realis\w+|recognis\w+|analyse\w*|neighbourhood|defence|maths|whilst|grey)\b/gi;
+// The British-spelling list is NOT written out here any more. It lived in this
+// file, as a regex on one line, sweeping eight handbook pages — and while it
+// did, British spellings sat in api/stripe-webhook.js and in the record app for
+// months, because this gate was never pointed at them. One list now, in
+// verify/british-words.txt, swept over the whole repo by
+// verify/american-english.mjs. This file reads the same list so the handbook
+// still gets named as the handbook when something slips in, and so the two can
+// never disagree about what a British spelling is.
+const BRITISH = new RegExp(`\\b(?:${
+  fs.readFileSync(path.join(ROOT, 'verify', 'british-words.txt'), 'utf8')
+    .split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith('//')).join('|')
+})\\b`, 'gi');
 let voice = 0;
 for (const f of html) {
   const text = read(f).replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<[^>]+>/g, ' ');

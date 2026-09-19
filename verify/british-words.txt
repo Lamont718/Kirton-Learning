@@ -1,0 +1,115 @@
+// The word list for verify/american-english.mjs, kept in its own file on
+// purpose.
+//
+// The gate cannot hold this list inside itself. A checker whose source spells
+// out every word it bans is a file that must be exempted from its own sweep,
+// and an exempt file is a place British spelling can live forever — which is
+// the exact shape of the bug this gate exists to stop. So the list lives here,
+// the gate sweeps its own source like everything else, and the only file
+// excused is this one. Nothing can hide here: the gate asserts that every line
+// is either a comment or a single lowercase pattern.
+//
+// One pattern per line. [a-z]* is allowed for endings (colour, colours,
+// coloured, colouring). Matched case-insensitively, on word boundaries.
+//
+// Add a word the day it bites, not the day it is imagined.
+
+// -our
+colour[a-z]*
+behaviour[a-z]*
+favour[a-z]*
+honour[a-z]*
+labour[a-z]*
+neighbour[a-z]*
+flavour[a-z]*
+humour[a-z]*
+rumour[a-z]*
+savour[a-z]*
+endeavour[a-z]*
+harbour[a-z]*
+vapour[a-z]*
+
+// -ise / -isation. Spelled out rather than matched as a suffix: a \w+ise
+// pattern would swallow promise, exercise, advise, franchise and supervise.
+organise[a-z]*
+organisation[a-z]*
+recognise[a-z]*
+realise[a-z]*
+apologise[a-z]*
+prioritise[a-z]*
+customise[a-z]*
+optimise[a-z]*
+summarise[a-z]*
+utilise[a-z]*
+normalise[a-z]*
+specialise[a-z]*
+emphasise[a-z]*
+minimise[a-z]*
+maximise[a-z]*
+categorise[a-z]*
+standardise[a-z]*
+personalise[a-z]*
+authorise[a-z]*
+memorise[a-z]*
+criticise[a-z]*
+analyse[a-z]*
+analysing
+[a-z]+isation
+
+// -re
+centre[a-z]*
+theatre[a-z]*
+litre[a-z]*
+metre[a-z]*
+fibre[a-z]*
+calibre[a-z]*
+
+// -ce
+defence[a-z]*
+offence[a-z]*
+pretence[a-z]*
+licence[a-z]*
+practise[a-z]*
+
+// doubled l
+travelled
+travelling
+labelled
+labelling
+modelled
+modelling
+marvellous
+counsellor[a-z]*
+jewellery
+cancelling
+
+// single l
+fulfil
+fulfils
+fulfilment
+enrolment
+instalment
+skilful
+wilful
+
+// the rest, each one added because it turned up
+programme[a-z]*
+maths
+grey
+whilst
+learnt
+spelt
+storey
+cheque
+kerb
+tyre
+pyjamas
+aeroplane
+aluminium
+sceptic[a-z]*
+mould[a-z]*
+draught
+plough
+judgement[a-z]*
+acknowledgement[a-z]*
+per cent

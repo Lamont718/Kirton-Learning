@@ -53,7 +53,7 @@ label.field{display:block;font-weight:700;margin:14px 0 6px}
 .pill{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--ink);
   border-radius:999px;padding:4px 11px;font-size:.8rem;font-weight:800}
 .pill.warm{background:var(--warm-soft)}
-.pill.grey{background:#efeae2;color:var(--muted)}
+.pill.gray{background:#efeae2;color:var(--muted)}
 .pill.due{background:var(--warm-soft);color:#7a4522}
 .goalcard{border-left:3px solid var(--accent)}
 .verbatim{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;line-height:1.6;
@@ -275,18 +275,18 @@ function viewHome (c) {
     return `
     <div class="card goalcard">
       <div class="row">
-        <span class="pill grey">${esc(g.area || 'Goal')}</span>
+        <span class="pill gray">${esc(g.area || 'Goal')}</span>
         <span class="grow"></span>
         ${st.met ? `<span class="pill">✓ At criterion</span>`
           : st.probes.length ? `<span class="pill warm">${st.passing} of ${st.window.length} at ${Math.round(g.accuracy * 100)}%</span>`
-          : `<span class="pill grey">No checks yet</span>`}
+          : `<span class="pill gray">No checks yet</span>`}
       </div>
       <h3 style="margin-top:10px">${esc(shortGoal(g.text))}</h3>
       <p class="muted small" style="margin:2px 0 0">Needs ${esc(criterionText(g))}</p>
       <div class="dots">${st.window.map(e => `<span class="d ${passed(e, g) ? 'pass' : 'miss'}"></span>`).join('')
         }${Array.from({ length: Math.max(0, g.outOf - st.window.length) }, () => '<span class="d"></span>').join('')}</div>
       <p class="small" style="margin:10px 0 0">
-        <span class="pill ${d.state === 'ok' ? 'grey' : 'due'}">${esc(d.label)}</span>
+        <span class="pill ${d.state === 'ok' ? 'gray' : 'due'}">${esc(d.label)}</span>
         <span class="muted"> · checked every ${g.everyDays || 7} days</span></p>
       ${flat ? `<div class="flag"><strong>Four checks in a row below the mark.</strong>
         That is a signal to change how it is being taught — not to change the goal, and not something
@@ -376,7 +376,7 @@ function openLog (goalId, entryId) {
         We worked on it<span class="sub">Helped. Worth keeping, never scored.</span></button>
     </div>
     <div id="leak" class="note" style="margin-top:10px">
-      Use something she has <strong>not just practised</strong>. If you check her on this week's own
+      Use something she has <strong>not just practiced</strong>. If you check her on this week's own
       words, the number measures the practice, not what she can do cold.
     </div>
     <div class="row" style="margin-top:12px;align-items:flex-end">
@@ -458,7 +458,7 @@ function viewGoals (c) {
 
   ${goalsOf(c).map(g => `
     <div class="card goalcard">
-      <div class="row"><span class="pill grey">${esc(g.area || 'Goal')}</span><span class="grow"></span>
+      <div class="row"><span class="pill gray">${esc(g.area || 'Goal')}</span><span class="grow"></span>
         <button class="btn btn-sm" onclick="editGoal('${g.id}')">Edit</button>
         <button class="btn btn-sm" onclick="removeGoal('${g.id}')">Remove</button></div>
       <div class="verbatim" style="margin-top:10px">${esc(g.text)}</div>
@@ -829,13 +829,13 @@ function viewRecord (c) {
     const probes = st.probes, practice = entriesFor(g.id).filter(e => e.kind === 'practice')
     return `
     <div class="card">
-      <div class="row"><span class="pill grey">${esc(g.area || 'Goal')}</span><span class="grow"></span>
+      <div class="row"><span class="pill gray">${esc(g.area || 'Goal')}</span><span class="grow"></span>
         ${st.met ? '<span class="pill">✓ At criterion</span>'
           : probes.length ? `<span class="pill warm">${st.passing} of ${st.window.length} at ${Math.round(g.accuracy * 100)}%</span>`
-          : '<span class="pill grey">No checks yet</span>'}</div>
+          : '<span class="pill gray">No checks yet</span>'}</div>
       <div class="verbatim" style="margin-top:10px">${esc(g.text)}</div>
       <p class="small" style="margin:10px 0 0"><strong>Counts as met at:</strong> ${esc(criterionText(g))}</p>
-      <p class="small" style="margin:4px 0 0"><strong>Checked:</strong> every ${g.everyDays || 7} days, using material she has not just practised.</p>
+      <p class="small" style="margin:4px 0 0"><strong>Checked:</strong> every ${g.everyDays || 7} days, using material she has not just practiced.</p>
       ${g.baseline ? `<p class="small" style="margin:4px 0 0"><strong>Starting point (${esc(g.baseline.date)}):</strong> ${esc(g.baseline.note)}</p>` : ''}
       ${chart(g)}
       ${stalled(g) ? `<div class="flag"><strong>Four checks in a row below the criterion.</strong>
@@ -861,7 +861,7 @@ function viewRecord (c) {
   <div class="card small muted">
     <p style="margin:0"><strong>How to read this.</strong> Only checks the child did on her own are counted
     toward the criterion. Work an adult helped with is listed separately and never scored, because a coached
-    answer does not show what she can do alone. Checks use material she has not just practised.</p>
+    answer does not show what she can do alone. Checks use material she has not just practiced.</p>
     <p style="margin:.7rem 0 0">Where a prompt count is shown, treat it as the softest number on the page:
     the adult counting the prompts is the adult who wants the child to do well.</p>
     <p style="margin:.7rem 0 0">This was recorded at home by a parent, not by an evaluator and not under the

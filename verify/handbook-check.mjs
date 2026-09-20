@@ -193,6 +193,42 @@ for (const f of html) {
 }
 if (!voice) pass('no banned vocabulary, no clinical framing, no British spellings');
 
+// -------------------------------------------------------- headings in order
+// RESOURCE.md, under Accessibility: "Real headings in order, visible focus
+// states, full keyboard navigation, WCAG AA contrast." It says why, first:
+// "Roughly a third of parents of newly diagnosed children screen positive for
+// elevated autistic traits. The reader is often autistic, exhausted, and
+// stressed at the same time. This makes accessibility the core requirement, not
+// a compliance pass."
+//
+// ⛔ handbook.html had FIVE h2 -> h4 jumps: twenty section items tagged h4 while
+// the identical kind of item in every other section was an h3. A screen-reader
+// user navigating by heading — which is how you read a long document without
+// scrolling it — got a level that does not exist under sections that look the
+// same. The rule was written down in the spec and never checked, like the
+// analytics promise and the intake form before it.
+//
+// ★ Scripts are stripped first. The tool cards build their own markup in a
+// template string, and those h4s are CORRECT: they sit one level under their
+// card's h3. Reading the raw file without stripping counts markup that is text
+// at rest, which is the mistake that made /record's "links to the paid work"
+// check pass on a string inside a <script>.
+console.log('\nheadings in order (RESOURCE.md: accessibility is the core requirement)');
+let outline = 0;
+for (const f of html) {
+  const src = read(f).replace(/<script[\s\S]*?<\/script>/gi, ' ');
+  const levels = [...src.matchAll(/<h([1-6])\b/gi)].map((m) => Number(m[1]));
+  if (!levels.length) continue;
+  const h1s = levels.filter((l) => l === 1).length;
+  const skips = [];
+  for (let i = 1; i < levels.length; i++) {
+    if (levels[i] - levels[i - 1] > 1) skips.push(`h${levels[i - 1]}->h${levels[i]}`);
+  }
+  if (h1s !== 1) { outline++; fail('exactly one h1', `${rel(f)} — found ${h1s}`); }
+  if (skips.length) { outline++; fail('no skipped heading level', `${rel(f)} — ${skips.join(', ')} (RESOURCE.md: real headings in order)`); }
+}
+if (!outline) pass(`headings run in order on all ${html.length} pages`, 'one h1 each, no level skipped');
+
 // --------------------------------------------------------------------- done
 console.log(`\n${checks} checks passed, ${warnings} warnings, ${failures} failures\n`);
 process.exit(failures ? 1 : 0);

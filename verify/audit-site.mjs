@@ -10,6 +10,10 @@ const SITE = process.env.SITE || 'https://kirtonlearning.com'
 const PAGES = [
   '/', '/demo', '/privacy', '/terms',
   '/partner', '/refer', '/referrals', '/upload.html', '/record/',
+  // The other end of the private pipe: /upload takes the IEP in, /setup hands
+  // back the goals built from it. Both noindex, both reached only from an
+  // emailed link, and both have to stay out of the sitemap.
+  '/setup',
   // Where a family lands after paying. noindex and unlinked on purpose.
   '/welcome',
   // The handbook, merged onto this site on 2026-09-10. Reachable, deliberately

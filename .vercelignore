@@ -18,6 +18,7 @@ supabase-setup.sql
 supabase-setup-2.sql
 supabase-setup-3.sql
 supabase-setup-4.sql
+supabase-setup-5.sql
 
 # Internal docs for the free resource platform.
 # RESOURCE.md          the rules for everything under /start/

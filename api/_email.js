@@ -1,4 +1,4 @@
-// The two emails this system sends. Kept in one file so the words can be read
+// The three emails this system sends. Kept in one file so the words can be read
 // without reading the plumbing around them.
 //
 // Read VOICE.md before changing a sentence here. The short version: the reader
@@ -19,7 +19,7 @@ function esc(s) {
     .replace(/"/g, '&quot;');
 }
 
-// One plain frame for both emails. No images, no tracking pixel, no web fonts —
+// One plain frame for all of them. No images, no tracking pixel, no web fonts —
 // it has to survive a locked-down school inbox and a phone on the bus.
 function frame(bodyHtml) {
   return `<!doctype html><html><body style="margin:0;padding:24px;background:#F4F2EC;
@@ -36,7 +36,7 @@ function frame(bodyHtml) {
   </div></body></html>`;
 }
 
-// The line that matters most in both emails, and the reason it is in both:
+// The line that matters most, and the reason it is in every one of them:
 // the moment a parent learns to expect an email asking for her child's IEP is
 // the moment somebody else can send her one.
 const PHISHING_LINE =
@@ -237,4 +237,101 @@ function recordLinkEmail({ link, name, why }) {
   return { subject: 'A private link for the record', text, html };
 }
 
-module.exports = { iepLinkEmail, recordLinkEmail };
+// ---------------------------------------------------------------------------
+// 3. The setup going back — the thing she paid for
+// ---------------------------------------------------------------------------
+//
+// ⛔⛔ THIS EMAIL DOES NOT CONTAIN THE SETUP, AND THAT IS THE DESIGN.
+//
+// The setup is the goals out of her child's IEP, word for word, inside a
+// ~700-character link. Putting that in an email would hand a child's IEP goals
+// to an email provider, which CLAUDE.md forbids without Lamont saying so
+// explicitly — and it is the rule at the top of this file. So this carries a
+// short link to a page on our own site, and that page hands over the setup.
+//
+// ★ The same decision solves the thing that would have broken it anyway: email
+// clients wrap long links. A 700-character URL arrives cut in half, and a
+// setup code that is cut short is refused at the other end — correctly, and to
+// a mother who did nothing wrong.
+
+function setupLinkEmail({ link, name }) {
+  const hi = name ? `Hi ${name},` : 'Hi,';
+
+  // ⬛⬛ NOTE WHAT IS NOT IN HERE: no child's name, not even in the subject
+  // line, and not the number of goals. This template takes an email address, a
+  // first name and a link — the same three things the other two take — so the
+  // rule at the top of this file stays true of every email this system sends,
+  // including the one whose whole subject is a document full of IEP goals.
+  // A subject line is read off a lock screen by whoever is holding the phone.
+  const text = [
+    hi,
+    '',
+    "Your child's work is set up. Here is the link that puts it on their device:",
+    '',
+    link,
+    '',
+    "I have read the IEP and built the academic goals into it: each one in the document's own",
+    'words, with the work that measures it, the number it has to hit, how often it is checked,',
+    'and the accommodations the document already calls for.',
+    '',
+    'Open the link on the device the work is going to happen on. It shows you everything',
+    "first, in the IEP's own wording, and nothing is added until you press the button. If it",
+    'turns out to be the wrong device, open the same link on the right one — it adds and never',
+    'replaces, so you cannot break anything by opening it twice.',
+    '',
+    'Read the goals against your copy of the IEP before you accept them. If a single word is',
+    'off, tell me and I will fix it. Those sentences are what every number in the record gets',
+    'measured against, and they are meant to be the ones the IEP team wrote.',
+    '',
+    'The link works for seven days. If it has closed, reply and I will send a fresh one.',
+    '',
+    PHISHING_LINE,
+    '',
+    'Nothing done in the app leaves the device. No account, no password, and no copy of the',
+    'work on any server of mine — which also means I cannot see whether any of it has been',
+    'done. When we need to look at it together, you send me the record.',
+    '',
+    'Lamont Kirton',
+    'Kirton Learning',
+  ].join('\n');
+
+  const html = frame(`
+    <p style="margin:0 0 16px">${esc(hi)}</p>
+    <p style="margin:0 0 16px">Your child&rsquo;s work is set up. Here is the link that puts it
+      on their device:</p>
+    <p style="margin:0 0 20px">
+      <a href="${esc(link)}" style="display:inline-block;background:#141D2E;color:#fff;
+        text-decoration:none;padding:13px 22px;font-family:Helvetica,Arial,sans-serif;
+        font-size:16px">Set up the work</a>
+    </p>
+    <p style="margin:0 0 16px;font-size:13px;color:#5A6273;word-break:break-all">
+      If the button does not work, paste this into your browser:<br>${esc(link)}
+    </p>
+    <p style="margin:0 0 16px">I have read the IEP and built the academic goals into it: each
+      one in the document&rsquo;s own words, with the work that measures it, the number it has
+      to hit, how often it is checked, and the accommodations the document already calls
+      for.</p>
+    <p style="margin:0 0 16px"><b>Open the link on the device the work is going to happen
+      on.</b> It shows you everything first, in the IEP&rsquo;s own wording, and nothing is
+      added until you press the button. If it turns out to be the wrong device, open the same
+      link on the right one &mdash; it adds and never replaces, so you cannot break anything by
+      opening it twice.</p>
+    <p style="margin:0 0 16px">Read the goals against your copy of the IEP before you accept
+      them. If a single word is off, tell me and I will fix it. Those sentences are what every
+      number in the record gets measured against, and they are meant to be the ones the IEP
+      team wrote.</p>
+    <p style="margin:0 0 16px">The link works for seven days. If it has closed, reply and I
+      will send a fresh one.</p>
+    <p style="margin:0 0 16px;padding:12px 14px;background:#F4F2EC;border-left:3px solid #E8A33D">
+      ${esc(PHISHING_LINE)}</p>
+    <p style="margin:0 0 16px">Nothing done in the app leaves the device. No account, no
+      password, and no copy of the work on any server of mine &mdash; which also means I cannot
+      see whether any of it has been done. When we need to look at it together, you send me the
+      record.</p>
+    <p style="margin:0">Lamont Kirton<br><span style="color:#5A6273">Kirton Learning</span></p>
+  `);
+
+  return { subject: "Your child's work is set up", text, html };
+}
+
+module.exports = { iepLinkEmail, recordLinkEmail, setupLinkEmail };

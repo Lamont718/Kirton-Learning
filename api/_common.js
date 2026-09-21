@@ -145,9 +145,40 @@ function siteOrigin() {
   return (process.env.PUBLIC_ORIGIN || 'https://kirtonlearning.com').replace(/\/+$/, '');
 }
 
+// Where the child's work actually runs. A separate app, a separate deployment,
+// and deliberately not this one: it keeps nothing on a server, and the way to
+// keep that promise checkable is for it not to share a backend with anything.
+function appOrigin() {
+  return (process.env.APP_ORIGIN || 'https://kirton-learn.vercel.app').replace(/\/+$/, '');
+}
+
 function uploadLink(token, kind) {
+  // ★ A setup link points AWAY from the upload page: this is the one kind of
+  // token where the family is collecting something rather than sending it.
+  if (kind === 'setup') return setupLink(token);
   const base = `${siteOrigin()}/upload.html?t=${encodeURIComponent(token)}`;
   return kind === 'record' ? `${base}&k=record` : base;
+}
+
+// The page that hands a family the setup we built from their IEP.
+//
+// ⛔ Short on purpose, and it is the whole reason this page exists. The setup
+// itself is a ~700-character link, it holds a child's goals word for word, and
+// it may not go through an email provider (CLAUDE.md: never send IEP contents
+// to a third-party API). This URL carries a token and nothing else.
+function setupLink(token) {
+  // ⚠️ No `.html`, unlike the upload link. `cleanUrls` is on, so /setup.html is
+  // a 308 to /setup — which resolves, and which every one of these links would
+  // then travel through. A redirect inside an email is one more thing between a
+  // family and the page, and the query string riding through it is the token.
+  // The older links wear their .html for historical reasons; a new one need not.
+  return `${siteOrigin()}/setup?t=${encodeURIComponent(token)}`;
+}
+
+// The link the family finally taps, built on HER device by /setup.html — the
+// goals ride in the fragment, which no browser sends to any server.
+function joinLink(code, origin) {
+  return `${(origin || appOrigin()).replace(/\/+$/, '')}/#join=${code}`;
 }
 
 // The same token, a different page. The upload burns `used_at` and the intake
@@ -166,6 +197,9 @@ module.exports = {
   secretEquals,
   sendEmail,
   siteOrigin,
+  appOrigin,
   uploadLink,
   intakeLink,
+  setupLink,
+  joinLink,
 };

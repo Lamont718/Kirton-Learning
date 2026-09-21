@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Set up your child's work — Kirton Learning for Families</title>
+<!-- Never index a page reached by a private one-time link. -->
+<meta name="robots" content="noindex,nofollow">
+<!--
+  ⛔⛔ THIS IS THE ONE THAT MATTERS ON THIS PAGE. The button below points at
+  the work app with the child's goals in the fragment. Without this header the
+  browser would send THIS page's address — token and all — to that app's server
+  as a Referer on the way out. The link itself also carries rel="noreferrer";
+  belt and braces, because one of them is a tag somebody could tidy away.
+-->
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#141D2E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/bricolage-grotesque-800-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/source-serif-4-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<style>
+:root{
+  --ink:#141D2E;--ink-2:#25324A;--ink-3:#3F4C66;
+  --paper:#F4F2EC;--paper-2:#FBFAF7;
+  --spark:#E8A33D;--spark-deep:#94590D;
+  --line:rgba(20,29,46,.14);
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:1.0625rem;line-height:1.62;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+.wrap{width:100%;max-width:660px;margin:0 auto;padding:0 22px}
+h1,h2{font-family:var(--display);font-weight:800;line-height:1.08;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(1.8rem,5vw,2.6rem)}
+h2{font-size:1.25rem;margin:0 0 .6em}
+p{margin:0 0 1.05em}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--spark);margin:0 0 1.3rem}
+.head{background:var(--ink);color:var(--paper);padding:clamp(28px,5vw,44px) 0 clamp(40px,6vw,60px)}
+.brandbar{display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:700;font-size:1.02rem;margin-bottom:clamp(34px,6vw,54px);text-decoration:none}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--spark);flex:none}
+.head p{color:rgba(244,242,236,.85);margin:1.2rem 0 0}
+main{padding:clamp(38px,6vw,60px) 0 clamp(56px,8vw,84px)}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:28px 26px}
+.card + .card{margin-top:20px}
+.btn{display:block;width:100%;font-family:var(--display);font-weight:700;font-size:1.02rem;
+  padding:15px 30px;border-radius:4px;border:2px solid transparent;text-align:center;
+  background:var(--ink);color:var(--paper);cursor:pointer;margin-top:22px;
+  text-decoration:none;transition:.16s}
+.btn:hover{background:var(--ink-2)}
+.btn--ghost{background:#fff;color:var(--ink);border-color:var(--ink);font-size:.95rem;padding:12px 22px}
+.btn--ghost:hover{background:#fff;border-color:var(--spark-deep)}
+.steps{list-style:none;margin:18px 0 0;padding:0}
+.steps li{padding-left:26px;position:relative;margin-bottom:.7em;color:var(--ink-2)}
+.steps li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:2px;background:var(--spark-deep)}
+.note{border-left:3px solid var(--spark);padding-left:16px;margin:22px 0 0;font-size:.95rem;color:var(--ink-2)}
+.msg{border-radius:6px;padding:16px 18px;margin:0 0 22px;font-size:.97rem}
+.msg--bad{background:#FDF1F1;border:1px solid rgba(155,34,38,.35);color:#6E1013}
+.status{font-family:var(--mono);font-size:.78rem;letter-spacing:.03em;color:var(--ink-3);margin:0}
+.foot{background:var(--ink);color:var(--paper);padding:40px 0 34px}
+.legal{font-family:var(--mono);font-size:.72rem;line-height:1.75;color:rgba(244,242,236,.72)}
+.legal a{color:var(--paper)}
+.hide{display:none!important}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brandbar" href="/">
+      <span class="dot" aria-hidden="true"></span><span>Kirton Learning</span>
+    </a>
+    <p class="eyebrow">Your setup</p>
+    <h1>Your child's work is ready to put on her device.</h1>
+    <p>I have read the IEP and set up each academic goal: the wording, the work that measures
+      it, the number it has to hit, how often it is checked, and the accommodations the
+      document already asks for. This page hands that to the app. It goes to the device you
+      open this on, and nowhere else.</p>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- no token in the URL -->
+    <section id="v-notoken" class="hide">
+      <div class="msg msg--bad">This page needs the private link I emailed you. Open it from
+        that email, or <a href="mailto:lamont@kirtonlearning.com">email me</a> and I will send
+        a fresh one.</div>
+    </section>
+
+    <section id="v-load">
+      <p class="status">Reading your setup&hellip;</p>
+    </section>
+
+    <!-- the link did not work -->
+    <section id="v-err" class="hide">
+      <div class="msg msg--bad" id="err-msg" role="alert"></div>
+      <p>Nothing is wrong at your end, and nothing has been lost. Reply to the email and I will
+        send another one.</p>
+    </section>
+
+    <!-- ready -->
+    <section id="v-ready" class="hide">
+      <div class="card">
+        <h2>Open it on the device the work will happen on</h2>
+        <p>The phone, the tablet or the laptop she will actually sit with. Everything in the
+          app lives on that one device &mdash; that is the point of it, and it is why there is
+          no account and no password.</p>
+        <a class="btn" id="go" href="#" rel="noreferrer">Set up the work</a>
+        <p class="status" style="margin-top:14px">It opens the app and shows you every goal
+          first, in the IEP's own words. Nothing is added until you press the button there.</p>
+      </div>
+
+      <div class="card">
+        <h2>What it will ask you</h2>
+        <ul class="steps">
+          <li><b>Your child's first name.</b> First name only. The app never asks for a last
+            name, a school, a date of birth or an address &mdash; and the link you just opened
+            does not carry her name either.</li>
+          <li><b>Nothing else.</b> No email, no password, no account.</li>
+        </ul>
+        <p style="margin-top:18px">Read the goals against your own copy of the IEP before you
+          accept them. If one word is off, tell me and I will fix it. Those sentences are what
+          every number in her record gets measured against, and they are meant to be the ones
+          her team wrote, not mine.</p>
+      </div>
+
+      <div class="card">
+        <h2>If you are on the wrong device</h2>
+        <p>Open this same page there instead &mdash; the link in the email keeps working for
+          seven days, and setting up twice is safe: the app adds and never replaces, so a goal
+          that is already there is not put in twice.</p>
+        <button class="btn btn--ghost" id="copy" type="button">Copy the setup link</button>
+        <p class="status" style="margin-top:12px" id="copied"></p>
+        <p class="note">That copied link has her goals inside it, word for word. It is as
+          sensitive as the page of the IEP they came off &mdash; send it the way you would send
+          that page, to one person, and not into a group chat.</p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p class="legal">
+      Kirton Learning is a program of Our Rose LLC, Brooklyn, NY. Supplemental academic
+      instruction only. The work app keeps everything on your device: no account, no server,
+      and nothing about your child is sent anywhere by it.
+      <br><br>
+      <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms of service</a> ·
+      <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var show = function (id) { $(id).classList.remove('hide'); };
+  var hide = function (id) { $(id).classList.add('hide'); };
+
+  var token = new URLSearchParams(location.search).get('t') || '';
+  if (!/^[0-9a-f-]{36}$/i.test(token)) { hide('v-load'); show('v-notoken'); return; }
+
+  function fail(msg) {
+    hide('v-load');
+    $('err-msg').textContent = msg;
+    show('v-err');
+  }
+
+  fetch('/api/setup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token: token })
+  }).then(function (r) {
+    return r.json().then(function (b) { return { ok: r.ok, body: b }; });
+  }).then(function (r) {
+    if (!r.ok || !r.body || !r.body.ok || !r.body.link) {
+      fail((r.body && r.body.message) || 'That link did not work.');
+      return;
+    }
+    // ★ The whole setup is now in this page, in memory, and the only place it
+    // goes from here is the href — which the browser keeps to itself, because
+    // everything after the # is never sent to any server.
+    var link = r.body.link;
+    $('go').setAttribute('href', link);
+    hide('v-load');
+    show('v-ready');
+
+    $('copy').addEventListener('click', function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(function () {
+          $('copied').textContent = 'Copied. Paste it on the other device.';
+        }, function () {
+          window.prompt('Copy this link:', link);
+        });
+      } else {
+        // Not a failure worth hiding behind a message: hand it over.
+        window.prompt('Copy this link:', link);
+      }
+    });
+  }).catch(function () {
+    fail('I could not reach the server just now. Try the link again in a minute — nothing has been lost.');
+  });
+})();
+</script>
+</body>
+</html>

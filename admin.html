@@ -71,6 +71,9 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
 .p-used{background:rgba(20,29,46,.1);color:var(--ink-2)}
 .p-unsent{background:rgba(232,163,61,.22);color:#6B4109}
 .p-expired,.p-revoked{background:rgba(155,34,38,.1);color:#78191C}
+/* A setup that has been collected is still alive — see statusOf in api/admin.js.
+   Green, like live, because "she has it" is the good news on this desk. */
+.p-collected{background:rgba(30,111,67,.14);color:#14512F}
 .acts{display:flex;gap:5px;flex-wrap:wrap}
 .linkcell{max-width:230px}
 .linkcell button{font-family:var(--mono);font-size:.72rem;word-break:break-all;
@@ -154,6 +157,45 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
       </div>
       <p class="muted" style="margin:0">Uncheck <b>Email it now</b> to get a link you can copy and send
         another way. That is the honest option while the domain has no mailbox.</p>
+    </div>
+
+    <div class="card">
+      <h2>Send a setup</h2>
+      <p class="muted" style="margin-top:0">The other half of the job: you have read the IEP and
+        set the goals up in the work app. There, on <b>Goals</b>, press
+        <b>&ldquo;Set another device up the same way&rdquo;</b> and copy the link it makes.
+        Paste it here.</p>
+      <p class="muted" style="margin-top:0">⛔ <b>That link is never emailed.</b> It holds the
+        goals from a child&rsquo;s IEP word for word, so it stops here. The family gets a short
+        link to a page on this site, and that page hands it to their browser.</p>
+      <div class="row">
+        <div>
+          <label for="s-email">Parent email</label>
+          <input type="email" id="s-email" autocomplete="off" placeholder="parent@example.com">
+        </div>
+        <div>
+          <label for="s-name">Their first name <span class="muted">(for the greeting)</span></label>
+          <input type="text" id="s-name" autocomplete="off" placeholder="optional">
+        </div>
+        <div>
+          <label for="s-child">Child's first name <span class="muted">(label only, stays here)</span></label>
+          <input type="text" id="s-child" autocomplete="off" placeholder="optional">
+        </div>
+      </div>
+      <label for="s-code">The setup link from the work app</label>
+      <textarea id="s-code" rows="3" spellcheck="false" autocomplete="off"
+        style="width:100%;font-family:var(--mono,ui-monospace,monospace);font-size:.82rem"
+        placeholder="https://kirton-learn.vercel.app/#join=KL1.c…"></textarea>
+      <div class="row" style="align-items:center">
+        <div style="flex:0 0 auto">
+          <label class="check"><input type="checkbox" id="s-send" checked> Email it now</label>
+        </div>
+        <div style="flex:0 0 auto"><button class="btn" id="send-setup">Send the setup</button></div>
+      </div>
+      <p class="muted" style="margin:0">It is checked before it is stored: if the code was cut
+        short on the way out of the other app, this refuses it now rather than letting a mother
+        find out on a dead link next week. The number of goals is read back to you so you can
+        see it is the right child&rsquo;s setup.</p>
     </div>
 
     <div class="card">
@@ -248,6 +290,11 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
           'Open the Supabase SQL editor and run <code>supabase-setup-3.sql</code>. Until you ' +
           'do, the form tells a parent it is not open yet and stores nothing — which is ' +
           'the right failure, but it is still a closed form.'],
+        [s.migrated5, 'A setup can be handed back to a family',
+          'The setup column is there and /setup is open.',
+          'Open the Supabase SQL editor and run <code>supabase-setup-5.sql</code>. Until you ' +
+          'do, <b>Send a setup</b> refuses and says so — which is the right failure, but it ' +
+          'means the thing they paid for still has to be typed in by hand at their end.'],
         [s.stripeWebhookSecret, 'Stripe tells the site about a payment',
           'The signing secret is set. A payment issues a link on its own.',
           'In the Stripe dashboard: Developers &rarr; Webhooks &rarr; add endpoint ' +
@@ -331,7 +378,7 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
         '<td>' + esc(row.parent_email) +
           (row.plan ? '<br><span class="muted">' + esc(row.plan) + '</span>' : '') + '</td>' +
         '<td>' + esc(row.child_label || '—') + '</td>' +
-        '<td>' + (row.kind === 'record' ? 'Record' : 'IEP') +
+        '<td>' + (row.kind === 'record' ? 'Record' : row.kind === 'setup' ? 'Setup' : 'IEP') +
           '<br><span class="muted">' + esc(row.issued_by) + '</span></td>' +
         '<td><span class="pill p-' + esc(st) + '">' + esc(st) + '</span></td>' +
         '<td class="mono">' + when(row.created_at) + '</td>' +
@@ -340,19 +387,22 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
         '<td class="mono">' + when(row.used_at) + '</td>' +
         // The six questions. A dash for a record link, because there is
         // nothing to ask a family when the record is coming back.
-        '<td class="mono">' + (row.kind === 'record'
+        '<td class="mono">' + (row.kind === 'record' || row.kind === 'setup'
           ? '<span class="muted">&mdash;</span>'
           : (row.intake_at ? when(row.intake_at) : '<span class="muted">not yet</span>')) + '</td>' +
+        // ★ `collected` is not a dead status: a setup link still opens after she
+        // has used it, because she may set up a second device. Hiding the link
+        // on it would say the opposite.
         '<td class="linkcell">' + (st === 'used' || st === 'revoked' || st === 'expired'
           ? '<span class="muted">—</span>'
           : '<button data-copy="' + esc(row.link) + '" title="Copy this link">' +
             esc(row.link) + '</button>') + '</td>' +
         '<td><div class="acts">' +
-          (st === 'live' || st === 'unsent'
+          (st === 'live' || st === 'unsent' || st === 'collected'
             ? '<button class="btn btn--ghost btn--sm" data-act="resend" data-t="' + esc(row.token) + '">Resend</button>' : '') +
           (st !== 'used'
             ? '<button class="btn btn--ghost btn--sm" data-act="reissue" data-t="' + esc(row.token) + '">Reissue</button>' : '') +
-          (st === 'live' || st === 'unsent'
+          (st === 'live' || st === 'unsent' || st === 'collected'
             ? '<button class="btn btn--ghost btn--sm" data-act="revoke" data-t="' + esc(row.token) + '">Revoke</button>' : '') +
           '<button class="btn btn--ghost btn--sm" data-act="delete" data-t="' + esc(row.token) + '">Delete</button>' +
         '</div></td>' +
@@ -453,6 +503,51 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
         flash('ok', 'Issued and emailed to ' + esc(payload.email) + '.');
       }
       ['i-email', 'i-name', 'i-child', 'i-why'].forEach(function (id) { $(id).value = ''; });
+      load();
+    });
+  });
+
+  // ---- handing the setup back ----
+  $('send-setup').addEventListener('click', function () {
+    clearFlash();
+    var payload = {
+      action: 'setup',
+      email: $('s-email').value.trim(),
+      name: $('s-name').value.trim(),
+      childLabel: $('s-child').value.trim(),
+      code: $('s-code').value,
+      send: $('s-send').checked
+    };
+    if (!payload.email) { flash('bad', 'An email address is needed — it is where the link goes.'); return; }
+    if (!payload.code.trim()) { flash('bad', 'Paste the setup link from the work app.'); return; }
+
+    $('send-setup').disabled = true;
+    api(payload).then(function (r) {
+      $('send-setup').disabled = false;
+      if (!r.body || !r.body.ok) {
+        flash('bad', esc((r.body && r.body.message) || 'Could not send that.'));
+        return;
+      }
+      var link = r.body.row && r.body.row.link;
+      // ★ The goal count, every time. It is the one thing on this screen that
+      // tells him he pasted THIS child's setup and not the last one still
+      // sitting in the clipboard — a mistake nothing else here could catch,
+      // and one that would put another family's goals in front of a parent.
+      var n = r.body.goals;
+      var read = '<b>' + n + ' goal' + (n === 1 ? '' : 's') + ' in that setup' +
+        (r.body.madeOn ? ', made ' + esc(r.body.madeOn) : '') + '.</b> ';
+      if (r.body.sent === false && r.body.sendError) {
+        flash('warn', read + '<b>Stored. The email did NOT go:</b> ' + esc(r.body.sendError) +
+          '<br>Send them this link another way:<br><code>' + esc(link) + '</code>');
+      } else if (r.body.sent === false) {
+        flash('ok', read + 'Stored, not emailed — as asked.<br><code>' + esc(link) + '</code>');
+      } else {
+        flash('ok', read + 'Emailed to ' + esc(payload.email) + '.');
+      }
+      // ⛔ The pasted code is cleared whatever happened. Leaving a child's goals
+      // sitting in a textarea on an unlocked laptop is the same mistake as
+      // leaving the IEP open on the screen.
+      ['s-email', 's-name', 's-child', 's-code'].forEach(function (id) { $(id).value = ''; });
       load();
     });
   });

@@ -14,7 +14,8 @@
 const {
   reject, supabase, parseJson, secretEquals, sendEmail, uploadLink, intakeLink, siteOrigin,
 } = require('./_common');
-const { iepLinkEmail, recordLinkEmail } = require('./_email');
+const { iepLinkEmail, recordLinkEmail, setupLinkEmail } = require('./_email');
+const { readSetupCode } = require('./_setup-code');
 
 // Every column the admin page shows. `token` is in here on purpose: it lets him
 // copy a working link and hand it over another way when email is down — which,
@@ -37,12 +38,21 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // What the row means, worked out in one place so the page and the API can never
 // disagree about whether a link is alive.
 function statusOf(row) {
-  if (row.used_at) return 'used';
+  // ★★ A setup link is the one kind that does not die when it is used. The
+  // other two exist to receive a file, so the file arriving is the end of
+  // them. This one exists to HAND something over, and a mother may collect it
+  // on the phone today and the tablet on Saturday — the work app is built to
+  // let her. So `used_at` here means "she has collected it", which is a live
+  // link with good news on it, not a spent one.
+  if (row.used_at) return row.kind === 'setup' ? 'collected' : 'used';
   if (row.revoked_at) return 'revoked';
   if (new Date(row.expires_at).getTime() < Date.now()) return 'expired';
   if (!row.sent_at) return 'unsent';
   return 'live';
 }
+
+// The three the family can still open. Anything else needs a fresh link.
+const ALIVE = ['live', 'unsent', 'collected'];
 
 function decorate(row) {
   return {
@@ -57,6 +67,7 @@ function decorate(row) {
 
 async function mailFor(row, name, why) {
   const link = uploadLink(row.token, row.kind);
+  if (row.kind === 'setup') return setupLinkEmail({ link, name });
   return row.kind === 'record'
     ? recordLinkEmail({ link, name, why })
     : iepLinkEmail({ link, name, intake: intakeLink(row.token) });
@@ -121,6 +132,14 @@ module.exports = async (req, res) => {
       // table does not, and it is the table the form actually needs.
       const probe3 = await rest('/rest/v1/upload_tokens?select=intake_at&limit=1', { method: 'GET' });
       const probeIntakes = await rest('/rest/v1/intakes?select=token&limit=1', { method: 'GET' });
+      // Part 5 is the setup handoff. ★★ Two things have to be true and only one
+      // of them is a column: the column has to exist AND `kind` has to allow
+      // 'setup'. A check constraint that still reads (iep, record) accepts
+      // every select and refuses every insert — so the probe writes nothing and
+      // asks PostgREST to filter on the value instead, which the constraint
+      // does not police. The insert in the `setup` action names the file if it
+      // fails anyway, because a probe proves the shape and not the write.
+      const probe5 = await rest('/rest/v1/upload_tokens?select=setup_code&limit=1', { method: 'GET' });
       let mailReady = false;
       if (process.env.RESEND_API_KEY && process.env.MAIL_FROM) {
         // Ask the provider whether the domain in MAIL_FROM can actually send.
@@ -156,6 +175,8 @@ module.exports = async (req, res) => {
         migrated: probe.ok,
         // Both halves of part 3, and the file to run if either is false.
         migrated3: probe3.ok && probeIntakes.ok,
+        // Part 5: can a setup be stored and handed back at all?
+        migrated5: probe5.ok,
         apexMx,
         stripeWebhookSecret: !!process.env.STRIPE_WEBHOOK_SECRET,
         resendKey: !!process.env.RESEND_API_KEY,
@@ -241,6 +262,88 @@ module.exports = async (req, res) => {
     }
 
     // -----------------------------------------------------------------------
+    // ★★★ HANDING BACK THE THING THEY PAID FOR.
+    //
+    // Reading the IEP and choosing — the engine per academic goal, the
+    // criterion in the document's own words, the cadence, the accommodations —
+    // is the product. It is done in the work app, which then makes a link that
+    // carries the whole setup inside it. This takes that link, keeps it here,
+    // and emails the family a short one instead.
+    //
+    // ⛔⛔ THE PASTED LINK IS NEVER EMAILED. It holds a child's IEP goals word
+    // for word, and CLAUDE.md forbids putting IEP contents through a
+    // third-party API. The code stops here, in the same private table the IEP
+    // tokens already live in; /api/setup hands it to the family's own browser.
+    if (action === 'setup') {
+      const email = String(body.email || '').trim();
+      const name = String(body.name || '').trim().slice(0, 40) || null;
+      const childLabel = String(body.childLabel || '').trim().slice(0, 60) || null;
+      const send = body.send !== false;
+
+      if (!EMAIL_RE.test(email) || email.length > 200) {
+        return reject(res, 400, 'That does not look like an email address.');
+      }
+      if (childLabel && /\s/.test(childLabel)) {
+        return reject(res, 400, 'Child label is a first name only — no spaces.');
+      }
+
+      // ★★★ Checked HERE, at the paste, because this is the last moment the
+      // failure is cheap. A code that got cut short still looks like a code;
+      // stored unchecked, the next person to find out is a mother whose link
+      // opens on a refusal, days later, with nothing she can do about it.
+      const read = readSetupCode(body.code);
+      if (!read.ok) return reject(res, 400, read.why);
+
+      const insert = await rest('/rest/v1/upload_tokens', {
+        method: 'POST',
+        headers: { Prefer: 'return=representation' },
+        body: JSON.stringify({
+          parent_email: email,
+          child_label: childLabel,
+          kind: 'setup',
+          issued_by: 'admin',
+          setup_code: read.code,
+        }),
+      });
+      if (!insert.ok) {
+        // By far the likeliest cause, and it is one line of SQL: the column and
+        // the third `kind` both arrive with part 5. Say that rather than
+        // handing him a PostgREST error about a constraint.
+        return reject(res, 502,
+          `Could not store the setup (${insert.status}). If this is the first one: run ` +
+          'supabase-setup-5.sql in the Supabase SQL editor.');
+      }
+      const rows = await insert.json();
+      const row = Array.isArray(rows) ? rows[0] : rows;
+      if (!row || !row.token) return reject(res, 502, 'Token row came back empty.');
+
+      if (!send) {
+        const back = await oneRow(row.token);
+        return res.status(200).json({ ok: true, row: decorate(back.row || row), sent: false, goals: read.goals });
+      }
+
+      const mail = await mailFor(row, name);
+      const out = await sendEmail({ to: email, subject: mail.subject, text: mail.text, html: mail.html });
+      if (out.ok) {
+        await rest(`/rest/v1/upload_tokens?token=eq.${encodeURIComponent(row.token)}`, {
+          method: 'PATCH',
+          body: JSON.stringify({ sent_at: new Date().toISOString(), send_count: 1 }),
+        });
+      }
+      const back = await oneRow(row.token);
+      return res.status(200).json({
+        ok: true,
+        row: decorate(back.row || row),
+        sent: out.ok,
+        sendError: out.ok ? null : out.error,
+        // ★ Said back to him so he can see he pasted the right child's setup.
+        // Counted from the code in memory and never written to the database.
+        goals: read.goals,
+        madeOn: read.madeOn,
+      });
+    }
+
+    // -----------------------------------------------------------------------
     // Same link, sent again. For "it went to spam" — not for a dead link.
     if (action === 'resend') {
       const token = String(body.token || '');
@@ -251,7 +354,7 @@ module.exports = async (req, res) => {
       const row = got.row;
 
       const status = statusOf(row);
-      if (status !== 'live' && status !== 'unsent') {
+      if (!ALIVE.includes(status)) {
         return reject(res, 409, `That link is ${status}. Use Reissue to make a fresh one.`);
       }
 
@@ -291,6 +394,26 @@ module.exports = async (req, res) => {
         });
       }
 
+      // ⛔ A reissued SETUP has to carry the setup with it. Without this the
+      // replacement is a link to an empty page, sent to a family who already
+      // told him the first one had expired — and the desk would report it as
+      // sent. `setup_code` is not in COLUMNS on purpose (the desk never
+      // displays a child's goals), so it is fetched here and only here.
+      let carried = null;
+      if (old.kind === 'setup') {
+        const r = await rest(
+          `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}&select=setup_code`,
+          { method: 'GET' }
+        );
+        const got = r.ok ? await r.json() : null;
+        carried = Array.isArray(got) && got[0] ? got[0].setup_code : null;
+        if (!carried) {
+          return reject(res, 409,
+            'That setup row has no code on it, so a replacement would be an empty link. ' +
+            'Make a fresh setup link in the work app and use "Send a setup" instead.');
+        }
+      }
+
       const insert = await rest('/rest/v1/upload_tokens', {
         method: 'POST',
         headers: { Prefer: 'return=representation' },
@@ -300,6 +423,7 @@ module.exports = async (req, res) => {
           kind: old.kind,
           plan: old.plan,
           issued_by: 'admin',
+          ...(carried ? { setup_code: carried } : {}),
           // ⛔ stripe_session_id is deliberately NOT copied. It is UNIQUE, so
           // copying it would fail — and it should: it records which payment the
           // ORIGINAL link came from, and there is only ever one of those.

@@ -286,6 +286,7 @@ td:first-child{font-weight:600;color:var(--ink);white-space:nowrap;padding-right
       <tbody>
         <tr><td>Your child's IEP</td><td><strong>12 months after your child's plan year ends</strong>, then deleted automatically</td></tr>
         <tr><td>Intake answers</td><td>Same as the IEP — 12 months after the plan year ends</td></tr>
+        <tr><td>The setup I send you for the work app</td><td>The goals I built from the IEP, in the same private database, so the link I email can hand them to your device. <strong>Deleted with everything else on request</strong>, and the link stops working after 7 days either way.</td></tr>
         <tr><td>The Blueprint and Log</td><td>Kept while you're an active family, so you can request a copy. Deleted on request at any time.</td></tr>
         <tr><td>Your email and contact details</td><td>Until you ask me to remove them, or 24 months after our last contact</td></tr>
         <tr><td>Payment and tax records</td><td>7 years, because tax law requires it. These are invoices and amounts — never IEP contents.</td></tr>
@@ -296,14 +297,14 @@ td:first-child{font-weight:600;color:var(--ink);white-space:nowrap;padding-right
     <h2>How to have your data deleted</h2>
     <p>Email <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a> with the word <strong>Delete</strong> and your child's first name. You don't have to give a reason and it won't affect anything you've paid for.</p>
     <ul>
-      <li>I delete the IEP and the intake answers from storage.</li>
+      <li>I delete the IEP, the intake answers, and the setup built from the goals, from storage.</li>
       <li>I confirm it to you <strong>in writing within 30 days</strong>, and usually much faster.</li>
       <li>The only things I keep are payment and tax records I'm legally required to hold, which contain no IEP content.</li>
     </ul>
     <p>You can also ask me for a copy of everything I hold on you, or ask me to correct something that's wrong. Same address, same 30 days.</p>
 
     <h2>Security</h2>
-    <p>These are the controls the intake system runs on today: files encrypted in transit and at rest; a private storage bucket that is not publicly listable or publicly readable, with row-level access rules that grant the public nothing; uploads through signed links that expire in ten minutes; the upload page gated by a one-time token that dies on first use or after 7 days. The file size and file type limits are enforced by the storage system itself, not just by the page, so a bad request can't get around them. Credentials live in environment variables, never in code.</p>
+    <p>These are the controls the intake system runs on today: files encrypted in transit and at rest; a private storage bucket that is not publicly listable or publicly readable, with row-level access rules that grant the public nothing; uploads through signed links that expire in ten minutes; the upload page gated by a one-time token that dies on first use or after 7 days. The link that hands you your setup works the same way except that it does not die when you use it — you may well need it on a second device — so it expires after 7 days instead, and I can close it sooner. The file size and file type limits are enforced by the storage system itself, not just by the page, so a bad request can't get around them. Credentials live in environment variables, never in code.</p>
     <p>No system is perfectly secure and I won't pretend otherwise. If a breach ever affected your child's information, I would tell you directly and promptly — by email and by phone if I have your number — along with what happened and what I was doing about it.</p>
 
     <h2>Children's privacy</h2>

@@ -32,11 +32,23 @@ const pass = (what, detail) => { checks++; console.log(`  ok    ${what}${detail 
 const rel = p => path.relative(ROOT, p).replace(/\\/g, '/');
 const read = p => fs.readFileSync(p, 'utf8');
 
-// The five that must never carry a beacon. /upload has a one-time token in
-// its query string, /intake is the six questions about a child, /ask is where she writes her
-// question in her own words, /admin is the back office, and the design doc is not served at all.
-const NEVER = ['upload.html', 'intake.html', 'ask.html', 'admin.html', 'docs/platform-design.html'];
+// ⛔⛔ THIS WAS A LIST OF FIVE FILENAMES, KEPT HERE BY HAND. A sixth private
+// page (/setup, which hands a family the goals built from their IEP) was added
+// on 2026-09-21 and this file did not know — so the suite demanded that the one
+// page in the product that knows which family is looking at it should start
+// carrying a beacon.
+//
+// ★★★ The page says what it is now, and this derives the set from that:
+// `<meta name="kl-audience" content="one-family">`. Same move as the
+// not-english markers — the file marks itself rather than a checker holding a
+// list of filenames it half-trusts.
+//
+// ★★ And a marker can be deleted, so the derivation has a FLOOR: the pages
+// whose beacon would be worst are named below and must still be in the derived
+// set. Deleting a marker fails here; it cannot quietly make a page public.
 const TAG = '/analytics.js';
+const MARKER = /<meta\s+name="kl-audience"\s+content="one-family">/i;
+const FLOOR = ['upload.html', 'intake.html', 'ask.html', 'admin.html'];
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -92,6 +104,8 @@ if (!fs.existsSync(LOADER)) {
     ['/upload/', '?t=abc123'],
     ['/welcome', '?session_id=cs_live_123'],
     ['/', '?token=abc123'],
+    ['/setup', '?t=abc123'],
+    ['/setup', ''],
   ];
   const mustLoad = [['/', ''], ['/demo', ''], ['/handbook', ''], ['/welcome', ''], ['/start/', ''], ['/record/', '']];
 
@@ -112,6 +126,14 @@ if (!fs.existsSync(LOADER)) {
 
 // -------------------------------------------------------------- the pages
 console.log('\nthe pages');
+const NEVER = pages.filter((p) => MARKER.test(read(p))).map(rel);
+
+// The floor, first: if a marker has been deleted, everything below this reads
+// as "that page is public now" and would go green on the wrong answer.
+const lost = FLOOR.filter((f) => !NEVER.includes(f));
+if (lost.length) fail('every page that can identify one family still says so', `no kl-audience marker on: ${lost.join(', ')}`);
+else pass('every page that can identify one family still says so', `${NEVER.length} marked: ${NEVER.join(', ')}`);
+
 const missing = [], wrongly = [];
 for (const p of pages) {
   const r = rel(p);

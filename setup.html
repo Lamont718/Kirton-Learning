@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Set up your child's work — Kirton Learning for Families</title>
 <!-- Never index a page reached by a private one-time link. -->
+<!-- ★★ THE PAGE SAYS WHAT IT IS, so no test has to keep a list. This one is
+     reached with a token or a key, so it can identify ONE family — which is
+     exactly the page that must never load a measurement beacon.
+     verify/analytics.mjs derives the no-beacon set from this marker. -->
+<meta name="kl-audience" content="one-family">
 <meta name="robots" content="noindex,nofollow">
 <!--
   ⛔⛔ THIS IS THE ONE THAT MATTERS ON THIS PAGE. The button below points at

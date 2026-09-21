@@ -53,6 +53,10 @@ authorise[a-z]*
 memorise[a-z]*
 criticise[a-z]*
 analyse[a-z]*
+// ★ The prefix matters here: a phone attribute is autocapitalize, and the
+// British form turns up as autocapitalises in a comment about it — which a
+// word-boundary match on capitalise would walk straight past.
+[a-z]*capitalise[a-z]*
 analysing
 [a-z]+isation
 

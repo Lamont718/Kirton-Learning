@@ -286,8 +286,22 @@ if (process.argv.includes('--prod')) {
       check('★ and the refusal gives nothing away about which tokens exist',
         /not valid, or it has expired/.test(b.message || ''), b.message || '');
     } else if (r.status === 503) {
-      check('⛔ /api/setup answered 503 — Supabase is not configured, OR supabase-setup-5.sql ' +
-        'has not been run. Open /admin and read the status panel.', false, JSON.stringify(b));
+      // ★★★★ 503 has TWO causes and they need different actions, so ask the
+      // endpoint next door. /api/upload-url reads the same database with the
+      // same credentials and needs nothing from part 5: if IT can refuse a fake
+      // token, Supabase is wired and the only thing missing is the migration.
+      // Guessing between the two is what the 09-09 probe was invented to stop.
+      const other = await fetch(`${origin}/api/upload-url`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: fake, filename: 'x.pdf', size: 100, type: 'application/pdf' }),
+      }).then((x) => x.status).catch(() => 0);
+      check(other === 403
+        ? '⏳ NOT AN OUTAGE: Supabase is wired (the upload endpoint refuses a fake token ' +
+          'properly) and /api/setup is 503, so supabase-setup-5.sql has NOT been run yet. ' +
+          'Open the Supabase SQL editor and run it — nothing else is missing.'
+        : `⛔ /api/setup is 503 AND /api/upload-url answered ${other} — this is the database ` +
+          'connection itself, not the migration.', false, JSON.stringify(b));
     } else {
       check(`/api/setup answered ${r.status}`, false, JSON.stringify(b).slice(0, 200));
     }
@@ -302,4 +316,7 @@ if (process.argv.includes('--prod')) {
 }
 
 console.log(`\n  ${pass} passed, ${fail} failed\n`);
-process.exit(fail ? 1 : 0);
+// ⚠️ Not process.exit(): on Windows, killing the loop while a fetch handle is
+// still closing prints a libuv assertion AFTER the summary, which reads like
+// the suite itself crashed. Set the code and let it end on its own.
+process.exitCode = fail ? 1 : 0;

@@ -273,6 +273,58 @@ console.log('\n=== the list, and the one status that is alive despite being used
     rows.every((r) => r.acts.includes('delete')))
 }
 
+console.log('\n=== ★★★ reading what a family sent — step 1 of the setup ===')
+{
+  // Until 2026-10-07 the desk could delete an uploaded IEP and could not open one.
+  const T = 'cccccccc-3333-4333-8333-cccccccccccc'
+  await ev(`window.__reply = (b) => b.action === 'list'
+    ? { json: { ok: true, rows: [
+        { token: '${T}', parent_email: 'c@example.com', child_label: 'Bo', kind: 'iep',
+          status: 'used', issued_by: 'stripe', created_at: '2026-10-01T10:00:00Z',
+          sent_at: '2026-10-01T10:01:00Z', used_at: '2026-10-02T12:00:00Z', send_count: 1,
+          object_path: '${T}/iep.pdf', intake_at: '2026-10-02T12:05:00Z',
+          link: 'https://kirtonlearning.com/upload?t=${T}' },
+        { token: 'dddddddd-4444-4444-8444-dddddddddddd', parent_email: 'd@example.com',
+          child_label: null, kind: 'iep', status: 'live', issued_by: 'stripe',
+          created_at: '2026-10-03T10:00:00Z', sent_at: '2026-10-03T10:01:00Z', send_count: 1,
+          link: 'https://kirtonlearning.com/upload?t=dddddddd-4444-4444-8444-dddddddddddd' }] } }
+    : b.action === 'open'
+      ? { json: { ok: true, url: 'https://x.supabase.co/storage/v1/object/sign/ieps/${T}/iep.pdf?token=SIG', expiresIn: 60 } }
+    : b.action === 'intake'
+      ? { json: { ok: true, intake: { child_first_name: 'Bo', grade: '3',
+          interests: 'Trains <img src=x onerror="window.__pwned=1">', going_well: 'Counting',
+          whats_hard: '', best_contact: 'Text after 6', submitted_at: '2026-10-02T12:05:00Z' } } }
+    : { json: { ok: true } }`)
+  await ev(`document.querySelector('#refresh').click()`); await sleep(500)
+  const acts = JSON.parse(await ev(`JSON.stringify([...document.querySelectorAll('tbody tr')].map(tr =>
+    [...tr.querySelectorAll('[data-act]')].map(b => b.dataset.act)))`))
+  check('★★★ a row with an uploaded document can be OPENED', acts[0]?.includes('open'), JSON.stringify(acts[0]))
+  check('★★ and a row with an intake can show it', acts[0]?.includes('intake'))
+  check('⛔ a row with nothing uploaded offers neither',
+    !acts[1]?.includes('open') && !acts[1]?.includes('intake'), JSON.stringify(acts[1]))
+
+  await ev(`window.__calls = []; window.__opened = 0; window.open = () => { window.__opened++ }`)
+  await ev(`document.querySelector('[data-act="open"]').click()`); await sleep(400)
+  const call = JSON.parse(await ev(`JSON.stringify(window.__calls.find(c => c.body.action === 'open') ?? null)`))
+  check('★ it asks for that row, by token', call?.body.token === T, JSON.stringify(call?.body ?? null))
+  const a = JSON.parse(await ev(`JSON.stringify((() => { const l = document.querySelector('#flash a');
+    return l && { href: l.href, target: l.target, rel: l.rel } })())`))
+  check('★★★ it hands over a link to the document', /sign\/ieps\/.*SIG/.test(a?.href ?? ''), JSON.stringify(a))
+  check('⛔ that tells the store nothing about this page', /noreferrer/.test(a?.rel ?? '') && a?.target === '_blank')
+  check('⛔ and is a link, not a popup a browser would silently block', (await ev(`window.__opened`)) === 0)
+  check('★ it says the link is short-lived', /60 seconds/.test(await ev(`document.querySelector('#flash').textContent`)))
+  check('★ a read-only action does not reload the list',
+    !(await ev(`window.__calls.some(c => c.body.action === 'list')`)))
+
+  await ev(`document.querySelector('[data-act="intake"]').click()`); await sleep(400)
+  const box = await ev(`document.querySelector('#flash').textContent`)
+  check('★★★ the six answers are on screen, interests first — the build starts there',
+    /Bo, 3/.test(box) && box.indexOf('Trains') < box.indexOf('Counting') && /Text after 6/.test(box), box.slice(0, 200))
+  check('★ a blank answer says so instead of vanishing', /left blank/.test(box))
+  check('⛔⛔ a parent\'s words are shown as text, never run as HTML',
+    (await ev(`!window.__pwned && !document.querySelector('#flash img')`)) === true)
+}
+
 check('no script errors on any of it', errors.length === 0, errors.slice(0, 2).join(' | '))
 
 console.log(`\n  ${pass} passed, ${fail} failed\n`)

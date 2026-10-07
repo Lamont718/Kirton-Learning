@@ -403,6 +403,11 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
           : '<button data-copy="' + esc(row.link) + '" title="Copy this link">' +
             esc(row.link) + '</button>') + '</td>' +
         '<td><div class="acts">' +
+          // Reading what a family sent comes first: it is step 1 of the setup.
+          (row.object_path
+            ? '<button class="btn btn--ghost btn--sm" data-act="open" data-t="' + esc(row.token) + '">Open</button>' : '') +
+          (row.intake_at
+            ? '<button class="btn btn--ghost btn--sm" data-act="intake" data-t="' + esc(row.token) + '">Intake</button>' : '') +
           (st === 'live' || st === 'unsent' || st === 'collected'
             ? '<button class="btn btn--ghost btn--sm" data-act="resend" data-t="' + esc(row.token) + '">Resend</button>' : '') +
           (st !== 'used'
@@ -461,6 +466,30 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
       btn.disabled = false;
       if (!r.body || !r.body.ok) {
         flash('bad', esc((r.body && r.body.message) || 'That did not work.'));
+        return;
+      }
+      // Read-only actions: show the answer, do not reload the list.
+      // ⛔ A link, not window.open — a popup opened after an await is blocked,
+      // and a blocked popup looks exactly like a button that does nothing.
+      // noreferrer: the store is told nothing about this page.
+      if (act === 'open') {
+        flash('ok', '<a href="' + esc(r.body.url) + '" target="_blank" rel="noopener noreferrer">' +
+          '<b>Open the document</b></a> &mdash; this link stops working in ' +
+          esc(r.body.expiresIn) + ' seconds. Press Open again for a fresh one.');
+        return;
+      }
+      if (act === 'intake') {
+        var q = r.body.intake || {};
+        var line = function (label, v) {
+          return '<p style="margin:.45rem 0"><b>' + label + '</b><br>' +
+            (v ? esc(v) : '<span class="muted">left blank</span>') + '</p>';
+        };
+        flash('ok', '<b>Intake &mdash; ' + esc(q.child_first_name) + ', ' + esc(q.grade) + '</b>' +
+          line('What they are into', q.interests) +
+          line('Going well', q.going_well) +
+          line('Hard', q.whats_hard) +
+          line('Best way to reach them', q.best_contact) +
+          '<p class="muted" style="margin:.45rem 0 0">Sent ' + when(q.submitted_at) + '</p>');
         return;
       }
       if (r.body.sent === false && r.body.sendError) {

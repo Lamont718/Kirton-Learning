@@ -4,7 +4,7 @@
 // editor and writing an INSERT by hand at nine at night, and answering "did she
 // ever get it?" meant guessing.
 //
-// Actions: list · issue · resend · reissue · revoke
+// Actions: status · list · issue · setup · resend · reissue · revoke · delete · open · intake
 //
 // Locked by ADMIN_KEY, a shared secret in the Vercel env, sent as a header. Not
 // a login: there is exactly one person on this side and a password table for one
@@ -519,6 +519,60 @@ module.exports = async (req, res) => {
       }
 
       return res.status(200).json({ ok: true, deleted: token, fileRemoved: !!row.object_path });
+    }
+
+    // -----------------------------------------------------------------------
+    // Read the document a family sent.
+    //
+    // The setup steps begin "1. Read the IEP", and until this existed the desk
+    // could DELETE an uploaded document but not open one — reading it meant the
+    // Supabase dashboard. This hands back a signed URL to the private bucket that
+    // dies in 60 seconds: long enough to click, too short to be worth anything
+    // if it lands in a browser history or a screenshot.
+    //
+    // ⛔ The document never passes through this server. Nothing is read, parsed
+    // or copied here; the only thing in the answer is where to fetch it, from the
+    // store it already lives in. No new party is ever handed the file.
+    if (action === 'open') {
+      const token = String(body.token || '');
+      if (!UUID_RE.test(token)) return reject(res, 400, 'That is not a token.');
+
+      const got = await oneRow(token);
+      if (got.error) return reject(res, 404, got.error);
+      if (!got.row.object_path) return reject(res, 404, 'Nothing has been uploaded on this link.');
+
+      const path = got.row.object_path.split('/').map(encodeURIComponent).join('/');
+      const s = await rest(`/storage/v1/object/sign/ieps/${path}`, {
+        method: 'POST',
+        body: JSON.stringify({ expiresIn: 60 }),
+      });
+      if (!s.ok) return reject(res, 502, `Could not open the document (${s.status}).`);
+      const j = await s.json();
+      const signed = j.signedURL || j.signedUrl;
+      if (!signed) return reject(res, 502, 'The store answered without a link.');
+      // Storage answers with a path relative to /storage/v1.
+      const url = /^https?:/.test(signed)
+        ? signed
+        : `${process.env.SUPABASE_URL.replace(/\/+$/, '')}/storage/v1${signed}`;
+      return res.status(200).json({ ok: true, url, expiresIn: 60 });
+    }
+
+    // -----------------------------------------------------------------------
+    // The six answers. The desk showed WHEN a family filled the form in, never
+    // what they said — and "what they're into" is where the build starts.
+    if (action === 'intake') {
+      const token = String(body.token || '');
+      if (!UUID_RE.test(token)) return reject(res, 400, 'That is not a token.');
+
+      const r = await rest(
+        `/rest/v1/intakes?token=eq.${encodeURIComponent(token)}` +
+          '&select=child_first_name,grade,going_well,whats_hard,interests,best_contact,submitted_at',
+        { method: 'GET' }
+      );
+      if (!r.ok) return reject(res, 502, `Could not read the intake (${r.status}).`);
+      const rows = await r.json();
+      if (!Array.isArray(rows) || !rows[0]) return reject(res, 404, 'This family has not filled the intake in yet.');
+      return res.status(200).json({ ok: true, intake: rows[0] });
     }
 
     return reject(res, 400, 'Unknown action.');

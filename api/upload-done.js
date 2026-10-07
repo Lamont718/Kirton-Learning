@@ -9,6 +9,38 @@ function reject(res, status, message) {
   return res.status(status).json({ ok: false, message });
 }
 
+// A document arrived, and until 2026-10-07 nothing said so: the row changed on
+// /admin.html and the family waited until he happened to open it.
+//
+// ⛔ The email carries NOTHING about the family — no name, no child, no file
+// name, nothing read out of the document. Only that something came in and where
+// to look. A subject line is read off a lock screen by whoever holds the phone.
+//
+// Runs only after the token is burned, and can never fail the upload: the
+// parent's answer is the same whether this sends, fails, or is not configured.
+// That is also why _common is required HERE, lazily, rather than at the top —
+// nothing about it can break the path a paying family is standing in.
+async function tellLamont(burn) {
+  try {
+    const to = process.env.ALERT_TO || process.env.FORWARD_TO;
+    if (!to) return;
+    let kind = 'iep';
+    try { const rows = await burn.json(); kind = (rows[0] && rows[0].kind) || kind; } catch { /* keep default */ }
+    const what = kind === 'record' ? 'A family sent their record back.' : 'A family uploaded an IEP.';
+    const { sendEmail, siteOrigin } = require('./_common');
+    await sendEmail({
+      to,
+      subject: what,
+      text: [
+        what,
+        '',
+        `Open the desk: ${siteOrigin()}/admin`,
+        'Open reads the document. Intake shows the six answers, if they have filled it in.',
+      ].join('\n'),
+    });
+  } catch { /* never the parent's problem */ }
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return reject(res, 405, 'Method not allowed.');
 
@@ -67,6 +99,7 @@ module.exports = async (req, res) => {
     );
     if (!burn.ok) return reject(res, 502, 'Could not confirm the upload. Email me and I will check.');
 
+    await tellLamont(burn);
     return res.status(200).json({ ok: true });
   } catch (err) {
     return reject(res, 500, 'Something went wrong on my end. Try again shortly.');

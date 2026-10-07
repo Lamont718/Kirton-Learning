@@ -2,9 +2,12 @@
 // in api/ whose name starts with an underscore, so this is a module and not an
 // endpoint.
 //
-// api/upload-url.js and api/upload-done.js deliberately do NOT import this. They
-// are the path a paying family is already standing in, they work, and they are
-// each readable end to end in one screen. Nothing here is worth reopening them for.
+// api/upload-url.js and api/upload-done.js deliberately do NOT import this at the
+// top. They are the path a paying family is already standing in, they work, and
+// they are each readable end to end in one screen. The one exception: since
+// 2026-10-07 upload-done requires sendEmail LAZILY, after the token is burned and
+// inside a try, to tell Lamont a document arrived — nothing it does can change
+// the parent's answer.
 
 const crypto = require('crypto');
 

@@ -142,6 +142,13 @@ label.field{display:block;font-weight:700;margin:14px 0 6px}
 
 <main class="wrap" id="view"></main>
 
+<!-- Static, not rendered: a parent who arrives from a search lands on the
+     first-name screen, and every other mention of the paid work lives inside a
+     template she only reaches later. Hidden by render() once a child exists,
+     because the home view already says the same thing in context. -->
+<p class="wrap footnote noprint" id="offer-first" style="margin-top:0">If working out what to teach next is the part
+you'd rather not do alone, <a href="/#start">see what that is</a>. The record stays yours either way.</p>
+
 <script>
 /* ---------------------------------------------------------------------------
    Everything lives in this browser. There is no server, no account, and no
@@ -251,6 +258,7 @@ function render () {
     view === 'goals' ? viewGoals(c) :
     view === 'record' ? viewRecord(c) :
     viewHome(c)
+  document.getElementById('offer-first').hidden = !!c
 }
 
 function viewSetup () {

@@ -42,7 +42,7 @@ const MAX_BYTES = 1024 * 1024;
 // different message per case would make this a way to find out which exist.
 const NO = 'This device is not set up to share. Ask for a fresh setup link.';
 
-// ★ The work app moved to learn.kirtonlearning.com on 2026-10-08. A device that
+// ★ The work app moved to my.kirtonlearning.com on 2026-10-08. A device that
 // opened it at the old vercel.app address keeps its record THERE (storage is per
 // address), so that origin is still allowed to share, and nothing else is.
 const LEGACY_APP_ORIGIN = 'https://kirton-learn.vercel.app';

@@ -169,8 +169,10 @@ for (const [p, html] of body) {
 
 console.log('\n=== no page still names the old brand or domain ===')
 for (const [p, html] of body) {
-  const stale = ['sparkbuilders.org', 'iep-record.vercel.app', 'spark-coach-families.vercel.app']
-    .filter(s => html.includes(s))
+  // 2026-10-08: "this is a kirtonlearning platform" — the founder bio still
+  // said Spark Builders. Any spelling of either name fails, not just a domain.
+  const stale = ['sparkbuilders.org', 'iep-record.vercel.app', 'spark-coach-families', 'spark builders', 'spark-builders', 'spark coach']
+    .filter(s => html.toLowerCase().includes(s))
   stale.length ? bad(`${p} still names ${stale.join(', ')}`) : ok(`${p} is clean`)
 }
 

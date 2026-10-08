@@ -29,8 +29,8 @@
   --ink-3:#3F4C66;
   --paper:#F4F2EC;
   --paper-2:#FBFAF7;
-  --spark:#E8A33D;
-  --spark-deep:#94590D;
+  --amber:#E8A33D;
+  --amber-deep:#94590D;
   --line:rgba(20,29,46,.14);
   --line-dark:rgba(244,242,236,.16);
   --display:"Bricolage Grotesque",system-ui,sans-serif;
@@ -45,7 +45,7 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 a{color:inherit}
-:focus-visible{outline:3px solid var(--spark);outline-offset:3px;border-radius:2px}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:2px}
 
 .wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 22px}
 .narrow{max-width:760px}
@@ -58,7 +58,7 @@ p{margin:0 0 1.05em}
 
 .eyebrow{
   font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--spark);margin:0 0 1.4rem;
+  text-transform:uppercase;color:var(--amber);margin:0 0 1.4rem;
 }
 
 /* ---------- header ---------- */
@@ -72,7 +72,7 @@ p{margin:0 0 1.05em}
   font-size:1.02rem;margin-bottom:clamp(38px,6vw,60px);
   text-decoration:none;
 }
-.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--spark);flex:none}
+.brandbar .dot{width:11px;height:11px;border-radius:50%;background:var(--amber);flex:none}
 .brandbar .thin{
   font-family:var(--mono);font-weight:400;font-size:.72rem;letter-spacing:.14em;
   text-transform:uppercase;color:rgba(244,242,236,.72);margin-left:auto;
@@ -89,22 +89,22 @@ p{margin:0 0 1.05em}
 .doc ul{margin:0 0 1.2em;padding:0;list-style:none}
 .doc li{padding-left:24px;position:relative;margin-bottom:.65em;color:var(--ink-2)}
 .doc li::before{
-  content:"";position:absolute;left:0;top:.66em;width:11px;height:2px;background:var(--spark-deep);
+  content:"";position:absolute;left:0;top:.66em;width:11px;height:2px;background:var(--amber-deep);
 }
 .doc strong{font-weight:600}
 
 .tldr{
-  background:var(--paper-2);border:1px solid var(--line);border-left:3px solid var(--spark);
+  background:var(--paper-2);border:1px solid var(--line);border-left:3px solid var(--amber);
   border-radius:6px;padding:26px 26px 8px;margin:0 0 1.6em;
 }
 .tldr .kicker{
   font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--spark-deep);margin:0 0 14px;
+  color:var(--amber-deep);margin:0 0 14px;
 }
 .tldr li{margin-bottom:.7em}
 
 .callout{
-  border-left:3px solid var(--spark);padding-left:18px;margin:1.6em 0;
+  border-left:3px solid var(--amber);padding-left:18px;margin:1.6em 0;
   color:var(--ink-2);
 }
 
@@ -115,7 +115,7 @@ table{
 th,td{text-align:left;padding:13px 16px 13px 0;border-bottom:1px solid var(--line);vertical-align:top}
 th{
   font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--spark-deep);font-weight:500;border-bottom:1px solid var(--ink);
+  color:var(--amber-deep);font-weight:500;border-bottom:1px solid var(--ink);
 }
 td{color:var(--ink-2)}
 td:first-child{font-weight:600;color:var(--ink);white-space:nowrap;padding-right:26px}
@@ -124,7 +124,7 @@ td:first-child{font-weight:600;color:var(--ink);white-space:nowrap;padding-right
 .foot{background:var(--ink);color:var(--paper);padding:clamp(46px,7vw,70px) 0 40px}
 .foot .back{
   font-family:var(--display);font-weight:700;font-size:1.02rem;
-  text-decoration:none;border-bottom:2px solid var(--spark);padding-bottom:2px;
+  text-decoration:none;border-bottom:2px solid var(--amber);padding-bottom:2px;
 }
 .legal{
   margin-top:44px;padding-top:24px;border-top:1px solid var(--line-dark);

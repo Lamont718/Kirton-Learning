@@ -33,7 +33,10 @@
                   not include this script at all — belt and braces, because the
                   whole point of this guard is that a page which includes it by
                   mistake is still safe. */
-               '/setup', '/setup.html'];
+               '/setup', '/setup.html',
+               /* /record promises "no request leaves this page". It does not
+                  include this script either; this is the same belt and braces. */
+               '/record', '/record/index.html'];
   if (NEVER.indexOf(path) !== -1) return;
 
   /* A secret in a URL is never measured, on any page. If a token ever

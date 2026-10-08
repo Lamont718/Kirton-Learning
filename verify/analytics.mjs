@@ -49,6 +49,12 @@ const read = p => fs.readFileSync(p, 'utf8');
 const TAG = '/analytics.js';
 const MARKER = /<meta\s+name="kl-audience"\s+content="one-family">/i;
 const FLOOR = ['upload.html', 'intake.html', 'ask.html', 'admin.html'];
+// ★ 2026-10-08 (Lamont's call): /record carries no beacon either. It is public
+// and identifies no one, but its code says "no request leaves this page" and
+// CLAUDE.md said the same, while the page had loaded /analytics.js since
+// b44c1f1. The promise won. It marks itself with kl-beacon=none.
+const NOBEACON = /<meta\s+name="kl-beacon"\s+content="none">/i;
+const NOBEACON_FLOOR = ['record/index.html'];
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -106,8 +112,10 @@ if (!fs.existsSync(LOADER)) {
     ['/', '?token=abc123'],
     ['/setup', '?t=abc123'],
     ['/setup', ''],
+    ['/record/', ''],
+    ['/record', ''],
   ];
-  const mustLoad = [['/', ''], ['/demo', ''], ['/handbook', ''], ['/welcome', ''], ['/start/', ''], ['/record/', '']];
+  const mustLoad = [['/', ''], ['/demo', ''], ['/handbook', ''], ['/welcome', ''], ['/start/', '']];
 
   let guardOk = true;
   for (const [p, s] of mustNotLoad) {
@@ -126,7 +134,10 @@ if (!fs.existsSync(LOADER)) {
 
 // -------------------------------------------------------------- the pages
 console.log('\nthe pages');
-const NEVER = pages.filter((p) => MARKER.test(read(p))).map(rel);
+const NEVER = pages.filter((p) => MARKER.test(read(p)) || NOBEACON.test(read(p))).map(rel);
+const lostQuiet = NOBEACON_FLOOR.filter((f) => !NEVER.includes(f));
+if (lostQuiet.length) fail('the free record still loads no beacon', `no kl-beacon marker on: ${lostQuiet.join(', ')}`);
+else pass('the free record still loads no beacon', NOBEACON_FLOOR.join(', '));
 
 // The floor, first: if a marker has been deleted, everything below this reads
 // as "that page is public now" and would go green on the wrong answer.
@@ -175,7 +186,7 @@ if (PROD) {
   } else {
     fail('Vercel Web Analytics is enabled on the project',
       `/_vercel/insights/script.js answered ${v}. The tag is on every page and it is loading nothing.\n` +
-      '        Fix: vercel.com → the project serving kirtonlearning.com (it is called spark-coach-families)\n' +
+      '        Fix: vercel.com → the project serving kirtonlearning.com (it is called kirtonlearning; it was spark-coach-families until 2026-10-08)\n' +
       '        → Analytics → Enable. A project record can carry a webAnalytics id while this is off.');
   }
 

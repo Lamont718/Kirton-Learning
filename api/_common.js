@@ -164,7 +164,7 @@ function siteOrigin() {
 // and deliberately not this one: it keeps nothing on a server, and the way to
 // keep that promise checkable is for it not to share a backend with anything.
 function appOrigin() {
-  return (process.env.APP_ORIGIN || 'https://kirton-learn.vercel.app').replace(/\/+$/, '');
+  return (process.env.APP_ORIGIN || 'https://learn.kirtonlearning.com').replace(/\/+$/, '');
 }
 
 function uploadLink(token, kind) {

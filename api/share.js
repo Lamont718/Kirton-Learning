@@ -42,10 +42,16 @@ const MAX_BYTES = 1024 * 1024;
 // different message per case would make this a way to find out which exist.
 const NO = 'This device is not set up to share. Ask for a fresh setup link.';
 
+// ★ The work app moved to learn.kirtonlearning.com on 2026-10-08. A device that
+// opened it at the old vercel.app address keeps its record THERE (storage is per
+// address), so that origin is still allowed to share, and nothing else is.
+const LEGACY_APP_ORIGIN = 'https://kirton-learn.vercel.app';
+
 function cors(req, res) {
   // Only the work app. A page anywhere else cannot post a child's record here
   // from a parent's browser, even if it somehow had her key.
-  res.setHeader('Access-Control-Allow-Origin', appOrigin());
+  const origin = String(req.headers?.origin || '');
+  res.setHeader('Access-Control-Allow-Origin', origin === LEGACY_APP_ORIGIN ? LEGACY_APP_ORIGIN : appOrigin());
   res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');

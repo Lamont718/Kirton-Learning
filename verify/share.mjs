@@ -75,7 +75,12 @@ console.log('\n=== who may post here ===')
   const pre = await call(share, null, { method: 'OPTIONS' })
   check('★ a browser preflight is answered', pre.code === 204)
   check('★★ and only the work app is allowed to post from a browser',
-    pre.headers['Access-Control-Allow-Origin'] === 'https://kirton-learn.vercel.app', pre.headers['Access-Control-Allow-Origin'])
+    pre.headers['Access-Control-Allow-Origin'] === 'https://learn.kirtonlearning.com', pre.headers['Access-Control-Allow-Origin'])
+  const old = await call(share, null, { method: 'OPTIONS', headers: { origin: 'https://kirton-learn.vercel.app' } })
+  check('★ a device still on the old vercel.app address can still share (its record lives there)',
+    old.headers['Access-Control-Allow-Origin'] === 'https://kirton-learn.vercel.app')
+  const evil = await call(share, null, { method: 'OPTIONS', headers: { origin: 'https://evil.example' } })
+  check('⛔ and any other origin is not echoed back', evil.headers['Access-Control-Allow-Origin'] === 'https://learn.kirtonlearning.com')
   check('anything but POST is refused', (await call(share, {}, { method: 'GET' })).code === 405)
 }
 

@@ -174,7 +174,7 @@ console.log('\n=== ★★★ sending a setup ===')
   await setVal('#s-email', 'parent@example.com')
   await setVal('#s-name', 'Rose')
   await setVal('#s-child', 'Ada')
-  await setVal('#s-code', 'https://kirton-learn.vercel.app/#join=KL1.c.PAYLOAD.deadbeef')
+  await setVal('#s-code', 'https://learn.kirtonlearning.com/#join=KL1.c.PAYLOAD.deadbeef')
   await ev(`document.querySelector('#send-setup').click()`); await sleep(500)
 
   const sent = JSON.parse(await ev(`JSON.stringify(window.__calls.find(c => c.body.action === 'setup') ?? null)`))

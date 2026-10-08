@@ -19,7 +19,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 process.env.PUBLIC_ORIGIN = 'https://kirtonlearning.com';
-process.env.APP_ORIGIN = 'https://kirton-learn.vercel.app';
+process.env.APP_ORIGIN = 'https://learn.kirtonlearning.com';
 
 const { readSetupCode, codeFrom } = require('../api/_setup-code.js');
 const { setupLinkEmail, iepLinkEmail, recordLinkEmail } = require('../api/_email.js');
@@ -84,13 +84,13 @@ console.log('=== a code the work app made is read here ===');
   check('★ an uncompressed code reads as well — the app falls back to one on an old browser',
     readSetupCode(encode(SETUP, 'r')).ok === true);
   check('the whole link reads, not just the bare code',
-    readSetupCode(`https://kirton-learn.vercel.app/#join=${code}`).ok === true);
+    readSetupCode(`https://learn.kirtonlearning.com/#join=${code}`).ok === true);
   // ★★ The failure this will actually meet, and the reason the code is found by
   // its shape rather than by where the text around it ends.
   check('★★ a link an email app wrapped onto two lines still reads',
-    readSetupCode(`https://kirton-learn.vercel.app/#join=${code.slice(0, 40)}\r\n${code.slice(40)}`).ok === true);
+    readSetupCode(`https://learn.kirtonlearning.com/#join=${code.slice(0, 40)}\r\n${code.slice(40)}`).ok === true);
   check('★ and one with a sentence typed around it',
-    readSetupCode(`here you go: https://kirton-learn.vercel.app/#join=${code} — open it on her tablet.`).ok === true);
+    readSetupCode(`here you go: https://learn.kirtonlearning.com/#join=${code} — open it on her tablet.`).ok === true);
 }
 
 console.log('\n=== ⛔ and a code that was CUT SHORT is refused, at the paste ===');
@@ -181,9 +181,9 @@ console.log('\n=== the links this side builds ===');
   check('a record token still carries its k=record',
     uploadLink(token, 'record').endsWith('&k=record'));
   check('★★ the setup link a family taps puts the goals in the FRAGMENT',
-    joinLink('KL1.c.xxx.deadbeef') === 'https://kirton-learn.vercel.app/#join=KL1.c.xxx.deadbeef');
+    joinLink('KL1.c.xxx.deadbeef') === 'https://learn.kirtonlearning.com/#join=KL1.c.xxx.deadbeef');
   check('the work app\'s origin is configurable, so a preview cannot be hard-coded into an email',
-    appOrigin() === 'https://kirton-learn.vercel.app');
+    appOrigin() === 'https://learn.kirtonlearning.com');
 }
 
 console.log('\n=== the page that hands it over ===');

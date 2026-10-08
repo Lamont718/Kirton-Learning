@@ -133,15 +133,15 @@ footer code{font-family:var(--mono);font-size:.85em}
     <h2>Where the work happens <span class="n">a separate app</span></h2>
     <p class="sub">The two tools a family actually uses week to week.</p>
     <div class="note">
-      <b>The delivery app is not on this domain.</b> It is a different repo and a different
-      deploy, at <code>kirton-learn.vercel.app</code>, and nothing on the public site names it —
-      only <a href="/welcome">/welcome</a> does, which a family reaches after paying. Bringing it
-      onto kirtonlearning.com is a real piece of work, not a config change: it has its own service
-      worker, it works offline, and 14 engines and 1,672 tests sit behind it (as of 23 September).
+      <b>The delivery app is its own deploy on a subdomain.</b> It is a different repo, served at
+      <code>learn.kirtonlearning.com</code> since 8 October (it was <code>kirton-learn.vercel.app</code>,
+      which now forwards there). Nothing on the public site names it — only
+      <a href="/welcome">/welcome</a> does, which a family reaches after paying. It has its own
+      service worker and works offline.
     </div>
     <div class="grid">
-      <div class="card"><a class="t" href="https://kirton-learn.vercel.app/">The delivery app</a>
-        <span class="u">kirton-learn.vercel.app</span>
+      <div class="card"><a class="t" href="https://learn.kirtonlearning.com/">The delivery app</a>
+        <span class="u">learn.kirtonlearning.com</span>
         <span class="d">Where a child does the work, built from the goals in her IEP. Nothing
           leaves the device.</span>
         <span class="tag t-todo">separate domain</span></div>

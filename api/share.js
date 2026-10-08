@@ -13,10 +13,12 @@
 // deletes what we hold. This file's job is to accept only what that switch
 // can send, from only the family it belongs to.
 //
-// ★★ THE KEY IS THE FAMILY'S SETUP TOKEN. It is the row Lamont made when he
-// sent them their setup, so the desk already knows the parent and the child
-// label without the app ever sending the child's name — and it does not. The
-// key arrives in the setup link's fragment (api/setup.js) and nowhere else.
+// ★★ THE KEY IS DERIVED FROM THE FAMILY'S SETUP TOKEN (shareKeyFor in
+// _common.js), never the token itself — the token is in an email, and a key that
+// was an email away from anybody would let them overwrite or delete a family's
+// record. The row is the one Lamont made when he sent their setup, so the desk
+// knows the parent and the child label without the app ever sending the
+// child's name. The key arrives in the setup link's fragment and nowhere else.
 //
 // ⚠️ IT IGNORES THE 7-DAY EXPIRY, ON PURPOSE. The expiry is on COLLECTING the
 // goals, which is a link sitting in an inbox. Sharing is a year of work from a
@@ -28,9 +30,9 @@
 // table, so this needs no SQL migration to run. The bucket is created on first
 // use, private, JSON only, 1 MB a file.
 
-const { reject, supabase, parseJson, appOrigin } = require('./_common');
+const { reject, supabase, parseJson, appOrigin, shareKeyFor, secretEquals } = require('./_common');
 
-const UUID_RE = /^[0-9a-f-]{36}$/i;
+const KEY_RE = /^[0-9a-f]{40}$/;
 const BUCKET = 'shared';
 const KIND = 'kirton-learn-share';
 // A year of checks on a whole IEP is tens of kilobytes. A megabyte is not a record.
@@ -87,20 +89,24 @@ module.exports = async (req, res) => {
   if (!rest) return reject(res, 503, 'Sharing is not open yet. Nothing was sent or stored.');
 
   const body = parseJson(req);
-  const key = String((body && body.key) || '');
-  if (!UUID_RE.test(key)) return reject(res, 400, NO);
+  const key = String((body && body.key) || '').toLowerCase();
+  if (!KEY_RE.test(key)) return reject(res, 400, NO);
 
   try {
+    // The key is one-way, so the family is found by deriving every live setup
+    // row's key and comparing. That is a short list (one row per family sent a
+    // setup), and the compare is constant-time.
     const r = await rest(
-      `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(key)}&select=token,kind,revoked_at`,
+      '/rest/v1/upload_tokens?kind=eq.setup&revoked_at=is.null&select=token&limit=5000',
       { method: 'GET' }
     );
     if (!r.ok) return reject(res, 502, 'Something went wrong on my end. It will try again.');
     const rows = await r.json();
-    const row = Array.isArray(rows) ? rows[0] : null;
-    if (!row || row.kind !== 'setup' || row.revoked_at) return reject(res, 403, NO);
+    const row = (Array.isArray(rows) ? rows : []).find((x) => secretEquals(shareKeyFor(x.token) || '', key));
+    if (!row) return reject(res, 403, NO);
 
-    const object = `/storage/v1/object/${BUCKET}/${encodeURIComponent(key)}.json`;
+    // Stored under the TOKEN, which only the server and the desk know.
+    const object = `/storage/v1/object/${BUCKET}/${encodeURIComponent(row.token)}.json`;
 
     // Switching sharing off deletes what we hold. Answered ok when there was
     // nothing to delete: the family's request was "hold nothing", and nothing is held.

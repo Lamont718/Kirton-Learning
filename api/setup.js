@@ -19,7 +19,7 @@
 // open would take the second device away from her and look, from here, exactly
 // like success. It expires, and it can be revoked.
 
-const { reject, supabase, parseJson, appOrigin, joinLink } = require('./_common');
+const { reject, supabase, parseJson, appOrigin, joinLink, shareKeyFor } = require('./_common');
 
 const UUID_RE = /^[0-9a-f-]{36}$/i;
 
@@ -80,11 +80,13 @@ module.exports = async (req, res) => {
       ok: true,
       // Built here so the page cannot be talked into pointing the goals at
       // somebody else's origin by a query parameter.
-      // ★ `&share=` is this row's token: the key the work app needs IF the
-      // parent later switches sharing on (api/share.js). It sits in the same
-      // fragment as the goals, so it never reaches a server either, and the
-      // app keeps it unused until she says yes.
-      link: `${joinLink(row.setup_code, appOrigin())}&share=${row.token}`,
+      // ★ `&share=` is a key DERIVED from this row's token (shareKeyFor), the
+      // one the work app needs IF the parent later switches sharing on. Never
+      // the token itself — see _common.js. It sits in the same fragment as the
+      // goals, so it never reaches a server, and the app keeps it unused until
+      // she says yes.
+      link: `${joinLink(row.setup_code, appOrigin())}` +
+        (shareKeyFor(row.token) ? `&share=${shareKeyFor(row.token)}` : ''),
       app: appOrigin(),
       name: row.child_label || null,
     });

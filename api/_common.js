@@ -80,6 +80,18 @@ function parseJson(req) {
 // Constant time, and safe on unequal lengths — timingSafeEqual THROWS when the
 // buffers differ in size, and a throw is itself a signal about the length of the
 // real key. Hash both sides first so the compared buffers are always 32 bytes.
+// ★★ THE SHARE KEY IS NOT THE TOKEN. The setup token is a bearer: it is in the
+// emailed /setup?t= link, and for 7 days it hands over the goals. If the work
+// app shared under the token itself, anybody holding an old email could
+// overwrite or delete a family's shared record. So the app is given an HMAC of
+// the token under a server-only secret: it identifies the family to
+// api/share.js and unlocks nothing else, and the token never reaches the app.
+function shareKeyFor(token) {
+  const secret = process.env.SHARE_SECRET || process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+  if (!secret || !token) return null;
+  return crypto.createHmac('sha256', secret).update(`kirton-share:${token}`).digest('hex').slice(0, 40);
+}
+
 function secretEquals(a, b) {
   if (typeof a !== 'string' || typeof b !== 'string') return false;
   const ha = crypto.createHash('sha256').update(a, 'utf8').digest();
@@ -198,6 +210,7 @@ module.exports = {
   rawBody,
   parseJson,
   secretEquals,
+  shareKeyFor,
   sendEmail,
   siteOrigin,
   appOrigin,

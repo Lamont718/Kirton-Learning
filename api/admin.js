@@ -510,6 +510,20 @@ module.exports = async (req, res) => {
         }
       }
 
+      // ★ And whatever the family shared from the work app. privacy.html promises
+      // that a deletion request removes it; a row deleted with its shared copy
+      // left in the bucket would be an orphan nobody could find again.
+      if (row.kind === 'setup') {
+        const sh = await rest('/storage/v1/object/shared', {
+          method: 'DELETE',
+          body: JSON.stringify({ prefixes: [`${token}.json`] }),
+        });
+        if (!sh.ok && sh.status !== 404 && sh.status !== 400) {
+          return reject(res, 502,
+            `The row was left alone because the shared work could not be deleted (${sh.status}). Nothing has been removed.`);
+        }
+      }
+
       const del = await rest(`/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}`, {
         method: 'DELETE',
       });

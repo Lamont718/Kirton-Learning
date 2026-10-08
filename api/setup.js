@@ -80,7 +80,11 @@ module.exports = async (req, res) => {
       ok: true,
       // Built here so the page cannot be talked into pointing the goals at
       // somebody else's origin by a query parameter.
-      link: joinLink(row.setup_code, appOrigin()),
+      // ★ `&share=` is this row's token: the key the work app needs IF the
+      // parent later switches sharing on (api/share.js). It sits in the same
+      // fragment as the goals, so it never reaches a server either, and the
+      // app keeps it unused until she says yes.
+      link: `${joinLink(row.setup_code, appOrigin())}&share=${row.token}`,
       app: appOrigin(),
       name: row.child_label || null,
     });

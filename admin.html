@@ -347,10 +347,19 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
   }
 
   // ---- the list ----
+  var sharedMap = {};
+  var lastShared = null;
+
   function load() {
     loadStatus();
     $('list').innerHTML = '<p class="muted">Loading…</p>';
-    api({ action: 'list' }).then(render);
+    // Which families have chosen to share their child's work. Asked first and
+    // never fatal: a desk that cannot answer this still has to show the list.
+    api({ action: 'shared-list' }).then(function (s) {
+      sharedMap = (s.body && s.body.ok && s.body.shared) || {};
+    }, function () { sharedMap = {}; }).then(function () {
+      return api({ action: 'list' });
+    }).then(render);
   }
 
   function render(r) {
@@ -408,6 +417,10 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
             ? '<button class="btn btn--ghost btn--sm" data-act="open" data-t="' + esc(row.token) + '">Open</button>' : '') +
           (row.intake_at
             ? '<button class="btn btn--ghost btn--sm" data-act="intake" data-t="' + esc(row.token) + '">Intake</button>' : '') +
+          // ★ Only there when the parent switched sharing on in the work app.
+          (sharedMap[row.token]
+            ? '<button class="btn btn--ghost btn--sm" data-act="shared" data-t="' + esc(row.token) + '" title="Shared ' +
+              esc(when(sharedMap[row.token])) + '">Shared work</button>' : '') +
           (st === 'live' || st === 'unsent' || st === 'collected'
             ? '<button class="btn btn--ghost btn--sm" data-act="resend" data-t="' + esc(row.token) + '">Resend</button>' : '') +
           (st !== 'used'
@@ -492,6 +505,11 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
           '<p class="muted" style="margin:.45rem 0 0">Sent ' + when(q.submitted_at) + '</p>');
         return;
       }
+      if (act === 'shared') {
+        lastShared = r.body;
+        flash('ok', sharedHtml(r.body.record, r.body.child));
+        return;
+      }
       if (r.body.sent === false && r.body.sendError) {
         flash('warn', '<b>The link was made and the email did NOT go:</b> ' +
           esc(r.body.sendError) + ' Copy the link from the table and send it another way.');
@@ -504,6 +522,66 @@ td.mono{font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
       }
       load();
     });
+  });
+
+  // ---- shared work ----
+  // What a family's device sent, laid out per goal: the goal word for word, its
+  // rule, and every check, newest first. Helped checks are shown and marked,
+  // because they are on her record and they never count.
+  function sharedHtml(rec, child) {
+    var goals = rec.goals || [];
+    var atts = rec.attempts || [];
+    var out = '<b>Shared work' + (child ? ' &mdash; ' + esc(child) : '') + '</b>' +
+      '<p class="muted" style="margin:.3rem 0 .6rem">Sent from her device ' + when(rec.receivedAt) +
+      '. ' + goals.length + ' goal' + (goals.length === 1 ? '' : 's') + ', ' + atts.length +
+      ' check' + (atts.length === 1 ? '' : 's') + '.</p>';
+    goals.forEach(function (g, i) {
+      var c = g.criterion || {};
+      var mine = atts.filter(function (a) { return a.goalId === g.id; })
+        .sort(function (a, b) { return (b.dateISO || '').localeCompare(a.dateISO || '') || (b.seq || 0) - (a.seq || 0); });
+      out += '<div style="border-top:1px solid var(--line);padding:.5rem 0">' +
+        '<p style="margin:0"><b>' + (i + 1) + '.</b> ' + esc(g.text) + '</p>' +
+        '<p class="muted" style="margin:.2rem 0">' + esc(g.engineId || 'no work set') +
+        (c.outOf ? ' &middot; ' + esc(c.of) + ' of ' + esc(c.outOf) + ' at ' + Math.round((c.accuracy || 0) * 100) + '%' : '') +
+        '</p>' +
+        (mine.length
+          ? '<p class="mono" style="margin:0">' + mine.slice(0, 12).map(function (a) {
+              return esc(a.dateISO) + ' ' + esc(a.score) + '/' + esc(a.outOf) +
+                (a.prompts != null ? ' (' + esc(a.prompts) + ' prompts)' : '') +
+                (a.helped ? ' <span class="muted">together, not counted</span>' : '');
+            }).join('<br>') + (mine.length > 12 ? '<br><span class="muted">&hellip; ' + (mine.length - 12) + ' more</span>' : '') + '</p>'
+          : '<p class="muted" style="margin:0">No checks yet.</p>') +
+        '</div>';
+    });
+    out += '<p style="margin:.6rem 0 0"><button class="btn btn--ghost btn--sm" id="shared-dl">' +
+      'Download to open in the work app</button></p>' +
+      '<p class="muted" style="margin:.4rem 0 0">To correct her setup: open this file in the work app ' +
+      '(The record &rarr; Restore or combine), fix the goals, make a setup link, and Send a setup to the family.</p>';
+    return out;
+  }
+
+  // ★ The shared record as a backup file the work app already knows how to
+  // open — so correcting a family's setup uses the screens that exist, not a
+  // second editor on this page. The child is named from the desk's own label;
+  // her device never sent a name.
+  $('flash').addEventListener('click', function (e) {
+    if (!e.target.closest('#shared-dl') || !lastShared) return;
+    var rec = lastShared.record;
+    var id = 'shared-' + Math.random().toString(36).slice(2, 8);
+    var file = {
+      kind: 'kirton-learn-backup', version: 1, savedOn: (rec.sentOn || '').slice(0, 10) || null,
+      note: 'Shared by the family through the work app. It holds the goals from a child’s IEP, ' +
+        'word for word. Keep it where you would keep the IEP itself.',
+      state: {
+        learners: [{ id: id, name: lastShared.child || 'Shared child', goals: rec.goals || [],
+          accommodations: rec.accommodations || {} }],
+        activeId: id, attempts: rec.attempts || [], seq: (rec.attempts || []).length
+      }
+    };
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(file, null, 2)], { type: 'application/json' }));
+    a.download = 'kirton-learn-shared-' + (rec.sentOn || 'record').slice(0, 10) + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
   });
 
   // ---- issue ----

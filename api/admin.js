@@ -4,7 +4,8 @@
 // editor and writing an INSERT by hand at nine at night, and answering "did she
 // ever get it?" meant guessing.
 //
-// Actions: status · list · issue · setup · resend · reissue · revoke · delete · open · intake
+// Actions: status · list · issue · setup · resend · reissue · revoke · delete · open · intake ·
+//          shared-list · shared
 //
 // Locked by ADMIN_KEY, a shared secret in the Vercel env, sent as a header. Not
 // a login: there is exactly one person on this side and a password table for one
@@ -573,6 +574,38 @@ module.exports = async (req, res) => {
       const rows = await r.json();
       if (!Array.isArray(rows) || !rows[0]) return reject(res, 404, 'This family has not filled the intake in yet.');
       return res.status(200).json({ ok: true, intake: rows[0] });
+    }
+
+    // -----------------------------------------------------------------------
+    // ★ The work a family CHOSE to share (api/share.js). Which rows have any,
+    // and then one family's record. Nothing exists here unless a parent
+    // switched sharing on, and switching it off deletes it.
+    if (action === 'shared-list') {
+      const r = await rest('/storage/v1/object/list/shared', {
+        method: 'POST',
+        body: JSON.stringify({ prefix: '', limit: 1000, sortBy: { column: 'updated_at', order: 'desc' } }),
+      });
+      // No bucket yet = nobody has ever shared. That is an answer, not an error.
+      if (!r.ok) return res.status(200).json({ ok: true, shared: {} });
+      const files = await r.json();
+      const shared = {};
+      (Array.isArray(files) ? files : []).forEach((f) => {
+        const t = String(f.name || '').replace(/\.json$/, '');
+        if (UUID_RE.test(t)) shared[t] = f.updated_at || f.created_at || null;
+      });
+      return res.status(200).json({ ok: true, shared });
+    }
+
+    if (action === 'shared') {
+      const token = String(body.token || '');
+      if (!UUID_RE.test(token)) return reject(res, 400, 'That is not a token.');
+      const got = await oneRow(token);
+      if (got.error) return reject(res, 404, got.error);
+      const r = await rest(`/storage/v1/object/shared/${encodeURIComponent(token)}.json`, { method: 'GET' });
+      if (!r.ok) return reject(res, 404, 'This family is not sharing, or has switched it off.');
+      const record = await r.json().catch(() => null);
+      if (!record) return reject(res, 502, 'The shared record could not be read.');
+      return res.status(200).json({ ok: true, record, child: got.row.child_label || null });
     }
 
     return reject(res, 400, 'Unknown action.');

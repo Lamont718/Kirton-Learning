@@ -1,5 +1,5 @@
 /* Makes "works offline" true rather than optimistic.
-   A parent logs on a sofa, on a phone, on whatever signal is in the room. The
+   A parent logs on a couch, on a phone, on whatever signal is in the room. The
    app is one HTML file, so caching it is the whole job — and the record itself
    was never on a server to begin with. */
 const CACHE = 'record-v2'

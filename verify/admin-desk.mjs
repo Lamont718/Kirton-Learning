@@ -12,7 +12,7 @@
 //
 // ⛔ The API is STUBBED, deliberately and completely. This asks one question:
 // does the PAGE do the right thing? What it sends, what it does with each
-// answer it can get back, and what it leaves on the screen afterwards. The
+// answer it can get back, and what it leaves on the screen afterward. The
 // server's own behavior is tested by verify/setup-handoff.mjs and the token
 // suites, against the real thing.
 //
@@ -193,7 +193,7 @@ console.log('\n=== ★★★ sending a setup ===')
   // ⛔ A child's IEP goals do not stay in a textarea on an unlocked laptop.
   const left = await ev(`JSON.stringify(['s-email','s-name','s-child','s-code']
     .map(id => document.getElementById(id).value))`)
-  check('⛔⛔ the pasted code and the address are cleared afterwards',
+  check('⛔⛔ the pasted code and the address are cleared afterward',
     JSON.parse(left).every((x) => x === ''), left)
   check('★ and the list is reloaded, so the new row is on screen',
     await ev(`window.__calls.some(c => c.body.action === 'list')`))

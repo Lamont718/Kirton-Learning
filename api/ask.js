@@ -11,7 +11,7 @@
 // ★ STORE FIRST, THEN EMAIL, and record the send on the row. A question that
 // arrived and was lost to a bad minute at an email provider is a family who
 // believes they were ignored — and the row is the only place that difference is
-// visible afterwards. The answer to the parent does NOT depend on the email
+// visible afterward. The answer to the parent does NOT depend on the email
 // succeeding: once it is stored, she is told it arrived, because it did.
 //
 // ⛔ SCOPE.md governs the fields. An email address and whatever she chooses to

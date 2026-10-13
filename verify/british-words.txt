@@ -117,3 +117,7 @@ plough
 judgement[a-z]*
 acknowledgement[a-z]*
 per cent
+
+// 2026-10-13: words, not spellings — the audit found these in parent-facing copy.
+sofa[a-z]*
+afterwards

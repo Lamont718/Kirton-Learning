@@ -185,10 +185,18 @@ if (navigator.storage && navigator.storage.persist) {
    Absolute paths, deliberately: visited as "/record" without the trailing slash,
    a relative "./sw.js" resolves to "/sw.js", which does not exist — so the
    registration failed silently and offline quietly stopped being true, depending
-   on how the parent happened to type the address. */
+   on how the parent happened to type the address.
+   ⛔ And the scope is "/record", not "/record/". With trailingSlash:false, Vercel
+   308s every visit to "/record/" over to "/record" — which is outside a "/record/"
+   scope, so the worker installed, sat there, and never controlled a single page
+   (found 2026-10-13: offline failed on both addresses). vercel.json sends
+   Service-Worker-Allowed: /record so the wider scope is permitted. */
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/record/sw.js', { scope: '/record/' }).catch(() => {})
+    navigator.serviceWorker.getRegistrations()
+      .then((regs) => regs.filter((r) => new URL(r.scope).pathname === '/record/').forEach((r) => r.unregister()))
+      .catch(() => {})
+    navigator.serviceWorker.register('/record/sw.js', { scope: '/record' }).catch(() => {})
   })
 }
 

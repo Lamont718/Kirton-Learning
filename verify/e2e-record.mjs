@@ -11,9 +11,9 @@ import { join } from 'node:path'
 // The tool moved from its own project (iep-record.vercel.app, now dead) to /record/
 // on the main site. Pointing this at the site ROOT is the trap: the first check fails
 // and the second throws "Cannot set properties of null", which reads like a broken app
-// and is really a wrong path. The trailing slash matters too — at /record the service
-// worker resolves against /, 404s, and offline quietly stops being true.
-const ORIGIN = process.env.ORIGIN || 'https://kirtonlearning.com/record/'
+// and is really a wrong path. ⛔ Point it at /record, no slash: that is the address Vercel
+// serves (trailingSlash:false 308s /record/ there), so it is the one a parent is on.
+const ORIGIN = process.env.ORIGIN || 'https://kirtonlearning.com/record'
 const PORT = 9501
 const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -23,7 +23,10 @@ const check = (n, ok, d = '') => { if (ok) { pass++; console.log('  ok   ' + n) 
 
 const profile = mkdtempSync(join(tmpdir(), 'rec-'))
 const chrome = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${PORT}`, `--user-data-dir=${profile}`,
-  '--no-first-run', '--disable-gpu', '--mute-audio', '--window-size=900,1200', 'about:blank'], { stdio: 'ignore' })
+  '--no-first-run', '--disable-gpu', '--mute-audio', '--window-size=900,1200',
+  // LOCAL_TLS=1 for a local https server with a self-signed cert: a service worker
+  // only registers on https, so plain localhost cannot test "works offline".
+  ...(process.env.LOCAL_TLS ? ['--ignore-certificate-errors'] : []), 'about:blank'], { stdio: 'ignore' })
 
 async function getJSON(p) {
   for (let i = 0; i < 60; i++) { try { const r = await fetch(`http://127.0.0.1:${PORT}${p}`); if (r.ok) return r.json() } catch {} await sleep(200) }
@@ -263,6 +266,18 @@ check('and you can switch back', (await ev(`[...document.querySelectorAll('butto
 
 console.log('\n=== ★ "works offline" is true, not a hope ===')
 check('a service worker is registered', await ev(`navigator.serviceWorker.getRegistrations().then(r => r.length > 0)`))
+// ⛔ Registered is not working. From 10-07 to 10-13 the worker registered with scope
+// /record/ while every parent sat on /record, so it never controlled a page and offline
+// failed on both addresses — and the line above stayed green the whole time.
+await go(ORIGIN); await sleep(1500)
+check('★★ and it CONTROLS the page a parent is on', await ev(`!!navigator.serviceWorker.controller`),
+  await ev(`navigator.serviceWorker.getRegistrations().then(r => r.map(x => x.scope).join(' '))`))
+await send('Network.enable', {}, sessionId)
+await send('Network.emulateNetworkConditions', { offline: true, latency: 0, downloadThroughput: -1, uploadThroughput: -1 }, sessionId)
+await go(ORIGIN)
+check('★★★ with no signal at all, the record still opens, with her data in it', /Maya/.test(await text().catch(() => '')))
+await send('Network.emulateNetworkConditions', { offline: false, latency: 0, downloadThroughput: -1, uploadThroughput: -1 }, sessionId)
+await go(ORIGIN)
 check('there is a manifest, so it can live on the home screen',
   await ev(`!!document.querySelector('link[rel=manifest]')`))
 check('storage persistence is requested', await ev(`typeof navigator.storage.persist === 'function'`))

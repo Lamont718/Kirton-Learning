@@ -31,6 +31,11 @@ const LIMITS = { email: 160, message: 4000, cameFrom: 60 };
 // back to her rather than this trying to be clever.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+// Per rolling hour. Three from one address is a parent with follow-ups; thirty in
+// total is more than this site has had in its life, so past it is not a family.
+const HOUR = 60 * 60 * 1000;
+const CAP = { perEmail: 3, all: 30 };
+
 function clean(v, max) {
   if (typeof v !== 'string') return '';
   return v.replace(/\s+/g, ' ').trim().slice(0, max);
@@ -64,6 +69,27 @@ module.exports = async (req, res) => {
       setup: 'supabase-setup-4.sql',
       message: 'The form is not open yet. Email lamont@kirtonlearning.com and it will reach me.',
     });
+  }
+
+  // ⛔ A cap, because every accepted POST is a stored row AND an email to his
+  // inbox, and nothing else stood in front of either. No real parent comes near
+  // these. If the count itself fails, the question goes through: a lost question
+  // is worse than one extra email.
+  const since = new Date(Date.now() - HOUR).toISOString();
+  const recent = await rest(
+    `/rest/v1/questions?select=email&asked_at=gte.${encodeURIComponent(since)}&limit=${CAP.all}`,
+    { method: 'GET' },
+  ).catch(() => null);
+  if (recent && recent.ok) {
+    const rows = await recent.json().catch(() => []);
+    const mine = (Array.isArray(rows) ? rows : [])
+      .filter((r) => String(r.email || '').toLowerCase() === email.toLowerCase()).length;
+    if (mine >= CAP.perEmail) {
+      return reject(res, 429, 'Your questions from the last hour all reached me. If there is more, email lamont@kirtonlearning.com.');
+    }
+    if (Array.isArray(rows) && rows.length >= CAP.all) {
+      return reject(res, 429, 'The form is busy right now. Email lamont@kirtonlearning.com and it will reach me.');
+    }
   }
 
   const insert = await rest('/rest/v1/questions', {

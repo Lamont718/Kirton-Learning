@@ -116,8 +116,23 @@ module.exports = async (req, res) => {
 
     // Switching sharing off deletes what we hold. Answered ok when there was
     // nothing to delete: the family's request was "hold nothing", and nothing is held.
+    // ⚠️ The BULK form, like the desk's Delete in api/admin.js. The single-object
+    // `DELETE /object/shared/<token>.json` answers 400 to a JSON content-type with
+    // no body — which is what `rest` sends — and that 400 used to be swallowed,
+    // so "stopped" was reported while the copy stayed. privacy.html promises it
+    // is removed the moment sharing goes off, so a failure is said out loud.
     if (body.stop === true) {
-      await rest(object, { method: 'DELETE' }).catch(() => {});
+      const gone = await rest(`/storage/v1/object/${BUCKET}`, {
+        method: 'DELETE',
+        body: JSON.stringify({ prefixes: [`${row.token}.json`] }),
+      }).catch(() => null);
+      // No bucket yet = nobody has ever shared, so nothing is held. Storage says
+      // that as a 400 whose body reads "Bucket not found", not as a 404.
+      const nothingHeld = gone && !gone.ok
+        && (gone.status === 404 || /not found/i.test(await gone.text().catch(() => '')));
+      if (!gone || (!gone.ok && !nothingHeld)) {
+        return reject(res, 502, 'Your shared copy could not be removed just now. Try switching sharing off again.');
+      }
       return res.status(200).json({ ok: true, stopped: true });
     }
 

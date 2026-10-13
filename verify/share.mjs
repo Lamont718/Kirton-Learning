@@ -37,7 +37,7 @@ globalThis.fetch = async (url, init = {}) => {
   const c = { url: String(url), method: init.method || 'GET', headers: init.headers || {}, body }
   calls.push(c)
   const r = route(c)
-  return { ok: r.status < 300, status: r.status, json: async () => r.body }
+  return { ok: r.status < 300, status: r.status, json: async () => r.body, text: async () => JSON.stringify(r.body) }
 }
 
 function call (handler, body, { method = 'POST', headers = {} } = {}) {
@@ -67,6 +67,12 @@ const live = (row) => row && row.kind === 'setup' && !row.revoked_at
 const tokens = (row) => (c) => c.url.includes('/rest/v1/upload_tokens')
     ? { status: 200, body: live(row) && /kind=eq\.setup/.test(c.url) && /revoked_at=is\.null/.test(c.url)
       ? [{ token: row.token }, { token: 'ffffffff-6666-4666-8666-ffffffffffff' }] : [] }
+  // ⚠️ What Storage really does with a DELETE: the single-object route answers 400 to a
+  // JSON content-type with no body (found by the desk's Delete, api/admin.js). This stub
+  // used to answer 200 to it, which is how `stop` passed here while deleting nothing.
+  : c.method === 'DELETE' && c.url.endsWith('/storage/v1/object/shared')
+    ? (Array.isArray(c.body?.prefixes) ? { status: 200, body: [{ name: c.body.prefixes[0] }] } : { status: 400, body: { error: 'Invalid request' } })
+  : c.method === 'DELETE' && c.url.includes('/storage/v1/object/shared/') ? { status: 400, body: { error: 'Invalid request' } }
   : c.url.includes('/storage/v1/object/shared/') ? { status: 200, body: { Key: 'ok' } }
   : { status: 404, body: {} }
 
@@ -149,7 +155,15 @@ console.log('\n=== ★★★ switching it off deletes what we hold ===')
   route = tokens(SETUP); calls = []
   const off = await call(share, { key: K, stop: true })
   const del = calls.find((c) => c.method === 'DELETE')
-  check('★★★ stop DELETES the family\'s copy', off.code === 200 && del?.url === `${SB}/storage/v1/object/shared/${T}.json`)
+  check('★★★ stop DELETES the family\'s copy', off.code === 200 && del?.url === `${SB}/storage/v1/object/shared`
+    && JSON.stringify(del?.body?.prefixes) === JSON.stringify([`${T}.json`]))
+  const base = route
+  route = (c) => c.method === 'DELETE' ? { status: 500, body: { error: 'down' } } : base(c)
+  const failed = await call(share, { key: K, stop: true })
+  check('⛔⛔ a delete that fails is NOT reported as stopped — privacy.html promises removal', failed.code === 502 && !failed.body?.stopped)
+  route = (c) => c.method === 'DELETE' ? { status: 400, body: { statusCode: '404', error: 'Bucket not found' } } : base(c)
+  check('★ no bucket yet means nothing is held — that is stopped', (await call(share, { key: K, stop: true })).code === 200)
+  route = base
   route = tokens({ ...SETUP, revoked_at: '2026-10-01T00:00:00Z' })
   check('⛔ and a stranger cannot delete it with a dead key', (await call(share, { key: K, stop: true })).code === 403)
 }

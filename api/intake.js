@@ -74,7 +74,7 @@ module.exports = async (req, res) => {
   async function loadToken() {
     const r = await rest(
       `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}` +
-        `&select=token,child_label,expires_at,revoked_at,intake_at`,
+        `&select=token,kind,child_label,expires_at,revoked_at,intake_at`,
       { method: 'GET' }
     );
     // `intake_at` arrives with supabase-setup-3.sql. Until that has been run
@@ -87,6 +87,8 @@ module.exports = async (req, res) => {
     const rows = await r.json();
     const row = Array.isArray(rows) ? rows[0] : null;
     if (!row) return { dead: BAD, status: 403 };
+    // ⛔ The six questions come with a paid IEP link, never with a setup link.
+    if (row.kind === 'setup') return { dead: BAD, status: 403 };
     if (row.revoked_at) return { dead: DEAD, status: 403 };
     if (new Date(row.expires_at).getTime() < Date.now()) return { dead: DEAD, status: 403 };
     return { row };

@@ -91,6 +91,9 @@ module.exports = async (req, res) => {
     const row = Array.isArray(rows) ? rows[0] : null;
 
     if (!row) return reject(res, 403, 'That upload link is not valid.');
+    // ⛔ A setup link is a different key: it carries a child's goals to the work
+    // app, and it is not a door for a file. Same words as a fake one.
+    if (row.kind === 'setup') return reject(res, 403, 'That upload link is not valid.');
     if (row.used_at) {
       return reject(res, 403, 'That link has already been used. Email me and I will send a fresh one.');
     }

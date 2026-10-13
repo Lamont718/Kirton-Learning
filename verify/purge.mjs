@@ -19,14 +19,34 @@ const id = (n) => `0000000${n}-0000-4000-8000-000000000000`
 
 // 36 weeks = 252 days; +365 = 617; +7 margin = 624.
 const ROWS = [
-  { token: id(1), kind: 'iep', parent_email: 'old@x.co', created_at: ago(700), used_at: ago(630), intake_at: null, object_path: `${id(1)}/iep.pdf` },
-  { token: id(2), kind: 'iep', parent_email: 'young@x.co', created_at: ago(400), used_at: ago(390), intake_at: null, object_path: `${id(2)}/iep.pdf` },
-  { token: id(3), kind: 'iep', parent_email: 'member@x.co', created_at: ago(700), used_at: ago(650), intake_at: null, object_path: `${id(3)}/iep.pdf` },
-  { token: id(4), kind: 'setup', parent_email: 'setup@x.co', created_at: ago(300), used_at: null, intake_at: null, object_path: null },
-  { token: id(5), kind: 'iep', parent_email: 'late-intake@x.co', created_at: ago(700), used_at: ago(690), intake_at: ago(500), object_path: `${id(5)}/iep.pdf` },
+  // A Blueprint buyer: their own checkout session, one-time, long past the window.
+  { token: id(1), kind: 'iep', parent_email: 'old@x.co', stripe_session_id: 'cs_blueprint', created_at: ago(700), used_at: ago(630), intake_at: null, object_path: `${id(1)}/iep.pdf` },
+  { token: id(2), kind: 'iep', parent_email: 'young@x.co', stripe_session_id: 'cs_young', created_at: ago(400), used_at: ago(390), intake_at: null, object_path: `${id(2)}/iep.pdf` },
+  // ⛔ Pays monthly — and the email on the row is NOT the one on their Stripe customer.
+  { token: id(3), kind: 'iep', parent_email: 'Member@X.co', stripe_session_id: 'cs_member', created_at: ago(700), used_at: ago(650), intake_at: null, object_path: `${id(3)}/iep.pdf` },
+  { token: id(4), kind: 'setup', parent_email: 'old@x.co', stripe_session_id: null, created_at: ago(300), used_at: null, intake_at: null, object_path: null },
+  { token: id(5), kind: 'iep', parent_email: 'late-intake@x.co', stripe_session_id: 'cs_late', created_at: ago(700), used_at: ago(690), intake_at: ago(500), object_path: `${id(5)}/iep.pdf` },
+  // Issued by hand at the desk: no session, and no Stripe customer under this address.
+  { token: id(6), kind: 'iep', parent_email: 'hand@x.co', stripe_session_id: null, created_at: ago(700), used_at: ago(690), intake_at: null, object_path: `${id(6)}/iep.pdf` },
+  // An upload that landed but was never confirmed: a file in the bucket, no path on the row.
+  { token: id(7), kind: 'iep', parent_email: 'old@x.co', stripe_session_id: 'cs_unconfirmed', created_at: ago(700), used_at: null, intake_at: null, object_path: null },
+  // A subscription that never got paid ('incomplete') is not a member.
+  { token: id(8), kind: 'iep', parent_email: 'never-paid@x.co', stripe_session_id: 'cs_incomplete', created_at: ago(700), used_at: ago(690), intake_at: null, object_path: `${id(8)}/iep.pdf` },
 ]
+const SESSIONS = {
+  cs_blueprint: { customer: null, subscription: null },
+  cs_young: { customer: null, subscription: null },
+  cs_member: { customer: 'cus_member', subscription: 'sub_member' },
+  cs_late: { customer: null, subscription: null },
+  cs_unconfirmed: { customer: null, subscription: null },
+  cs_incomplete: { customer: 'cus_np', subscription: 'sub_np' },
+}
+const SUBS = { cus_member: [{ status: 'active' }], cus_np: [{ status: 'incomplete' }], cus_old: [{ status: 'canceled' }] }
+const SUB_BY_ID = { sub_member: { status: 'active' }, sub_np: { status: 'incomplete' } }
+// Stripe matches email EXACTLY. member@x.co's customer is under a different address.
+const CUSTOMERS = { 'old@x.co': [{ id: 'cus_old' }] }
 
-let calls = [], stripeDown = false, storageDown = false
+let calls = [], stripeDown = false, storageDown = false, shared400 = false
 globalThis.fetch = async (url, init = {}) => {
   const u = String(url), method = init.method || 'GET'
   let body = null; try { body = init.body ? JSON.parse(init.body) : null } catch { body = init.body }
@@ -34,10 +54,14 @@ globalThis.fetch = async (url, init = {}) => {
   const ok = (b, status = 200) => ({ ok: status < 300, status, json: async () => b, text: async () => JSON.stringify(b) })
   if (u.startsWith('https://api.stripe.com/')) {
     if (stripeDown) return ok({}, 500)
-    if (u.includes('/customers?')) return ok({ data: u.includes('member%40x.co') ? [{ id: 'cus_m' }] : [{ id: 'cus_o' }] })
-    if (u.includes('/subscriptions?')) return ok({ data: u.includes('cus_m') ? [{ status: 'active' }] : [{ status: 'canceled' }] })
+    const m = u.match(/checkout\/sessions\/([^?]+)/); if (m) return SESSIONS[m[1]] ? ok(SESSIONS[m[1]]) : ok({}, 404)
+    const e = u.match(/customers\?.*email=([^&]+)/); if (e) return ok({ data: CUSTOMERS[decodeURIComponent(e[1])] || [] })
+    const c = u.match(/subscriptions\?.*customer=([^&]+)/); if (c) return ok({ data: SUBS[decodeURIComponent(c[1])] || [] })
+    const s1 = u.match(/subscriptions\/([^?]+)/); if (s1) return ok(SUB_BY_ID[s1[1]] || {})
   }
   if (u.includes('/rest/v1/upload_tokens?select=')) return ok(ROWS)
+  if (u.endsWith('/storage/v1/object/list/ieps')) return ok(body.prefix === id(7) ? [{ name: 'iep.pdf' }] : [])
+  if (method === 'DELETE' && u.endsWith('/storage/v1/object/shared') && shared400) return ok({ error: 'Invalid request' }, 400)
   if (method === 'DELETE' && u.includes('/storage/v1/object/')) return storageDown ? ok({}, 500) : ok(body?.prefixes?.map((p) => ({ name: p })) || [])
   if (method === 'DELETE' && u.includes('/rest/v1/upload_tokens?token=eq.')) return ok([], 204)
   if (u.includes('api.resend.com')) return ok({ id: 'em' })
@@ -73,15 +97,19 @@ console.log('\n=== with it ===')
 process.env.STRIPE_READ_KEY = 'rk_test'
 calls = []
 r = await run()
-check('the family past 36 weeks + 12 months is deleted — file first, then the row',
-  rowDeletes().includes(id(1)) && calls.findIndex((c) => c.method === 'DELETE' && c.body?.prefixes?.[0] === `${id(1)}/iep.pdf`) < calls.findIndex((c) => c.u.includes(`token=eq.${id(1)}`)),
+const fileDeletes = () => deleted().filter((c) => c.u.endsWith('/storage/v1/object/ieps')).flatMap((c) => c.body.prefixes)
+check('a Blueprint family past 36 weeks + 12 months is deleted — file first, then the row',
+  rowDeletes().includes(id(1)) && calls.findIndex((c) => c.method === 'DELETE' && c.body?.prefixes?.includes(`${id(1)}/iep.pdf`)) < calls.findIndex((c) => c.u.includes(`token=eq.${id(1)}`)),
   JSON.stringify(rowDeletes()))
 check('★ a family inside the window is left alone', !rowDeletes().includes(id(2)))
-check('⛔⛔ a family still on the monthly plan is NEVER deleted', !rowDeletes().includes(id(3)) && r.b.member === 1, JSON.stringify(r.b))
+check('⛔⛔ a family still paying monthly is NEVER deleted — found through their own checkout, though the email differs', !rowDeletes().includes(id(3)), JSON.stringify(r.b))
 check('★ the clock starts at the LATEST thing on the row — an intake answered later moves it', !rowDeletes().includes(id(5)))
+check('⛔⛔ no session and no customer under that address = we do not know = kept', !rowDeletes().includes(id(6)) && r.b.unknown >= 1)
+check('⛔⛔ an upload never confirmed still has its file deleted — no orphaned IEP', rowDeletes().includes(id(7)) && fileDeletes().includes(`${id(7)}/iep.pdf`), JSON.stringify(fileDeletes()))
+check('★ an "incomplete" subscription that never paid is not a member', rowDeletes().includes(id(8)))
 check('★ shared work goes at the end of the plan year, while the setup row stays',
   deleted().some((c) => c.u.endsWith('/storage/v1/object/shared') && c.body?.prefixes?.[0] === `${id(4)}.json`) && !rowDeletes().includes(id(4)))
-check('the counts add up', r.b.deleted === 1 && r.b.sharedRemoved === 1, JSON.stringify(r.b))
+check('the counts add up', r.b.deleted === 3 && r.b.sharedRemoved === 1 && r.b.member === 1 && r.b.unknown === 1, JSON.stringify(r.b))
 
 console.log('\n=== when something cannot be checked or fails ===')
 stripeDown = true; calls = []
@@ -90,15 +118,19 @@ check('⛔ Stripe unreachable = skipped, not deleted', rowDeletes().length === 0
 stripeDown = false; storageDown = true; calls = []
 r = await run()
 check('⛔⛔ a file that will not delete keeps its row — never an orphaned IEP', rowDeletes().length === 0 && r.b.errors >= 1, JSON.stringify(r.b))
-storageDown = false
+storageDown = false; shared400 = true; calls = []
+ROWS[3].created_at = ago(700)
+r = await run()
+check('⛔ a 400 from the shared bucket is a failure, not "nothing there" — the setup row stays', !rowDeletes().includes(id(4)))
+shared400 = false; ROWS[3].created_at = ago(300)
 
 console.log('\n=== by hand ===')
 calls = []
-r = await run({ headers: { 'x-admin-key': 'admin-key-for-tests' }, url: '/api/purge?dry=1' })
-check('?dry=1 with the admin key lists what would go and deletes nothing', r.code === 200 && r.b.dry && r.b.deleted === 1 && deleted().length === 0, JSON.stringify(r.b))
+r = await run({ headers: { 'x-admin-key': 'admin-key-for-tests' }, url: '/api/purge' })
+check('⛔ with the admin key it is ALWAYS a dry run — lists what would go, deletes nothing', r.code === 200 && r.b.dry && r.b.deleted === 3 && deleted().length === 0, JSON.stringify(r.b))
 calls = []
 r = await run({ url: '/api/purge?dry=1' })
-check('?dry=1 from the cron is ignored — cron runs are real', !r.b.dry)
+check('the schedule deletes for real', !r.b.dry)
 
 console.log('\n=== it is scheduled ===')
 const vercel = JSON.parse(require('node:fs').readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'))

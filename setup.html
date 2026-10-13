@@ -175,7 +175,17 @@ main{padding:clamp(38px,6vw,60px) 0 clamp(56px,8vw,84px)}
   var show = function (id) { $(id).classList.remove('hide'); };
   var hide = function (id) { $(id).classList.add('hide'); };
 
-  var token = new URLSearchParams(location.search).get('t') || '';
+  // This code opens a child's goals for 7 days, so it is read once and then taken
+  // out of the address bar: not left in browser history, a synced tab, or a
+  // screenshot. ⛔ Not kept in storage either (it may be a shared phone) — a refresh
+  // shows "needs the link", and the emailed link still works until it expires.
+  var q = new URLSearchParams(location.search);
+  var token = q.get('t') || '';
+  if (q.has('t')) {
+    q.delete('t');
+    var rest = q.toString();
+    try { history.replaceState(null, '', location.pathname + (rest ? '?' + rest : '') + location.hash); } catch (e) {}
+  }
   if (!/^[0-9a-f-]{36}$/i.test(token)) { hide('v-load'); show('v-notoken'); return; }
 
   function fail(msg) {

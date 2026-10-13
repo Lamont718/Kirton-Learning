@@ -194,6 +194,10 @@ console.log('\n=== the page that hands it over ===');
   // token and all — to the work app's server on the way out.
   check('⛔⛔ it sends no referrer, by meta', /name="referrer" content="no-referrer"/.test(page));
   check('⛔⛔ and the outbound link says so itself', /id="go"[^>]*rel="noreferrer"/.test(page));
+  check('⛔ the code is taken out of the address bar once read — it opens her goals for 7 days',
+    /q\.delete\('t'\)/.test(page) && /history\.replaceState/.test(page));
+  check('⛔ and it is not kept in browser storage instead — it may be a shared phone',
+    !/localStorage|sessionStorage|indexedDB/.test(page.replace(/\/\/.*$/gm, '')));
   check('★ it loads no analytics beacon — this page knows which family is on it',
     !/analytics\.js|_vercel\/insights/.test(page));
   check('★ it asks the server for the setup and does not read it out of its own URL',

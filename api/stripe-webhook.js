@@ -95,7 +95,32 @@ const KIRTON_PAYMENT_LINKS = [
 const OTHER_BRAND_PAYMENT_LINKS = [
   'plink_1U4TQS1pO3j9etUdeLT70hgT', // Emeka Books — My Crown
   'plink_1U9vVO1pO3j9etUdqnA3RSeV', // Emeka Books — The House That Smiled
+  'plink_1UMz5f1pO3j9etUdhkfrsp0u', // Emeka Books — The Best Present ($40, retired)
+  'plink_1UWeBj1pO3j9etUdijgynRbH', // Emeka Books — My Crown ($30)
+  'plink_1UWeBj1pO3j9etUd0QlfaKB5', // Emeka Books — The Best Present ($30)
+  'plink_1UO3uL1pO3j9etUdsnIsrkYg', // Emeka Books — ABCs coloring book (PDF)
+  'plink_1UO54O1pO3j9etUdzUzQmkW5', // Emeka Books — City coloring book (PDF)
+  'plink_1UONbo1pO3j9etUdsPwUYuCY', // Emeka Books — Adventures coloring book (PDF)
+  'plink_1UTQt91pO3j9etUdsPVPupf8', // IslandVibes — Featured Listing
+  'plink_1UTQt81pO3j9etUdJRq95tc7', // IslandVibes — Premium Listing
 ];
+
+// Brands whose checkout is built by their own server. Those sessions have no
+// payment link and no brand tag, so the only thing on the event that says whose
+// they are is where the buyer gets sent afterward. Matched on the exact host:
+// anything else stays 'unknown' and still alerts.
+const OTHER_BRAND_SUCCESS_HOSTS = [
+  'www.emekaexplores.com',      // Emeka Explores Premium
+  'emekaexplores.com',
+  'studyaimastery.com',         // Study AI
+  'www.studyaimastery.com',
+  'study-ai-mastery.vercel.app',
+  'round-for-round.vercel.app', // Round for Round
+];
+
+function successHost(session) {
+  try { return new URL(session.success_url).hostname; } catch { return null; }
+}
 
 // 'ours' | 'theirs' | 'unknown'
 //
@@ -122,6 +147,8 @@ function whoseSale(session) {
   const KIRTON_BRAND_TAGS = ['kirton', 'kirton-learning'];
   const brand = session.metadata && session.metadata.brand;
   if (brand) return KIRTON_BRAND_TAGS.includes(brand) ? 'ours' : 'theirs';
+
+  if (OTHER_BRAND_SUCCESS_HOSTS.includes(successHost(session))) return 'theirs';
 
   return 'unknown';
 }

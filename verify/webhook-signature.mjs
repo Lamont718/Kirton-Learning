@@ -212,6 +212,48 @@ console.log('\nStripe webhook — signature\n');
 }
 
 // ---------------------------------------------------------------------------
+// The other brands on the account are known, so they are ignored in silence and
+// do not email him. Everything else must stay loud. None of these reach Supabase.
+{
+  const placed = async (object) => {
+    const body = JSON.stringify({
+      id: 'evt_brand', type: 'checkout.session.completed',
+      data: { object: { id: 'cs_brand', payment_status: 'paid', customer_details: {}, ...object } },
+    });
+    return call(body, sign(body, SECRET));
+  };
+  const THEIRS = 'another brand on this Stripe account';
+  const UNKNOWN = 'unrecognized payment link';
+
+  const cases = [
+    ['a $30 My Crown sale is another brand', { payment_link: 'plink_1UWeBj1pO3j9etUdijgynRbH' }, THEIRS],
+    ['a $30 Best Present sale is another brand', { payment_link: 'plink_1UWeBj1pO3j9etUd0QlfaKB5' }, THEIRS],
+    ['an IslandVibes listing is another brand', { payment_link: 'plink_1UTQt91pO3j9etUdsPVPupf8' }, THEIRS],
+    ['an Emeka Explores Premium trial is another brand',
+      { mode: 'subscription', amount_total: 0, success_url: 'https://www.emekaexplores.com/dashboard?upgrade=success', metadata: { userId: 'u' } }, THEIRS],
+    ['a Study AI subscription is another brand', { success_url: 'https://studyaimastery.com/dashboard' }, THEIRS],
+    ['a Round for Round subscription is another brand', { success_url: 'https://round-for-round.vercel.app/account' }, THEIRS],
+    ['a lookalike host is not another brand, it still alerts', { success_url: 'https://www.emekaexplores.com.example.com/x' }, UNKNOWN],
+    ['an unknown host still alerts', { success_url: 'https://example.com/x' }, UNKNOWN],
+    ['a malformed success URL still alerts', { success_url: 'not a url' }, UNKNOWN],
+    ['no link and no success URL still alerts', {}, UNKNOWN],
+  ];
+  for (const [name, object, want] of cases) {
+    const r = await placed(object);
+    r.code === 200 && r.body.ignored === want
+      ? ok(name)
+      : bad(name, `got ${r.code} ${JSON.stringify(r.body)}`);
+  }
+
+  // A Kirton link wins over everything else on the session. A family who paid
+  // must never be filed as someone else's sale. It stops at the no-email check.
+  const r = await placed({ payment_link: KIRTON_LINK, success_url: 'https://www.emekaexplores.com/x' });
+  r.code >= 500
+    ? ok('a Kirton payment link is ours even with another brand\'s success URL')
+    : bad('a Kirton payment link is ours even with another brand\'s success URL', `got ${r.code} ${JSON.stringify(r.body)}`);
+}
+
+// ---------------------------------------------------------------------------
 {
   const res = mockRes();
   const req = Readable.from([Buffer.from('{}')]);

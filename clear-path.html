@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clear Path NYC — a free guide for families of children with disabilities</title>
+<meta name="description" content="A free step-by-step guide for New York City families of children with any disability: what to do next, who to call, the deadlines the city has to meet, and letters you can send. English and Spanish.">
+<link rel="canonical" href="https://kirtonlearning.com/clear-path">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Clear Path NYC — what to do next, who to call">
+<meta property="og:description" content="A free step-by-step guide for NYC families of children with any disability. Nothing to sign up for; nothing you type leaves your phone.">
+<meta property="og:url" content="https://kirtonlearning.com/clear-path">
+<meta property="og:image" content="https://kirtonlearning.com/og.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/atkinson-hyperlegible-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts/fonts.css">
+<link rel="stylesheet" href="/fonts/atkinson.css">
+<style>
+/* The claude.ai wrapper used to supply this. Without it every tab panel shows at once,
+   because .view sets display:flex and that beats the hidden attribute. */
+[hidden]:not([hidden=until-found i]) { display: none !important; }
+img { max-width: 100%; }
+body { margin: 0; }
+/* Layout: a single calm column. Pick your starting point, get a numbered path, then a filterable directory and a glossary. */
+:root {
+  --bg: #f3f6f8;
+  --surface: #ffffff;
+  --ink: #141d2e;
+  --navy: #141d2e;        /* Kirton Learning brand */
+  --on-navy: #eef2f8;
+  --on-navy-muted: #a9b6cb;
+  --muted: #546a76;
+  --line: #d6e0e6;
+  --accent: #1f6f8b;        /* harbor blue */
+  --accent-soft: #e1eff4;
+  --sun: #f2b632;           /* the one warm signal */
+  --sun-ink: #5a3d00;
+  --done: #2f7d5b;
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1c23; --surface: #162730; --ink: #e6eef2; --muted: #9db2bd; --line: #284049;
+    --accent: #6cc0dc; --accent-soft: #1b3742; --sun: #f2b632; --sun-ink: #2a1c00; --done: #6fcf9f;
+    --navy: #0b111c; --on-navy: #eef2f8; --on-navy-muted: #8e9bb2;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1c23; --surface: #162730; --ink: #e6eef2; --muted: #9db2bd; --line: #284049;
+  --accent: #6cc0dc; --accent-soft: #1b3742; --sun: #f2b632; --sun-ink: #2a1c00; --done: #6fcf9f;
+  --navy: #0b111c; --on-navy: #eef2f8; --on-navy-muted: #8e9bb2;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h2 { font-size: 1.6rem; font-weight: 800; }
+h3 { font-size: 1.15rem; font-weight: 700; }
+p { margin: 0; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; border-radius: 6px; }
+
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--navy); }
+.appbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--navy); color: var(--on-navy);
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.appbar-in { max-width: 760px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px 4px; flex-wrap: wrap; }
+.appbar .brand { color: var(--on-navy); text-decoration: none; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; letter-spacing: .08em; }
+.appbar .brand .kl { color: var(--sun); }
+.appbar .brand .sep { color: var(--on-navy-muted); }
+.appbar .lang { background: transparent; border-color: rgba(255,255,255,.22); }
+.appbar .lang button { color: var(--on-navy); }
+.appbar .lang button[aria-pressed="true"] { background: var(--on-navy); color: var(--navy); }
+.tabs { max-width: 760px; margin: 0 auto; display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  font: inherit; font-family: var(--font-display); font-weight: 700; font-size: .98rem; white-space: nowrap; cursor: pointer;
+  background: transparent; color: var(--on-navy-muted); border: 0; border-bottom: 3px solid transparent; padding: 12px 14px 10px;
+}
+.tab:hover { color: var(--on-navy); }
+.tab[aria-selected="true"] { color: var(--on-navy); border-bottom-color: var(--sun); }
+.tab:first-child { padding-left: 0; }
+.subtabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.view { display: flex; flex-direction: column; gap: 44px; }
+.view > section:first-child, .view > .hero:first-child { padding-top: 28px; }
+.view[data-view="tools"] { gap: 28px; }
+.hero { display: flex; flex-direction: column; gap: 14px; }
+.promo { background: var(--accent-soft); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 6px; font-size: .95rem; }
+.promo b { font-family: var(--font-display); }
+footer a { color: inherit; }
+.lang .short { display: none; }
+@media (max-width: 520px) {
+  .lang .long { display: none; } .lang .short { display: inline; }
+  .appbar-in { flex-wrap: nowrap; }
+  .appbar .brand { font-size: .7rem; gap: 6px; }
+  .tab { padding: 12px 10px 10px; font-size: .94rem; }
+}
+.brand { font-family: var(--font-display); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; color: var(--accent); }
+.hero h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 800; }
+.hero h1 em { font-style: normal; background: linear-gradient(transparent 62%, var(--sun) 62%); padding: 0 .1em; }
+.hero .lede { color: var(--muted); max-width: 60ch; font-size: 1.08rem; }
+.callnow { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; background: var(--accent-soft); border-radius: 12px; padding: 14px 16px; font-size: .95rem; }
+.callnow strong { font-family: var(--font-display); }
+
+section { display: flex; flex-direction: column; gap: 18px; }
+.kicker { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+
+/* Starting point picker */
+.picker { display: flex; flex-direction: column; gap: 18px; }
+.qgroup { display: flex; flex-direction: column; gap: 10px; }
+.qgroup > span { font-weight: 700; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: inherit; font-size: .95rem; cursor: pointer;
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+  padding: 9px 16px; border-radius: 999px; transition: border-color .15s, background .15s;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); font-weight: 700; }
+
+/* Path */
+.progress { display: flex; align-items: center; gap: 12px; font-size: .95rem; color: var(--muted); }
+.bar { flex: 1; height: 8px; background: var(--line); border-radius: 99px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--done); transition: width .3s; }
+ol.path { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; counter-reset: step; }
+ol.path li { position: relative; padding: 0 0 26px 54px; counter-increment: step; }
+ol.path li::before {
+  content: counter(step); position: absolute; left: 0; top: 0;
+  width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center; font-family: var(--font-display); font-weight: 800;
+  background: var(--surface); border: 2px solid var(--accent); color: var(--accent);
+}
+ol.path li::after { content: ""; position: absolute; left: 17px; top: 40px; bottom: 4px; width: 2px; background: var(--line); }
+ol.path li:last-child::after { display: none; }
+ol.path li.is-done::before { content: "✓"; background: var(--done); border-color: var(--done); color: var(--surface); }
+ol.path li.is-done h3 { color: var(--muted); }
+.step { display: flex; flex-direction: column; gap: 8px; }
+.step .when { font-size: .82rem; font-weight: 700; color: var(--sun-ink); background: var(--sun); align-self: flex-start; padding: 2px 10px; border-radius: 6px; }
+.step p { color: var(--ink); max-width: 62ch; }
+.step ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 4px; }
+.step .who { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.step .who a { font-size: .88rem; text-decoration: none; background: var(--accent-soft); padding: 4px 10px; border-radius: 6px; }
+.donebox { display: flex; gap: 8px; align-items: center; font-size: .92rem; color: var(--muted); cursor: pointer; margin-top: 4px; }
+.donebox input { width: 18px; height: 18px; accent-color: var(--done); }
+
+/* Directory */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.dir { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.card .cat { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: var(--accent); }
+.card p { color: var(--muted); font-size: .95rem; }
+.contact { display: flex; flex-direction: column; gap: 6px; margin-top: auto; padding-top: 6px; }
+.line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-variant-numeric: tabular-nums; }
+.line .num { font-weight: 700; user-select: all; }
+.line .lab { font-size: .82rem; color: var(--muted); }
+.copy { font: inherit; font-size: .8rem; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 6px; padding: 2px 8px; }
+.copy:hover { border-color: var(--accent); }
+.hours { font-size: .85rem; color: var(--muted); }
+.flag { font-size: .85rem; background: var(--accent-soft); border-radius: 8px; padding: 6px 10px; color: var(--ink); }
+
+/* Glossary */
+dl.gloss { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 10px 18px; }
+dl.gloss dt { font-family: var(--font-display); font-weight: 800; color: var(--accent); }
+dl.gloss dd { margin: 0; min-width: 0; }
+@media (max-width: 480px) { dl.gloss { grid-template-columns: 1fr; gap: 2px; } dl.gloss dd { margin-bottom: 10px; } }
+
+footer { font-size: .88rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Additions: language switch, section nav, letter writer, call log */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lang { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.lang button { font: inherit; font-size: .85rem; border: 0; background: transparent; color: var(--ink); padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--accent); color: var(--surface); font-weight: 700; }
+nav.jump { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .95rem; }
+nav.jump a { text-decoration: none; font-weight: 700; }
+nav.jump a:hover { text-decoration: underline; }
+.writeit { font: inherit; font-size: .88rem; cursor: pointer; align-self: flex-start; border: 1.5px solid var(--accent); color: var(--accent); background: transparent; border-radius: 6px; padding: 4px 12px; font-weight: 700; }
+.writeit:hover { background: var(--accent-soft); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.field.wide { grid-column: 1 / -1; }
+.field label { font-size: .88rem; font-weight: 700; }
+.field input, .field select, .field textarea {
+  font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg);
+  border: 1.5px solid var(--line); border-radius: 8px; padding: 9px 11px; width: 100%;
+}
+.field textarea { min-height: 90px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); outline: none; }
+.check { display: flex; gap: 8px; align-items: center; font-size: .95rem; }
+.check input { width: 18px; height: 18px; accent-color: var(--accent); }
+.letter-out { white-space: pre-wrap; font-family: var(--font-body); font-size: .98rem; background: var(--bg); border: 1px dashed var(--line); border-radius: 10px; padding: 18px; margin: 0; overflow-wrap: anywhere; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.btn { font: inherit; font-weight: 700; cursor: pointer; border: 0; background: var(--accent); color: var(--surface); border-radius: 8px; padding: 9px 18px; }
+.btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.tip { font-size: .9rem; color: var(--muted); }
+.log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.log li { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; background: var(--surface); }
+.log .meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.log .who { font-weight: 700; }
+.log .next { font-size: .92rem; }
+.log .del { align-self: flex-start; font: inherit; font-size: .8rem; cursor: pointer; border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 6px; padding: 2px 8px; }
+.log .del.confirm { border-color: #b3261e; color: #b3261e; }
+.empty { color: var(--muted); font-size: .95rem; border: 1px dashed var(--line); border-radius: 10px; padding: 16px; }
+.boro-note { font-size: .85rem; color: var(--muted); }
+.copyplan { align-self: flex-start; }
+.prep-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.checks .check { align-items: flex-start; }
+.checks .check input { margin-top: 4px; flex: none; }
+.tl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.tl { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.tl li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
+.tl .days { font-family: var(--font-display); font-weight: 800; color: var(--accent); font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.tl .days small { display: block; font-family: var(--font-body); font-weight: 400; font-size: .74rem; color: var(--muted); letter-spacing: .02em; }
+.rights { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.rights li { display: flex; flex-direction: column; gap: 2px; padding-left: 14px; border-left: 3px solid var(--sun); }
+.rights b { font-family: var(--font-display); }
+.calc-out { display: flex; flex-direction: column; gap: 6px; font-variant-numeric: tabular-nums; }
+.calc-out .due { font-size: 1.05rem; }
+.calc-out .due b { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <div class="appbar-in">
+    <a class="brand" href="/"><span class="kl">Kirton Learning</span><span class="sep">/</span><span>Clear Path NYC</span></a>
+    <div class="lang" role="group" aria-label="Language / Idioma">
+      <button id="lang-en" data-lang="en" aria-pressed="true" aria-label="English"><span class="long">English</span><span class="short">EN</span></button>
+      <button id="lang-es" data-lang="es" aria-pressed="false" aria-label="Español"><span class="long">Español</span><span class="short">ES</span></button>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="tab-plan" data-view="plan" data-t="tabPlan"></button>
+    <button class="tab" role="tab" id="tab-help" data-view="help" data-t="tabHelp"></button>
+    <button class="tab" role="tab" id="tab-tools" data-view="tools" data-t="tabTools"></button>
+    <button class="tab" role="tab" id="tab-rights" data-view="rights" data-t="tabRights"></button>
+    <button class="tab" role="tab" id="tab-words" data-view="words" data-t="tabWords"></button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <main>
+  <div class="view" data-view="plan" role="tabpanel" aria-labelledby="tab-plan">
+    <div class="hero">
+      <h1 data-th="h1"></h1>
+      <p class="lede" data-t="lede"></p>
+      <p class="flag" id="es-draft" hidden>Esta traducción al español es un borrador y todavía no la ha revisado un hablante nativo. La versión en inglés es la oficial. Si algo no está claro, cambie a English arriba o llame a la línea de INCLUDEnyc.</p>
+      <div class="callnow"><strong data-t="stuck"></strong><span data-th="stuckBody"></span></div>
+    </div>
+  <section aria-labelledby="start-h">
+    <div class="kicker" data-t="kStart"></div>
+    <h2 id="start-h" data-t="hStart"></h2>
+    <div class="picker" id="picker"></div>
+  </section>
+
+  <section aria-labelledby="path-h">
+    <div class="kicker" data-t="kPath"></div>
+    <h2 id="path-h" data-t="hPath"></h2>
+    <p id="path-sub" style="color:var(--muted)"></p>
+    <div class="progress"><span id="prog-text"></span><div class="bar"><i id="prog-bar"></i></div></div>
+    <ol class="path" id="path"></ol>
+    <div class="row"><button class="btn ghost copyplan" id="copy-plan" data-t="copyPlan"></button><span class="tip" data-t="copyPlanTip"></span></div>
+  </section>
+  </div>
+
+  <div class="view" data-view="help" role="tabpanel" aria-labelledby="tab-help" hidden>
+  <section aria-labelledby="dir-h">
+    <div class="kicker" data-t="kDir"></div>
+    <h2 id="dir-h" data-t="hDir"></h2>
+    <p class="boro-note" id="boro-note"></p>
+    <div class="filters" id="filters"></div>
+    <div class="dir" id="dir"></div>
+  </section>
+  </div>
+
+  <div class="view" data-view="tools" role="tabpanel" aria-labelledby="tab-tools" hidden>
+    <section style="padding-top:28px">
+      <div class="kicker" data-t="kTools"></div>
+      <div class="subtabs" id="subtabs">
+        <button class="chip" id="sub-letters" data-sub="letters" data-t="navLetter"></button>
+        <button class="chip" id="sub-prep" data-sub="prep" data-t="navPrep"></button>
+        <button class="chip" id="sub-child" data-sub="child" data-t="navProfile"></button>
+        <button class="chip" id="sub-log" data-sub="log" data-t="navLog"></button>
+      </div>
+    </section>
+  <section class="subview" data-sub="letters" aria-labelledby="letter-h">
+    <div class="kicker" data-t="kLetter"></div>
+    <h2 id="letter-h" data-t="hLetter"></h2>
+    <p style="color:var(--muted)" data-t="letterIntro"></p>
+    <div class="panel">
+      <div class="form">
+        <div class="field wide"><label for="lt-type" data-t="lType"></label><select id="lt-type"></select></div>
+        <div class="field"><label for="lt-parent" data-t="lParent"></label><input id="lt-parent" autocomplete="name"></div>
+        <div class="field"><label for="lt-contact" data-t="lContact"></label><input id="lt-contact"></div>
+        <div class="field"><label for="lt-child" data-t="lChild"></label><input id="lt-child"></div>
+        <div class="field"><label for="lt-dob" data-t="lDob"></label><input id="lt-dob" type="date"></div>
+        <div class="field"><label for="lt-school" id="lt-school-label" data-t="lSchool"></label><input id="lt-school"></div>
+        <div class="field"><label for="lt-grade" data-t="lGrade"></label><input id="lt-grade"></div>
+        <div class="field"><label for="lt-to" data-t="lTo"></label><input id="lt-to"></div>
+        <div class="field"><label for="lt-lang" data-t="lLang"></label><input id="lt-lang"></div>
+        <div class="field wide"><label for="lt-concerns" id="lt-concerns-label" data-t="lConcerns"></label><textarea id="lt-concerns"></textarea></div>
+        <label class="check field wide" id="lt-ei-wrap"><input type="checkbox" id="lt-ei"> <span data-t="lEi"></span></label>
+      </div>
+      <pre class="letter-out" id="lt-out" aria-live="polite"></pre>
+      <div class="row">
+        <button class="btn" id="lt-copy" data-t="copyLetter"></button>
+        <span class="tip" data-t="letterTip"></span>
+      </div>
+    </div>
+  </section>
+  <section class="subview" data-sub="prep" aria-labelledby="prep-h">
+    <div class="kicker" data-t="kPrep"></div>
+    <h2 id="prep-h" data-t="hPrep"></h2>
+    <p style="color:var(--muted)" data-t="prepIntro"></p>
+    <div class="prep-grid" id="prep"></div>
+    <div class="row"><button class="btn ghost" id="prep-copy" data-t="prepCopy"></button></div>
+    <div class="promo"><b data-t="promoH"></b><span data-th="promoBody"></span></div>
+  </section>
+  <section class="subview" data-sub="child" aria-labelledby="pf-h">
+    <div class="kicker" data-t="kProfile"></div>
+    <h2 id="pf-h" data-t="hProfile"></h2>
+    <p style="color:var(--muted)" data-t="pfIntro"></p>
+    <div class="panel">
+      <div class="form" id="pf-form"></div>
+      <pre class="letter-out" id="pf-out" aria-live="polite"></pre>
+      <div class="row"><button class="btn" id="pf-copy" data-t="pfCopy"></button><button class="btn ghost" id="pf-clear" data-t="pfClear"></button><span class="tip" data-t="pfTip"></span></div>
+    </div>
+  </section>
+  <section class="subview" data-sub="log" aria-labelledby="log-h">
+    <div class="kicker" data-t="kLog"></div>
+    <h2 id="log-h" data-t="hLog"></h2>
+    <p style="color:var(--muted)" data-t="logIntro"></p>
+    <form class="panel" id="log-form">
+      <div class="form">
+        <div class="field"><label for="lg-date" data-t="gDate"></label><input id="lg-date" type="date" required></div>
+        <div class="field"><label for="lg-org" data-t="gOrg"></label><input id="lg-org" list="org-list" required></div>
+        <div class="field"><label for="lg-person" data-t="gPerson"></label><input id="lg-person"></div>
+        <div class="field"><label for="lg-follow" data-t="gFollow"></label><input id="lg-follow" type="date"></div>
+        <div class="field wide"><label for="lg-notes" data-t="gNotes"></label><textarea id="lg-notes"></textarea></div>
+        <div class="field wide"><label for="lg-next" data-t="gNext"></label><input id="lg-next"></div>
+      </div>
+      <datalist id="org-list"></datalist>
+      <div class="row">
+        <button class="btn" type="submit" data-t="gSave"></button>
+        <button class="btn ghost" type="button" id="lg-copy" data-t="gCopyAll"></button>
+        <span class="tip" id="lg-status" aria-live="polite"></span>
+      </div>
+    </form>
+    <ul class="log" id="log"></ul>
+  </section>
+  </div>
+
+  <div class="view" data-view="rights" role="tabpanel" aria-labelledby="tab-rights" hidden>
+  <section aria-labelledby="rights-h">
+    <div class="kicker" data-t="kRights"></div>
+    <h2 id="rights-h" data-t="hRights"></h2>
+    <p style="color:var(--muted)" data-t="rightsIntro"></p>
+    <div class="tl-grid">
+      <div class="panel"><h3 data-t="tlPreH"></h3><ol class="tl" id="tl-pre"></ol></div>
+      <div class="panel"><h3 data-t="tlSchH"></h3><ol class="tl" id="tl-sch"></ol></div>
+    </div>
+    <div class="panel">
+      <h3 data-t="calcH"></h3>
+      <div class="form">
+        <div class="field"><label for="calc-date" data-t="calcDate"></label><input id="calc-date" type="date"></div>
+        <div class="field"><label for="calc-kind" data-t="calcKind"></label><select id="calc-kind"></select></div>
+      </div>
+      <div class="calc-out" id="calc-out" aria-live="polite"></div>
+    </div>
+    <h3 data-t="rightsListH"></h3>
+    <ul class="rights" id="rights"></ul>
+    <h3 data-t="disagreeH"></h3>
+    <ol class="path" id="disagree"></ol>
+  </section>
+  </div>
+
+  <div class="view" data-view="words" role="tabpanel" aria-labelledby="tab-words" hidden>
+  <section aria-labelledby="gl-h">
+    <div class="kicker" data-t="kGloss"></div>
+    <h2 id="gl-h" data-t="hGloss"></h2>
+    <p style="color:var(--muted)" data-t="glossIntro"></p>
+    <dl class="gloss" id="gloss"></dl>
+  </section>
+  </div>
+  </main>
+
+  <footer>
+    <p data-th="kirton"></p>
+    <p data-th="crisis"></p>
+    <p data-th="checked"></p>
+    <p data-t="notAdvice"></p>
+  </footer>
+</div>
+
+<script>
+let lang = "en";
+const t = x => Array.isArray(x) ? x[lang === "es" ? 1 : 0] : x;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+const UI = {
+  h1: ["Your child has a disability, or you think they might. <em>Here's what to do next.</em>", "Su hijo tiene una discapacidad, o usted cree que podría tenerla. <em>Esto es lo que debe hacer ahora.</em>"],
+  lede: ["A step-by-step guide for New York City families of children with any disability: developmental, physical, medical, sensory, learning, or mental health. Tell us where you are, and we'll show the steps in order, who to call, and what to say. Everything listed here is free or covered by insurance or Medicaid.", "Una guía paso a paso para familias de la Ciudad de Nueva York con hijos que tienen cualquier discapacidad: del desarrollo, física, médica, sensorial, de aprendizaje o de salud mental. Díganos dónde está y le mostraremos los pasos en orden, a quién llamar y qué decir. Todo lo que aparece aquí es gratis o lo cubre el seguro o Medicaid."],
+  stuck: ["Feeling stuck right now?", "¿Se siente perdido ahora mismo?"],
+  stuckBody: ["Call the free INCLUDEnyc Help Line at <b>(212) 677-4660</b>, Mon–Thu, 9 AM–3 PM. A family educator will walk you through it.", "Llame gratis a la línea de ayuda en español de INCLUDEnyc al <b>(212) 677-4668</b>, o envíe un texto al <b>(646) 693-3157</b>. Lunes a jueves, de 9 AM a 3 PM. Una educadora familiar le guiará."],
+  navPath: ["Your steps", "Sus pasos"], navDir: ["Who to call", "A quién llamar"], navLetter: ["Letter writer", "Escribir cartas"], navLog: ["Call log", "Registro de llamadas"], navGloss: ["Words you'll hear", "Palabras clave"],
+  kStart: ["Step zero", "Paso cero"], hStart: ["Where are you starting?", "¿Dónde está empezando?"],
+  kPath: ["Your path", "Su camino"], hPath: ["Your steps, in order", "Sus pasos, en orden"],
+  kDir: ["Who to call", "A quién llamar"], hDir: ["Help directory", "Directorio de ayuda"],
+  kLetter: ["Put it in writing", "Por escrito"], hLetter: ["Letter writer", "Escribir cartas"],
+  letterIntro: ["Schools and offices have to act on written requests, and a dated letter protects your timeline. Fill in what you know and the letter writes itself. Nothing you type leaves this device.", "Las escuelas y oficinas tienen que responder a las solicitudes por escrito, y una carta con fecha protege sus plazos. Llene lo que sepa y la carta se escribe sola. Nada de lo que escriba sale de este dispositivo."],
+  lType: ["What do you need?", "¿Qué necesita?"], lParent: ["Your name", "Su nombre"], lContact: ["Your phone or email", "Su teléfono o correo"], lChild: ["Child's name", "Nombre del niño"], lDob: ["Child's date of birth", "Fecha de nacimiento del niño"],
+  lSchool: ["School name", "Nombre de la escuela"], lSchoolDistrict: ["School district number", "Número del distrito escolar"], lGrade: ["Grade or class", "Grado o clase"], lTo: ["Addressed to (optional)", "Dirigida a (opcional)"], lLang: ["Language you want papers and meetings in", "Idioma para documentos y reuniones"],
+  lConcerns: ["What are you seeing? Be specific.", "¿Qué está notando? Sea específico."], lConcerns504: ["What does your child need during the school day?", "¿Qué necesita su hijo durante el día escolar?"], lConcernsIep: ["Why do you want a meeting?", "¿Por qué quiere una reunión?"],
+  lEi: ["My child gets or got Early Intervention services", "Mi hijo recibe o recibió servicios de Intervención Temprana"],
+  copyLetter: ["Copy letter", "Copiar carta"], copied: ["Copied", "Copiado"], selected: ["Selected. Copy it now.", "Seleccionado. Cópielo ahora."],
+  letterTip: ["Print it, sign it, and keep a copy. Hand-deliver and ask for a dated receipt, or email it and save the sent message.", "Imprímala, fírmela y guarde una copia. Entréguela en persona y pida un recibo con fecha, o envíela por correo electrónico y guarde el mensaje enviado."],
+  kLog: ["Keep track", "Lleve un registro"], hLog: ["Call log", "Registro de llamadas"],
+  logIntro: ["Write down every call: who you spoke to, what they said, and what happens next. If services stall, this record is what advocates and lawyers ask for first. Entries are saved only on this device.", "Anote cada llamada: con quién habló, qué le dijeron y qué sigue. Si los servicios se atrasan, este registro es lo primero que piden los defensores y abogados. Las notas se guardan solo en este dispositivo."],
+  gDate: ["Date", "Fecha"], gOrg: ["Office or organization", "Oficina u organización"], gPerson: ["Person you spoke to", "Persona con quien habló"], gFollow: ["Follow up by", "Dar seguimiento antes de"], gNotes: ["What they said", "Lo que le dijeron"], gNext: ["Next step", "Próximo paso"],
+  gSave: ["Save entry", "Guardar nota"], gCopyAll: ["Copy whole log", "Copiar todo el registro"], gSaved: ["Saved on this device.", "Guardado en este dispositivo."], gNoStore: ["This browser won't save entries. Copy the log before you close the page.", "Este navegador no guarda las notas. Copie el registro antes de cerrar la página."],
+  gEmpty: ["No calls logged yet. Your first entry will appear here.", "Todavía no hay llamadas. Su primera nota aparecerá aquí."], gDelete: ["Delete", "Borrar"], gConfirm: ["Tap again to delete", "Toque otra vez para borrar"], gFollowLabel: ["Follow up by", "Seguimiento antes de"], gNextLabel: ["Next", "Siguiente"],
+  kGloss: ["Decoder", "Diccionario"], hGloss: ["Words you'll hear", "Palabras que va a escuchar"], glossIntro: ["Every office uses letters instead of words. Here's what they mean.", "Cada oficina usa siglas en vez de palabras. Esto es lo que significan."],
+  crisis: ["<b>In a crisis?</b> Call or text <b>988</b> any time for mental health crisis help, free and in many languages. If someone is in immediate danger, call <b>911</b>.", "<b>¿En una crisis?</b> Llame o envíe un texto al <b>988</b> a cualquier hora para ayuda en crisis de salud mental, gratis y en español. Si alguien está en peligro inmediato, llame al <b>911</b>."],
+  checked: ["<b>Phone numbers and rules were checked against each agency's own website and the state regulations on November 7, 2026</b>, but they change. If a number doesn't work, call 311 or the INCLUDEnyc Help Line and they'll point you to the right place.", "<b>Los números y las reglas se revisaron con el sitio web de cada agencia y las regulaciones estatales el 7 de noviembre de 2026</b>, pero cambian. Si un número no funciona, llame al 311 o a la línea de INCLUDEnyc y le dirán a dónde ir."],
+  notAdvice: ["This guide gives general information, not legal or medical advice.", "Esta guía da información general, no consejos legales ni médicos."],
+  done: ["Done", "Hecho"], ofDone: ["{n} of {m} done", "{n} de {m} hechos"], writeThis: ["Write this letter", "Escribir esta carta"], website: ["Website ↗", "Sitio web ↗"], copy: ["Copy", "Copiar"],
+  pathSub: ["For a child {age} with {type}, {dx}, in {boro}. Check off steps as you go. Your checkmarks stay on this device.", "Para un niño {age} con {type}, {dx}, en {boro}. Marque los pasos a medida que avanza. Sus marcas se quedan en este dispositivo."],
+  boroNote: ["Showing local offices for {boro}. Change your borough on My plan.", "Mostrando oficinas locales de {boro}. Cambie su condado en Mi plan."],
+  forPath: ["For your path", "Para su camino"], all: ["All", "Todo"],
+  copyPlan: ["Copy my plan", "Copiar mi plan"], copyPlanTip: ["Paste it into a text or email to share your steps and phone numbers with family.", "Péguelo en un mensaje o correo para compartir sus pasos y teléfonos con su familia."],
+  planTitle: ["My Clear Path NYC plan", "Mi plan de Clear Path NYC"],
+  navRights: ["Your rights", "Sus derechos"], kRights: ["Know your rights", "Conozca sus derechos"], hRights: ["Deadlines and your rights", "Plazos y sus derechos"],
+  rightsIntro: ["The law sets deadlines the city has to meet, and it gives you rights when you disagree. Knowing them helps you push when things stall.", "La ley fija plazos que la ciudad tiene que cumplir y le da derechos cuando no está de acuerdo. Conocerlos le ayuda a insistir cuando las cosas se atrasan."],
+  tlPreH: ["Preschool (CPSE), ages 3–5", "Preescolar (CPSE), de 3 a 5 años"], tlSchH: ["School age (CSE), ages 5 to 22", "Edad escolar (CSE), de 5 a 22 años"],
+  calcH: ["Deadline calculator", "Calculadora de plazos"], calcDate: ["Date you signed consent for evaluation", "Fecha en que firmó el consentimiento para la evaluación"], calcKind: ["Which process?", "¿Qué proceso?"],
+  calcEmpty: ["Enter the date you signed consent to see your deadlines.", "Escriba la fecha en que firmó el consentimiento para ver sus plazos."],
+  calcEval: ["Evaluation should be done by", "La evaluación debe terminar antes del"], calcMeeting: ["The evaluation and CPSE recommendation are due within 60 calendar days, by", "La evaluación y la recomendación del CPSE deben estar listas dentro de 60 días calendario, antes del"],
+  calcServices: ["Services should start within 60 school days, about 12 weeks, so roughly by", "Los servicios deben empezar dentro de 60 días escolares, unas 12 semanas, o sea más o menos el"],
+  calcNote: ["Calendar-day dates are exact. School-day dates are estimates, and holidays and breaks push them later. If a date passes, write it in your call log and call INCLUDEnyc or AFC.", "Las fechas en días calendario son exactas. Las fechas en días escolares son aproximadas, y los feriados y vacaciones las atrasan. Si pasa una fecha, anótela en su registro de llamadas y llame a INCLUDEnyc o AFC."],
+  rightsListH: ["Your rights as a parent", "Sus derechos como padre o madre"], disagreeH: ["If you disagree with the school", "Si no está de acuerdo con la escuela"],
+  schoolDays: ["school days", "días escolares"],
+  tabPlan: ["My plan", "Mi plan"], tabHelp: ["Who to call", "A quién llamar"], tabTools: ["Tools", "Herramientas"], tabRights: ["Rights", "Derechos"], tabWords: ["Words", "Palabras"],
+  kTools: ["Tools for parents", "Herramientas para padres"],
+  kirton: ["Clear Path NYC is a free family resource from <a href=\"/\">Kirton Learning</a>. Kirton Learning offers academic coaching in reading, writing and math built from a child's IEP. It does not provide evaluations, therapy or legal advocacy; the agencies listed here do. Questions: lamont@kirtonlearning.com", "Clear Path NYC es un recurso gratis para familias de <a href=\"/\">Kirton Learning</a>. Kirton Learning ofrece tutoría académica en lectura, escritura y matemáticas basada en el IEP del niño. No hace evaluaciones, terapias ni defensa legal; las agencias de esta guía sí. Preguntas: lamont@kirtonlearning.com"],
+  promoH: ["After the meeting: put the IEP to work", "Después de la reunión: ponga el IEP a trabajar"],
+  promoBody: ["If your child's IEP has reading, writing or math goals, <a href=\"/\">Kirton Learning</a> turns them into a weekly coaching plan your child works through at home. Want to track progress yourself? The <a href=\"/record/\">free record tool</a> does that, with nothing to sign up for.", "Si el IEP de su hijo tiene metas de lectura, escritura o matemáticas, <a href=\"/\">Kirton Learning</a> las convierte en un plan semanal de tutoría que su hijo trabaja en casa. ¿Quiere seguir el progreso usted mismo? La <a href=\"/record/\">herramienta gratis de registro</a> lo hace, sin necesidad de inscribirse."],
+  navPrep: ["IEP meeting prep", "Preparar el IEP"], navProfile: ["About my child", "Sobre mi hijo"],
+  kPrep: ["Get ready", "Prepárese"], hPrep: ["IEP meeting prep", "Preparación para la reunión del IEP"],
+  prepIntro: ["The IEP meeting decides your child's services for the year. Check things off as you get ready. Your checkmarks stay on this device.", "La reunión del IEP decide los servicios de su hijo para el año. Marque lo que vaya preparando. Sus marcas se quedan en este dispositivo."],
+  prepCopy: ["Copy checklist", "Copiar lista"],
+  kProfile: ["Share who your child is", "Comparta quién es su hijo"], hProfile: ["About my child", "Sobre mi hijo"],
+  pfIntro: ["Fill this in once and share it with teachers, therapists, camp staff, babysitters or an emergency room. It helps people who just met your child do the right thing.", "Llénelo una vez y compártalo con maestros, terapeutas, personal del campamento, niñeras o una sala de emergencias. Ayuda a quienes acaban de conocer a su hijo a hacer lo correcto."],
+  pfTitle: ["About my child", "Sobre mi hijo"], pfEmpty: ["Your profile will appear here as you fill it in.", "Su perfil aparecerá aquí mientras lo llena."],
+  pfCopy: ["Copy profile", "Copiar perfil"], pfClear: ["Clear profile", "Borrar perfil"], pfClearConfirm: ["Tap again to clear", "Toque otra vez para borrar"],
+  pfTip: ["Saved only on this device. Don't fill it in on a shared computer.", "Se guarda solo en este dispositivo. No lo llene en una computadora compartida."], calDays: ["calendar days", "días calendario"],
+  lConcernsIee: ["Why do you disagree with the school’s evaluation?", "¿Por qué no está de acuerdo con la evaluación de la escuela?"]
+};
+
+const Q = [
+  { key: "age", label: ["How old is your child?", "¿Qué edad tiene su hijo?"], opts: [["baby", ["Under 3", "Menos de 3"]], ["pre", ["3 to 4", "3 a 4"]], ["school", ["5 to 13", "5 a 13"]], ["teen", ["14 to 21", "14 a 21"]]] },
+  { key: "type", label: ["What best describes your child's needs?", "¿Qué describe mejor las necesidades de su hijo?"], opts: [
+    ["autism", ["Autism", "Autismo"]],
+    ["dd", ["Intellectual or developmental (Down syndrome, cerebral palsy, epilepsy)", "Intelectual o del desarrollo (síndrome de Down, parálisis cerebral, epilepsia)"]],
+    ["physical", ["Physical or medical", "Física o médica"]],
+    ["sensory", ["Deaf, hard of hearing, blind or low vision", "Sordera, pérdida auditiva, ceguera o baja visión"]],
+    ["learning", ["Learning, ADHD or speech", "Aprendizaje, TDAH o habla"]],
+    ["mental", ["Emotional, behavioral or mental health", "Emocional, de conducta o de salud mental"]],
+    ["unsure", ["Not sure yet", "Todavía no sé"]]] },
+  { key: "dx", label: ["Does your child have a diagnosis from a doctor or evaluator?", "¿Su hijo tiene un diagnóstico de un médico o evaluador?"], opts: [["yes", ["Yes", "Sí"]], ["wait", ["Waiting for an evaluation", "Esperando una evaluación"]], ["no", ["No, but I'm worried", "No, pero estoy preocupado"]]] },
+  { key: "boro", label: ["Which borough do you live in?", "¿En qué condado vive?"], opts: [["bx", "Bronx"], ["bk", "Brooklyn"], ["mn", "Manhattan"], ["qn", "Queens"], ["si", "Staten Island"]] }
+];
+const BORO = { bx: "the Bronx", bk: "Brooklyn", mn: "Manhattan", qn: "Queens", si: "Staten Island" };
+const boroName = b => lang === "es" ? (b === "bx" ? "el Bronx" : BORO[b]) : BORO[b];
+const LABELS = {
+  age: { baby: ["under 3", "menor de 3 años"], pre: ["3 to 4", "de 3 a 4 años"], school: ["5 to 13", "de 5 a 13 años"], teen: ["14 to 21", "de 14 a 21 años"] },
+  type: { autism: ["autism", "autismo"], dd: ["an intellectual or developmental disability", "una discapacidad intelectual o del desarrollo"], physical: ["a physical or medical condition", "una condición física o médica"], sensory: ["a hearing or vision disability", "una discapacidad auditiva o visual"], learning: ["a learning disability, ADHD or speech needs", "una discapacidad de aprendizaje, TDAH o necesidades del habla"], mental: ["emotional, behavioral or mental health needs", "necesidades emocionales, de conducta o de salud mental"], unsure: ["needs you're still figuring out", "necesidades que todavía está descubriendo"] },
+  dx: { yes: ["with a diagnosis", "con diagnóstico"], wait: ["waiting for an evaluation", "esperando una evaluación"], no: ["without a diagnosis yet", "todavía sin diagnóstico"] }
+};
+
+const CAT = {
+  guide: ["Guidance", "Orientación"], eval: ["Evaluation", "Evaluación"], school: ["School", "Escuela"], dis: ["Disability services", "Servicios por discapacidad"], money: ["Money & benefits", "Dinero y beneficios"], therapy: ["Therapy", "Terapia"], mh: ["Mental health", "Salud mental"],
+  fun: ["Activities & camps", "Actividades y campamentos"], fam: ["Respite & family support", "Respiro y apoyo familiar"], move: ["Getting around", "Transporte"], home: ["Housing", "Vivienda"], legal: ["Legal help", "Ayuda legal"], parent: ["Parent support", "Apoyo entre padres"]
+};
+
+const R = {
+  includenyc: { cat: "guide", name: "INCLUDEnyc", desc: ["Free help with Early Intervention, special education and disability services for young people ages 0–26 with any disability, and their families. Workshops in English and Spanish.", "Ayuda gratis con Intervención Temprana, educación especial y servicios por discapacidad para jóvenes de 0 a 26 años con cualquier discapacidad y sus familias. Talleres en inglés y español."], lines: [["(212) 677-4660", ["Help Line, English", "Línea de ayuda, inglés"]], ["(646) 693-3175", ["Text, English", "Texto, inglés"]], ["(212) 677-4668", ["Help Line, Spanish", "Línea de ayuda, español"]], ["(646) 693-3157", ["Text, Spanish", "Texto, español"]]], hours: ["Mon–Thu, 9 AM–3 PM", "Lun–jue, 9 AM–3 PM"], url: "https://includenyc.org/help-center/help-line" },
+  cyshcn: { cat: "guide", name: ["NYC Children & Youth with Special Health Care Needs", "Programa de Niños y Jóvenes con Necesidades Especiales de Salud (NYC)"], desc: ["A free city program that connects families to health services and community resources. For NYC kids 21 and under with any serious or chronic condition or disability, diagnosed or suspected. Available regardless of immigration status, in your language.", "Un programa gratis de la ciudad que conecta a las familias con servicios de salud y recursos comunitarios. Para niños de NYC de 21 años o menos con cualquier condición grave o crónica o discapacidad, diagnosticada o sospechada. Sin importar el estatus migratorio, en su idioma."], lines: [["(347) 396-4600", ["Phone", "Teléfono"]]], extra: "cyshcn@health.nyc.gov", url: "https://www.nyc.gov/site/doh/health/health-topics/children-with-special-healthcare-needs.page" },
+  ei: { cat: "eval", name: ["NYC Early Intervention (birth to 3)", "Intervención Temprana de NYC (de 0 a 3 años)"], desc: ["Free evaluation and services for babies and toddlers with any developmental delay or disability. Anyone can make the referral.", "Evaluación y servicios gratis para bebés y niños pequeños con cualquier retraso del desarrollo o discapacidad. Cualquier persona puede hacer el referido."], lines: [["311", ["Ask for “Early Intervention”", "Pida “Early Intervention”"]]], extra: ["Text EI to 55676 for updates.", "Envíe TEMPRANA al 55676 para recibir noticias."], url: "https://growingupnyc.cityofnewyork.us/programs/early-intervention-program/" },
+  cpse: { cat: "school", name: ["Preschool Special Education (CPSE)", "Educación Especial Preescolar (CPSE)"], desc: ["For ages 3–5. Send a written referral to the Committee on Preschool Special Education in your school district. Call 311 to find yours.", "Para edades de 3 a 5. Envíe un referido por escrito al Comité de Educación Especial Preescolar de su distrito escolar. Llame al 311 para encontrar el suyo."], lines: [["311", ["Ask for your district's CPSE", "Pregunte por el CPSE de su distrito"]]], url: "https://www.schools.nyc.gov/learning/special-education/help/committees-on-special-education" },
+  cse: { cat: "school", name: ["School Special Education (CSE)", "Educación Especial Escolar (CSE)"], desc: ["For school-age children. Ask your child's school in writing for a special education evaluation. The CSE office handles children not attending a public school.", "Para niños en edad escolar. Pida por escrito a la escuela de su hijo una evaluación de educación especial. La oficina del CSE atiende a los niños que no asisten a una escuela pública."], lines: [["311", ["Ask for your Committee on Special Education", "Pregunte por su Comité de Educación Especial"]]], url: "https://www.schools.nyc.gov/learning/special-education/help/committees-on-special-education" },
+  sehot: { cat: "school", name: ["NYC Special Education Hotline", "Línea de Educación Especial de NYC"], desc: ["The school system's citywide line for special education questions, including finding your Committee on Special Education. District 75 runs specialized programs for students with significant disabilities.", "La línea de toda la ciudad para preguntas de educación especial, incluso para encontrar su Comité de Educación Especial. El Distrito 75 tiene programas especializados para estudiantes con discapacidades importantes."], lines: [["(718) 935-2007", ["Special Education Hotline", "Línea de Educación Especial"]], ["(212) 802-1500", ["District 75", "Distrito 75"]]], hours: ["Hotline: Mon–Fri, 9 AM–5 PM", "Línea: lun–vie, 9 AM–5 PM"], extra: "SpecialEducation@schools.nyc.gov", url: "https://www.schools.nyc.gov/learning/special-education/help/committees-on-special-education" },
+  s504: { cat: "school", name: ["504 accommodations", "Adaptaciones 504"], desc: ["For students who don't need special instruction but do need changes to take part in school: extra time, medication at school, elevator access, a seat near the board. Ask the school's 504 coordinator for the request form.", "Para estudiantes que no necesitan enseñanza especial pero sí cambios para participar en la escuela: más tiempo, medicamentos en la escuela, uso del ascensor, un asiento cerca de la pizarra. Pida el formulario al coordinador 504 de la escuela."], lines: [], url: "https://www.schools.nyc.gov/school-life/health-and-wellness/504-accommodations" },
+  sensory: { cat: "school", name: ["School vision and hearing services", "Servicios escolares de visión y audición"], desc: ["NYC Public Schools has Education Vision Services for blind and low vision students and Hearing Education Services for deaf and hard of hearing students. Vision services are for ages 5–21 and need a report from an eye doctor. Ask for them in the IEP.", "Las Escuelas Públicas de NYC tienen servicios de visión para estudiantes ciegos o con baja visión, y servicios de audición para estudiantes sordos o con pérdida auditiva. Los servicios de visión son para edades de 5 a 21 años y requieren un informe de un oftalmólogo. Pídalos en el IEP."], lines: [["311", ["From outside NYC: 212-639-9675", "Desde fuera de NYC: 212-639-9675"]]], url: "https://portal.311.nyc.gov/article/?kanumber=KA-02442" },
+  bus: { cat: "move", name: ["School bus (Office of Pupil Transportation)", "Autobús escolar (Oficina de Transporte Estudiantil)"], desc: ["Special busing is a service written into the IEP, along with needs like a lift, air conditioning, a smaller bus or a time limit on the ride. Bus details post in your NYC Schools Account before school starts. For problems, start with the school's transportation coordinator, then call OPT the same day.", "El autobús especial es un servicio que se escribe en el IEP, junto con necesidades como un elevador, aire acondicionado, un autobús más pequeño o un límite de tiempo en el viaje. Los detalles salen en su cuenta NYC Schools Account antes de que empiecen las clases. Si hay problemas, hable primero con el coordinador de transporte de la escuela y luego llame a OPT el mismo día."], lines: [["(718) 392-8855", ["OPT", "OPT"]]], url: "https://includenyc.org/help-center/resources/school-busing/" },
+  aar: { cat: "move", name: ["Access-A-Ride and Reduced-Fare MetroCard/OMNY", "Access-A-Ride y tarjeta de tarifa reducida"], desc: ["Access-A-Ride is shared door-to-door rides, 24/7, for people whose disability keeps them from using buses and subways. Reduced-Fare cards cut subway and bus fares in half for people with a qualifying disability. Apply through the MTA and ask how the rules apply to your child.", "Access-A-Ride ofrece viajes compartidos de puerta a puerta, las 24 horas, para personas cuya discapacidad les impide usar autobuses y el metro. Las tarjetas de tarifa reducida cobran la mitad en metro y autobús a personas con una discapacidad que califique. Solicítelo con la MTA y pregunte cómo aplican las reglas para su hijo."], lines: [["(877) 337-2017", ["Access-A-Ride", "Access-A-Ride"]], ["(877) 789-6669", ["Reduced-Fare OMNY", "OMNY de tarifa reducida"]], ["511", ["Reduced-Fare MetroCard: say “MTA”", "MetroCard de tarifa reducida: diga “MTA”"]]], url: "https://www.nyc.gov/site/mopd/resources/transportation.page" },
+  opwdd: { cat: "dis", name: "OPWDD Front Door", desc: ["New York State's office for people with developmental disabilities, including autism, intellectual disability, cerebral palsy, epilepsy and neurological impairment. Opens services like respite, after-school and family supports.", "La oficina del Estado de Nueva York para personas con discapacidades del desarrollo, incluidos el autismo, la discapacidad intelectual, la parálisis cerebral, la epilepsia y el daño neurológico. Abre servicios como respiro, programas después de la escuela y apoyo familiar."],
+    lines: [["(866) 946-9733", ["OPWDD InfoLine: ask for the Front Door for your borough", "Línea de OPWDD: pida el Front Door de su condado"]]], url: "https://opwdd.ny.gov/get-started/front-door" },
+  cco: { cat: "dis", name: ["Care Coordination Organizations", "Organizaciones de Coordinación de Cuidado (CCO)"], desc: ["Once OPWDD says your child is eligible, a care manager from one of these organizations builds the plan and connects services. You choose, and you can switch.", "Cuando OPWDD dice que su hijo es elegible, un administrador de cuidado de una de estas organizaciones hace el plan y conecta los servicios. Usted escoge, y puede cambiar."], lines: [["(833) 692-2269", "Advance Care Alliance"], ["(518) 235-1888", "Care Design NY"], ["(844) 504-8400", "Tri-County Care"]], flag: ["Ask whether they are taking new enrollments before you sign up.", "Pregunte si están aceptando inscripciones nuevas antes de inscribirse."], url: "https://includenyc.org/help-center/resources/care-coordination-organization/" },
+  fss: { cat: "fam", name: ["OPWDD Family Support Services", "Servicios de Apoyo Familiar de OPWDD"], desc: ["For families caring for a child with a developmental disability at home. Can include respite, recreation and camp, after-school programs, behavior support, parent and sibling groups, special equipment, home changes and family reimbursement. Your child needs OPWDD eligibility; Medicaid isn't required.", "Para familias que cuidan en casa a un niño con una discapacidad del desarrollo. Puede incluir respiro, recreación y campamento, programas después de la escuela, apoyo de conducta, grupos para padres y hermanos, equipo especial, cambios en la casa y reembolso familiar. Su hijo necesita ser elegible para OPWDD; no se requiere Medicaid."], lines: [["(866) 946-9733", ["OPWDD InfoLine", "Línea de información de OPWDD"]]], url: "https://opwdd.ny.gov/family-resources" },
+  cyes: { cat: "fam", name: ["Children's Waiver (C-YES)", "Exención para Niños (C-YES)"], desc: ["A Medicaid program for kids under 21 with high needs: serious mental health needs, medically fragile, or a developmental disability along with being medically fragile or in foster care. It pays for supports at home and in the community, including respite. If your child has no Medicaid, C-YES checks eligibility and helps you apply. If they have Medicaid, ask a Health Home.", "Un programa de Medicaid para menores de 21 años con muchas necesidades: necesidades graves de salud mental, médicamente frágiles, o con una discapacidad del desarrollo junto con ser médicamente frágiles o estar en cuidado de crianza. Paga apoyos en la casa y en la comunidad, incluido el respiro. Si su hijo no tiene Medicaid, C-YES revisa si califica y le ayuda a solicitarlo. Si ya tiene Medicaid, pregunte a un Health Home."], lines: [["(833) 861-4467", ["C-YES, toll-free", "C-YES, gratis"]]], url: "https://www.health.ny.gov/health_care/medicaid/redesign/behavioral_health/children/c-yes.htm" },
+  chp: { cat: "money", name: ["Child Health Plus and children's Medicaid", "Child Health Plus y Medicaid para niños"], desc: ["Every child in New York 18 and under can get health insurance, whatever the family's income or immigration status. Child Health Plus has no copays. Most families pay $0 to $60 a month per child, depending on income; families earning more than four times the poverty level pay the plan's full premium. Families with lower incomes may get Medicaid instead. Apply through NY State of Health.", "Todo niño en Nueva York de 18 años o menos puede tener seguro médico, sin importar el ingreso de la familia ni el estatus migratorio. Child Health Plus no tiene copagos. La mayoría de las familias paga de $0 a $60 al mes por niño, según el ingreso; las familias que ganan más de cuatro veces el nivel de pobreza pagan la prima completa del plan. Las familias de menores ingresos pueden recibir Medicaid. Solicítelo con NY State of Health."], lines: [["(855) 355-5777", ["NY State of Health", "NY State of Health"]], ["(877) 898-5849", ["TTY", "TTY"]]], url: "https://access.nyc.gov/programs/child-health-plus" },
+  ssi: { cat: "money", name: ["SSI for children", "SSI para niños"], desc: ["A monthly payment from Social Security for children with a disability that seriously limits daily life for at least 12 months. Part of the parents' income counts, so many working families still qualify.", "Un pago mensual del Seguro Social para niños con una discapacidad que limita mucho su vida diaria por al menos 12 meses. Se cuenta solo una parte del ingreso de los padres, así que muchas familias que trabajan califican."], lines: [["(800) 772-1213", ["Social Security", "Seguro Social"]]], url: "https://www.ssa.gov/ssi/text-child-ussi.htm" },
+  aba: { cat: "therapy", name: ["ABA and therapy through insurance", "ABA y terapias con su seguro"], desc: ["NY Medicaid covers ABA therapy for children under 21 with an autism diagnosis, and private plans regulated by New York must cover it too. Call the member number on your child's insurance card and ask for in-network providers.", "Medicaid de NY cubre la terapia ABA para menores de 21 años con diagnóstico de autismo, y los planes privados regulados por Nueva York también deben cubrirla. Llame al número de servicios para miembros en la tarjeta del seguro de su hijo y pida proveedores dentro de la red."], lines: [[["Number on the back of the card", "Número al reverso de la tarjeta"], ["Member services", "Servicios para miembros"]]], flag: ["Some ABA providers have stopped taking new Medicaid patients after 2025–26 rate cuts. Call several and get on more than one waitlist.", "Algunos proveedores de ABA dejaron de aceptar pacientes nuevos de Medicaid tras los recortes de 2025–26. Llame a varios y anótese en más de una lista de espera."], url: "https://advocatesforchildren.org/wp-content/uploads/library/guide_to_autism_spectrum_disorders_and_ed.pdf" },
+  mh: { cat: "mh", name: ["Child mental health in NYC", "Salud mental infantil en NYC"], desc: ["988 gives free, confidential crisis counseling and referrals 24/7 by call, text or chat. The city's child mental health page lists clinics, Family Resource Centers for families of kids with emotional or behavioral challenges, and the referral system for intensive services.", "El 988 ofrece consejería de crisis gratis y confidencial y referidos, las 24 horas, por llamada, texto o chat. La página de salud mental infantil de la ciudad tiene clínicas, Centros de Recursos Familiares para familias de niños con retos emocionales o de conducta, y el sistema de referidos para servicios intensivos."], lines: [["988", ["Call or text, 24/7", "Llame o envíe texto, 24/7"]]], url: "https://www.nyc.gov/site/doh/health/health-topics/child-and-adolescent-mental-health-info-referrals.page" },
+  parks: { cat: "fun", name: ["NYC Parks adaptive programs", "Programas adaptados de NYC Parks"], desc: ["Adaptive Hubs are fully accessible recreation centers. There's adaptive swim. A recreation center membership for people with disabilities is $25 a year and covers every Parks center. Programs are geared to physical disabilities; ask about ages.", "Los Adaptive Hubs son centros recreativos totalmente accesibles. Hay natación adaptada. La membresía de centros recreativos para personas con discapacidad cuesta $25 al año y sirve en todos los centros de Parks. Los programas son para discapacidades físicas; pregunte por las edades."], lines: [], url: "https://www.nycgovparks.org/events/adaptive-programs" },
+  sony: { cat: "fun", name: ["Special Olympics New York", "Olimpiadas Especiales de Nueva York"], desc: ["Free sports training and competition. Young Athletes is for children up to age 7 of all abilities. From age 8, athletes with an intellectual disability or cognitive delay can join one of 22 sports through a training club near you.", "Entrenamiento y competencias deportivas gratis. Young Athletes es para niños de hasta 7 años de todas las habilidades. Desde los 8 años, atletas con discapacidad intelectual o retraso cognitivo pueden unirse a uno de 22 deportes en un club cerca de usted."], lines: [], url: "https://www.specialolympics-ny.org/nycregion" },
+  camps: { cat: "fun", name: ["Camps and the INCLUDEnyc Fair", "Campamentos y la Feria de INCLUDEnyc"], desc: ["INCLUDEnyc has a guide to choosing a camp and runs the city's largest resource fair for camps, recreation and programs for young people with disabilities. If your child is OPWDD eligible, ask your care manager about camp funds or family reimbursement.", "INCLUDEnyc tiene una guía para escoger campamento y organiza la feria de recursos más grande de la ciudad con campamentos, recreación y programas para jóvenes con discapacidad. Si su hijo es elegible para OPWDD, pregunte a su administrador de cuidado por fondos para campamento o reembolso familiar."], lines: [], url: "https://includenyc.org/help-center/resources/selecting-a-summer-camp/" },
+  housing: { cat: "home", name: ["NYC Housing Connect", "NYC Housing Connect (vivienda asequible)"], desc: ["In city affordable housing lotteries, 5% of units are set aside for people with mobility disabilities and 2% for vision or hearing disabilities. Make a Housing Connect profile to get alerts, and have a doctor fill out HPD's medical form for set-aside units.", "En las loterías de vivienda asequible de la ciudad, el 5% de las unidades se reservan para personas con discapacidad de movilidad y el 2% para discapacidad visual o auditiva. Cree un perfil en Housing Connect para recibir avisos, y pida a un médico que llene el formulario médico de HPD para las unidades reservadas."], lines: [["(212) 863-7990", ["Application status", "Estado de la solicitud"]]], url: "https://www.nyc.gov/site/hpd/services-and-information/resources-for-people-with-disabilities.page" },
+  ilc: { cat: "dis", name: ["Independent living center", "Centro de vida independiente"], desc: ["Run by and for people with disabilities. Help with benefits, housing, advocacy and life skills for teens and adults.", "Dirigido por y para personas con discapacidad. Ayuda con beneficios, vivienda, defensa de derechos y destrezas para la vida, para adolescentes y adultos."],
+    lines: () => ({ bx: [["(718) 515-2800", "Bronx Independent Living Services"]], bk: [["(718) 998-3000", "Brooklyn Center for Independence of the Disabled"]], mn: [["(212) 674-2300", "Manhattan Center for Independence of the Disabled"], ["(212) 222-7122", "Harlem Independent Living Center"]], qn: [["(646) 442-1520", "Queens Center for Independence of the Disabled"]], si: [["(718) 720-9016", "Staten Island Center for Independent Living"]] }[state.boro]), url: "https://includenyc.org/help-center/resources/independent-living-centers/" },
+  afc: { cat: "legal", name: "Advocates for Children of NY", desc: ["Free education advice and legal help for low-income families in all five boroughs, including when a school says no or services aren't happening.", "Consejos de educación y ayuda legal gratis para familias de bajos ingresos en los cinco condados, incluso cuando la escuela dice que no o los servicios no se están dando."], lines: [["(866) 427-6033", ["Education Helpline", "Línea de educación"]]], hours: ["Mon–Thu, 10 AM–4 PM", "Lun–jue, 10 AM–4 PM"], url: "https://advocatesforchildren.org/" },
+  p2p: { cat: "parent", name: ["Parent to Parent of NYS", "Parent to Parent de NYS"], desc: ["Matches you one-on-one with a trained parent whose child has a similar disability or health need. You don't have to figure this out alone.", "Le conecta uno a uno con un padre o madre capacitado cuyo hijo tiene una discapacidad o necesidad de salud parecida. No tiene que resolver esto solo."], lines: [["(212) 741-5545", ["NYC office", "Oficina de NYC"]]], url: "https://www.ptopnys.org/about-us/regional-office/" }
+};
+
+const DEV = ["autism", "dd"];
+const STEPS = [
+  { id: "binder", show: () => true, when: ["Today", "Hoy"], t: ["Start a folder for every paper", "Empiece una carpeta para todos los papeles"],
+    p: ["You will be asked for the same reports again and again. Keep one folder or binder with:", "Le van a pedir los mismos informes una y otra vez. Guarde en una carpeta:"],
+    list: [["Every evaluation, diagnosis and medical report", "Cada evaluación, diagnóstico e informe médico"], ["A copy of every letter you send, with the date", "Una copia de cada carta que envíe, con la fecha"], ["Notes from every call. The call log on this page helps", "Notas de cada llamada. El registro de llamadas de esta página le ayuda"]], who: ["includenyc"] },
+
+  { id: "cyshcn", show: () => true, when: ["This week", "Esta semana"], t: ["Get a free city navigator", "Consiga un orientador gratis de la ciudad"],
+    p: ["Call NYC's Children & Youth with Special Health Care Needs program. They help families of kids with any disability or chronic condition find services, and they'll help even before there's a diagnosis. Immigration status doesn't matter.", "Llame al programa de Niños y Jóvenes con Necesidades Especiales de Salud de NYC. Ayudan a familias de niños con cualquier discapacidad o condición crónica a encontrar servicios, incluso antes de un diagnóstico. El estatus migratorio no importa."], who: ["cyshcn"] },
+
+  { id: "insure", show: () => true, when: ["If your child isn't covered", "Si su hijo no tiene seguro"], t: ["Make sure your child has health insurance", "Asegúrese de que su hijo tenga seguro médico"],
+    p: ["Evaluations, therapy and many services go through insurance. Every New York child 18 and under can get coverage, regardless of income or immigration status. Call NY State of Health and ask about Child Health Plus.", "Las evaluaciones, terapias y muchos servicios pasan por el seguro. Todo niño de Nueva York de 18 años o menos puede tener cobertura, sin importar el ingreso ni el estatus migratorio. Llame a NY State of Health y pregunte por Child Health Plus."], who: ["chp"] },
+
+  { id: "ei", show: s => s.age === "baby", when: ["This week", "Esta semana"], t: ["Call 311 and ask for Early Intervention", "Llame al 311 y pida Intervención Temprana"],
+    p: ["You don't need a diagnosis or a doctor's note. Say: “I'm worried about my child's development and want an Early Intervention evaluation.” The evaluation and services are free. A service coordinator will call you back and explain each step.", "No necesita diagnóstico ni nota del médico. Diga: “Me preocupa el desarrollo de mi hijo y quiero una evaluación de Intervención Temprana (Early Intervention).” La evaluación y los servicios son gratis. Un coordinador de servicios le llamará y le explicará cada paso."], who: ["ei", "includenyc"] },
+
+  { id: "dx-older", show: s => s.age !== "baby" && s.dx === "no", when: ["This week", "Esta semana"], t: ["Ask the pediatrician for an evaluation referral", "Pida al pediatra un referido para evaluación"],
+    p: ["Tell the doctor exactly what you're seeing and ask who should evaluate it.", "Dígale al médico exactamente lo que está notando y pregunte quién debe evaluarlo."],
+    list: [["Development, learning or autism: a developmental-behavioral pediatrician, neurologist or psychologist", "Desarrollo, aprendizaje o autismo: un pediatra del desarrollo, neurólogo o psicólogo"], ["Mood, behavior or anxiety: a child psychiatrist, psychologist or mental health clinic", "Estado de ánimo, conducta o ansiedad: un psiquiatra infantil, psicólogo o clínica de salud mental"], ["Hearing or vision: an audiologist or pediatric eye doctor", "Audición o visión: un audiólogo u oftalmólogo pediátrico"], ["Waitlists can be long. Call as soon as you have the referral and ask for a cancellation list", "Las listas de espera pueden ser largas. Llame en cuanto tenga el referido y pida estar en la lista de cancelaciones"]], who: ["cyshcn"] },
+
+  { id: "wait", show: s => s.age !== "baby" && s.dx !== "yes", when: ["Don't wait for the diagnosis", "No espere el diagnóstico"], t: ["Start school help now", "Empiece la ayuda escolar ahora"],
+    p: ["Your child can be evaluated for special education without any diagnosis. Send the school letter in the next steps while you wait for the doctor. When you get a diagnosis, give a copy to the school.", "Su hijo puede ser evaluado para educación especial sin ningún diagnóstico. Envíe la carta a la escuela de los próximos pasos mientras espera al médico. Cuando tenga un diagnóstico, dé una copia a la escuela."], who: ["includenyc"] },
+
+  { id: "ei-transition", show: s => s.age === "baby", when: ["Around age 2½", "Cerca de los 2 años y medio"], t: ["Plan the move to preschool services", "Planee el paso a servicios preescolares"],
+    p: ["Early Intervention usually ends at 3. Your service coordinator helps you refer to preschool special education (CPSE). Preschool services can start:", "Intervención Temprana normalmente termina a los 3 años. Su coordinador le ayuda a hacer el referido a educación especial preescolar (CPSE). Los servicios preescolares pueden empezar:"],
+    list: [["Turns 3 between Jan 1 and Jun 30: preschool services can start Jan 2", "Cumple 3 entre el 1 de enero y el 30 de junio: los servicios pueden empezar el 2 de enero"], ["Turns 3 between Jul 1 and Dec 31: preschool services can start Jul 1", "Cumple 3 entre el 1 de julio y el 31 de diciembre: los servicios pueden empezar el 1 de julio"], ["If the CPSE finds your child eligible before age 3, you can choose to stay in Early Intervention until Sept 1 (birthday Jan–Aug) or Jan 2 (birthday Sept–Dec)", "Si el CPSE determina que su hijo es elegible antes de los 3 años, puede escoger quedarse en Intervención Temprana hasta el 1 de septiembre (cumpleaños de enero a agosto) o el 2 de enero (cumpleaños de septiembre a diciembre)"]], who: ["cpse"], letter: "cpse" },
+
+  { id: "cpse", show: s => s.age === "pre", when: ["This week", "Esta semana"], t: ["Write to your district's CPSE", "Escriba al CPSE de su distrito"],
+    p: ["Preschool special education referrals have to be in writing. Tap “Write this letter,” keep a copy, and send it to the CPSE. They'll mail you a packet with a consent form and a list of places that do evaluations.", "Los referidos de educación especial preescolar tienen que ser por escrito. Toque “Escribir esta carta”, guarde una copia y envíela al CPSE. Le enviarán un paquete con un formulario de consentimiento y una lista de lugares que hacen evaluaciones."],
+    list: [["Call 311 to find which CPSE covers your district", "Llame al 311 para saber qué CPSE cubre su distrito"], ["Also apply to 3-K or pre-K. Families going through CPSE are encouraged to apply to inclusive programs", "Solicite también 3-K o pre-K. Se anima a las familias en el proceso del CPSE a solicitar programas inclusivos"]], who: ["cpse", "sehot", "includenyc"], letter: "cpse" },
+
+  { id: "k", show: s => s.age === "pre", when: ["The year before kindergarten", "El año antes del kínder"], t: ["Get ready for the Turning 5 meeting", "Prepárese para la reunión de “Turning 5”"],
+    p: ["Your child's IEP moves from the CPSE to the school system for kindergarten. Go to an INCLUDEnyc “Turning 5” workshop so you know what to ask for.", "El IEP de su hijo pasa del CPSE al sistema escolar para el kínder. Vaya a un taller de INCLUDEnyc sobre “Turning 5” para saber qué pedir."], who: ["includenyc"] },
+
+  { id: "cse", show: s => s.age === "school" || s.age === "teen", when: ["This week", "Esta semana"], t: ["Ask the school, in writing, for an evaluation", "Pida a la escuela una evaluación por escrito"],
+    p: ["Send a dated letter to the principal asking for a special education evaluation. After the evaluation there's an IEP meeting. You're a full member of that team, and you can bring someone with you.", "Envíe una carta con fecha al director pidiendo una evaluación de educación especial. Después de la evaluación hay una reunión del IEP. Usted es miembro pleno de ese equipo y puede traer a alguien con usted."],
+    list: [["Already have an IEP? Ask for a meeting if services aren't working", "¿Ya tiene IEP? Pida una reunión si los servicios no están funcionando"], ["If the school says no or stalls, call AFC or INCLUDEnyc", "Si la escuela dice que no o se atrasa, llame a AFC o a INCLUDEnyc"]], who: ["cse", "sehot", "includenyc", "afc"], letter: "cse" },
+
+  { id: "504", show: s => (s.age === "school" || s.age === "teen") && ["physical", "learning", "mental", "unsure"].includes(s.type), when: ["If an IEP isn't the right fit", "Si el IEP no es lo adecuado"], t: ["Ask about a 504 plan", "Pregunte por un plan 504"],
+    p: ["Some kids don't need special teaching but do need changes to get through the school day: medication or nursing at school, extra test time, breaks, elevator access. That's a 504 plan. Ask the school's 504 coordinator for the request form and include the doctor's paperwork.", "Algunos niños no necesitan enseñanza especial pero sí cambios para pasar el día escolar: medicamentos o enfermería en la escuela, más tiempo en exámenes, descansos, uso del ascensor. Eso es un plan 504. Pida el formulario al coordinador 504 e incluya los papeles del médico."], who: ["s504"], letter: "504" },
+
+  { id: "bus", show: s => s.age !== "baby", when: ["Before the IEP meeting", "Antes de la reunión del IEP"], t: ["Make sure transportation is on the IEP", "Asegúrese de que el transporte esté en el IEP"],
+    p: ["If your child needs a school bus, it has to be written into the IEP, along with any needs like a lift, air conditioning, a smaller bus or a limit on ride time. The school will ask for medical forms.", "Si su hijo necesita autobús escolar, tiene que estar escrito en el IEP, junto con necesidades como un elevador, aire acondicionado, un autobús más pequeño o un límite de tiempo de viaje. La escuela le pedirá formularios médicos."], who: ["bus"] },
+
+  { id: "sensory", show: s => s.type === "sensory", when: ["Before the IEP meeting", "Antes de la reunión del IEP"], t: ["Ask for vision or hearing services at school", "Pida servicios de visión o audición en la escuela"],
+    p: ["NYC Public Schools has teams for blind and low vision students and for deaf and hard of hearing students. Ask for them in the IEP. For vision services, bring a report from an eye doctor. An eye doctor can also refer your child to the NYS Commission for the Blind.", "Las Escuelas Públicas de NYC tienen equipos para estudiantes ciegos o con baja visión y para estudiantes sordos o con pérdida auditiva. Pídalos en el IEP. Para servicios de visión, traiga un informe de un oftalmólogo. Un oftalmólogo también puede referir a su hijo a la Comisión para Ciegos del Estado."], who: ["sensory"] },
+
+  { id: "mental", show: s => s.type === "mental", when: ["This week", "Esta semana"], t: ["Connect with mental health care", "Conéctese con atención de salud mental"],
+    p: ["Ask the pediatrician or your insurance for a child mental health clinic. The city's child mental health page lists clinics and Family Resource Centers that support parents. Kids with Medicaid can also get in-home counseling and family support through the Children and Family Treatment and Support Services benefit; ask your Medicaid plan.", "Pida al pediatra o a su seguro una clínica de salud mental infantil. La página de salud mental infantil de la ciudad tiene clínicas y Centros de Recursos Familiares que apoyan a los padres. Los niños con Medicaid también pueden recibir consejería en casa y apoyo familiar con el beneficio CFTSS; pregunte a su plan de Medicaid."],
+    list: [["In a crisis, call or text 988, any time", "En una crisis, llame o envíe texto al 988, a cualquier hora"], ["If someone is in immediate danger, call 911", "Si alguien está en peligro inmediato, llame al 911"]], who: ["mh"] },
+
+  { id: "opwdd", show: s => s.dx === "yes" && DEV.includes(s.type), when: ["Soon, at any age", "Pronto, a cualquier edad"], t: ["Apply to OPWDD through the Front Door", "Solicite OPWDD por el Front Door"],
+    p: ["This opens services school doesn't cover, like respite, after-school and weekend programs, and family support. Call the OPWDD InfoLine and ask to be transferred to the Front Door for your borough. They'll ask for the evaluation reports that show the diagnosis. For autism that's often an ADOS or CARS report. You'll also attend an information session.", "Esto abre servicios que la escuela no cubre, como respiro, programas después de la escuela y de fin de semana, y apoyo familiar. Llame a la línea de OPWDD y pida que le transfieran al Front Door de su condado. Le pedirán los informes de evaluación que muestran el diagnóstico. Para el autismo suele ser un informe ADOS o CARS. También asistirá a una sesión informativa."], who: ["opwdd"] },
+
+  { id: "cco", show: s => s.dx === "yes" && DEV.includes(s.type), when: ["After OPWDD says yes", "Después de que OPWDD diga que sí"], t: ["Pick a care manager", "Escoja un administrador de cuidado"],
+    p: ["Choose one of the Care Coordination Organizations that serve NYC. Your care manager writes the Life Plan and connects you to providers. If it isn't working, you can switch.", "Escoja una de las Organizaciones de Coordinación de Cuidado que sirven a NYC. Su administrador escribe el Plan de Vida (Life Plan) y le conecta con proveedores. Si no funciona, puede cambiar."], who: ["cco"] },
+
+  { id: "respite", show: s => s.dx === "yes" && DEV.includes(s.type), when: ["After OPWDD says yes", "Después de que OPWDD diga que sí"], t: ["Get a break: respite and family support", "Tome un descanso: respiro y apoyo familiar"],
+    p: ["Caregivers burn out. OPWDD Family Support Services can pay for respite so you get time off, plus camp, after-school, sibling groups and equipment. Ask your care manager, or call the OPWDD InfoLine.", "Los cuidadores se agotan. Los Servicios de Apoyo Familiar de OPWDD pueden pagar respiro para que usted descanse, además de campamento, programas después de la escuela, grupos para hermanos y equipo. Pregunte a su administrador de cuidado o llame a la línea de OPWDD."], who: ["fss"] },
+
+  { id: "waiver", show: s => s.dx === "yes" && ["physical", "mental", "dd", "autism"].includes(s.type), when: ["If your child needs a lot of support", "Si su hijo necesita mucho apoyo"], t: ["Ask about the Children's Waiver", "Pregunte por la Exención para Niños (Children's Waiver)"],
+    p: ["This Medicaid program pays for help at home and in the community, including respite, for kids with serious mental health needs, kids who are medically fragile, and kids with a developmental disability who are also medically fragile or in foster care. It's meant for kids who would otherwise risk going to a hospital or out-of-home placement. No Medicaid yet? Call C-YES and they'll check eligibility and help you apply.", "Este programa de Medicaid paga ayuda en la casa y en la comunidad, incluido el respiro, para niños con necesidades graves de salud mental, niños médicamente frágiles, y niños con una discapacidad del desarrollo que también son médicamente frágiles o están en cuidado de crianza. Es para niños que de otra forma corren riesgo de ir a un hospital o a vivir fuera de casa. ¿Todavía no tiene Medicaid? Llame a C-YES; revisan si califica y le ayudan a solicitarlo."], who: ["cyes"] },
+
+  { id: "aba", show: s => s.dx === "yes" && s.type === "autism", when: ["Once you have the diagnosis", "Cuando tenga el diagnóstico"], t: ["Line up therapy through insurance", "Consiga terapias con su seguro"],
+    p: ["Call the number on the back of your child's insurance card. Ask: “Which in-network providers offer ABA, speech, and occupational therapy for a child with autism, and are they taking new patients?” Call several and join more than one waitlist.", "Llame al número al reverso de la tarjeta del seguro. Pregunte: “¿Qué proveedores dentro de la red ofrecen ABA, terapia del habla y terapia ocupacional para un niño con autismo, y están aceptando pacientes nuevos?” Llame a varios y anótese en más de una lista de espera."], who: ["aba"] },
+
+  { id: "therapy", show: s => s.dx === "yes" && !["autism", "mental"].includes(s.type), when: ["Once you have the diagnosis", "Cuando tenga el diagnóstico"], t: ["Line up therapy through insurance", "Consiga terapias con su seguro"],
+    p: ["Ask the doctor which therapies would help, like physical, occupational or speech therapy. Then call the number on the back of your child's insurance card and ask which in-network providers take new patients. School therapy on the IEP is separate and doesn't replace this.", "Pregunte al médico qué terapias ayudarían, como terapia física, ocupacional o del habla. Luego llame al número al reverso de la tarjeta del seguro y pregunte qué proveedores dentro de la red aceptan pacientes nuevos. La terapia escolar del IEP es aparte y no reemplaza esto."], who: ["cyshcn"] },
+
+  { id: "ssi", show: s => s.dx === "yes", when: ["This month", "Este mes"], t: ["Check whether your child qualifies for SSI", "Averigüe si su hijo califica para SSI"],
+    p: ["SSI is a monthly payment for children whose disability seriously limits daily life. Social Security counts part of the parents' income, so many working families still qualify. In New York, SSI usually comes with Medicaid too. Call Social Security to start.", "El SSI es un pago mensual para niños cuya discapacidad limita mucho su vida diaria. El Seguro Social cuenta solo parte del ingreso de los padres, así que muchas familias que trabajan califican. En Nueva York, el SSI normalmente viene con Medicaid. Llame al Seguro Social para empezar."], who: ["ssi"] },
+
+  { id: "move", show: s => ["physical", "sensory"].includes(s.type) || s.age === "teen", when: ["When you're ready", "Cuando esté listo"], t: ["Make getting around easier", "Facilite el transporte"],
+    p: ["Access-A-Ride gives door-to-door rides to people whose disability keeps them off buses and subways. Reduced-Fare cards cut fares in half. Ask the MTA how the rules apply to your child.", "Access-A-Ride da viajes de puerta a puerta a personas cuya discapacidad les impide usar autobuses y el metro. Las tarjetas de tarifa reducida cobran la mitad. Pregunte a la MTA cómo aplican las reglas para su hijo."], who: ["aar"] },
+
+  { id: "housing", show: s => ["physical", "sensory"].includes(s.type), when: ["If your home doesn't fit your child's needs", "Si su casa no se adapta a las necesidades de su hijo"], t: ["Look for accessible housing", "Busque vivienda accesible"],
+    p: ["City affordable housing lotteries set aside units for families with mobility, vision or hearing disabilities. Make a Housing Connect profile and get the medical form ready. Your borough's independent living center can help you apply.", "Las loterías de vivienda asequible de la ciudad reservan unidades para familias con discapacidad de movilidad, visión o audición. Cree un perfil en Housing Connect y tenga listo el formulario médico. El centro de vida independiente de su condado le puede ayudar a solicitar."], who: ["housing", "ilc"] },
+
+  { id: "activities", show: () => true, when: ["Any time", "En cualquier momento"], t: ["Find activities and camps", "Encuentre actividades y campamentos"],
+    p: ["Kids with disabilities have a right to play too. Look at adaptive Parks programs, Special Olympics, and camps that serve your child's needs. Sign up for camps early; spots fill in winter.", "Los niños con discapacidad también tienen derecho a jugar. Mire los programas adaptados de Parks, las Olimpiadas Especiales y los campamentos para las necesidades de su hijo. Inscríbase temprano; los cupos se llenan en invierno."], who: ["parks", "sony", "camps"] },
+
+  { id: "transition", show: s => s.age === "teen", when: ["By age 15", "Para los 15 años"], t: ["Start planning for life after school", "Empiece a planear la vida después de la escuela"],
+    p: ["In New York, the IEP should include transition planning starting at 15: goals for work, college and living on their own. School services continue until your child earns a diploma or turns 22, so line up adult services well before then.", "En Nueva York, el IEP debe incluir un plan de transición desde los 15 años: metas de trabajo, estudios y vida independiente. Los servicios escolares continúan hasta que su hijo obtenga un diploma o cumpla 22 años, así que prepare los servicios para adultos con tiempo."],
+    list: [["Developmental disability: make sure OPWDD eligibility is in place before 18", "Discapacidad del desarrollo: asegúrese de tener la elegibilidad de OPWDD antes de los 18"], ["Any disability: an independent living center can help with benefits, housing and job training", "Cualquier discapacidad: un centro de vida independiente ayuda con beneficios, vivienda y capacitación laboral"]], who: ["includenyc", "ilc"] },
+
+  { id: "support", show: () => true, when: ["Any time", "En cualquier momento"], t: ["Find another parent who's been there", "Encuentre a otro padre que haya pasado por esto"],
+    p: ["Parent to Parent will match you with a trained volunteer parent whose child has a similar disability or health need. INCLUDEnyc also runs free parent workshops online and in person.", "Parent to Parent le conecta con un padre voluntario capacitado cuyo hijo tiene una discapacidad o necesidad de salud parecida. INCLUDEnyc también ofrece talleres gratis para padres en línea y en persona."], who: ["p2p", "includenyc"] }
+];
+
+const GLOSS = [
+  ["EI", ["Early Intervention. Free services from birth to age 3.", "Intervención Temprana. Servicios gratis desde el nacimiento hasta los 3 años."]],
+  ["IFSP", ["Individualized Family Service Plan. The written plan for Early Intervention.", "Plan Individualizado de Servicios para la Familia. El plan escrito de Intervención Temprana."]],
+  ["CPSE", ["Committee on Preschool Special Education. Handles ages 3–5.", "Comité de Educación Especial Preescolar. Atiende de 3 a 5 años."]],
+  ["CSE", ["Committee on Special Education. Handles school-age special education.", "Comité de Educación Especial. Atiende la educación especial en edad escolar."]],
+  ["IEP", ["Individualized Education Program. The legal plan for your child's special education services.", "Programa de Educación Individualizado. El plan legal de los servicios de educación especial de su hijo."]],
+  ["504", ["A school plan for accommodations, like medication at school or extra test time, without special teaching.", "Un plan escolar de adaptaciones, como medicamentos en la escuela o más tiempo en exámenes, sin enseñanza especial."]],
+  ["SEIT", ["Special Education Itinerant Teacher. A special ed teacher who comes to your child's preschool.", "Maestro Itinerante de Educación Especial. Un maestro que va al preescolar de su hijo."]],
+  ["OPT", ["Office of Pupil Transportation. Runs school buses.", "Oficina de Transporte Estudiantil. Maneja los autobuses escolares."]],
+  ["CYSHCN", ["Children & Youth with Special Health Care Needs. NYC's free family navigator program.", "Niños y Jóvenes con Necesidades Especiales de Salud. El programa gratis de orientación familiar de NYC."]],
+  ["OPWDD", ["NY State Office for People With Developmental Disabilities. Services outside school.", "Oficina del Estado de NY para Personas con Discapacidades del Desarrollo. Servicios fuera de la escuela."]],
+  ["Front Door", ["OPWDD's sign-up process: eligibility, information session, then planning.", "El proceso de inscripción de OPWDD: elegibilidad, sesión informativa y luego planificación."]],
+  ["CCO", ["Care Coordination Organization. Gives you a care manager once you're OPWDD eligible.", "Organización de Coordinación de Cuidado. Le asigna un administrador cuando es elegible para OPWDD."]],
+  ["Respite", ["Short-term care for your child so the family gets a break.", "Cuidado temporal de su hijo para que la familia descanse."]],
+  ["Children's Waiver", ["A Medicaid program for kids with high medical, developmental or mental health needs.", "Un programa de Medicaid para niños con muchas necesidades médicas, del desarrollo o de salud mental."]],
+  ["C-YES", ["Children and Youth Evaluation Service. Checks Children's Waiver eligibility for kids without Medicaid.", "Servicio de Evaluación de Niños y Jóvenes. Revisa la elegibilidad para la Exención en niños sin Medicaid."]],
+  ["Health Home", ["A Medicaid care management agency that coordinates a child's services.", "Una agencia de Medicaid que coordina los servicios del niño."]],
+  ["CFTSS", ["Children and Family Treatment and Support Services. Medicaid mental health help at home and in the community.", "Servicios de Tratamiento y Apoyo para Niños y Familias. Ayuda de salud mental de Medicaid en la casa y la comunidad."]],
+  ["SSI", ["Supplemental Security Income. A monthly payment for children with serious disabilities.", "Ingreso Suplementario de Seguridad. Un pago mensual para niños con discapacidades graves."]],
+  ["ABA", ["Applied Behavior Analysis. A common autism therapy covered by Medicaid and NY-regulated insurance.", "Análisis Aplicado de la Conducta. Una terapia común para el autismo cubierta por Medicaid y seguros regulados por NY."]],
+  ["IEE", ["Independent Educational Evaluation. An outside evaluation the city pays for when you disagree with its evaluation.", "Evaluación Educativa Independiente. Una evaluación externa que paga la ciudad cuando no está de acuerdo con la suya."]],
+  ["D75", ["District 75. Citywide specialized programs for students with significant disabilities.", "Distrito 75. Programas especializados de toda la ciudad para estudiantes con discapacidades importantes."]],
+  ["Pendency", ["Also called stay-put. Your child keeps current services while a hearing is pending.", "También llamado stay-put. Su hijo mantiene los servicios actuales mientras la audiencia está pendiente."]],
+  ["ILC", ["Independent Living Center. Run by people with disabilities; helps teens and adults live on their own.", "Centro de Vida Independiente. Dirigido por personas con discapacidad; ayuda a jóvenes y adultos a vivir por su cuenta."]]
+];
+
+/* ---------- Rights ---------- */
+const TL_PRE = [
+  ["Now", "none", ["After the CPSE gets your written referral, it must contact you right away and ask for your consent to evaluate.", "Cuando el CPSE recibe su referido por escrito, tiene que comunicarse con usted de inmediato y pedir su consentimiento para la evaluación."]],
+  ["60", "cal", ["The evaluation is done and the CPSE meets to make its recommendation within 60 calendar days of your consent.", "La evaluación se termina y el CPSE se reúne para hacer su recomendación dentro de 60 días calendario de su consentimiento."]],
+  ["30", "sch", ["Services usually start on the program's next start date (July, September or January). If that date is close, they start no later than 30 school days after the recommendation.", "Los servicios normalmente empiezan en la próxima fecha de inicio del programa (julio, septiembre o enero). Si esa fecha está cerca, empiezan a más tardar 30 días escolares después de la recomendación."]],
+  ["60", "sch", ["In total, no more than 60 school days from your consent to services.", "En total, no más de 60 días escolares desde su consentimiento hasta los servicios."]]
+];
+const TL_SCH = [
+  ["Now", "none", ["When you ask in writing, the school must contact you right away and ask for your consent to evaluate. (If a teacher or doctor makes the request, the school has 10 school days.)", "Cuando usted lo pide por escrito, la escuela tiene que comunicarse con usted de inmediato y pedir su consentimiento para la evaluación. (Si la solicitud viene de un maestro o médico, la escuela tiene 10 días escolares.)"]],
+  ["60", "cal", ["The evaluation should be finished within 60 calendar days of your consent.", "La evaluación debe terminar dentro de 60 días calendario de su consentimiento."]],
+  ["5", "", ["You get notice of the IEP meeting at least 5 days ahead, unless you agree to meet sooner.", "Le avisan de la reunión del IEP con al menos 5 días de anticipación, a menos que usted acepte reunirse antes."]],
+  ["60", "sch", ["In total, no more than 60 school days from your consent to a recommendation and services in place.", "En total, no más de 60 días escolares desde su consentimiento hasta la recomendación y los servicios en marcha."]]
+];
+const RIGHTS = [
+  [["You're a full member of the IEP team.", "Usted es miembro pleno del equipo del IEP."], ["You can bring a friend or advocate, the school must arrange an interpreter if you need one, and the team has to consider what you say.", "Puede traer a un amigo o defensor, la escuela tiene que conseguir un intérprete si lo necesita, y el equipo tiene que considerar lo que usted dice."]],
+  [["You can see your child's records.", "Puede ver los expedientes de su hijo."], ["The school must give them before any IEP meeting or hearing, and no later than 45 calendar days after you ask. The letter writer has a records request.", "La escuela debe dárselos antes de cualquier reunión del IEP o audiencia, y a más tardar 45 días calendario después de pedirlos. El escritor de cartas tiene una solicitud de expedientes."]],
+  [["You get written notice of decisions.", "Recibe aviso por escrito de las decisiones."], ["When the school proposes or refuses a change to your child's services, it has to tell you in writing and explain why.", "Cuando la escuela propone o rechaza un cambio en los servicios de su hijo, tiene que decírselo por escrito y explicar por qué."]],
+  [["You can ask for an independent evaluation the city pays for.", "Puede pedir una evaluación independiente pagada por la ciudad."], ["If you disagree with the school's evaluation, ask in writing for an Independent Educational Evaluation (IEE). The city must approve it or go to a hearing to defend its own evaluation. The letter writer has this request.", "Si no está de acuerdo con la evaluación de la escuela, pida por escrito una Evaluación Educativa Independiente (IEE). La ciudad debe aprobarla o ir a una audiencia para defender su propia evaluación. El escritor de cartas tiene esta solicitud."]],
+  [["You can get papers and meetings in your language.", "Puede recibir documentos y reuniones en su idioma."], ["Ask for translated documents and an interpreter. The letters on this page include that request when you fill in your language.", "Pida documentos traducidos y un intérprete. Las cartas de esta página incluyen esa solicitud cuando escribe su idioma."]]
+];
+const DISAGREE = [
+  [["Ask for a meeting", "Pida una reunión"], ["Put your concerns in writing and ask for an IEP meeting. Many problems get fixed here.", "Ponga sus preocupaciones por escrito y pida una reunión del IEP. Muchos problemas se resuelven aquí."]],
+  [["Get free help", "Busque ayuda gratis"], ["Call the INCLUDEnyc Help Line or the Advocates for Children helpline. Have your folder and call log ready.", "Llame a la línea de INCLUDEnyc o a la de Advocates for Children. Tenga a mano su carpeta y su registro de llamadas."]],
+  [["Try mediation", "Pruebe la mediación"], ["A neutral mediator helps you and the school reach an agreement. It's voluntary and doesn't stop you from asking for a hearing.", "Un mediador neutral les ayuda a usted y a la escuela a llegar a un acuerdo. Es voluntario y no le impide pedir una audiencia."]],
+  [["Ask for an impartial hearing", "Pida una audiencia imparcial"], ["You generally have 2 years from when you learned of the problem to file. While the case is open, your child usually keeps their current services and placement. This is called pendency or stay-put.", "Por lo general tiene 2 años desde que supo del problema para presentarla. Mientras el caso está abierto, su hijo normalmente mantiene sus servicios y ubicación actuales. Esto se llama pendency o stay-put."]],
+  [["File a state complaint", "Presente una queja estatal"], ["If the school broke a rule within the past year, you can complain to the New York State Education Department. It usually decides within 60 days.", "Si la escuela no cumplió una regla en el último año, puede presentar una queja ante el Departamento de Educación del Estado de Nueva York. Normalmente decide en 60 días."]]
+];
+function addDays(iso, n) { const [y, m, d] = iso.split("-").map(Number); const dt = new Date(y, m - 1, d + n); return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`; }
+function renderCalc() {
+  const date = document.getElementById("calc-date").value, kind = document.getElementById("calc-kind").value, out = document.getElementById("calc-out");
+  if (!date) { out.innerHTML = `<span class="tip">${esc(t(UI.calcEmpty))}</span>`; return; }
+  const rows = kind === "pre"
+    ? [[UI.calcMeeting, addDays(date, 60)], [UI.calcServices, addDays(date, 84)]]
+    : [[UI.calcEval, addDays(date, 60)], [UI.calcServices, addDays(date, 84)]];
+  out.innerHTML = rows.map(([l, d]) => `<span class="due">${esc(t(l))} <b>${esc(fmtDate(d))}</b></span>`).join("") + `<span class="tip">${esc(t(UI.calcNote))}</span>`;
+}
+function renderRights() {
+  const unit = u => u === "none" ? "" : u === "sch" ? t(UI.schoolDays) : u === "cal" ? t(UI.calDays) : (lang === "es" ? "días" : "days");
+  const tl = arr => arr.map(([n, u, d]) => `<li><span class="days">${esc(n === "Now" && lang === "es" ? "Ya" : n)}<small>${esc(unit(u))}</small></span><span>${esc(t(d))}</span></li>`).join("");
+  document.getElementById("tl-pre").innerHTML = tl(TL_PRE);
+  document.getElementById("tl-sch").innerHTML = tl(TL_SCH);
+  document.getElementById("rights").innerHTML = RIGHTS.map(([h, d]) => `<li><b>${esc(t(h))}</b><span>${esc(t(d))}</span></li>`).join("");
+  document.getElementById("disagree").innerHTML = DISAGREE.map(([h, d]) => `<li><div class="step"><h3>${esc(t(h))}</h3><p>${esc(t(d))}</p></div></li>`).join("");
+  const k = document.getElementById("calc-kind"), cur = k.value || (state.age === "pre" || state.age === "baby" ? "pre" : "sch");
+  k.innerHTML = `<option value="pre">${esc(t(UI.tlPreH))}</option><option value="sch">${esc(t(UI.tlSchH))}</option>`;
+  k.value = cur;
+  renderCalc();
+}
+function planText() {
+  const steps = STEPS.filter(s => s.show(state));
+  const keys = [...new Set(steps.flatMap(s => s.who))];
+  const contacts = keys.map(k => { const r = R[k]; const lines = (typeof r.lines === "function" ? r.lines() : r.lines).filter(([n]) => /\d{3}/.test(t(n))); return `• ${t(r.name)}${lines.length ? ": " + lines.map(([n, l]) => `${t(n)} (${t(l)})`).join(", ") : ""}\n  ${r.url}`; }).join("\n");
+  return `${t(UI.planTitle)}\n${document.getElementById("path-sub").textContent.split(".")[0]}.\n\n` +
+    steps.map((s, i) => `${done[s.id] ? "[x]" : "[ ]"} ${i + 1}. ${t(s.t)} (${t(s.when)})`).join("\n") +
+    `\n\n${t(UI.kDir)}:\n${contacts}\n\n${t(UI.stuck)} INCLUDEnyc: (212) 677-4660`;
+}
+
+/* ---------- IEP meeting prep ---------- */
+const PREP = [
+  { id: "before", h: ["Before the meeting", "Antes de la reunión"], items: [
+    ["b1", ["Ask for copies of every evaluation, so you can read them before the meeting.", "Pida copias de todas las evaluaciones para leerlas antes de la reunión."]],
+    ["b2", ["Write a one-page parent statement: your child's strengths, your biggest worries, and what you want for this year. Ask for it to go in the IEP.", "Escriba una página de declaración de padres: las fortalezas de su hijo, sus mayores preocupaciones y lo que quiere para este año. Pida que se incluya en el IEP."]],
+    ["b3", ["Ask for an interpreter if you want one.", "Pida un intérprete si lo desea."]],
+    ["b4", ["Invite someone: a partner, friend, advocate, or a therapist who knows your child.", "Invite a alguien: su pareja, un amigo, un defensor o un terapeuta que conozca a su hijo."]],
+    ["b5", ["Ask whether you can join by phone or video if going in person is hard.", "Pregunte si puede participar por teléfono o video si ir en persona es difícil."]]
+  ]},
+  { id: "bring", h: ["What to bring", "Qué llevar"], items: [
+    ["r1", ["Your folder of reports and letters", "Su carpeta de informes y cartas"]],
+    ["r2", ["Your parent statement, with copies for the team", "Su declaración de padres, con copias para el equipo"]],
+    ["r3", ["Schoolwork, photos or short videos that show what you see at home", "Tareas, fotos o videos cortos que muestren lo que usted ve en casa"]],
+    ["r4", ["Your “About my child” profile from this page", "Su perfil “Sobre mi hijo” de esta página"]],
+    ["r5", ["Something to take notes on", "Algo para tomar notas"]]
+  ]},
+  { id: "ask", h: ["Questions to ask", "Preguntas para hacer"], items: [
+    ["a1", ["What do the evaluations say are my child's strengths and biggest needs?", "¿Qué dicen las evaluaciones sobre las fortalezas y mayores necesidades de mi hijo?"]],
+    ["a2", ["What does each goal mean, and how will you measure progress?", "¿Qué significa cada meta y cómo van a medir el progreso?"]],
+    ["a3", ["How often will my child get each service, in what size group, and with whom?", "¿Con qué frecuencia recibirá mi hijo cada servicio, en qué tamaño de grupo y con quién?"]],
+    ["a4", ["Which class setting are you recommending, and why not a less restrictive one?", "¿Qué tipo de clase recomiendan y por qué no una menos restrictiva?"]],
+    ["a5", ["Does my child need assistive technology, a paraprofessional, transportation or testing accommodations?", "¿Mi hijo necesita tecnología de apoyo, un paraprofesional, transporte o adaptaciones en los exámenes?"]],
+    ["a6", ["When will services start, and who do I call if they don't?", "¿Cuándo empiezan los servicios y a quién llamo si no empiezan?"]],
+    ["a7", ["How and how often will I get progress reports?", "¿Cómo y cada cuánto recibiré informes de progreso?"]]
+  ]},
+  { id: "after", h: ["After the meeting", "Después de la reunión"], items: [
+    ["f1", ["You don't have to agree on the spot. You can take time to review before you sign anything.", "No tiene que estar de acuerdo en el momento. Puede tomarse tiempo para revisar antes de firmar."]],
+    ["f2", ["Get a copy of the IEP and check it matches what was agreed.", "Consiga una copia del IEP y revise que coincida con lo acordado."]],
+    ["f3", ["Write down who said what in your call log.", "Anote quién dijo qué en su registro de llamadas."]],
+    ["f4", ["If something is missing or wrong, write to the school that week.", "Si falta algo o está mal, escriba a la escuela esa misma semana."]],
+    ["f5", ["Put the services start date in your calendar and follow up if it passes.", "Anote la fecha de inicio de los servicios en su calendario y dé seguimiento si pasa."]]
+  ]}
+];
+let prepDone = {};
+try { prepDone = JSON.parse(localStorage.getItem("cp-prep") || "{}"); } catch (e) {}
+function renderPrep() {
+  document.getElementById("prep").innerHTML = PREP.map(g => `
+    <div class="panel"><h3>${esc(t(g.h))}</h3>
+      <ul class="checks">${g.items.map(([id, txt]) => `<li><label class="check"><input type="checkbox" id="prep-${id}" data-prep="${id}" ${prepDone[id] ? "checked" : ""}> <span>${esc(t(txt))}</span></label></li>`).join("")}</ul>
+    </div>`).join("");
+}
+const prepText = () => PREP.map(g => `${t(g.h)}\n` + g.items.map(([id, txt]) => `${prepDone[id] ? "[x]" : "[ ]"} ${t(txt)}`).join("\n")).join("\n\n");
+
+/* ---------- About my child ---------- */
+const PROFILE = [
+  ["name", ["Name and what they like to be called", "Nombre y cómo le gusta que le llamen"], "input"],
+  ["age", ["Age or date of birth", "Edad o fecha de nacimiento"], "input"],
+  ["dx", ["Diagnosis or condition (optional)", "Diagnóstico o condición (opcional)"], "input"],
+  ["loves", ["What my child loves and what motivates them", "Lo que le encanta a mi hijo y lo que le motiva"], "textarea"],
+  ["med", ["Medical needs, medications and allergies", "Necesidades médicas, medicamentos y alergias"], "textarea"],
+  ["contacts", ["Emergency contacts", "Contactos de emergencia"], "textarea"]
+];
+let profile = {};
+try { profile = JSON.parse(localStorage.getItem("cp-profile") || "{}"); } catch (e) {}
+function renderProfileForm() {
+  document.getElementById("pf-form").innerHTML = PROFILE.map(([k, l, type]) => `
+    <div class="field ${type === "textarea" ? "wide" : ""}"><label for="pf-${k}">${esc(t(l))}</label>${type === "textarea" ? `<textarea id="pf-${k}" data-pf="${k}">${esc(profile[k] || "")}</textarea>` : `<input id="pf-${k}" data-pf="${k}" value="${esc(profile[k] || "")}">`}</div>`).join("");
+  renderProfileOut();
+}
+function profileText() {
+  const filled = PROFILE.filter(([k]) => (profile[k] || "").trim());
+  if (!filled.length) return "";
+  return `${t(UI.pfTitle)}${profile.name ? ": " + profile.name.trim() : ""}\n\n` + filled.filter(([k]) => k !== "name").map(([k, l]) => `${t(l)}:\n${profile[k].trim()}`).join("\n\n");
+}
+function renderProfileOut() {
+  const txt = profileText();
+  document.getElementById("pf-out").textContent = txt || t(UI.pfEmpty);
+}
+
+/* ---------- Letters ---------- */
+const LETTERS = {
+  cpse: { label: ["Preschool evaluation referral (ages 3–5, to the CPSE)", "Referido para evaluación preescolar (3 a 5 años, al CPSE)"], school: "district" },
+  cse: { label: ["Special education evaluation request (to the school)", "Solicitud de evaluación de educación especial (a la escuela)"], school: "school" },
+  "504": { label: ["504 plan request (to the school)", "Solicitud de plan 504 (a la escuela)"], school: "school", concerns: "lConcerns504" },
+  iep: { label: ["Request an IEP meeting (to the school)", "Solicitud de reunión del IEP (a la escuela)"], school: "school", concerns: "lConcernsIep" },
+  records: { label: ["Request my child's school records", "Solicitud de los expedientes escolares de mi hijo"], school: "school" },
+  iee: { label: ["Request an independent evaluation the city pays for (IEE)", "Solicitud de evaluación independiente pagada por la ciudad (IEE)"], school: "school", concerns: "lConcernsIee" }
+};
+function fmtDate(d, withYear = true) {
+  if (!d) return "";
+  const [y, m, day] = d.split("-").map(Number);
+  return new Date(y, m - 1, day).toLocaleDateString(lang === "es" ? "es-US" : "en-US", { year: withYear ? "numeric" : undefined, month: "long", day: "numeric" });
+}
+function buildLetter() {
+  const v = id => document.getElementById(id).value.trim();
+  const type = v("lt-type");
+  const f = { parent: v("lt-parent") || (lang === "es" ? "[Su nombre]" : "[Your name]"), contact: v("lt-contact") || (lang === "es" ? "[Su teléfono o correo]" : "[Your phone or email]"), child: v("lt-child") || (lang === "es" ? "[Nombre del niño]" : "[Child's name]"), dob: fmtDate(v("lt-dob")) || (lang === "es" ? "[fecha de nacimiento]" : "[date of birth]"), school: v("lt-school") || (LETTERS[type].school === "district" ? "[#]" : (lang === "es" ? "[Nombre de la escuela]" : "[School name]")), grade: v("lt-grade"), to: v("lt-to"), language: v("lt-lang"), concerns: v("lt-concerns") || (lang === "es" ? "[Describa lo que nota, con ejemplos]" : "[Describe what you are seeing, with examples]"), ei: document.getElementById("lt-ei").checked };
+  const today = new Date().toLocaleDateString(lang === "es" ? "es-US" : "en-US", { year: "numeric", month: "long", day: "numeric" });
+  const gradeLine = f.grade ? (lang === "es" ? `, grado/clase: ${f.grade}` : `, grade/class: ${f.grade}`) : "";
+  const langLine = f.language ? (lang === "es" ? `\n\nMi idioma preferido es ${f.language}. Por favor envíeme todos los documentos en ese idioma y proporcione un intérprete en las reuniones.` : `\n\nMy preferred language is ${f.language}. Please send all documents in this language and provide an interpreter at meetings.`) : "";
+  const close = lang === "es" ? `\n\nPuede comunicarse conmigo al ${f.contact}. Gracias por su pronta atención.\n\nAtentamente,\n\n\n${f.parent}\nPadre/madre de ${f.child}` : `\n\nYou can reach me at ${f.contact}. Thank you for your prompt attention.\n\nSincerely,\n\n\n${f.parent}\nParent of ${f.child}`;
+  const E = lang === "es";
+  let to, re, body;
+  if (type === "cpse") {
+    to = E ? `Para: Administrador del CPSE\nComité de Educación Especial Preescolar, Distrito ${f.school}` : `To: CPSE Administrator\nCommittee on Preschool Special Education, District ${f.school}`;
+    re = E ? `Asunto: Referido para evaluación de educación especial preescolar — ${f.child}, fecha de nacimiento ${f.dob}` : `Re: Referral for preschool special education evaluation — ${f.child}, date of birth ${f.dob}`;
+    body = E ? `Soy el padre/la madre de ${f.child}, nacido(a) el ${f.dob}. Le escribo para referir a mi hijo(a) para una evaluación de servicios de educación especial preescolar.\n\nMe preocupa lo siguiente:\n${f.concerns}${f.ei ? "\n\nMi hijo(a) recibe o recibió servicios de Intervención Temprana." : ""}\n\nPor favor envíeme el aviso de que recibieron este referido, el formulario de consentimiento para la evaluación y la lista de centros de evaluación aprobados.` : `I am the parent of ${f.child}, born ${f.dob}. I am writing to refer my child for an evaluation for preschool special education services.\n\nMy concerns are:\n${f.concerns}${f.ei ? "\n\nMy child receives or has received Early Intervention services." : ""}\n\nPlease send me notice that this referral was received, the consent form for the evaluation, and the list of approved evaluation sites.`;
+  } else if (type === "cse") {
+    to = E ? `Para: ${f.to || "Director(a)"}\n${f.school}` : `To: ${f.to || "Principal"}\n${f.school}`;
+    re = E ? `Asunto: Solicitud de evaluación inicial de educación especial — ${f.child}, fecha de nacimiento ${f.dob}${gradeLine}` : `Re: Request for initial special education evaluation — ${f.child}, date of birth ${f.dob}${gradeLine}`;
+    body = E ? `Soy el padre/la madre de ${f.child}. Le escribo para solicitar una evaluación inicial para servicios de educación especial.\n\nMe preocupa lo siguiente:\n${f.concerns}\n\nPido que se evalúe a mi hijo(a) en todas las áreas de posible discapacidad, incluidas, según corresponda, evaluaciones psicoeducativas, de habla y lenguaje, de terapia ocupacional, de terapia física y de conducta funcional. Por favor envíeme el formulario de consentimiento para que la evaluación pueda empezar, y copias de todos los informes antes de la reunión del IEP.` : `I am the parent of ${f.child}. I am writing to request an initial evaluation for special education services.\n\nMy concerns are:\n${f.concerns}\n\nI am asking that my child be evaluated in all areas of suspected disability, including, as appropriate, psychoeducational, speech and language, occupational therapy, physical therapy, and functional behavioral assessments. Please send me the consent form so the evaluation can begin, and copies of all evaluation reports before the IEP meeting.`;
+  } else if (type === "504") {
+    to = E ? `Para: ${f.to || "Coordinador(a) 504 / Director(a)"}\n${f.school}` : `To: ${f.to || "504 Coordinator / Principal"}\n${f.school}`;
+    re = E ? `Asunto: Solicitud de plan de adaptaciones 504 — ${f.child}, fecha de nacimiento ${f.dob}${gradeLine}` : `Re: Request for Section 504 accommodations — ${f.child}, date of birth ${f.dob}${gradeLine}`;
+    body = E ? `Soy el padre/la madre de ${f.child}. Le escribo para solicitar un plan de adaptaciones bajo la Sección 504 para mi hijo(a), que tiene una condición que afecta su día escolar.\n\nDurante el día escolar, mi hijo(a) necesita:\n${f.concerns}\n\nAdjunto la documentación de su médico. Por favor envíeme los formularios de solicitud que falten y avíseme cuándo se revisará la solicitud.` : `I am the parent of ${f.child}. I am writing to request a Section 504 accommodation plan for my child, who has a condition that affects the school day.\n\nDuring the school day, my child needs:\n${f.concerns}\n\nI have attached documentation from my child's doctor. Please send me any other request forms needed and let me know when the request will be reviewed.`;
+  } else if (type === "iep") {
+    to = E ? `Para: ${f.to || "Director(a) / Equipo del IEP"}\n${f.school}` : `To: ${f.to || "Principal / IEP Team"}\n${f.school}`;
+    re = E ? `Asunto: Solicitud de reunión para revisar el IEP — ${f.child}, fecha de nacimiento ${f.dob}${gradeLine}` : `Re: Request for an IEP review meeting — ${f.child}, date of birth ${f.dob}${gradeLine}`;
+    body = E ? `Soy el padre/la madre de ${f.child}. Le escribo para solicitar una reunión para revisar el IEP de mi hijo(a).\n\nEl motivo es:\n${f.concerns}\n\nPor favor indíqueme las fechas disponibles para la reunión lo antes posible.` : `I am the parent of ${f.child}. I am writing to request a meeting to review my child's IEP.\n\nThe reason is:\n${f.concerns}\n\nPlease let me know available dates for the meeting as soon as possible.`;
+  } else if (type === "iee") {
+    to = E ? `Para: ${f.to || "Coordinador(a) de educación especial / Director(a)"}\n${f.school}` : `To: ${f.to || "Special Education Coordinator / Principal"}\n${f.school}`;
+    re = E ? `Asunto: Solicitud de Evaluación Educativa Independiente a costo público — ${f.child}, fecha de nacimiento ${f.dob}${gradeLine}` : `Re: Request for an Independent Educational Evaluation at public expense — ${f.child}, date of birth ${f.dob}${gradeLine}`;
+    body = E ? `Soy el padre/la madre de ${f.child}. No estoy de acuerdo con la evaluación que hizo el Departamento de Educación y solicito una Evaluación Educativa Independiente (IEE) a costo público.\n\nNo estoy de acuerdo por lo siguiente:\n${f.concerns}\n\nPor favor envíeme la carta de autorización y los formularios necesarios o, si el Departamento no acepta esta solicitud, inicie una audiencia imparcial como exige la ley.` : `I am the parent of ${f.child}. I disagree with the evaluation conducted by the Department of Education, and I am requesting an Independent Educational Evaluation (IEE) at public expense.\n\nI disagree because:\n${f.concerns}\n\nPlease send me the authorization letter and required forms, or, if the Department does not agree to this request, file for an impartial hearing as the law requires.`;
+  } else {
+    to = E ? `Para: ${f.to || "Director(a)"}\n${f.school}` : `To: ${f.to || "Principal"}\n${f.school}`;
+    re = E ? `Asunto: Solicitud de expedientes educativos — ${f.child}, fecha de nacimiento ${f.dob}${gradeLine}` : `Re: Request for education records — ${f.child}, date of birth ${f.dob}${gradeLine}`;
+    body = E ? `Soy el padre/la madre de ${f.child}. Bajo la ley federal FERPA, solicito copias de los expedientes educativos de mi hijo(a), incluidos todos los IEP, evaluaciones, informes de progreso, calificaciones, asistencia y registros de disciplina.${v("lt-concerns") ? "\n\nTambién solicito:\n" + v("lt-concerns") : ""}\n\nFERPA exige que la escuela responda dentro de 45 días. Por favor avíseme cuándo puedo recogerlos o si me los enviarán.` : `I am the parent of ${f.child}. Under the federal law FERPA, I am requesting copies of my child's education records, including all IEPs, evaluations, progress reports, report cards, attendance, and discipline records.${v("lt-concerns") ? "\n\nI am also requesting:\n" + v("lt-concerns") : ""}\n\nFERPA requires the school to respond within 45 days. Please let me know when I can pick up the records or whether they will be sent to me.`;
+  }
+  return `${today}\n\n${to}\n\n${re}\n\n${E ? "Estimado(a)" : "Dear"} ${f.to || (E ? "señor(a)" : "Sir or Madam")}:\n\n${body}${langLine}${close}`;
+}
+function renderLetterForm() {
+  const sel = document.getElementById("lt-type"); const cur = sel.value || "cpse";
+  sel.innerHTML = Object.entries(LETTERS).map(([k, L]) => `<option value="${k}">${esc(t(L.label))}</option>`).join("");
+  sel.value = cur;
+  const L = LETTERS[sel.value];
+  document.getElementById("lt-school-label").textContent = t(UI[L.school === "district" ? "lSchoolDistrict" : "lSchool"]);
+  document.getElementById("lt-concerns-label").textContent = t(UI[L.concerns || "lConcerns"]);
+  document.getElementById("lt-ei-wrap").hidden = sel.value !== "cpse";
+  document.getElementById("lt-out").textContent = buildLetter();
+}
+
+/* ---------- Call log ---------- */
+let log = [], canStore = true;
+try { log = JSON.parse(localStorage.getItem("cp-log") || "[]"); } catch (e) { canStore = false; }
+const saveLog = () => { try { localStorage.setItem("cp-log", JSON.stringify(log)); return true; } catch (e) { canStore = false; return false; } };
+let pendingDelete = null;
+function renderLog() {
+  const ul = document.getElementById("log");
+  if (!log.length) { ul.innerHTML = `<li class="empty">${esc(t(UI.gEmpty))}</li>`; return; }
+  ul.innerHTML = [...log].sort((a, b) => (b.date || "").localeCompare(a.date || "") || b.ts - a.ts).map(e => `
+    <li>
+      <div class="meta"><span>${esc(fmtDate(e.date))}</span>${e.follow ? `<span>${esc(t(UI.gFollowLabel))}: ${esc(fmtDate(e.follow))}</span>` : ""}</div>
+      <span class="who">${esc(e.org)}${e.person ? " · " + esc(e.person) : ""}</span>
+      ${e.notes ? `<span>${esc(e.notes)}</span>` : ""}
+      ${e.next ? `<span class="next"><b>${esc(t(UI.gNextLabel))}:</b> ${esc(e.next)}</span>` : ""}
+      <button type="button" class="del ${pendingDelete === e.ts ? "confirm" : ""}" data-del="${e.ts}">${esc(t(pendingDelete === e.ts ? UI.gConfirm : UI.gDelete))}</button>
+    </li>`).join("");
+}
+const logText = () => [...log].sort((a, b) => (a.date || "").localeCompare(b.date || "")).map(e => [fmtDate(e.date) + " — " + e.org + (e.person ? " (" + e.person + ")" : ""), e.notes, e.next ? t(UI.gNextLabel) + ": " + e.next : "", e.follow ? t(UI.gFollowLabel) + ": " + fmtDate(e.follow) : ""].filter(Boolean).join("\n")).join("\n\n");
+
+/* ---------- State and rendering ---------- */
+const state = { age: "baby", type: "unsure", dx: "no", boro: "bk" };
+let done = {};
+try { Object.assign(state, JSON.parse(localStorage.getItem("cp-state") || "{}")); done = JSON.parse(localStorage.getItem("cp-done") || "{}"); lang = localStorage.getItem("cp-lang") || "en"; } catch (e) {}
+for (const q of Q) if (!q.opts.some(o => o[0] === state[q.key])) state[q.key] = q.opts[0][0];
+const save = () => { try { localStorage.setItem("cp-state", JSON.stringify(state)); localStorage.setItem("cp-done", JSON.stringify(done)); localStorage.setItem("cp-lang", lang); } catch (e) {} };
+const fill = (s, o) => s.replace(/\{(\w+)\}/g, (_, k) => o[k]);
+
+function renderStatic() {
+  document.documentElement.lang = lang;
+  document.getElementById("es-draft").hidden = lang !== "es";
+  document.querySelectorAll("[data-t]").forEach(el => el.textContent = t(UI[el.dataset.t]));
+  document.querySelectorAll("[data-th]").forEach(el => el.innerHTML = t(UI[el.dataset.th]));
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  document.getElementById("gloss").innerHTML = GLOSS.map(([k, d]) => `<dt>${k}</dt><dd>${esc(t(d))}</dd>`).join("");
+  document.getElementById("org-list").innerHTML = Object.values(R).map(r => `<option value="${esc(t(r.name))}">`).join("");
+}
+function renderPicker() {
+  document.getElementById("picker").innerHTML = Q.map(q => `
+    <div class="qgroup" role="group" aria-labelledby="q-${q.key}">
+      <span id="q-${q.key}">${esc(t(q.label))}</span>
+      <div class="chips" data-q="${q.key}">${q.opts.map(([v, l]) => `<button class="chip" id="${q.key}-${v}" data-v="${v}" aria-pressed="${state[q.key] === v}">${esc(t(l))}</button>`).join("")}</div>
+    </div>`).join("");
+}
+let pathKeys = new Set();
+function renderPath() {
+  const steps = STEPS.filter(s => s.show(state));
+  pathKeys = new Set(steps.flatMap(s => s.who));
+  document.getElementById("path-sub").textContent = fill(t(UI.pathSub), { age: t(LABELS.age[state.age]), type: t(LABELS.type[state.type]), dx: t(LABELS.dx[state.dx]), boro: boroName(state.boro) });
+  document.getElementById("path").innerHTML = steps.map(s => `
+    <li class="${done[s.id] ? "is-done" : ""}">
+      <div class="step">
+        <span class="when">${esc(t(s.when))}</span>
+        <h3>${esc(t(s.t))}</h3>
+        <p>${esc(t(s.p))}</p>
+        ${s.list ? `<ul>${s.list.map(x => `<li>${esc(t(x))}</li>`).join("")}</ul>` : ""}
+        ${s.letter ? `<button class="writeit" data-letter="${s.letter}">${esc(t(UI.writeThis))}</button>` : ""}
+        <div class="who">${s.who.map(k => `<a href="#res-${k}" data-res="${k}">${esc(t(R[k].name))}</a>`).join("")}</div>
+        <label class="donebox"><input type="checkbox" id="done-${s.id}" data-id="${s.id}" ${done[s.id] ? "checked" : ""}> ${esc(t(UI.done))}</label>
+      </div>
+    </li>`).join("");
+  const n = steps.filter(s => done[s.id]).length;
+  document.getElementById("prog-text").textContent = fill(t(UI.ofDone), { n, m: steps.length });
+  document.getElementById("prog-bar").style.width = (steps.length ? n / steps.length * 100 : 0) + "%";
+  renderDir();
+}
+let cat = "path";
+function renderDir() {
+  const cats = [["path", UI.forPath], ["all", UI.all], ...Object.keys(CAT).filter(c => Object.values(R).some(r => r.cat === c)).map(c => [c, CAT[c]])];
+  document.getElementById("filters").innerHTML = cats.map(([k, l]) => `<button class="chip" id="f-${k}" data-cat="${k}" aria-pressed="${k === cat}">${esc(t(l))}</button>`).join("");
+  document.getElementById("boro-note").textContent = fill(t(UI.boroNote), { boro: boroName(state.boro) });
+  const list = Object.entries(R).filter(([k, r]) => cat === "all" || (cat === "path" ? pathKeys.has(k) : r.cat === cat));
+  document.getElementById("dir").innerHTML = list.map(([k, r]) => {
+    const lines = typeof r.lines === "function" ? r.lines() : r.lines;
+    return `
+    <article class="card" id="res-${k}">
+      <span class="cat">${esc(t(CAT[r.cat]))}</span>
+      <h3>${esc(t(r.name))}</h3>
+      <p>${esc(t(r.desc))}</p>
+      ${r.flag ? `<div class="flag">${esc(t(r.flag))}</div>` : ""}
+      <div class="contact">
+        ${lines.map(([num, lab]) => { const nm = t(num); return `<div class="line"><span class="num">${esc(nm)}</span><span class="lab">${esc(t(lab))}</span>${/\d{3}/.test(nm) ? `<button class="copy" data-copy="${esc(nm)}">${esc(t(UI.copy))}</button>` : ""}</div>`; }).join("")}
+        ${r.hours ? `<span class="hours">${esc(t(r.hours))}</span>` : ""}
+        ${r.extra ? `<span class="hours">${esc(t(r.extra))}</span>` : ""}
+        <a href="${r.url}" target="_blank" rel="noopener">${esc(t(UI.website))}</a>
+      </div>
+    </article>`; }).join("");
+}
+/* ---------- Tabs ---------- */
+const SUBS = ["letters", "prep", "child", "log"];
+const VIEWS = ["plan", "help", "tools", "rights", "words"];
+let view = "plan", subview = "letters";
+function go(name, opts = {}) {
+  if (SUBS.includes(name)) { subview = name; name = "tools"; }
+  if (!VIEWS.includes(name)) name = "plan";
+  view = name;
+  document.querySelectorAll(".view").forEach(v => v.hidden = v.dataset.view !== view);
+  document.querySelectorAll(".tab").forEach(b => { const on = b.dataset.view === view; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; });
+  document.querySelectorAll(".subview").forEach(v => v.hidden = v.dataset.sub !== subview);
+  document.querySelectorAll("#subtabs .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.sub === subview)));
+  const hash = view === "tools" ? subview : view;
+  if (location.hash.slice(1) !== hash) { try { history.replaceState(null, "", "#" + hash); } catch (e) { location.hash = hash; } }
+  if (!opts.keepScroll) window.scrollTo(0, 0);
+}
+function routeFromHash() { const h = location.hash.slice(1); go(SUBS.includes(h) || VIEWS.includes(h) ? h : "plan"); }
+window.addEventListener("hashchange", routeFromHash);
+
+function renderAll() { renderStatic(); renderPicker(); renderPath(); renderLetterForm(); renderLog(); renderRights(); renderPrep(); renderProfileForm(); }
+
+function copyText(txt, btn, okLabel) {
+  const restore = btn.textContent;
+  const ok = () => { btn.textContent = okLabel || t(UI.copied); setTimeout(() => btn.textContent = restore, 1500); };
+  const fail = () => { btn.textContent = t(UI.selected); setTimeout(() => btn.textContent = restore, 2500); };
+  try { navigator.clipboard.writeText(txt).then(ok, fail); } catch (e) { fail(); }
+}
+
+document.addEventListener("click", e => {
+  const tab = e.target.closest(".tab");
+  if (tab) { go(tab.dataset.view === "tools" ? subview : tab.dataset.view); return; }
+  const st = e.target.closest("#subtabs .chip");
+  if (st) { go(st.dataset.sub, { keepScroll: true }); return; }
+  const lb = e.target.closest(".lang button");
+  if (lb) { lang = lb.dataset.lang; save(); renderAll(); return; }
+  const chip = e.target.closest(".chips[data-q] .chip");
+  if (chip) { state[chip.parentElement.dataset.q] = chip.dataset.v; save(); renderPicker(); renderPath(); return; }
+  const f = e.target.closest("#filters .chip");
+  if (f) { cat = f.dataset.cat; renderDir(); return; }
+  const res = e.target.closest("a[data-res]");
+  if (res) {
+    e.preventDefault();
+    if (cat !== "path" && cat !== "all" && R[res.dataset.res].cat !== cat) cat = "path";
+    go("help"); renderDir();
+    const card = document.getElementById("res-" + res.dataset.res);
+    if (card) { card.scrollIntoView({ block: "center" }); card.style.outline = "3px solid var(--sun)"; setTimeout(() => card.style.outline = "", 1600); }
+    return;
+  }
+  if (res && cat !== "path" && cat !== "all" && R[res.dataset.res].cat !== cat) { cat = "path"; renderDir(); }
+  const w = e.target.closest(".writeit");
+  if (w) { document.getElementById("lt-type").value = w.dataset.letter; renderLetterForm(); go("letters"); document.getElementById("lt-parent").focus({ preventScroll: true }); return; }
+  const c = e.target.closest(".copy");
+  if (c) { const n = c.parentElement.querySelector(".num"); copyText(c.dataset.copy, c); const r = document.createRange(); r.selectNodeContents(n); const s = getSelection(); s.removeAllRanges(); s.addRange(r); return; }
+  if (e.target.id === "lt-copy") {
+    const out = document.getElementById("lt-out"); const r = document.createRange(); r.selectNodeContents(out); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    copyText(out.textContent, e.target); return;
+  }
+  if (e.target.id === "prep-copy") { copyText(prepText(), e.target); return; }
+  if (e.target.id === "pf-copy") { copyText(profileText() || t(UI.pfEmpty), e.target); return; }
+  if (e.target.id === "pf-clear") {
+    if (e.target.dataset.armed) { profile = {}; try { localStorage.removeItem("cp-profile"); } catch (err) {} renderProfileForm(); e.target.textContent = t(UI.pfClear); delete e.target.dataset.armed; }
+    else { e.target.dataset.armed = "1"; e.target.textContent = t(UI.pfClearConfirm); }
+    return;
+  }
+  if (e.target.id === "copy-plan") { copyText(planText(), e.target); return; }
+  if (e.target.id === "lg-copy") { copyText(logText() || t(UI.gEmpty), e.target); return; }
+  const d = e.target.closest("[data-del]");
+  if (d) {
+    const ts = Number(d.dataset.del);
+    if (pendingDelete === ts) { log = log.filter(x => x.ts !== ts); pendingDelete = null; saveLog(); }
+    else pendingDelete = ts;
+    renderLog();
+  }
+});
+document.querySelector(".tabs").addEventListener("keydown", e => {
+  if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
+  const tabs = [...document.querySelectorAll(".tab")]; const i = tabs.findIndex(b => b.dataset.view === view);
+  const next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+  go(next.dataset.view === "tools" ? subview : next.dataset.view); next.focus();
+});
+document.addEventListener("change", e => {
+  if (e.target.matches(".donebox input")) { done[e.target.dataset.id] = e.target.checked; save(); renderPath(); }
+  if (e.target.id === "lt-type") renderLetterForm();
+  if (e.target.id === "calc-date" || e.target.id === "calc-kind") renderCalc();
+  if (e.target.dataset.prep) { prepDone[e.target.dataset.prep] = e.target.checked; try { localStorage.setItem("cp-prep", JSON.stringify(prepDone)); } catch (err) {} }
+});
+document.querySelector("#letter-h").parentElement.addEventListener("input", e => { if (e.target.closest(".form")) document.getElementById("lt-out").textContent = buildLetter(); });
+document.getElementById("pf-form").addEventListener("input", e => {
+  if (!e.target.dataset.pf) return;
+  profile[e.target.dataset.pf] = e.target.value;
+  try { localStorage.setItem("cp-profile", JSON.stringify(profile)); } catch (err) {}
+  renderProfileOut();
+});
+document.getElementById("log-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const g = id => document.getElementById(id).value.trim();
+  log.push({ ts: Date.now(), date: g("lg-date"), org: g("lg-org"), person: g("lg-person"), notes: g("lg-notes"), next: g("lg-next"), follow: g("lg-follow") });
+  const ok = saveLog();
+  ["lg-org", "lg-person", "lg-notes", "lg-next", "lg-follow"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("lg-status").textContent = t(ok ? UI.gSaved : UI.gNoStore);
+  renderLog();
+});
+const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+document.getElementById("lg-date").value = todayISO();
+renderAll();
+routeFromHash();
+</script>
+
+<script src="/analytics.js" defer></script>
+</body>
+</html>

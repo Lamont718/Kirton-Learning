@@ -58,9 +58,9 @@
   ],
   "redirects": [
     {
-      "source": "/:path((?:.*[^.,;:!?)])?)[.,;:!?)]+",
+      "source": "/:path([A-Za-z0-9_][A-Za-z0-9_/-]*):junk([.,;:!]+)",
       "destination": "/:path",
-      "permanent": true
+      "permanent": false
     }
   ]
 }

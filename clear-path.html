@@ -13,9 +13,7 @@
 <meta property="og:image" content="https://kirtonlearning.com/og.png">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" href="/fonts/atkinson-hyperlegible-400-normal-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">
-<link rel="stylesheet" href="/fonts/atkinson.css">
 <style>
 /* The claude.ai wrapper used to supply this. Without it every tab panel shows at once,
    because .view sets display:flex and that beats the hidden attribute. */
@@ -24,35 +22,23 @@ img { max-width: 100%; }
 body { margin: 0; }
 /* Layout: a single calm column. Pick your starting point, get a numbered path, then a filterable directory and a glossary. */
 :root {
-  --bg: #f3f6f8;
-  --surface: #ffffff;
-  --ink: #141d2e;
-  --navy: #141d2e;        /* Kirton Learning brand */
-  --on-navy: #eef2f8;
-  --on-navy-muted: #a9b6cb;
-  --muted: #546a76;
-  --line: #d6e0e6;
-  --accent: #1f6f8b;        /* harbor blue */
-  --accent-soft: #e1eff4;
-  --sun: #f2b632;           /* the one warm signal */
-  --sun-ink: #5a3d00;
+  /* Kirton Learning platform palette (index.html): ink, paper, amber. Light only, like every other page. */
+  --bg: #F4F2EC;            /* --paper */
+  --surface: #FBFAF7;       /* --paper-2 */
+  --ink: #141D2E;
+  --navy: #141D2E;          /* the site bar */
+  --on-navy: #F4F2EC;
+  --on-navy-muted: rgba(244,242,236,.72);
+  --muted: #4A5872;         /* --ink-3 */
+  --line: rgba(20,29,46,.14);
+  --accent: #94590D;        /* --amber-deep: readable on paper */
+  --accent-soft: #F3E7D1;   /* amber wash */
+  --sun: #E8A33D;           /* --amber */
+  --sun-ink: #141D2E;
   --done: #2f7d5b;
-  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0f1c23; --surface: #162730; --ink: #e6eef2; --muted: #9db2bd; --line: #284049;
-    --accent: #6cc0dc; --accent-soft: #1b3742; --sun: #f2b632; --sun-ink: #2a1c00; --done: #6fcf9f;
-    --navy: #0b111c; --on-navy: #eef2f8; --on-navy-muted: #8e9bb2;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0f1c23; --surface: #162730; --ink: #e6eef2; --muted: #9db2bd; --line: #284049;
-  --accent: #6cc0dc; --accent-soft: #1b3742; --sun: #f2b632; --sun-ink: #2a1c00; --done: #6fcf9f;
-  --navy: #0b111c; --on-navy: #eef2f8; --on-navy-muted: #8e9bb2;
-  color-scheme: dark;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Source Serif 4", Georgia, serif;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 body {
@@ -76,6 +62,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); margin-right: calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
+.appbar { border-top: 1px solid rgba(244,242,236,.12); }
 .appbar-in { max-width: 760px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 12px 4px; flex-wrap: wrap; }
 .appbar .brand { color: var(--on-navy); text-decoration: none; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; letter-spacing: .08em; }
 .appbar .brand .kl { color: var(--sun); }
@@ -128,7 +115,7 @@ section { display: flex; flex-direction: column; gap: 18px; }
   padding: 9px 16px; border-radius: 999px; transition: border-color .15s, background .15s;
 }
 .chip:hover { border-color: var(--accent); }
-.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); font-weight: 700; }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface); font-weight: 700; }
 
 /* Path */
 .progress { display: flex; align-items: center; gap: 12px; font-size: .95rem; color: var(--muted); }
@@ -183,7 +170,7 @@ footer { font-size: .88rem; color: var(--muted); border-top: 1px solid var(--lin
 .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
 .lang { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
 .lang button { font: inherit; font-size: .85rem; border: 0; background: transparent; color: var(--ink); padding: 5px 12px; border-radius: 999px; cursor: pointer; }
-.lang button[aria-pressed="true"] { background: var(--accent); color: var(--surface); font-weight: 700; }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--surface); font-weight: 700; }
 nav.jump { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: .95rem; }
 nav.jump a { text-decoration: none; font-weight: 700; }
 nav.jump a:hover { text-decoration: underline; }
@@ -204,7 +191,7 @@ nav.jump a:hover { text-decoration: underline; }
 .check input { width: 18px; height: 18px; accent-color: var(--accent); }
 .letter-out { white-space: pre-wrap; font-family: var(--font-body); font-size: .98rem; background: var(--bg); border: 1px dashed var(--line); border-radius: 10px; padding: 18px; margin: 0; overflow-wrap: anywhere; }
 .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.btn { font: inherit; font-weight: 700; cursor: pointer; border: 0; background: var(--accent); color: var(--surface); border-radius: 8px; padding: 9px 18px; }
+.btn { font: inherit; font-weight: 700; cursor: pointer; border: 0; background: var(--ink); color: var(--surface); border-radius: 8px; padding: 9px 18px; }
 .btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
 .tip { font-size: .9rem; color: var(--muted); }
 .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -233,8 +220,47 @@ nav.jump a:hover { text-decoration: underline; }
 .calc-out .due { font-size: 1.05rem; }
 .calc-out .due b { color: var(--accent); }
 </style>
+<style>
+/* One bar across the whole site. Scoped with klnav- so it cannot collide with
+   the per-page styles already in these files. */
+.klnav{background:#141D2E;border-bottom:1px solid rgba(244,242,236,.12);
+  font:500 15px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.klnav-in{max-width:1080px;margin:0 auto;padding:0 18px;display:flex;align-items:center;
+  justify-content:space-between;gap:14px;min-height:52px;flex-wrap:wrap}
+.klnav a{color:#F4F2EC;text-decoration:none;white-space:nowrap}
+.klnav-brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:-.01em;
+  padding:14px 0}
+.klnav-dot{width:9px;height:9px;background:#E8A33D;border-radius:50%;flex:0 0 auto}
+.klnav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.klnav-links a{padding:9px 11px;border-radius:2px;color:rgba(244,242,236,.82);font-size:.94rem}
+.klnav-links a:hover{color:#F4F2EC;background:rgba(244,242,236,.09)}
+.klnav-links a[aria-current]{color:#E8A33D}
+.klnav-cta{color:#141D2E!important;background:#E8A33D;font-weight:700}
+.klnav-cta:hover{background:#f0b45c!important;color:#141D2E!important}
+@media(max-width:560px){
+  .klnav-in{min-height:0;padding:0 12px}
+  .klnav-brand{padding:11px 0}
+  .klnav-links{width:100%;padding-bottom:9px;gap:2px}
+  .klnav-links a{padding:8px 9px;font-size:.88rem}
+}
+/* Never print the bar. Two of these pages are meant to be read off paper. */
+@media print{.klnav{display:none}}
+body > .klnav{margin-left:calc(-1 * max(16px, env(safe-area-inset-left, 0px)));margin-right:calc(-1 * max(16px, env(safe-area-inset-right, 0px)))}
+</style>
 </head>
 <body>
+<nav class="klnav" aria-label="Kirton Learning">
+  <div class="klnav-in">
+    <a class="klnav-brand" href="/"><span class="klnav-dot" aria-hidden="true"></span>Kirton Learning</a>
+    <div class="klnav-links">
+      <a href="/#how">How it works</a>
+      <a href="/record/">The record</a>
+      <a href="/handbook">Handbook</a>
+      <a href="/clear-path" aria-current="page">Clear Path NYC</a>
+      <a href="/#start" class="klnav-cta">What it costs</a>
+    </div>
+  </div>
+</nav>
 
 <header class="appbar">
   <div class="appbar-in">
@@ -929,11 +955,15 @@ function go(name, opts = {}) {
   document.querySelectorAll(".subview").forEach(v => v.hidden = v.dataset.sub !== subview);
   document.querySelectorAll("#subtabs .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.sub === subview)));
   const hash = view === "tools" ? subview : view;
-  if (location.hash.slice(1) !== hash) { try { history.replaceState(null, "", "#" + hash); } catch (e) { location.hash = hash; } }
+  if (location.hash.slice(1) !== hash) {
+    /* push, not replace: the phone's Back button steps back through the tabs instead of leaving Clear Path */
+    try { history[opts.replace ? "replaceState" : "pushState"](null, "", "#" + hash); } catch (e) { location.hash = hash; }
+  }
   if (!opts.keepScroll) window.scrollTo(0, 0);
 }
-function routeFromHash() { const h = location.hash.slice(1); go(SUBS.includes(h) || VIEWS.includes(h) ? h : "plan"); }
+function routeFromHash() { const h = location.hash.slice(1); go(SUBS.includes(h) || VIEWS.includes(h) ? h : "plan", { replace: true }); }
 window.addEventListener("hashchange", routeFromHash);
+window.addEventListener("popstate", routeFromHash);
 
 function renderAll() { renderStatic(); renderPicker(); renderPath(); renderLetterForm(); renderLog(); renderRights(); renderPrep(); renderProfileForm(); }
 

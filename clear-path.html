@@ -74,10 +74,16 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
   font: inherit; font-family: var(--font-display); font-weight: 700; font-size: .98rem; white-space: nowrap; cursor: pointer;
-  background: transparent; color: var(--on-navy-muted); border: 0; border-bottom: 3px solid transparent; padding: 12px 14px 10px;
+  background: transparent; color: var(--on-navy-muted); border: 0; padding: 12px 14px 13px;
+  position: relative; --tab-pad: 14px;
 }
+/* The underline sits under the words only, so it is the same shape on every tab,
+   including the first one, whose left padding is dropped to line up with the brand. */
+.tab::after { content: ""; position: absolute; left: var(--tab-pad); right: var(--tab-pad); bottom: 0; height: 3px; background: transparent; }
+.tab:first-child::after { left: 0; }
+.tab[aria-selected="true"]::after { background: var(--sun); }
 .tab:hover { color: var(--on-navy); }
-.tab[aria-selected="true"] { color: var(--on-navy); border-bottom-color: var(--sun); }
+.tab[aria-selected="true"] { color: var(--on-navy); }
 .tab:first-child { padding-left: 0; }
 .subtabs { display: flex; flex-wrap: wrap; gap: 8px; }
 .view { display: flex; flex-direction: column; gap: 44px; }
@@ -92,7 +98,7 @@ footer a { color: inherit; }
   .lang .long { display: none; } .lang .short { display: inline; }
   .appbar-in { flex-wrap: nowrap; }
   .appbar .brand { font-size: .7rem; gap: 6px; }
-  .tab { padding: 12px 10px 10px; font-size: .94rem; }
+  .tab { padding: 12px 7px 13px; font-size: .9rem; --tab-pad: 7px; }
 }
 .brand { font-family: var(--font-display); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; color: var(--accent); }
 .hero h1 { font-size: clamp(2rem, 6vw, 3rem); font-weight: 800; }

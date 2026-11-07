@@ -55,5 +55,12 @@
       "path": "/api/purge",
       "schedule": "0 9 * * *"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/:path((?:.*[^.,;:!?)])?)[.,;:!?)]+",
+      "destination": "/:path",
+      "permanent": true
+    }
   ]
 }

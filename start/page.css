@@ -21,9 +21,9 @@ body{margin:0;background:var(--paper);color:var(--ink);
 
 .wrap{width:min(100% - 2.5rem,42rem);margin-inline:auto}
 
-.draft{background:var(--warn);color:#fff;font-family:var(--mono);font-size:.74rem;
-  padding:10px 0;text-align:center;line-height:1.5}
-.draft b{font-weight:500}
+.draft{background:#E8A33D;color:#141D2E;font-family:"Source Serif 4",Georgia,serif;font-size:.92rem;
+  padding:10px max(22px,calc((100% - 1080px)/2 + 22px));text-align:left;line-height:1.5}
+.draft b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700}
 
 .head{border-bottom:1px solid var(--line);padding:1rem 0}
 .back{font-family:var(--mono);font-size:.78rem;color:var(--accent-deep);text-decoration:none}

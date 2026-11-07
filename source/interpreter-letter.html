@@ -149,9 +149,9 @@ p{margin:0 0 1.05em}
   .wrap{max-width:100%;padding:0}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important}}
-.draft{background:#A6402F;color:#fff;font-family:var(--mono);font-size:.74rem;
-  padding:10px 0;text-align:center;line-height:1.5}
-.draft b{font-weight:500}
+.draft{background:#E8A33D;color:#141D2E;font-family:"Source Serif 4",Georgia,serif;font-size:.92rem;
+  padding:10px max(22px,calc((100% - 1080px)/2 + 22px));text-align:left;line-height:1.5}
+.draft b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700}
 @media print{.draft{display:none}}
 
 /* Touch targets. These are controls, not words inside a sentence, and at 16-22px
@@ -212,7 +212,8 @@ p{margin:0 0 1.05em}
     <div class="klnav-links">
       <a href="/#how">How it works</a>
       <a href="/record/">The record</a>
-      <a href="/handbook">Handbook</a>
+      <a href="/handbook" aria-current="page">Handbook</a>
+      <a href="/clear-path">Clear Path NYC</a>
       <a href="/#start" class="klnav-cta">What it costs</a>
     </div>
   </div>

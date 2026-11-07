@@ -225,7 +225,7 @@ check('and the backup is the whole record, not a summary',
   await ev(`(()=>{const d=JSON.parse(localStorage.getItem('iep_record_v1'));return Array.isArray(d.children)&&Array.isArray(d.entries)&&d.entries.length>0})()`))
 
 console.log('\n=== ★ she can fix her own mistakes ===')
-await click('Home'); await sleep(800)
+await click('My child'); await sleep(800)
 const before = await ev(`JSON.parse(localStorage.getItem('iep_record_v1')).entries.length`)
 await ev(`(()=>{const d=[...document.querySelectorAll('details')].find(x=>/See or fix past checks/.test(x.textContent));d.open=true;return true})()`)
 await sleep(400)
@@ -261,7 +261,7 @@ check('a second child can be added', (await ev(`JSON.parse(localStorage.getItem(
 check('and the app switches to them', /Jonah/.test(await text()))
 check('★ the new child starts with an empty record, not the first one’s',
   await ev(`(()=>{const d=JSON.parse(localStorage.getItem('iep_record_v1'));const c=d.children[1];return c.goals.length===0})()`))
-await click('Home'); await sleep(700)
+await click('My child'); await sleep(700)
 check('and you can switch back', (await ev(`[...document.querySelectorAll('button')].some(b=>/Maya/.test(b.textContent))`)))
 
 console.log('\n=== ★ "works offline" is true, not a hope ===')

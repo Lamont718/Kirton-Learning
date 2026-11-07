@@ -35,17 +35,20 @@
      It carried the nav labels, the cadence line, every date in the log and the
      footnote. #5b6880 is the same hue, still plainly secondary next to --ink,
      and clears all three: 5.03, 5.53, 4.69. */
-  --bg:#f5f2ec; --card:#fffdf9; --ink:#1f2a3a; --ink-2:#3f4d63; --muted:#5b6880;
-  --line:#e3dcd0; --accent:#2f6f6a; --accent-soft:#e2efed; --warm:#a85f28;
-  --warm-soft:#fbeade; --good:#2f6b48; --radius:16px;
+  /* 2026-11-07: moved onto the platform palette (index.html): paper, ink, amber.
+     --muted is --ink-3 #4A5872: 7.0:1 on paper, still clears AA everywhere the old note lists. */
+  --bg:#F4F2EC; --card:#FBFAF7; --ink:#141D2E; --ink-2:#25324A; --muted:#4A5872;
+  --line:#DCD8CE; --accent:#94590D; --accent-soft:#F3E7D1; --warm:#94590D;
+  --warm-soft:#F3E7D1; --good:#2f6b48; --radius:16px;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
-  font:17px/1.55 ui-rounded,"Segoe UI",system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  font:17px/1.6 "Source Serif 4",Georgia,serif;-webkit-font-smoothing:antialiased}
 a{color:var(--accent);text-underline-offset:3px}
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
   outline:3px solid var(--accent);outline-offset:3px}
 .wrap{width:min(720px,92vw);margin:0 auto;padding-bottom:60px}
+h1,h2,h3,.brand,.navlink,.btn{font-family:"Bricolage Grotesque",system-ui,sans-serif}
 h1{font-size:clamp(1.5rem,4.5vw,2rem);margin:0 0 6px;letter-spacing:-.01em}
 h2{font-size:1.2rem;margin:0 0 8px}
 h3{font-size:1.02rem;margin:0 0 4px}
@@ -54,6 +57,7 @@ p{margin:0 0 .9rem}
 .small{font-size:.9rem}
 .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .grow{flex:1}
+.bar .wrap{padding-bottom:0}
 .bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);
   backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:11px 0}
 .brand{font-weight:800;text-decoration:none;color:var(--ink)}
@@ -65,7 +69,7 @@ p{margin:0 0 .9rem}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);
   background:var(--card);color:var(--ink);border-radius:999px;padding:13px 20px;font:inherit;
   font-weight:700;cursor:pointer;min-height:50px}
-.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary{background:var(--ink);border-color:var(--ink);color:#F4F2EC}
 .btn-block{width:100%}
 .btn-sm{min-height:42px;padding:9px 15px;font-size:.92rem}
 .btn:disabled{opacity:.45;cursor:default}
@@ -128,14 +132,52 @@ label.field{display:block;font-weight:700;margin:14px 0 6px}
   .flag{border:1.5px solid #000;background:#fff!important;color:#000!important}
 }
 </style>
+<style>
+/* One bar across the whole site. Scoped with klnav- so it cannot collide with
+   the per-page styles already in these files. */
+.klnav{background:#141D2E;border-bottom:1px solid rgba(244,242,236,.12);
+  font:500 15px/1 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.klnav-in{max-width:1080px;margin:0 auto;padding:0 18px;display:flex;align-items:center;
+  justify-content:space-between;gap:14px;min-height:52px;flex-wrap:wrap}
+.klnav a{color:#F4F2EC;text-decoration:none;white-space:nowrap}
+.klnav-brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:-.01em;
+  padding:14px 0}
+.klnav-dot{width:9px;height:9px;background:#E8A33D;border-radius:50%;flex:0 0 auto}
+.klnav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.klnav-links a{padding:9px 11px;border-radius:2px;color:rgba(244,242,236,.82);font-size:.94rem}
+.klnav-links a:hover{color:#F4F2EC;background:rgba(244,242,236,.09)}
+.klnav-links a[aria-current]{color:#E8A33D}
+.klnav-cta{color:#141D2E!important;background:#E8A33D;font-weight:700}
+.klnav-cta:hover{background:#f0b45c!important;color:#141D2E!important}
+@media(max-width:560px){
+  .klnav-in{min-height:0;padding:0 12px}
+  .klnav-brand{padding:11px 0}
+  .klnav-links{width:100%;padding-bottom:9px;gap:2px}
+  .klnav-links a{padding:8px 9px;font-size:.88rem}
+}
+/* Never print the bar. Two of these pages are meant to be read off paper. */
+@media print{.klnav{display:none}}
+</style>
+<link rel="stylesheet" href="/fonts/fonts.css">
 </head>
 <body>
+<nav class="klnav" aria-label="Kirton Learning">
+  <div class="klnav-in">
+    <a class="klnav-brand" href="/"><span class="klnav-dot" aria-hidden="true"></span>Kirton Learning</a>
+    <div class="klnav-links">
+      <a href="/#how">How it works</a>
+      <a href="/record/" aria-current="page">The record</a>
+      <a href="/handbook">Handbook</a>
+      <a href="/clear-path">Clear Path NYC</a>
+      <a href="/#start" class="klnav-cta">What it costs</a>
+    </div>
+  </div>
+</nav>
 
 <div class="bar noprint">
   <div class="wrap row">
-    <a class="brand" href="/">✦ Kirton Learning</a>
     <span class="grow"></span>
-    <button class="navlink" data-nav="home" onclick="go('home')">Home</button>
+    <button class="navlink" data-nav="home" onclick="go('home')">My child</button>
     <button class="navlink" data-nav="goals" onclick="go('goals')">Goals</button>
     <button class="navlink" data-nav="record" onclick="go('record')">The record</button>
   </div>
@@ -255,8 +297,17 @@ const criterionText = (g) =>
   `${Math.round(g.accuracy * 100)}% accuracy in ${g.of} of ${g.outOf} trials`
 
 /* --------------------------------- views --------------------------------- */
-let view = 'home'
-function go (v) { view = v; render(); window.scrollTo(0, 0) }
+const VIEWS = ['home', 'goals', 'record']
+const fromHash = () => { const h = location.hash.slice(1); return VIEWS.includes(h) ? h : 'home' }
+let view = fromHash()
+/* push, not replace: the phone's Back button steps back through these screens
+   instead of leaving the record for whatever page came before it. */
+function go (v) {
+  view = v
+  if (location.hash.slice(1) !== v) { try { history.pushState(null, '', '#' + v) } catch (e) {} }
+  render(); window.scrollTo(0, 0)
+}
+window.addEventListener('popstate', () => { view = fromHash(); render() })
 
 function render () {
   document.querySelectorAll('[data-nav]').forEach(b =>

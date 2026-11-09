@@ -87,6 +87,14 @@ module.exports = async (req, res) => {
   const emailId = d.email_id;
   if (!emailId) return reject(res, 400, 'No email_id on the event.');
 
+  // The Resend team receives mail for other apps too (AI Workforce's private filing inboxes at
+  // *.resend.app). Only mail addressed to kirtonlearning.com is ours to forward; everything else
+  // would leak another app's customers' mail into this Gmail.
+  const recipients = [...(d.to || []), ...(d.cc || []), ...(d.received_for || [])].map((a) => String(a).toLowerCase());
+  if (!recipients.some((a) => /@kirtonlearning\.com>?\s*$/.test(a.trim()))) {
+    return res.status(200).json({ ok: true, ignored: 'not addressed to kirtonlearning.com' });
+  }
+
   try {
     // The webhook carries metadata only — no body, no headers, no attachments.
     // The content has to be fetched.

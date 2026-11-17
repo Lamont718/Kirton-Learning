@@ -119,13 +119,13 @@ textarea{min-height:104px;resize:vertical}
 
     <!-- no token in the URL -->
     <section id="v-notoken" class="hide">
-      <div class="msg msg--bad">This page needs the private link I emailed you after checkout. Open it from that email, or <a href="mailto:lamont@kirtonlearning.com">email me</a> and I&rsquo;ll send a fresh one.</div>
+      <div class="msg msg--bad">This page needs the private link I emailed you after checkout. Open it from that email, or <a data-mail href="/ask">email me</a> and I&rsquo;ll send a fresh one.</div>
     </section>
 
     <!-- link dead, or the form is not open yet -->
     <section id="v-closed" class="hide">
       <div class="msg msg--bad" id="closed-msg" role="alert"></div>
-      <p>Reply to the email I sent you, or write to <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a>, and I&rsquo;ll sort it out. It costs you nothing and it is normal.</p>
+      <p>Reply to the email I sent you, or write to <a data-mail href="/ask">lamont [at] kirtonlearning.com</a>, and I&rsquo;ll sort it out. It costs you nothing and it is normal.</p>
     </section>
 
     <!-- checking -->
@@ -203,7 +203,7 @@ textarea{min-height:104px;resize:vertical}
     <p class="legal">
       Kirton Learning is a program of Our Rose LLC, Brooklyn, NY. Supplemental academic instruction only &mdash; reading, writing, and mathematics. Not advocacy, not legal advice, not therapy, not diagnosis, and not a replacement for the services your child&rsquo;s IEP requires the district to provide.
       <br><br>
-      <a href="/privacy.html">Privacy policy</a> &middot; <a href="/terms.html">Terms of service</a> &middot; <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a>
+      <a href="/privacy.html">Privacy policy</a> &middot; <a href="/terms.html">Terms of service</a> &middot; <a data-mail href="/ask">lamont [at] kirtonlearning.com</a>
     </p>
   </div>
 </footer>
@@ -317,5 +317,6 @@ textarea{min-height:104px;resize:vertical}
   });
 })();
 </script>
+<script src="/mail.js"></script>
 </body>
 </html>

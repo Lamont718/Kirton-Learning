@@ -115,7 +115,9 @@ console.log('\nit fails closed and says which file');
 /42P01/.test(api)
   ? pass('it also catches the table being absent at the database', 'the env vars can be right while the migration has not been run')
   : warn('only the env vars are checked', 'a missing table would answer 500');
-/lamont@kirtonlearning\.com/.test(page) && /lamont@kirtonlearning\.com/.test(api)
+// The page no longer prints the bare address (spam scrapers harvest it from the
+// HTML); /mail.js builds it in the browser, with a readable fallback without JS.
+/KL_MAIL/.test(page) && /lamont \[at\] kirtonlearning\.com/.test(page) && /src="\/mail\.js"/.test(page) && /lamont@kirtonlearning\.com/.test(api)
   ? pass('every dead end still hands her a real address')
   : fail('a failure leaves her with nowhere to go');
 

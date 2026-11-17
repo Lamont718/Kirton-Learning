@@ -121,7 +121,7 @@ textarea{min-height:150px;resize:vertical}
       </div>
 
       <button class="btn" id="send" type="submit">Send it</button>
-      <p class="status" id="status">Goes to lamont@kirtonlearning.com</p>
+      <p class="status" id="status" data-mail>Goes to lamont [at] kirtonlearning.com</p>
     </form>
 
     <div id="done" class="hide">
@@ -206,14 +206,15 @@ textarea{min-height:150px;resize:vertical}
         done.scrollIntoView({ block: 'start', behavior: 'smooth' });
         return;
       }
-      fail(res.body.message || 'That did not send. Email lamont@kirtonlearning.com and it will reach me.');
+      fail(res.body.message || 'That did not send. Email ' + (window.KL_MAIL || 'lamont [at] kirtonlearning.com') + ' and it will reach me.');
     }).catch(function () {
       /* The one case the parent must not be left guessing about: her question
          never left the phone, so the fallback address is given plainly. */
-      fail('That did not send — your connection dropped. Try again, or email lamont@kirtonlearning.com.');
+      fail('That did not send — your connection dropped. Try again, or email ' + (window.KL_MAIL || 'lamont [at] kirtonlearning.com') + '.');
     });
   });
 })();
 </script>
+<script src="/mail.js"></script>
 </body>
 </html>

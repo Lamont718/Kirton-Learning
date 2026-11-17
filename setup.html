@@ -98,7 +98,7 @@ main{padding:clamp(38px,6vw,60px) 0 clamp(56px,8vw,84px)}
     <!-- no token in the URL -->
     <section id="v-notoken" class="hide">
       <div class="msg msg--bad">This page needs the private link I emailed you. Open it from
-        that email, or <a href="mailto:lamont@kirtonlearning.com">email me</a> and I will send
+        that email, or <a data-mail href="/ask">email me</a> and I will send
         a fresh one.</div>
     </section>
 
@@ -164,7 +164,7 @@ main{padding:clamp(38px,6vw,60px) 0 clamp(56px,8vw,84px)}
       record, which sends her goals and checks (never her name) to me. Switching it off deletes my copy.
       <br><br>
       <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms of service</a> ·
-      <a href="mailto:lamont@kirtonlearning.com">lamont@kirtonlearning.com</a>
+      <a data-mail href="/ask">lamont [at] kirtonlearning.com</a>
     </p>
   </div>
 </footer>
@@ -230,5 +230,6 @@ main{padding:clamp(38px,6vw,60px) 0 clamp(56px,8vw,84px)}
   });
 })();
 </script>
+<script src="/mail.js"></script>
 </body>
 </html>

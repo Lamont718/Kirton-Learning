@@ -321,6 +321,10 @@ details .ans p:last-child{margin-bottom:0}
 }
 /* Never print the bar. Two of these pages are meant to be read off paper. */
 @media print{.klnav{display:none}}
+/* The site bar above already says Kirton Learning; on screen the hero's own
+   brand line was the name twice in a row on a phone. Paper has no bar, so
+   print keeps it. */
+@media screen{.hero .brandbar{display:none}}
 </style>
 </head>
 <body>

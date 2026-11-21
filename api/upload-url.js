@@ -31,7 +31,10 @@ module.exports = async (req, res) => {
     return reject(res, 503, 'IEP intake is not open yet. Nothing has been sent or stored.');
   }
 
-  const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
+  // A malformed body is a 400 like any other bad request, not an unhandled throw.
+  let body;
+  try { body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {}; } catch { body = null; }
+  if (!body || typeof body !== 'object') return reject(res, 400, 'That upload link is not valid.');
   const { token, filename, size, type } = body;
 
   // ---- validate the request shape before touching the database ----
@@ -44,7 +47,8 @@ module.exports = async (req, res) => {
   if (!Number.isFinite(size) || size <= 0 || size > MAX_BYTES) {
     return reject(res, 400, 'That file is larger than 25MB. Send a smaller copy or email me.');
   }
-  const ext = ALLOWED[type];
+  // Own keys only: ALLOWED['constructor'] is truthy through the prototype.
+  const ext = typeof type === 'string' && Object.hasOwn(ALLOWED, type) ? ALLOWED[type] : null;
   if (!ext) {
     return reject(res, 400, 'We can take a PDF, a Word document, or a photo (JPG or PNG).');
   }
@@ -116,6 +120,19 @@ module.exports = async (req, res) => {
     // parameter to choose its wording, and a parent who edits it should change
     // what she reads and nothing about where the file goes.
     const objectPath = `${token}/${row.kind === 'record' ? 'record' : 'iep'}.${ext}`;
+
+    // ★ CLEAR AN EARLIER TRY. The token is unused, so anything already under its
+    // folder is an upload that landed and was never confirmed. Left there it is
+    // an orphan (object_path never points at it), and a retry of the same type
+    // would collide with it at the same path and fail. Best effort: if this
+    // cannot run, the desk's Delete and the retention run still list the folder.
+    try {
+      const { filesOf } = require('./_common');
+      const old = await filesOf(rest, { token, object_path: null });
+      if (old.length) {
+        await rest(`/storage/v1/object/${BUCKET}`, { method: 'DELETE', body: JSON.stringify({ prefixes: old }) });
+      }
+    } catch { /* never the parent's problem */ }
 
     const signed = await rest(`/storage/v1/object/upload/sign/${BUCKET}/${objectPath}`, {
       method: 'POST',

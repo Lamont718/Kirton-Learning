@@ -59,6 +59,20 @@ function verifySvix(raw, headers, secret) {
 const esc = (s) => String(s == null ? '' : s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+// Rough on purpose: enough to read a message, never enough to render one.
+function htmlToText(html) {
+  if (!html || typeof html !== 'string') return '';
+  return html
+    .replace(/<(script|style|head)\b[\s\S]*?<\/(script|style|head)>/gi, '')
+    .replace(/<br\s*\/?>|<\/(p|div|li|tr|h[1-6])>/gi, '\n')
+    .replace(/<a\s[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, '$2 [$1]')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
+    .replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') return reject(res, 405, 'Method not allowed.');
 
@@ -193,12 +207,12 @@ module.exports = async (req, res) => {
         // the parent and not himself.
         reply_to: sender,
         ...(carried.length ? { attachments: carried } : {}),
-        text: header + (mail.text || '(no plain-text body)') + dropped,
-        ...(mail.html
-          ? { html: `<p style="color:#5A6273;font-size:13px">Forwarded from ${esc(sender)}</p><hr>` +
-                    mail.html +
-                    (dropped ? `<hr><pre style="white-space:pre-wrap;font-size:13px">${esc(dropped)}</pre>` : '') }
-          : {}),
+        // ⛔ PLAIN TEXT ONLY, since 2026-11-20. Anyone can write to this address,
+        // and their HTML used to arrive under OUR From line with only a small
+        // banner above it — a phishing page that looks like the site's own mail,
+        // with remote images that tell the sender it was opened. Text can do
+        // neither. An HTML-only message is flattened to text rather than dropped.
+        text: header + (mail.text || htmlToText(mail.html) || '(no body)') + dropped,
       }),
     });
 
@@ -220,3 +234,4 @@ module.exports = async (req, res) => {
 
 // The Svix signature covers the raw bytes, same as Stripe's.
 module.exports.config = { api: { bodyParser: false } };
+module.exports.htmlToText = htmlToText;

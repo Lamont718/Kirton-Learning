@@ -195,6 +195,41 @@ async function alertUnplaceableSale(session) {
   }
 }
 
+// A KIRTON sale this file could not finish — the database down, the email
+// failing. Found 2026-11-20 with the database paused: every paid session would
+// have answered 500, Stripe would have retried for three days and given up, and
+// the family would have had no link and Lamont no word. Never throws, for the
+// same reason as above. Stripe retries, so a long outage sends more than one.
+async function alertStuckSale(session, why) {
+  const to = process.env.ALERT_TO || process.env.FORWARD_TO;
+  if (!to) return;
+  const amount = Number.isFinite(session && session.amount_total)
+    ? `$${(session.amount_total / 100).toFixed(2)}`
+    : 'an unknown amount';
+  const buyer =
+    (session && session.customer_details && session.customer_details.email) || 'no email on the session';
+  try {
+    await sendEmail({
+      to,
+      subject: `⛔ A family paid and did NOT get their link — ${amount}`,
+      text: [
+        'A Kirton sale came in and the site could not finish it.',
+        '',
+        `Why:     ${why}`,
+        `Amount:  ${amount}`,
+        `Buyer:   ${buyer}`,
+        `Session: ${session && session.id}`,
+        '',
+        'Stripe will keep retrying for about three days. If the cause is fixed in',
+        'time, the next retry issues the link by itself. If not, issue it by hand',
+        'from /admin.html and email the family.',
+      ].join('\n'),
+    });
+  } catch {
+    // Swallowed on purpose.
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Reading the session
 // ---------------------------------------------------------------------------
@@ -320,14 +355,21 @@ module.exports = async (req, res) => {
           `&select=token,used_at,sent_at,revoked_at,kind`,
         { method: 'GET' }
       );
-      if (!found.ok) return reject(res, 502, 'Could not read back the existing token.');
+      if (!found.ok) {
+        await alertStuckSale(session, `could not read back the existing token (${found.status})`);
+        return reject(res, 502, 'Could not read back the existing token.');
+      }
       const rows = await found.json();
       row = Array.isArray(rows) ? rows[0] : null;
     } else {
+      await alertStuckSale(session, `could not create the token (${insert.status})`);
       return reject(res, 502, `Could not create the token (${insert.status}).`);
     }
 
-    if (!row || !row.token) return reject(res, 502, 'Token row came back empty.');
+    if (!row || !row.token) {
+      await alertStuckSale(session, 'the token row came back empty');
+      return reject(res, 502, 'Token row came back empty.');
+    }
 
     // Already dealt with. Do not email a second link for a document that is in,
     // and do not resend one that has already gone out — a parent holding two
@@ -344,6 +386,7 @@ module.exports = async (req, res) => {
     if (!sent.ok) {
       // The row survives, so the retry finds it instead of making a second one.
       // 5xx so Stripe tries again, and so the failure is visible where he looks.
+      await alertStuckSale(session, `the link was made but the email to the family did not send: ${sent.error}`);
       return reject(res, 502, `Token created but the email did not send: ${sent.error}`);
     }
 
@@ -354,6 +397,8 @@ module.exports = async (req, res) => {
 
     return res.status(200).json({ ok: true });
   } catch (err) {
+    // A paused or unreachable database lands here: fetch throws on a dead host.
+    await alertStuckSale(session, `the database could not be reached (${(err && err.message) || 'error'})`);
     return reject(res, 500, 'Something went wrong handling the event.');
   }
 };

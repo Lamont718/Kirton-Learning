@@ -20,12 +20,12 @@ function reject(res, status, message) {
 // parent's answer is the same whether this sends, fails, or is not configured.
 // That is also why _common is required HERE, lazily, rather than at the top —
 // nothing about it can break the path a paying family is standing in.
-async function tellLamont(burn) {
+async function tellLamont(rows) {
   try {
     const to = process.env.ALERT_TO || process.env.FORWARD_TO;
     if (!to) return;
     let kind = 'iep';
-    try { const rows = await burn.json(); kind = (rows[0] && rows[0].kind) || kind; } catch { /* keep default */ }
+    kind = (rows[0] && rows[0].kind) || kind;
     const what = kind === 'record' ? 'A family sent their record back.' : 'A family uploaded an IEP.';
     const { sendEmail, siteOrigin } = require('./_common');
     await sendEmail({
@@ -50,7 +50,9 @@ module.exports = async (req, res) => {
     return reject(res, 503, 'IEP intake is not open yet. Nothing has been sent or stored.');
   }
 
-  const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {};
+  let body;
+  try { body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : req.body || {}; } catch { body = null; }
+  if (!body || typeof body !== 'object') return reject(res, 400, 'That upload link is not valid.');
   const { token, objectPath } = body;
 
   if (!token || !/^[0-9a-f-]{36}$/i.test(String(token))) {
@@ -90,7 +92,8 @@ module.exports = async (req, res) => {
 
     // ---- burn the token: one use, then dead ----
     const burn = await rest(
-      `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}&used_at=is.null`,
+      // Only a live IEP/record link: unused, not revoked, not a setup link.
+      `/rest/v1/upload_tokens?token=eq.${encodeURIComponent(token)}&used_at=is.null&revoked_at=is.null&kind=neq.setup`,
       {
         method: 'PATCH',
         headers: { Prefer: 'return=representation' },
@@ -99,7 +102,14 @@ module.exports = async (req, res) => {
     );
     if (!burn.ok) return reject(res, 502, 'Could not confirm the upload. Email me and I will check.');
 
-    await tellLamont(burn);
+    // ⛔ A PATCH that matched nothing still answers 200, with []. That is a link
+    // already used, revoked, or a setup link — not an upload to announce.
+    const burned = await burn.json().catch(() => null);
+    if (!Array.isArray(burned) || !burned.length) {
+      return reject(res, 403, 'That link has already been used. Email me and I will send a fresh one.');
+    }
+
+    await tellLamont(burned);
     return res.status(200).json({ ok: true });
   } catch (err) {
     return reject(res, 500, 'Something went wrong on my end. Try again shortly.');

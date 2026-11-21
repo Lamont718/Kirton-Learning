@@ -204,7 +204,37 @@ function intakeLink(token) {
   return `${siteOrigin()}/intake.html?t=${encodeURIComponent(token)}`;
 }
 
+// ---------------------------------------------------------------------------
+// Deleting from Storage — shared by the desk (admin.js), the retention run
+// (purge.js) and the upload slot (upload-url.js), so all three agree.
+// ---------------------------------------------------------------------------
+
+// Every object under the token's folder, not just object_path: an upload that
+// landed but was never confirmed leaves a file with no path on the row, and
+// deleting the row would orphan a child's IEP nobody could find again.
+async function filesOf(rest, row) {
+  const names = new Set(row.object_path ? [row.object_path] : []);
+  const l = await rest('/storage/v1/object/list/ieps', {
+    method: 'POST',
+    body: JSON.stringify({ prefix: row.token, limit: 100 }),
+  });
+  if (!l.ok) throw new Error(String(l.status));
+  const listed = await l.json().catch(() => null);
+  for (const o of Array.isArray(listed) ? listed : []) if (o && o.name) names.add(`${row.token}/${o.name}`);
+  return [...names];
+}
+
+// A storage DELETE that "failed" because there was nothing there is a success.
+// Anything else is a failure — a 400 is NOT assumed to mean "not found".
+async function goneOk(r) {
+  if (!r) return false;
+  if (r.ok || r.status === 404) return true;
+  return /not.?found/i.test(await r.text().catch(() => ''));
+}
+
 module.exports = {
+  filesOf,
+  goneOk,
   reject,
   supabase,
   rawBody,

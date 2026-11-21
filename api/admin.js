@@ -14,6 +14,7 @@
 
 const {
   reject, supabase, parseJson, secretEquals, sendEmail, uploadLink, intakeLink, siteOrigin,
+  filesOf, goneOk,
 } = require('./_common');
 const { iepLinkEmail, recordLinkEmail, setupLinkEmail } = require('./_email');
 const { readSetupCode } = require('./_setup-code');
@@ -35,6 +36,16 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const UUID_RE = /^[0-9a-f-]{36}$/i;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// The family's shared copy from the work app, removed. true = gone (or never there).
+// ⚠️ The BULK form — the single-object route 400s on the shared REST helper.
+async function dropShared(rest, token) {
+  const sh = await rest('/storage/v1/object/shared', {
+    method: 'DELETE',
+    body: JSON.stringify({ prefixes: [`${token}.json`] }),
+  }).catch(() => null);
+  return goneOk(sh);
+}
 
 // What the row means, worked out in one place so the page and the API can never
 // disagree about whether a link is alive.
@@ -394,6 +405,11 @@ module.exports = async (req, res) => {
           body: JSON.stringify({ revoked_at: new Date().toISOString() }),
         });
       }
+      // ★ The old setup's shared copy goes with it. Its key is dead now, so the
+      // family could never switch it off themselves (api/share.js refuses a
+      // revoked row) — and privacy.html promises it is removed when sharing ends.
+      // The new link brings a new key; the device shares under that one.
+      if (old.kind === 'setup') await dropShared(rest, token);
 
       // ⛔ A reissued SETUP has to carry the setup with it. Without this the
       // replacement is a link to an empty page, sent to a family who already
@@ -467,7 +483,19 @@ module.exports = async (req, res) => {
       if (!r.ok) return reject(res, 502, `Could not revoke that token (${r.status}).`);
       const back = await oneRow(token);
       if (back.error) return reject(res, 404, back.error);
-      return res.status(200).json({ ok: true, row: decorate(back.row) });
+      // ★ Revoking a setup ends that family's sharing, so what they shared goes
+      // too. Their key is dead now, and api/share.js refuses a dead key even to
+      // switch sharing off — so if this did not delete it, nobody could.
+      // The revoke itself already happened and stands either way: it is the
+      // safety action, and a failed delete must not undo it. It is said out loud.
+      let sharedRemoved = null;
+      if (back.row.kind === 'setup') sharedRemoved = await dropShared(rest, token);
+      return res.status(200).json({
+        ok: true, row: decorate(back.row), sharedRemoved,
+        ...(sharedRemoved === false
+          ? { warning: 'Revoked, but their shared work could not be deleted. Press Delete on this row to remove it.' }
+          : {}),
+      });
     }
 
     // -----------------------------------------------------------------------
@@ -489,7 +517,14 @@ module.exports = async (req, res) => {
       if (got.error) return reject(res, 404, got.error);
       const row = got.row;
 
-      if (row.object_path) {
+      // ★ EVERY file under the token's folder, not just object_path. object_path
+      // is only written once an upload is confirmed; a file that landed and was
+      // never confirmed has no pointer, and deleting the row would orphan it.
+      let files;
+      try { files = await filesOf(rest, row); } catch (e) {
+        return reject(res, 502, `The row was left alone because its files could not be listed (${e.message}). Nothing has been removed.`);
+      }
+      if (files.length) {
         // ⚠️ The BULK form, with the path in a JSON body — not
         // `DELETE /object/ieps/<path>`. The single-object route answers 400 when
         // it is sent a JSON content-type with no body, which is exactly what a
@@ -498,7 +533,7 @@ module.exports = async (req, res) => {
         // nothing about why until the provider's own message was surfaced.
         const gone = await rest('/storage/v1/object/ieps', {
           method: 'DELETE',
-          body: JSON.stringify({ prefixes: [row.object_path] }),
+          body: JSON.stringify({ prefixes: files }),
         });
         // 404 means it is already not there, which is the state we want.
         if (!gone.ok && gone.status !== 404) {
@@ -513,14 +548,12 @@ module.exports = async (req, res) => {
       // ★ And whatever the family shared from the work app. privacy.html promises
       // that a deletion request removes it; a row deleted with its shared copy
       // left in the bucket would be an orphan nobody could find again.
+      // ⛔ Only "not found" counts as gone — a real 400 used to be waved through
+      // here, and the row (the only handle on the file) was then deleted.
       if (row.kind === 'setup') {
-        const sh = await rest('/storage/v1/object/shared', {
-          method: 'DELETE',
-          body: JSON.stringify({ prefixes: [`${token}.json`] }),
-        });
-        if (!sh.ok && sh.status !== 404 && sh.status !== 400) {
+        if (!(await dropShared(rest, token))) {
           return reject(res, 502,
-            `The row was left alone because the shared work could not be deleted (${sh.status}). Nothing has been removed.`);
+            `The row was left alone because the shared work could not be deleted. Nothing has been removed.`);
         }
       }
 
@@ -533,7 +566,7 @@ module.exports = async (req, res) => {
           'The row now points at nothing — delete it in Supabase.');
       }
 
-      return res.status(200).json({ ok: true, deleted: token, fileRemoved: !!row.object_path });
+      return res.status(200).json({ ok: true, deleted: token, fileRemoved: files.length > 0 });
     }
 
     // -----------------------------------------------------------------------

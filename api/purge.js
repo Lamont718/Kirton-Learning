@@ -25,7 +25,7 @@
 // Called by Vercel Cron (vercel.json) with `Authorization: Bearer CRON_SECRET`.
 // By hand: header `x-admin-key` lists what WOULD go and deletes nothing, ever.
 
-const { reject, supabase, secretEquals, sendEmail } = require('./_common');
+const { reject, supabase, secretEquals, sendEmail, filesOf, goneOk } = require('./_common');
 
 const DAY = 24 * 60 * 60 * 1000;
 const PLAN_YEAR = 36 * 7 * DAY;
@@ -34,6 +34,12 @@ const MARGIN = 7 * DAY;
 // Paying, or about to retry a payment. Not 'incomplete' or 'unpaid': neither is a
 // family paying, and counting them would keep a child's IEP forever.
 const MEMBER = new Set(['active', 'trialing', 'past_due']);
+
+// Questions asked from /ask (supabase-setup-4.sql). privacy.html: "Your email
+// and contact details — until you ask me to remove them, or 24 months after our
+// last contact". Last contact for an address = its latest question or answer.
+// Until 2026-11-20 nothing deleted these at all.
+const QUESTION_KEEP = 2 * 365 * DAY;
 
 const at = (v) => (v ? Date.parse(v) || 0 : 0);
 
@@ -52,6 +58,24 @@ function due(row, now) {
 // EXACTLY (case included), and a family may have paid with another address, so an
 // empty search proves nothing. The row's own checkout session is asked first; the
 // email is only a second way in, and a row with neither is a row we cannot clear.
+// Ids of every question whose ADDRESS has had no contact for 24 months (+ the
+// same week of margin). Grouped by address, so one recent question keeps that
+// person's older ones too. Exported for verify/purge.mjs.
+function questionsDue(rows, now) {
+  const last = new Map();
+  for (const q of rows) {
+    const e = String(q.email || '').trim().toLowerCase();
+    const t = Math.max(at(q.asked_at), at(q.answered_at));
+    last.set(e, Math.max(last.get(e) || 0, t));
+  }
+  return rows
+    .filter((q) => {
+      const t = last.get(String(q.email || '').trim().toLowerCase()) || 0;
+      return t && now > t + QUESTION_KEEP + MARGIN;
+    })
+    .map((q) => q.id);
+}
+
 async function isMember(row, key) {
   const stripe = async (path) => {
     const r = await fetch(`https://api.stripe.com/v1/${path}`, { headers: { Authorization: `Bearer ${key}` } });
@@ -86,28 +110,6 @@ async function isMember(row, key) {
   } catch {
     return null;
   }
-}
-
-// Every object under the token's folder, not just object_path: an upload that
-// landed but was never confirmed leaves a file with no path on the row, and
-// deleting the row would orphan a child's IEP nobody could find again.
-async function filesOf(rest, row) {
-  const names = new Set(row.object_path ? [row.object_path] : []);
-  const l = await rest('/storage/v1/object/list/ieps', {
-    method: 'POST',
-    body: JSON.stringify({ prefix: row.token, limit: 100 }),
-  });
-  if (!l.ok) throw new Error(String(l.status));
-  for (const o of (await l.json()) || []) if (o && o.name) names.add(`${row.token}/${o.name}`);
-  return [...names];
-}
-
-// A storage DELETE that "failed" because there was nothing there is a success.
-// Anything else is a failure — a 400 is NOT assumed to mean "not found".
-async function goneOk(r) {
-  if (!r) return false;
-  if (r.ok || r.status === 404) return true;
-  return /not.?found/i.test(await r.text().catch(() => ''));
 }
 
 async function handler(req, res) {
@@ -186,10 +188,36 @@ async function handler(req, res) {
     out.deleted++;
   }
 
+  // ---- questions from /ask: 24 months after the last contact ----
+  // Not held for STRIPE_READ_KEY: a question is not a purchase, and a paying
+  // family's address is kept on their own row by the rules above.
+  out.questionsDeleted = 0;
+  const qr = await rest('/rest/v1/questions?select=id,email,asked_at,answered_at&limit=10000', { method: 'GET' })
+    .catch(() => null);
+  if (qr && qr.ok) {
+    const qs = await qr.json().catch(() => []);
+    const ids = questionsDue(Array.isArray(qs) ? qs : [], now);
+    if (ids.length) {
+      if (dry) out.questionsDeleted = ids.length;
+      else {
+        // In batches, so the URL stays well under any length limit.
+        for (let i = 0; i < ids.length; i += 100) {
+          const batch = ids.slice(i, i + 100);
+          const d = await rest(`/rest/v1/questions?id=in.(${batch.map(encodeURIComponent).join(',')})`, { method: 'DELETE' })
+            .catch(() => null);
+          if (d && d.ok) out.questionsDeleted += batch.length; else out.errors++;
+        }
+      }
+    }
+  } else if (!(qr && qr.status === 404)) {
+    // 404 = the table was never made (supabase-setup-4.sql not run): nothing to keep.
+    out.errors++;
+  }
+
   if (out.held) out.needs = 'STRIPE_READ_KEY';
 
   // Tell him when something happened or is stuck. Counts only — nothing about any family.
-  if (!dry && (out.deleted || out.sharedRemoved || out.errors || out.held || out.unknown)) {
+  if (!dry && (out.deleted || out.sharedRemoved || out.questionsDeleted || out.errors || out.held || out.unknown)) {
     await sendEmail({
       to: process.env.ALERT_TO || process.env.FORWARD_TO,
       subject: 'Kirton Learning — the daily retention run',
@@ -197,6 +225,7 @@ async function handler(req, res) {
         `Deleted at the end of the retention period: ${out.deleted}`,
         `Shared copies removed at the end of the plan year: ${out.sharedRemoved}`,
         `Kept because the family is still on the monthly plan: ${out.member}`,
+        `Questions from /ask deleted, 24 months after the last contact: ${out.questionsDeleted}`,
         out.unknown ? `Kept because Stripe could not be asked: ${out.unknown}` : null,
         out.held ? `⛔ Kept because STRIPE_READ_KEY is not set in Vercel: ${out.held}. Nothing is deleted until it is.` : null,
         out.errors ? `⛔ Failed, left in place: ${out.errors}. Check the desk.` : null,
@@ -209,3 +238,5 @@ async function handler(req, res) {
 
 module.exports = handler;
 module.exports.due = due;
+module.exports.questionsDue = questionsDue;
+module.exports.isMember = isMember;

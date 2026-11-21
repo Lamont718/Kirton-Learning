@@ -31,6 +31,7 @@
 // use, private, JSON only, 1 MB a file.
 
 const { reject, supabase, parseJson, appOrigin, shareKeyFor, secretEquals } = require('./_common');
+const { due, isMember } = require('./purge');
 
 const KEY_RE = /^[0-9a-f]{40}$/;
 const BUCKET = 'shared';
@@ -41,6 +42,7 @@ const MAX_BYTES = 1024 * 1024;
 // ⛔ One answer for every reason a key does not work, like api/setup.js — a
 // different message per case would make this a way to find out which exist.
 const NO = 'This device is not set up to share. Ask for a fresh setup link.';
+const ENDED = 'The plan year has ended, so sharing is closed and nothing was sent. Your record is still on this device.';
 
 // ★ The work app moved to my.kirtonlearning.com on 2026-10-08. A device that
 // opened it at the old vercel.app address keeps its record THERE (storage is per
@@ -103,7 +105,8 @@ module.exports = async (req, res) => {
     // row's key and comparing. That is a short list (one row per family sent a
     // setup), and the compare is constant-time.
     const r = await rest(
-      '/rest/v1/upload_tokens?kind=eq.setup&revoked_at=is.null&select=token&limit=5000',
+      '/rest/v1/upload_tokens?kind=eq.setup&revoked_at=is.null' +
+        '&select=token,kind,parent_email,stripe_session_id,created_at,used_at,intake_at&limit=5000',
       { method: 'GET' }
     );
     if (!r.ok) return reject(res, 502, 'Something went wrong on my end. It will try again.');
@@ -134,6 +137,17 @@ module.exports = async (req, res) => {
         return reject(res, 502, 'Your shared copy could not be removed just now. Try switching sharing off again.');
       }
       return res.status(200).json({ ok: true, stopped: true });
+    }
+
+    // ⛔ THE PLAN YEAR. privacy.html: shared work is deleted at the end of it,
+    // and api/purge.js does that. Without this check the device just sent it
+    // again the next day and the copy lived another year. Refused only when the
+    // retention run WOULD delete it: a family still on the monthly plan keeps
+    // sharing, and without STRIPE_READ_KEY the run deletes nothing, so neither
+    // does this (an unknown is not a "no").
+    if (due({ ...row, kind: 'setup' }, Date.now())) {
+      const key = process.env.STRIPE_READ_KEY || '';
+      if (key && (await isMember(row, key)) === false) return reject(res, 410, ENDED);
     }
 
     const why = checkRecord(body.record);
